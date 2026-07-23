@@ -248,27 +248,21 @@ const error = ref('')
 const currentPage = ref(1)
 const totalPages = ref(1)
 
-// ====== 从 posts 聚合标签 ======
-const tags = computed(() => {
-  const map = {}
-  posts.value.forEach(p => {
-    if (p.tags) {
-      p.tags.forEach(t => {
-        const name = typeof t === 'string' ? t : t.name
-        if (name) map[name] = (map[name] || 0) + 1
-      })
-    } else if (p.tag && p.tag !== 'uncategorized') {
-      map[p.tag] = (map[p.tag] || 0) + 1
+// ====== 从 API 获取全站标签 ======
+const tags = ref([])
+
+async function fetchTags() {
+  try {
+    const res = await fetch('/api/tags')
+    if (res.ok) {
+      const data = await res.json()
+      tags.value = (data.tags || []).map(t => ({
+        name: t.name,
+        size: t.post_count >= 5 ? 'lg' : t.post_count >= 3 ? 'md' : t.post_count >= 2 ? 'sm' : 'xs',
+      }))
     }
-  })
-  return Object.entries(map)
-    .map(([name, count]) => ({
-      name,
-      size: count >= 5 ? 'lg' : count >= 3 ? 'md' : count >= 2 ? 'sm' : 'xs',
-    }))
-    .sort((a, b) => b.name.length - a.name.length || a.name.localeCompare(b.name))
-    .slice(0, 12)
-})
+  } catch { /* ignore */ }
+}
 
 // ====== 计算属性 ======
 const pinnedPost = computed(() => posts.value.find(p => p.is_pinned) || null)
@@ -334,7 +328,7 @@ async function loadMore() {
 // function toggleSearch() {}
 
 // ====== 生命周期 ======
-onMounted(() => fetchPosts())
+onMounted(() => { fetchPosts(); fetchTags() })
 </script>
 
 <!-- ====== 样式：只保留 home-page 独有的，PostList 的样式已随组件带走 ====== -->
