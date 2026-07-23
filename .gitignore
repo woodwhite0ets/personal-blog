@@ -5,10 +5,6 @@ node_modules/
 .env
 *.local
 
-# 构建产物
-Client/dist/
-Client/dist-ssr/
-
 # 上传文件（运行时数据）
 Server/uploads/
 

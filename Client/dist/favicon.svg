@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+  <!-- Dark background rounded square -->
+  <rect x="1" y="1" width="46" height="46" rx="10" fill="#0a0a0c" stroke="#1c1d21" stroke-width="2"/>
+
+  <!-- Terminal prompt symbol: >_
+       Cyan accent matching blog theme -->
+  <text x="24" y="30" font-family="'Courier New', monospace" font-size="22" font-weight="bold"
+        fill="#00d4ff" text-anchor="middle" dominant-baseline="middle">
+    &gt;_
+  </text>
+
+  <!-- Subtle underline glow -->
+  <line x1="10" y1="36" x2="38" y2="36" stroke="#00d4ff" stroke-width="1.5" opacity="0.3"
+        stroke-linecap="round"/>
+</svg>
