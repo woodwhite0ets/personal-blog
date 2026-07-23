@@ -69,6 +69,7 @@
               @keydown.enter.prevent="addTag"
               @keydown.backspace="handleTagBackspace"
               @keydown="handleTagKeydown"
+              @blur="addTag"
             />
           </div>
         </div>
