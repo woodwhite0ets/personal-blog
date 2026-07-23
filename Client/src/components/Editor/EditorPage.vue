@@ -68,7 +68,7 @@
               :disabled="formTags.length >= 10"
               @keydown.enter.prevent="addTag"
               @keydown.backspace="handleTagBackspace"
-              @keydown.comma.prevent="addTag"
+              @keydown="handleTagKeydown"
             />
           </div>
         </div>
@@ -270,6 +270,19 @@ function removeTag(index) {
 function handleTagBackspace() {
   if (!tagInput.value && formTags.value.length) {
     formTags.value.pop()
+  }
+}
+
+function handleTagKeydown(e) {
+  // 逗号或空格自动添加 tag
+  if (e.key === ',' || e.key === ' ' || e.key === 'Spacebar') {
+    e.preventDefault()
+    addTag()
+  }
+  // 回车也添加 tag
+  if (e.key === 'Enter') {
+    e.preventDefault()
+    addTag()
   }
 }
 
