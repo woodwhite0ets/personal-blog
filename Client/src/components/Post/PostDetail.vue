@@ -60,7 +60,13 @@
       <article class="post-article">
         <!-- 标签 -->
         <div class="post-meta-top">
-          <span class="post-tag">{{ post.tag }}</span>
+          <router-link
+            v-for="tag in post.tags"
+            :key="tag.slug || tag.name"
+            :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
+            class="post-tag"
+          >#{{ tag.name }}</router-link>
+          <span v-if="!post.tags || post.tags.length === 0" class="post-tag">#uncategorized</span>
           <span v-if="isAuthor" class="post-badge">author</span>
         </div>
 
@@ -84,6 +90,14 @@
 
         <!-- 底部操作 -->
         <div class="post-actions">
+          <!-- 点赞按钮 -->
+          <button class="btn-like" :class="{ liked: post.user_liked }" @click="toggleLike" :disabled="liking || !isLoggedIn">
+            <span class="btn-icon">{{ post.user_liked ? '♥' : '♡' }}</span>
+            <span>{{ post.like_count || 0 }} {{ post.user_liked ? 'liked' : 'likes' }}</span>
+          </button>
+          <span class="comment-count-badge">
+            <span class="btn-icon">💬</span> {{ post.comment_count || 0 }} comments
+          </span>
           <router-link v-if="canEdit" :to="`/editor/${post.slug || post.id}`" class="btn-edit">
             <span class="btn-icon">✎</span> edit this post
           </router-link>
@@ -95,6 +109,103 @@
           </router-link>
         </div>
       </article>
+
+      <!-- 评论区 -->
+      <section class="comment-section" v-if="post">
+        <div class="comment-head">
+          <span class="section-prompt">❯</span>
+          <span class="section-title">cat ./comments.log</span>
+          <span class="section-count">— {{ commentList.length }} comments</span>
+        </div>
+
+        <!-- 发表评论 -->
+        <div v-if="isLoggedIn" class="comment-form">
+          <textarea
+            v-model="commentText"
+            class="comment-textarea"
+            placeholder="write a comment..."
+            rows="3"
+            :disabled="commenting"
+          ></textarea>
+          <div class="comment-form-actions">
+            <span class="comment-char-count">{{ commentText.length }}/2000</span>
+            <button class="btn-comment-submit" @click="submitComment()" :disabled="commenting || !commentText.trim()">
+              {{ commenting ? 'posting...' : 'post comment' }}
+            </button>
+          </div>
+          <span v-if="commentError" class="comment-err">{{ commentError }}</span>
+        </div>
+        <div v-else class="comment-login-hint">
+          <router-link to="/">log in</router-link> to leave a comment
+        </div>
+
+        <!-- 评论列表 -->
+        <div v-if="commentList.length > 0" class="comment-list">
+          <div v-for="c in commentList" :key="c.id" class="comment-item">
+            <div class="comment-avatar">{{ (c.author.nickname || c.author.username).charAt(0).toUpperCase() }}</div>
+            <div class="comment-body">
+              <div class="comment-header">
+                <router-link :to="`/user/${c.author.username}`" class="comment-author">@{{ c.author.username }}</router-link>
+                <span class="comment-time">{{ formatDate(c.created_at) }}</span>
+              </div>
+              <p class="comment-content">{{ c.content }}</p>
+              <div class="comment-actions">
+                <button v-if="isLoggedIn" class="btn-reply" @click="startReply(c.id)">
+                  {{ replyingTo === c.id ? 'cancel' : 'reply' }}
+                </button>
+                <span v-if="c.replies && c.replies.length" class="reply-count">{{ c.replies.length }} repl{{ c.replies.length === 1 ? 'y' : 'ies' }}</span>
+                <button
+                  v-if="canDeleteComment(c)"
+                  class="btn-comment-delete"
+                  @click="deleteComment(c.id)"
+                  :disabled="deletingComment === c.id"
+                >{{ deletingComment === c.id ? '...' : 'delete' }}</button>
+              </div>
+
+              <!-- 回复输入 -->
+              <div v-if="replyingTo === c.id" class="reply-form">
+                <textarea
+                  v-model="replyText"
+                  class="comment-textarea"
+                  placeholder="write a reply..."
+                  rows="2"
+                  :disabled="commenting"
+                ></textarea>
+                <div class="comment-form-actions">
+                  <button class="btn-comment-submit" @click="submitComment(c.id)" :disabled="commenting || !replyText.trim()">
+                    {{ commenting ? 'posting...' : 'reply' }}
+                  </button>
+                </div>
+              </div>
+
+              <!-- 嵌套回复 -->
+              <div v-if="c.replies && c.replies.length" class="reply-list">
+                <div v-for="r in c.replies" :key="r.id" class="comment-item reply-item">
+                  <div class="comment-avatar reply-avatar">{{ (r.author.nickname || r.author.username).charAt(0).toUpperCase() }}</div>
+                  <div class="comment-body">
+                    <div class="comment-header">
+                      <router-link :to="`/user/${r.author.username}`" class="comment-author">@{{ r.author.username }}</router-link>
+                      <span class="comment-time">{{ formatDate(r.created_at) }}</span>
+                    </div>
+                    <p class="comment-content">{{ r.content }}</p>
+                    <button
+                      v-if="canDeleteComment(r)"
+                      class="btn-comment-delete"
+                      @click="deleteComment(r.id)"
+                      :disabled="deletingComment === r.id"
+                    >{{ deletingComment === r.id ? '...' : 'delete' }}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-else-if="!commentLoading" class="comment-empty">
+          <span class="empty-icon">💬</span>
+          <span>no comments yet — be the first!</span>
+        </div>
+      </section>
 
       <!-- 作者卡片 -->
       <div v-if="post.author" class="author-card">
@@ -157,6 +268,19 @@ const error = ref('')
 const showDeleteModal = ref(false)
 const deleting = ref(false)
 
+// 点赞
+const liking = ref(false)
+
+// 评论
+const commentList = ref([])
+const commentLoading = ref(false)
+const commentText = ref('')
+const commentError = ref('')
+const commenting = ref(false)
+const replyingTo = ref(null)
+const replyText = ref('')
+const deletingComment = ref(null)
+
 function confirmDeletePost() {
   showDeleteModal.value = true
 }
@@ -177,6 +301,121 @@ async function handleDelete() {
     deleting.value = false
     showDeleteModal.value = false
   }
+}
+
+// ====== 点赞/取消赞 ======
+async function toggleLike() {
+  if (!post.value || !isLoggedIn.value) return
+  liking.value = true
+  try {
+    const res = await fetch(`${API_BASE}/posts/${slug.value}/like`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${getToken()}` },
+    })
+    const data = await res.json()
+    if (res.ok) {
+      post.value.like_count = data.like_count
+      post.value.user_liked = data.liked
+    }
+  } catch { /* ignore */ }
+  finally { liking.value = false }
+}
+
+// ====== 评论 ======
+async function fetchComments() {
+  commentLoading.value = true
+  try {
+    const res = await fetch(`${API_BASE}/posts/${slug.value}/comments`)
+    if (res.ok) {
+      const data = await res.json()
+      commentList.value = data.comments || []
+    }
+  } catch { /* ignore */ }
+  finally { commentLoading.value = false }
+}
+
+async function submitComment(parentId = null) {
+  const text = parentId ? replyText.value : commentText.value
+  if (!text.trim()) return
+
+  commenting.value = true
+  commentError.value = ''
+  try {
+    const body = { content: text.trim() }
+    if (parentId) body.parent_id = parentId
+
+    const res = await fetch(`${API_BASE}/posts/${slug.value}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify(body),
+    })
+    if (!res.ok) {
+      const data = await res.json()
+      throw new Error(data.message || 'post failed')
+    }
+    const data = await res.json()
+
+    if (parentId) {
+      // 追加到父评论的 replies
+      const parent = commentList.value.find(c => c.id === parentId)
+      if (parent) {
+        if (!parent.replies) parent.replies = []
+        parent.replies.push(data.comment)
+      }
+      replyText.value = ''
+      replyingTo.value = null
+    } else {
+      commentList.value.push(data.comment)
+      commentText.value = ''
+    }
+    // 更新评论计数
+    if (post.value) post.value.comment_count = (post.value.comment_count || 0) + 1
+  } catch (e) {
+    commentError.value = e.message
+  } finally {
+    commenting.value = false
+  }
+}
+
+function startReply(id) {
+  replyingTo.value = replyingTo.value === id ? null : id
+  replyText.value = ''
+}
+
+async function deleteComment(id) {
+  deletingComment.value = id
+  try {
+    const res = await fetch(`${API_BASE}/posts/${slug.value}/comments/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${getToken()}` },
+    })
+    if (res.ok) {
+      // 先从顶层移除
+      commentList.value = commentList.value.filter(c => c.id !== id)
+      // 从回复中移除
+      commentList.value.forEach(c => {
+        if (c.replies) c.replies = c.replies.filter(r => r.id !== id)
+      })
+      // 更新评论计数
+      if (post.value) post.value.comment_count = Math.max(0, (post.value.comment_count || 1) - 1)
+    }
+  } catch { /* ignore */ }
+  finally { deletingComment.value = null }
+}
+
+function canDeleteComment(comment) {
+  if (!currentUser.value) return false
+  return isAdmin.value || (comment.author && comment.author.username === currentUser.value.username)
+}
+
+function formatDate(ts) {
+  if (!ts) return ''
+  const d = new Date(ts)
+  if (isNaN(d.getTime())) return ts
+  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
 // ====== 当前用户是否为作者 ======
@@ -217,8 +456,8 @@ async function fetchPost() {
 }
 
 // ====== 生命周期 ======
-onMounted(fetchPost)
-watch(slug, fetchPost)
+onMounted(() => { fetchPost(); fetchComments() })
+watch(slug, () => { fetchPost(); fetchComments() })
 </script>
 
 <style scoped>
@@ -370,9 +609,14 @@ watch(slug, fetchPost)
 .post-meta-top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 
 .post-tag {
-  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
   text-transform: uppercase; color: #00d4ff;
+  text-decoration: none;
+  padding: 2px 6px; border-radius: 3px;
+  transition: background 0.2s;
 }
+
+.post-tag:hover { background: rgba(0,212,255,0.1); }
 
 .post-badge {
   font-size: 9px; font-weight: 700; letter-spacing: 1px;
@@ -494,6 +738,28 @@ watch(slug, fetchPost)
   display: flex; align-items: center; gap: 16px;
   margin-top: 48px; padding-top: 24px;
   border-top: 1px solid #1c1d21;
+  flex-wrap: wrap;
+}
+
+.btn-like {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 18px;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  color: #6e737a; background: rgba(255,255,255,0.03);
+  border: 1px solid #25262a; border-radius: 6px;
+  cursor: pointer; transition: all 0.2s;
+}
+
+.btn-like:hover:not(:disabled) { border-color: #ff5f57; color: #ff5f57; }
+.btn-like.liked {
+  color: #ff5f57; background: rgba(255,95,87,0.06);
+  border-color: rgba(255,95,87,0.2);
+}
+.btn-like:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.comment-count-badge {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 12px; color: #484b52; font-weight: 600;
 }
 
 .btn-edit {
@@ -563,6 +829,120 @@ watch(slug, fetchPost)
 .author-card-bio { font-size: 11px; color: #484b52; }
 
 .author-card-arrow { font-size: 16px; color: #484b52; font-weight: 700; }
+
+/* ====== 评论区 ====== */
+.comment-section {
+  position: relative; z-index: 1;
+  max-width: 720px; margin: 0 auto 32px; padding: 0 24px;
+}
+
+.comment-head {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #1c1d21;
+}
+
+.section-prompt { color: #00d4ff; font-weight: 700; font-size: 13px; }
+.section-title { font-size: 13px; font-weight: 600; color: #c9d1d9; }
+.section-count { font-size: 11px; color: #484b52; margin-left: auto; }
+
+.comment-form { margin-bottom: 24px; }
+.comment-textarea {
+  width: 100%; padding: 12px 14px;
+  font-family: inherit; font-size: 13px; color: #c9d1d9;
+  background: #0f1013; border: 1px solid #25262a;
+  border-radius: 6px; outline: none; resize: vertical;
+  caret-color: #00d4ff; transition: border-color 0.2s;
+  line-height: 1.6;
+}
+.comment-textarea:focus { border-color: #00d4ff; }
+.comment-textarea::placeholder { color: #33363c; }
+
+.comment-form-actions {
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 12px; margin-top: 8px;
+}
+.comment-char-count { font-size: 10px; color: #484b52; }
+.btn-comment-submit {
+  padding: 6px 16px;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  color: #0a0a0c; background: #00d4ff; border: none;
+  border-radius: 6px; cursor: pointer; transition: all 0.2s;
+}
+.btn-comment-submit:hover:not(:disabled) {
+  background: #00b8d4;
+  box-shadow: 0 0 16px rgba(0,212,255,0.25);
+}
+.btn-comment-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.comment-err {
+  display: block; margin-top: 6px;
+  font-size: 11px; color: #ff5f57;
+}
+
+.comment-login-hint {
+  text-align: center; padding: 24px; font-size: 13px; color: #484b52;
+}
+.comment-login-hint a { color: #00d4ff; text-decoration: none; }
+.comment-login-hint a:hover { color: #00b8d4; }
+
+.comment-list { display: flex; flex-direction: column; gap: 0; }
+
+.comment-item {
+  display: flex; gap: 14px;
+  padding: 18px 0;
+  border-bottom: 1px solid #141419;
+}
+.comment-avatar {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,212,255,0.08); color: #00d4ff;
+  border-radius: 6px; font-size: 13px; font-weight: 700;
+  text-transform: uppercase; flex-shrink: 0;
+}
+.comment-body { flex: 1; min-width: 0; }
+.comment-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
+}
+.comment-author {
+  font-size: 12px; font-weight: 700; color: #c9d1d9;
+  text-decoration: none; transition: color 0.2s;
+}
+.comment-author:hover { color: #00d4ff; }
+.comment-time { font-size: 10px; color: #484b52; }
+.comment-content {
+  font-size: 13px; line-height: 1.65; color: #8b9098;
+  margin: 0; white-space: pre-wrap; word-break: break-word;
+}
+.comment-actions {
+  display: flex; align-items: center; gap: 12px; margin-top: 8px;
+}
+.btn-reply {
+  font-family: inherit; font-size: 11px; font-weight: 600;
+  color: #484b52; background: none; border: none;
+  cursor: pointer; transition: color 0.2s;
+}
+.btn-reply:hover { color: #00d4ff; }
+.reply-count { font-size: 11px; color: #33363c; }
+.btn-comment-delete {
+  font-family: inherit; font-size: 10px; font-weight: 600;
+  color: #484b52; background: none; border: none;
+  cursor: pointer; transition: color 0.2s;
+}
+.btn-comment-delete:hover { color: #ff5f57; }
+
+.reply-form { margin-top: 12px; }
+
+.reply-list { margin-top: 12px; padding-left: 16px; border-left: 1px solid #1c1d21; }
+.reply-item { border-bottom: none; padding: 10px 0; }
+.reply-avatar { width: 26px; height: 26px; font-size: 11px; }
+
+.comment-empty {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; padding: 36px 0; font-size: 13px; color: #484b52;
+}
+.empty-icon { font-size: 24px; opacity: 0.3; }
 
 /* ====== Footer ====== */
 .footer {

@@ -100,6 +100,14 @@
 
     <!-- ====== 主体 ====== -->
     <div class="main-layout">
+      <!-- 标签过滤提示 -->
+      <div v-if="activeTag" class="tag-filter-bar" style="grid-column: 1 / -1; margin-bottom: -28px;">
+        <span class="filter-prompt">❯</span>
+        <span class="filter-label">filter:</span>
+        <span class="filter-tag">#{{ activeTag }}</span>
+        <router-link to="/HomePage" class="filter-clear">× clear</router-link>
+      </div>
+
       <!-- 文章列表 — 模块化组件 -->
       <PostList
         :posts="posts"
@@ -164,9 +172,14 @@
           </div>
           <div class="panel-body">
             <div class="tag-cloud">
-              <span v-for="tag in tags" :key="tag.name" class="tag" :class="tag.size">
+              <router-link
+                v-for="tag in tags"
+                :key="tag.name"
+                :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
+                class="tag" :class="tag.size"
+              >
                 #{{ tag.name }}
-              </span>
+              </router-link>
               <span v-if="!tags.length" class="no-tags">— no tags yet</span>
             </div>
           </div>
@@ -201,10 +214,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import PostList from './PostList.vue'
 import { useAuth } from '../../stores/auth.js'
 
+const route = useRoute()
 const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
 
 // ====== 用户菜单 ======
@@ -258,6 +273,7 @@ const tags = computed(() => {
 // ====== 计算属性 ======
 const pinnedPost = computed(() => posts.value.find(p => p.is_pinned) || null)
 const hasMore = computed(() => currentPage.value < totalPages.value)
+const activeTag = computed(() => route.query.tag || '')
 
 // ====== 从 posts 聚合作者发文数 ======
 const contributors = computed(() => {
@@ -278,10 +294,11 @@ async function fetchPosts(page = 1) {
   error.value = ''
 
   try {
-    // ====== 替换成你的后端接口 ======
-    const res = await fetch(
-      `/api/posts?page=${page}&status=published`
-    )
+    const tagFilter = route.query.tag || ''
+    let url = `/api/posts?page=${page}&status=published`
+    if (tagFilter) url += `&tag=${encodeURIComponent(tagFilter)}`
+
+    const res = await fetch(url)
     const data = await res.json()
 
     if (!res.ok) throw new Error(data.message || '请求失败')
@@ -301,6 +318,11 @@ async function fetchPosts(page = 1) {
     loadingMore.value = false
   }
 }
+
+// ====== 监听 query.tag 变化重新获取 ======
+watch(() => route.query.tag, () => {
+  fetchPosts(1)
+})
 
 // ====== 加载更多 ======
 async function loadMore() {
@@ -575,16 +597,37 @@ onMounted(() => fetchPosts())
 .info-val { color: #8b9098; }
 .terminal-green { color: #2bd64e; }
 
+/* ====== 标签过滤提示 ====== */
+.tag-filter-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px; margin-bottom: 20px;
+  background: rgba(0,212,255,0.04);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 6px; font-size: 12px;
+}
+
+.filter-prompt { color: #00d4ff; font-weight: 700; }
+.filter-label { color: #484b52; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+.filter-tag { color: #00d4ff; font-weight: 600; }
+.filter-clear {
+  margin-left: auto;
+  color: #6e737a; text-decoration: none; font-weight: 600;
+  transition: color 0.2s;
+}
+.filter-clear:hover { color: #ff5f57; }
+
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .tag {
   font-size: 11px; padding: 4px 10px;
   background: rgba(255,255,255,0.03);
   border: 1px solid #1c1d21; border-radius: 4px;
-  color: #6e737a; cursor: default; transition: all 0.2s;
+  color: #6e737a; cursor: pointer; transition: all 0.2s;
+  text-decoration: none;
 }
 
 .tag:hover { border-color: #00d4ff; color: #00d4ff; background: rgba(0,212,255,0.04); }
+.tag.router-link-active { border-color: #00d4ff; color: #00d4ff; }
 .tag.lg { font-size: 13px; font-weight: 600; }
 .tag.md { font-size: 12px; }
 .tag.sm { font-size: 11px; }

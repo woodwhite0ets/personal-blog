@@ -128,7 +128,7 @@ router.get('/users', async (req, res) => {
     const role = req.query.role || '';
     const search = req.query.search || '';
 
-    let countSql = 'SELECT COUNT(*) AS total FROM users WHERE 1=1';
+    let countSql = 'SELECT COUNT(*) AS total FROM users u WHERE 1=1';
     let dataSql = `
       SELECT u.id, u.username, u.nickname, u.email, u.role, u.is_verified, u.created_at,
              (SELECT COUNT(*) FROM posts WHERE author_id = u.id) AS post_count

@@ -5,6 +5,7 @@ const path = require('path');
 require('dotenv').config();
 require('./config/logger'); // 激活内存日志捕获（尽早加载）
 const { ensureDatabase } = require('./config/db');
+const pool = require('./config/db');
 const { globalLimiter } = require('./config/rateLimit');
 
 const app = express();
@@ -66,6 +67,25 @@ app.use(express.static(path.join(__dirname, '../../Client/dist')));
 // ====== API 路由 ======
 app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from Express!' });
+});
+
+// 标签列表（独立端点，供前端 tag cloud 和 autocomplete）
+app.get('/api/tags', async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT t.name, t.slug, COUNT(pt.post_id) AS post_count
+       FROM tags t
+       LEFT JOIN post_tags pt ON t.id = pt.tag_id
+       LEFT JOIN posts p ON pt.post_id = p.id AND p.status = 'published'
+       GROUP BY t.id
+       ORDER BY post_count DESC, t.name ASC
+       LIMIT 50`
+    );
+    res.json({ tags: rows });
+  } catch (err) {
+    console.error('tags error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
 });
 
 app.use('/api/auth',   require('./routes/auth'));

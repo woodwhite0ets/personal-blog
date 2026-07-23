@@ -121,9 +121,14 @@
           </div>
           <div class="panel-body">
             <div class="tag-cloud">
-              <span v-for="tag in userTags" :key="tag.name" class="tag" :class="tag.size">
+              <router-link
+                v-for="tag in userTags"
+                :key="tag.name"
+                :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
+                class="tag" :class="tag.size"
+              >
                 #{{ tag.name }}
-              </span>
+              </router-link>
               <span v-if="!userTags.length" class="no-tags">— no tags yet</span>
             </div>
           </div>
@@ -548,7 +553,8 @@ watch(username, () => {
   font-size: 11px; padding: 4px 10px;
   background: rgba(255,255,255,0.03);
   border: 1px solid #1c1d21; border-radius: 4px;
-  color: #6e737a; cursor: default; transition: all 0.2s;
+  color: #6e737a; cursor: pointer; transition: all 0.2s;
+  text-decoration: none;
 }
 
 .tag:hover { border-color: #00d4ff; color: #00d4ff; background: rgba(0,212,255,0.04); }

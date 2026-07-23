@@ -60,6 +60,7 @@ router.get('/', authOptional, async (req, res) => {
     const offset   = (page - 1) * perPage;
     let status     = req.query.status || 'published';
     const author   = req.query.author || '';
+    const tag      = req.query.tag || '';
 
     // status=all 仅 admin 可用
     if (status === 'all' && (!req.user || req.user.role !== 'admin')) {
@@ -67,9 +68,9 @@ router.get('/', authOptional, async (req, res) => {
     }
 
     // 构建查询
-    let countSql = 'SELECT COUNT(*) AS total FROM posts p JOIN users u ON p.author_id = u.id';
+    let countSql = 'SELECT COUNT(DISTINCT p.id) AS total FROM posts p JOIN users u ON p.author_id = u.id';
     let dataSql   = `
-      SELECT
+      SELECT DISTINCT
         p.id, p.title, p.slug, p.excerpt, p.cover_image,
         p.is_pinned, p.status, p.read_time, p.published_at AS date,
         u.username, u.nickname, u.avatar
@@ -87,6 +88,14 @@ router.get('/', authOptional, async (req, res) => {
     if (author) {
       conditions.push('u.username = ?');
       params.push(author);
+    }
+
+    // tag filter: join post_tags + tags
+    if (tag) {
+      dataSql += ' JOIN post_tags pt_filter ON p.id = pt_filter.post_id';
+      dataSql += ' JOIN tags t_filter ON pt_filter.tag_id = t_filter.id';
+      conditions.push('(t_filter.slug = ? OR t_filter.name = ?)');
+      params.push(tag, tag);
     }
 
     if (conditions.length > 0) {
@@ -107,6 +116,9 @@ router.get('/', authOptional, async (req, res) => {
     // 为每篇文章附加标签
     const postIds = rows.map(r => r.id);
     let tagMap = {};
+    let likeMap = {};
+    let commentMap = {};
+    let userLikedSet = new Set();
     if (postIds.length > 0) {
       const [tagRows] = await pool.query(
         `SELECT pt.post_id, t.name, t.slug
@@ -119,13 +131,39 @@ router.get('/', authOptional, async (req, res) => {
         if (!tagMap[t.post_id]) tagMap[t.post_id] = [];
         tagMap[t.post_id].push({ name: t.name, slug: t.slug });
       });
+
+      // 点赞计数
+      const [likeRows] = await pool.query(
+        `SELECT post_id, COUNT(*) AS count FROM post_likes WHERE post_id IN (${postIds.map(() => '?').join(',')}) GROUP BY post_id`,
+        postIds
+      );
+      likeRows.forEach(l => { likeMap[l.post_id] = l.count; });
+
+      // 评论计数
+      const [commentRows] = await pool.query(
+        `SELECT post_id, COUNT(*) AS count FROM comments WHERE post_id IN (${postIds.map(() => '?').join(',')}) GROUP BY post_id`,
+        postIds
+      );
+      commentRows.forEach(c => { commentMap[c.post_id] = c.count; });
+
+      // 当前用户是否已点赞
+      if (req.user) {
+        const [likedRows] = await pool.query(
+          `SELECT post_id FROM post_likes WHERE user_id = ? AND post_id IN (${postIds.map(() => '?').join(',')})`,
+          [req.user.id, ...postIds]
+        );
+        likedRows.forEach(l => userLikedSet.add(l.post_id));
+      }
     }
 
     const posts = rows.map(r => ({
       ...r,
       author: { username: r.username, nickname: r.nickname, avatar: r.avatar },
       tags: tagMap[r.id] || [],
-      tag: tagMap[r.id]?.[0]?.name || 'uncategorized',  // 兼容前端旧逻辑
+      tag: tagMap[r.id]?.[0]?.name || 'uncategorized',
+      like_count: likeMap[r.id] || 0,
+      comment_count: commentMap[r.id] || 0,
+      user_liked: userLikedSet.has(r.id),
       date: r.date ? r.date.toISOString().split('T')[0] : '',
     }));
 
@@ -143,7 +181,7 @@ router.get('/', authOptional, async (req, res) => {
 });
 
 // ====== GET /api/posts/:slug — 文章详情 ======
-router.get('/:slug', async (req, res) => {
+router.get('/:slug', authOptional, async (req, res) => {
   try {
     const { slug } = req.params;
 
@@ -170,11 +208,38 @@ router.get('/:slug', async (req, res) => {
       [p.id]
     );
 
+    // 点赞数
+    const [likeRows] = await pool.query(
+      'SELECT COUNT(*) AS count FROM post_likes WHERE post_id = ?',
+      [p.id]
+    );
+    const likeCount = likeRows[0]?.count || 0;
+
+    // 当前用户是否已点赞
+    let userLiked = false;
+    if (req.user) {
+      const [liked] = await pool.query(
+        'SELECT 1 FROM post_likes WHERE user_id = ? AND post_id = ?',
+        [req.user.id, p.id]
+      );
+      userLiked = liked.length > 0;
+    }
+
+    // 评论数
+    const [commentRows] = await pool.query(
+      'SELECT COUNT(*) AS count FROM comments WHERE post_id = ?',
+      [p.id]
+    );
+    const commentCount = commentRows[0]?.count || 0;
+
     const post = {
       ...p,
       author: { username: p.username, nickname: p.nickname, bio: p.bio, avatar: p.avatar },
       tags: tagRows,
       tag: tagRows[0]?.name || 'uncategorized',
+      like_count: likeCount,
+      user_liked: userLiked,
+      comment_count: commentCount,
       date: p.published_at ? p.published_at.toISOString().split('T')[0] : '',
     };
 
@@ -403,6 +468,183 @@ router.delete('/:slug', authRequired, async (req, res) => {
     res.status(500).json({ message: 'internal server error' });
   } finally {
     conn.release();
+  }
+});
+
+// ====== POST /api/posts/:slug/like — 点赞/取消赞 ======
+router.post('/:slug/like', authRequired, async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const [rows] = await pool.query('SELECT id FROM posts WHERE slug = ?', [slug]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'post not found' });
+    }
+
+    const postId = rows[0].id;
+    const userId = req.user.id;
+
+    // 检查是否已点赞
+    const [existing] = await pool.query(
+      'SELECT 1 FROM post_likes WHERE user_id = ? AND post_id = ?',
+      [userId, postId]
+    );
+
+    if (existing.length > 0) {
+      // 取消点赞
+      await pool.query('DELETE FROM post_likes WHERE user_id = ? AND post_id = ?', [userId, postId]);
+      const [count] = await pool.query('SELECT COUNT(*) AS count FROM post_likes WHERE post_id = ?', [postId]);
+      return res.json({ liked: false, like_count: count[0]?.count || 0 });
+    } else {
+      // 点赞
+      await pool.query('INSERT INTO post_likes (user_id, post_id) VALUES (?, ?)', [userId, postId]);
+      const [count] = await pool.query('SELECT COUNT(*) AS count FROM post_likes WHERE post_id = ?', [postId]);
+      return res.json({ liked: true, like_count: count[0]?.count || 0 });
+    }
+  } catch (err) {
+    console.error('like toggle error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
+// ====== GET /api/posts/:slug/comments — 获取评论 ======
+router.get('/:slug/comments', async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const [rows] = await pool.query('SELECT id FROM posts WHERE slug = ?', [slug]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'post not found' });
+    }
+
+    const [comments] = await pool.query(
+      `SELECT c.id, c.content, c.parent_id, c.created_at, c.updated_at,
+              u.username, u.nickname, u.avatar
+       FROM comments c
+       JOIN users u ON c.user_id = u.id
+       WHERE c.post_id = ?
+       ORDER BY c.created_at ASC`,
+      [rows[0].id]
+    );
+
+    // 结构化回复（嵌套一层）
+    const topLevel = [];
+    const replies = {};
+    comments.forEach(c => {
+      const item = {
+        id: c.id,
+        content: c.content,
+        parent_id: c.parent_id,
+        created_at: c.created_at,
+        updated_at: c.updated_at,
+        author: { username: c.username, nickname: c.nickname, avatar: c.avatar },
+      };
+      if (c.parent_id) {
+        if (!replies[c.parent_id]) replies[c.parent_id] = [];
+        replies[c.parent_id].push(item);
+      } else {
+        topLevel.push({ ...item, replies: [] });
+      }
+    });
+
+    // 填充回复
+    topLevel.forEach(c => {
+      c.replies = replies[c.id] || [];
+    });
+
+    res.json({ comments: topLevel, total: comments.length });
+  } catch (err) {
+    console.error('get comments error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
+// ====== POST /api/posts/:slug/comments — 发表评论 ======
+router.post('/:slug/comments', authRequired, async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const content = req.body.content || '';
+    const parentId = req.body.parent_id ? parseInt(req.body.parent_id) : null;
+
+    if (!content.trim() || content.trim().length < 1) {
+      return res.status(400).json({ message: 'comment content is required' });
+    }
+
+    // 内容清洗
+    const cleaned = content.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+      .replace(/<[^>]*>/g, '')
+      .slice(0, 2000)
+      .trim();
+
+    if (!cleaned) {
+      return res.status(400).json({ message: 'comment content is empty after sanitization' });
+    }
+
+    const [rows] = await pool.query('SELECT id FROM posts WHERE slug = ?', [slug]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'post not found' });
+    }
+
+    const postId = rows[0].id;
+
+    // 如果是回复，确认父评论存在且属于同一篇文章
+    if (parentId) {
+      const [parent] = await pool.query('SELECT id, post_id FROM comments WHERE id = ?', [parentId]);
+      if (parent.length === 0 || parent[0].post_id !== postId) {
+        return res.status(400).json({ message: 'invalid parent comment' });
+      }
+    }
+
+    const [result] = await pool.query(
+      'INSERT INTO comments (content, user_id, post_id, parent_id) VALUES (?, ?, ?, ?)',
+      [cleaned, req.user.id, postId, parentId]
+    );
+
+    const [comment] = await pool.query(
+      `SELECT c.id, c.content, c.parent_id, c.created_at, c.updated_at,
+              u.username, u.nickname, u.avatar
+       FROM comments c
+       JOIN users u ON c.user_id = u.id
+       WHERE c.id = ?`,
+      [result.insertId]
+    );
+
+    res.status(201).json({
+      message: 'comment posted',
+      comment: {
+        ...comment[0],
+        author: { username: comment[0].username, nickname: comment[0].nickname, avatar: comment[0].avatar },
+        replies: [],
+      },
+    });
+  } catch (err) {
+    console.error('post comment error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
+// ====== DELETE /api/posts/:slug/comments/:id — 删除评论 ======
+router.delete('/:slug/comments/:id', authRequired, async (req, res) => {
+  try {
+    const commentId = parseInt(req.params.id);
+
+    const [rows] = await pool.query('SELECT id, user_id FROM comments WHERE id = ?', [commentId]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'comment not found' });
+    }
+
+    // 只能删除自己的评论或管理员
+    if (rows[0].user_id !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'you cannot delete this comment' });
+    }
+
+    // CASCADE 会删除子回复
+    await pool.query('DELETE FROM comments WHERE id = ?', [commentId]);
+
+    res.json({ message: 'comment deleted' });
+  } catch (err) {
+    console.error('delete comment error:', err);
+    res.status(500).json({ message: 'internal server error' });
   }
 });
 

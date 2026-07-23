@@ -3,7 +3,14 @@
     <div class="post-index">{{ String(index + 1).padStart(2, '0') }}</div>
     <div class="post-body">
       <div class="post-meta-row">
-        <span class="post-tag">{{ post.tag }}</span>
+        <span class="post-tags">
+          <router-link
+            v-for="tag in (post.tags && post.tags.length ? post.tags : [{ name: post.tag || 'uncategorized' }])"
+            :key="typeof tag === 'string' ? tag : tag.name"
+            :to="`/HomePage?tag=${encodeURIComponent(typeof tag === 'string' ? tag : tag.name)}`"
+            class="post-tag"
+          >#{{ typeof tag === 'string' ? tag : tag.name }}</router-link>
+        </span>
         <span class="post-date">{{ post.date }}</span>
         <span class="post-author" v-if="post.author">
           <router-link :to="`/user/${post.author.username}`">
@@ -19,6 +26,14 @@
         <span class="post-read-time">
           <span class="footer-label">read:</span> {{ post.read_time }}
         </span>
+        <div class="post-stats">
+          <span class="post-like-count" :class="{ liked: post.user_liked }">
+            <span class="like-icon">{{ post.user_liked ? '♥' : '♡' }}</span> {{ post.like_count || 0 }}
+          </span>
+          <span class="post-comment-count">
+            <span class="comment-icon">💬</span> {{ post.comment_count || 0 }}
+          </span>
+        </div>
         <router-link :to="`/post/${post.slug || post.id}`" class="post-link">read →</router-link>
       </div>
     </div>
@@ -78,12 +93,21 @@ defineProps({
   margin-bottom: 6px;
 }
 
+.post-tags {
+  display: flex; flex-wrap: wrap; gap: 4px;
+}
+
 .post-tag {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #00d4ff;
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: #00d4ff;
+  text-decoration: none;
+  padding: 1px 4px;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+.post-tag:hover {
+  background: rgba(0,212,255,0.1);
 }
 
 .post-date {
@@ -156,9 +180,23 @@ defineProps({
   transition: color 0.2s;
 }
 
-.post-link:hover {
-  color: #00b8d4;
+.post-link:hover { color: #00b8d4; }
+
+.post-stats {
+  display: flex; align-items: center; gap: 12px;
 }
+
+.post-like-count, .post-comment-count {
+  font-size: 11px; color: #484b52;
+  display: flex; align-items: center; gap: 3px;
+}
+
+.post-like-count.liked {
+  color: #ff5f57;
+}
+
+.like-icon { font-size: 13px; }
+.comment-icon { font-size: 12px; }
 
 /* ====== 响应式 ====== */
 @media (max-width: 800px) {

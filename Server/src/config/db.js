@@ -28,6 +28,8 @@ async function ensureDatabase() {
   const [tables] = await initConn.query('SHOW TABLES');
   if (tables.length > 0) {
     console.log(`[db] ${tables.length} tables already exist`);
+    // 运行增量迁移
+    await runMigrations(initConn);
     await initConn.end();
     return;
   }
@@ -107,7 +109,38 @@ async function ensureDatabase() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
-  // 5. 插入默认管理员
+  // 5. post_likes
+  await initConn.query(`
+    CREATE TABLE \`post_likes\` (
+      \`user_id\`         INT UNSIGNED      NOT NULL,
+      \`post_id\`         INT UNSIGNED      NOT NULL,
+      \`created_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (\`user_id\`, \`post_id\`),
+      CONSTRAINT \`fk_likes_user\` FOREIGN KEY (\`user_id\`) REFERENCES \`users\`(\`id\`) ON DELETE CASCADE,
+      CONSTRAINT \`fk_likes_post\` FOREIGN KEY (\`post_id\`) REFERENCES \`posts\`(\`id\`) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `);
+
+  // 6. comments
+  await initConn.query(`
+    CREATE TABLE \`comments\` (
+      \`id\`              INT UNSIGNED      NOT NULL AUTO_INCREMENT,
+      \`content\`         TEXT              NOT NULL,
+      \`user_id\`         INT UNSIGNED      NOT NULL,
+      \`post_id\`         INT UNSIGNED      NOT NULL,
+      \`parent_id\`       INT UNSIGNED      DEFAULT NULL,
+      \`created_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      \`updated_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (\`id\`),
+      KEY \`idx_comments_post\` (\`post_id\`, \`created_at\` ASC),
+      KEY \`idx_comments_parent\` (\`parent_id\`),
+      CONSTRAINT \`fk_comments_user\` FOREIGN KEY (\`user_id\`) REFERENCES \`users\`(\`id\`) ON DELETE CASCADE,
+      CONSTRAINT \`fk_comments_post\` FOREIGN KEY (\`post_id\`) REFERENCES \`posts\`(\`id\`) ON DELETE CASCADE,
+      CONSTRAINT \`fk_comments_parent\` FOREIGN KEY (\`parent_id\`) REFERENCES \`comments\`(\`id\`) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `);
+
+  // 7. 插入默认管理员
   await initConn.query(`
     INSERT INTO \`users\` (\`username\`, \`nickname\`, \`email\`, \`password_hash\`, \`role\`, \`is_verified\`)
     VALUES ('WoodWhite', 'WoodWhite', 'admin@blog.local',
@@ -118,6 +151,49 @@ async function ensureDatabase() {
   await initConn.end();
   console.log('[db] tables created, admin user inserted');
   console.log('[db] default login: WoodWhite / 123456');
+}
+
+// ====== 增量迁移 ======
+async function runMigrations(conn) {
+  const [tables] = await conn.query('SHOW TABLES');
+  const existing = tables.map(t => Object.values(t)[0]);
+
+  // 添加 post_likes 表（如果不存在）
+  if (!existing.includes('post_likes')) {
+    console.log('[db] migration: creating post_likes table');
+    await conn.query(`
+      CREATE TABLE \`post_likes\` (
+        \`user_id\`         INT UNSIGNED      NOT NULL,
+        \`post_id\`         INT UNSIGNED      NOT NULL,
+        \`created_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (\`user_id\`, \`post_id\`),
+        CONSTRAINT \`fk_likes_user\` FOREIGN KEY (\`user_id\`) REFERENCES \`users\`(\`id\`) ON DELETE CASCADE,
+        CONSTRAINT \`fk_likes_post\` FOREIGN KEY (\`post_id\`) REFERENCES \`posts\`(\`id\`) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  }
+
+  // 添加 comments 表（如果不存在）
+  if (!existing.includes('comments')) {
+    console.log('[db] migration: creating comments table');
+    await conn.query(`
+      CREATE TABLE \`comments\` (
+        \`id\`              INT UNSIGNED      NOT NULL AUTO_INCREMENT,
+        \`content\`         TEXT              NOT NULL,
+        \`user_id\`         INT UNSIGNED      NOT NULL,
+        \`post_id\`         INT UNSIGNED      NOT NULL,
+        \`parent_id\`       INT UNSIGNED      DEFAULT NULL,
+        \`created_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        \`updated_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (\`id\`),
+        KEY \`idx_comments_post\` (\`post_id\`, \`created_at\` ASC),
+        KEY \`idx_comments_parent\` (\`parent_id\`),
+        CONSTRAINT \`fk_comments_user\` FOREIGN KEY (\`user_id\`) REFERENCES \`users\`(\`id\`) ON DELETE CASCADE,
+        CONSTRAINT \`fk_comments_post\` FOREIGN KEY (\`post_id\`) REFERENCES \`posts\`(\`id\`) ON DELETE CASCADE,
+        CONSTRAINT \`fk_comments_parent\` FOREIGN KEY (\`parent_id\`) REFERENCES \`comments\`(\`id\`) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  }
 }
 
 // ====== 创建连接池 ======
