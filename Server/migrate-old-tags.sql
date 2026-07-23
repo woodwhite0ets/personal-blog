@@ -1,6 +1,7 @@
 -- ====== 迁移旧文章标签 ======
--- 在 MySQL 中执行：将 posts 表的旧 tag 字段迁移到新的 tags + post_tags 系统
--- 执行前请先确认数据库名
+-- 将 posts 表的旧 tag 字段迁移到新的 tags + post_tags 系统
+-- 用法：在 MySQL 中打开此文件执行，或在命令行：
+--   mysql -u root -p < Server/migrate-old-tags.sql
 
 USE blog_byown;
 
