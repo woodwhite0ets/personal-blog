@@ -1,0 +1,139 @@
+const mysql = require('mysql2/promise');
+require('dotenv').config();
+
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_PORT = process.env.DB_PORT || 3306;
+const DB_USER = process.env.DB_USER || 'root';
+const DB_PASSWORD = process.env.DB_PASSWORD || '';
+const DB_NAME = process.env.DB_NAME || 'blog_byown';
+
+// ====== 自动建库建表 ======
+async function ensureDatabase() {
+  const initConn = await mysql.createConnection({
+    host: DB_HOST,
+    port: DB_PORT,
+    user: DB_USER,
+    password: DB_PASSWORD,
+  });
+
+  // 创建数据库
+  await initConn.query(
+    `CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
+  );
+  console.log(`[db] database "${DB_NAME}" ready`);
+
+  await initConn.query(`USE \`${DB_NAME}\``);
+
+  // 检查表是否存在
+  const [tables] = await initConn.query('SHOW TABLES');
+  if (tables.length > 0) {
+    console.log(`[db] ${tables.length} tables already exist`);
+    await initConn.end();
+    return;
+  }
+
+  console.log('[db] creating tables...');
+
+  // 1. users
+  await initConn.query(`
+    CREATE TABLE \`users\` (
+      \`id\`              INT UNSIGNED      NOT NULL AUTO_INCREMENT,
+      \`username\`        VARCHAR(20)       NOT NULL,
+      \`nickname\`        VARCHAR(50)       NOT NULL,
+      \`email\`           VARCHAR(255)      NOT NULL,
+      \`password_hash\`   VARCHAR(255)      NOT NULL                  COMMENT 'bcrypt',
+      \`bio\`             VARCHAR(300)      DEFAULT '',
+      \`avatar\`          VARCHAR(500)      DEFAULT NULL,
+      \`role\`            ENUM('admin','author','reader') NOT NULL DEFAULT 'author',
+      \`is_verified\`     TINYINT(1)       NOT NULL DEFAULT 0,
+      \`verify_token\`    VARCHAR(64)       DEFAULT NULL,
+      \`verify_expires\`  DATETIME          DEFAULT NULL,
+      \`created_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      \`updated_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (\`id\`),
+      UNIQUE KEY \`uk_username\` (\`username\`),
+      UNIQUE KEY \`uk_email\`    (\`email\`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `);
+
+  // 2. posts
+  await initConn.query(`
+    CREATE TABLE \`posts\` (
+      \`id\`              INT UNSIGNED      NOT NULL AUTO_INCREMENT,
+      \`title\`           VARCHAR(200)      NOT NULL,
+      \`slug\`            VARCHAR(200)      NOT NULL,
+      \`excerpt\`         VARCHAR(500)      DEFAULT '',
+      \`content\`         LONGTEXT          NOT NULL,
+      \`cover_image\`     VARCHAR(500)      DEFAULT NULL,
+      \`image_dir\`       VARCHAR(300)      DEFAULT NULL,
+      \`status\`          ENUM('draft','published','archived') NOT NULL DEFAULT 'draft',
+      \`is_pinned\`       TINYINT(1)       NOT NULL DEFAULT 0,
+      \`read_time\`       VARCHAR(20)       DEFAULT '',
+      \`word_count\`      INT UNSIGNED      DEFAULT 0,
+      \`author_id\`       INT UNSIGNED      NOT NULL,
+      \`published_at\`    DATETIME          DEFAULT NULL,
+      \`created_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      \`updated_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (\`id\`),
+      UNIQUE KEY \`uk_slug\` (\`slug\`),
+      KEY \`idx_status\` (\`status\`, \`published_at\` DESC),
+      KEY \`idx_pinned\` (\`is_pinned\`, \`published_at\` DESC),
+      KEY \`idx_author\` (\`author_id\`),
+      CONSTRAINT \`fk_posts_author\` FOREIGN KEY (\`author_id\`) REFERENCES \`users\`(\`id\`) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `);
+
+  // 3. tags
+  await initConn.query(`
+    CREATE TABLE \`tags\` (
+      \`id\`              INT UNSIGNED      NOT NULL AUTO_INCREMENT,
+      \`name\`            VARCHAR(30)       NOT NULL,
+      \`slug\`            VARCHAR(30)       NOT NULL,
+      \`created_at\`      DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (\`id\`),
+      UNIQUE KEY \`uk_tag_name\` (\`name\`),
+      UNIQUE KEY \`uk_tag_slug\` (\`slug\`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `);
+
+  // 4. post_tags
+  await initConn.query(`
+    CREATE TABLE \`post_tags\` (
+      \`post_id\`         INT UNSIGNED      NOT NULL,
+      \`tag_id\`          INT UNSIGNED      NOT NULL,
+      PRIMARY KEY (\`post_id\`, \`tag_id\`),
+      CONSTRAINT \`fk_pt_post\` FOREIGN KEY (\`post_id\`) REFERENCES \`posts\`(\`id\`) ON DELETE CASCADE,
+      CONSTRAINT \`fk_pt_tag\`  FOREIGN KEY (\`tag_id\`)  REFERENCES \`tags\`(\`id\`)  ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `);
+
+  // 5. 插入默认管理员
+  await initConn.query(`
+    INSERT INTO \`users\` (\`username\`, \`nickname\`, \`email\`, \`password_hash\`, \`role\`, \`is_verified\`)
+    VALUES ('WoodWhite', 'WoodWhite', 'admin@blog.local',
+      '$2b$12$tXsT4KlknCkzua6kzYiPtORbF8BcUmnGSGwg6R1vKAmHk.Z8UV0Yu',
+      'admin', 1)
+  `);
+
+  await initConn.end();
+  console.log('[db] tables created, admin user inserted');
+  console.log('[db] default login: WoodWhite / 123456');
+}
+
+// ====== 创建连接池 ======
+const pool = mysql.createPool({
+  host: DB_HOST,
+  port: DB_PORT,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  charset: 'utf8mb4',
+});
+
+module.exports = pool;
+
+// 对外暴露自动建库函数
+module.exports.ensureDatabase = ensureDatabase;

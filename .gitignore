@@ -1,0 +1,29 @@
+# 依赖
+node_modules/
+
+# 环境变量（含敏感信息）
+.env
+*.local
+
+# 构建产物
+Client/dist/
+Client/dist-ssr/
+
+# 上传文件（运行时数据）
+Server/uploads/
+
+# 日志
+*.log
+npm-debug.log*
+Server/logs/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# 系统文件
+Thumbs.db
+Desktop.ini
