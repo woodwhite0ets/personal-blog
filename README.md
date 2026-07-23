@@ -11,37 +11,58 @@
 
 ## 快速开始
 
-1. 安装依赖：
 ```bash
+# 1. 克隆仓库
+git clone https://github.com/woodwhite0ets/personal-blog.git
+cd personal-blog
+
+# 2. 安装依赖
 cd Server && npm install
 cd ../Client && npm install
+
+# 3. 配置环境变量
+cp Server/.env.example Server/.env
+# 编辑 Server/.env，填入你的 MySQL 密码和邮箱配置
+
+# 4. 创建 uploads 目录
+mkdir Server\uploads
+
+# 5. 启动后端
+cd Server && npm run dev
+
+# 6. 启动前端开发服务器（可选，生产环境用 dist/）
+cd Client && npm run dev
 ```
 
-2. 配置 `.env`（参考下方）
+生产环境访问 `http://localhost:3027`，后端直接提供前端 dist/ 静态文件。
 
-3. 启动：
+## 服务器部署
+
 ```bash
-cd Server && npm run dev    # 后端 (默认 :3027)
-cd Client && npm run dev    # 前端 (默认 :5173)
+# 拉取最新代码
+git pull
+
+# 安装新依赖（如有）
+cd Server && npm install
+cd ../Client && npm install
+
+# 重启服务
+cd Server && npm run dev
 ```
 
-4. 构建前端：
-```bash
-cd Client && npm run build
-```
+每次 `git pull` 后无需重新构建前端（dist/ 已包含在仓库中）。
 
-## 功能
+## 默认管理员
 
-- Markdown 文章编辑与发布
-- 邮箱验证注册 + 游客只读模式
-- 用户主页 + 文章归档
-- 管理员面板：数据统计、文章管理、用户管理、日志查看
-- 标签聚合、作者筛选、置顶文章
-- 终端风格 UI（JetBrains Mono）
+首次启动自动创建：
+- 用户名: `WoodWhite`
+- 密码: `123456`
 
-## 环境变量
+⚠️ 上线后请立即修改密码。
 
-复制 `Server/.env.example` 为 `Server/.env`：
+## 环境变量参考
+
+复制 `Server/.env.example` 为 `Server/.env`，填入实际值：
 
 ```env
 PORT=3027
@@ -58,11 +79,3 @@ MAIL_PASS=your_smtp_auth_code
 MAIL_FROM=your_email@qq.com
 SITE_URL=http://localhost:3027
 ```
-
-## 默认管理员
-
-首次启动自动创建：
-- 用户名: `WoodWhite`
-- 密码: `123456`
-
-⚠️ 上线后请立即修改。
