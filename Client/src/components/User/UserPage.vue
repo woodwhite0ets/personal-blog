@@ -101,6 +101,18 @@
           </div>
         </div>
 
+        <!-- 修改密码（仅本人可见） -->
+        <div v-if="isOwnPage" class="sidebar-panel">
+          <div class="panel-bar">
+            <span class="panel-dot dot-green"></span>
+            <span class="panel-dot dot-green dim"></span>
+            <span class="panel-title">security.pwd</span>
+          </div>
+          <div class="panel-body">
+            <button class="btn-change-pwd" @click="openPwdModal">change password</button>
+          </div>
+        </div>
+
         <div class="sidebar-panel">
           <div class="panel-bar">
             <span class="panel-dot dot-yellow"></span>
@@ -126,6 +138,46 @@
         <span class="footer-cmd">finger @{{ username }}</span>
       </div>
     </footer>
+
+    <!-- ====== 修改密码弹窗 ====== -->
+    <Transition name="modal">
+      <div v-if="showPwdModal" class="modal-overlay" @click.self="showPwdModal = false">
+        <div class="pwd-modal">
+          <div class="pwd-modal-bar">
+            <span class="panel-dot dot-green"></span>
+            <span class="panel-dot dot-green dim"></span>
+            <span class="panel-title">passwd</span>
+            <button class="pwd-modal-close" @click="showPwdModal = false">×</button>
+          </div>
+          <div class="pwd-modal-body">
+            <template v-if="pwdDone">
+              <div class="pwd-done">
+                <span class="pwd-done-icon">✓</span>
+                <span>password changed</span>
+              </div>
+            </template>
+            <template v-else>
+              <div class="pwd-field">
+                <label>current password</label>
+                <input v-model="pwdForm.oldPassword" type="password" placeholder="••••••••" />
+              </div>
+              <div class="pwd-field">
+                <label>new password</label>
+                <input v-model="pwdForm.newPassword" type="password" placeholder="at least 8 chars, letters + numbers" />
+              </div>
+              <div class="pwd-field">
+                <label>confirm new password</label>
+                <input v-model="pwdForm.confirm" type="password" placeholder="re-enter" />
+              </div>
+              <span v-if="pwdError" class="pwd-err">{{ pwdError }}</span>
+              <button class="pwd-submit" @click="handleChangePwd" :disabled="pwdSaving">
+                {{ pwdSaving ? '...saving' : 'update password' }}
+              </button>
+            </template>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -133,12 +185,75 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import PostList from '../Homepage/PostList.vue'
-import { useAuth } from '../../stores/auth.js'
+import { useAuth, getToken } from '../../stores/auth.js'
 
 const route = useRoute()
-const { isLoggedIn } = useAuth()
+const { currentUser, isLoggedIn } = useAuth()
 
 const API_BASE = '/api'
+
+// ====== 修改密码弹窗 ======
+const showPwdModal = ref(false)
+const pwdForm = ref({ oldPassword: '', newPassword: '', confirm: '' })
+const pwdError = ref('')
+const pwdSaving = ref(false)
+const pwdDone = ref(false)
+
+const isOwnPage = computed(() => {
+  return currentUser.value && currentUser.value.username === username.value
+})
+
+function openPwdModal() {
+  pwdForm.value = { oldPassword: '', newPassword: '', confirm: '' }
+  pwdError.value = ''
+  pwdDone.value = false
+  showPwdModal.value = true
+}
+
+async function handleChangePwd() {
+  pwdError.value = ''
+  pwdDone.value = false
+
+  if (!pwdForm.value.oldPassword) {
+    pwdError.value = '请输入当前密码'
+    return
+  }
+  if (pwdForm.value.newPassword.length < 8) {
+    pwdError.value = '新密码至少 8 位'
+    return
+  }
+  if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(pwdForm.value.newPassword)) {
+    pwdError.value = '新密码需包含字母和数字'
+    return
+  }
+  if (pwdForm.value.newPassword !== pwdForm.value.confirm) {
+    pwdError.value = '两次输入不一致'
+    return
+  }
+
+  pwdSaving.value = true
+  try {
+    const res = await fetch(`${API_BASE}/auth/change-password`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify({
+        oldPassword: pwdForm.value.oldPassword,
+        newPassword: pwdForm.value.newPassword,
+      }),
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || '修改失败')
+    pwdDone.value = true
+    setTimeout(() => { showPwdModal.value = false }, 1500)
+  } catch (e) {
+    pwdError.value = e.message
+  } finally {
+    pwdSaving.value = false
+  }
+}
 
 // ====== 用户数据 ======
 const profile = ref(null)
@@ -453,6 +568,80 @@ watch(username, () => {
 .footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; }
 .footer-prompt { color: #00d4ff; }
 .footer-cmd { color: #484b52; }
+
+.btn-change-pwd {
+  display: block; width: 100%;
+  padding: 8px 0;
+  font-family: inherit; font-size: 11px; font-weight: 600;
+  color: #2bd64e; background: rgba(43,214,78,0.06);
+  border: 1px solid rgba(43,214,78,0.2);
+  border-radius: 4px; cursor: pointer; transition: all 0.2s;
+  text-align: center;
+}
+.btn-change-pwd:hover {
+  background: rgba(43,214,78,0.12); border-color: #2bd64e;
+}
+
+/* 密码弹窗 */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+}
+.pwd-modal {
+  width: 420px; max-width: 90vw;
+  background: #0f1013; border: 1px solid #1c1d21;
+  border-radius: 8px; overflow: hidden;
+}
+.pwd-modal-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; background: rgba(255,255,255,0.015);
+  border-bottom: 1px solid #1c1d21;
+}
+.pwd-modal-close {
+  font-family: inherit; font-size: 18px; font-weight: 700;
+  color: #6e737a; background: none; border: none;
+  cursor: pointer; padding: 0 4px; line-height: 1;
+}
+.pwd-modal-close:hover { color: #ff5f57; }
+.pwd-modal-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.pwd-field { display: flex; flex-direction: column; gap: 4px; }
+.pwd-field label {
+  font-size: 10px; font-weight: 600; color: #484b52;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.pwd-field input {
+  width: 100%; padding: 10px 12px;
+  font-family: inherit; font-size: 13px; color: #c9d1d9;
+  background: #0a0a0c; border: 1px solid #25262a; border-radius: 4px;
+  outline: none; caret-color: #00d4ff;
+}
+.pwd-field input:focus { border-color: #00d4ff; }
+.pwd-err {
+  font-size: 11px; color: #ff5f57; display: flex; align-items: center; gap: 4px;
+}
+.pwd-err::before { content: 'ERR!'; font-weight: 700; letter-spacing: 1px; }
+.pwd-submit {
+  width: 100%; padding: 10px 0;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  color: #0a0a0c; background: #2bd64e; border: none;
+  border-radius: 4px; cursor: pointer; transition: all 0.2s;
+}
+.pwd-submit:hover { background: #25b543; }
+.pwd-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.pwd-done {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 24px 0; font-size: 14px; color: #2bd64e; font-weight: 600;
+}
+.pwd-done-icon { font-size: 20px; font-weight: 800; }
+
+.modal-enter-active { transition: all 0.2s ease-out; }
+.modal-leave-active { transition: all 0.15s ease-in; }
+.modal-enter-from { opacity: 0; }
+.modal-enter-from .pwd-modal { transform: scale(0.95); }
+.modal-leave-to { opacity: 0; }
+
+.dot-green { background: #2bd64e; }
 
 /* ====== 响应式 ====== */
 @media (max-width: 800px) {

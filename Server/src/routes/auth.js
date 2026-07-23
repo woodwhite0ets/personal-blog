@@ -236,6 +236,50 @@ router.get('/me', authRequired, async (req, res) => {
   }
 });
 
+// ====== PUT /api/auth/change-password — 修改密码 ======
+router.put('/change-password', authRequired, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: 'old and new password are required' });
+    }
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: 'new password must be at least 8 characters' });
+    }
+    if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(newPassword)) {
+      return res.status(400).json({ message: 'new password must contain both letters and numbers' });
+    }
+    if (newPassword.length > 128) {
+      return res.status(400).json({ message: 'new password too long' });
+    }
+
+    // 查当前密码哈希
+    const [rows] = await pool.query(
+      'SELECT password_hash FROM users WHERE id = ?',
+      [req.user.id]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'user not found' });
+    }
+
+    // 验证旧密码
+    const match = await bcrypt.compare(oldPassword, rows[0].password_hash);
+    if (!match) {
+      return res.status(403).json({ message: 'incorrect current password' });
+    }
+
+    // 更新密码
+    const newHash = await bcrypt.hash(newPassword, 12);
+    await pool.query('UPDATE users SET password_hash = ? WHERE id = ?', [newHash, req.user.id]);
+
+    res.json({ message: 'password changed successfully' });
+  } catch (err) {
+    console.error('change password error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
 // ====== POST /api/auth/guest ======
 router.post('/guest', guestLimiter, async (req, res) => {
   try {
