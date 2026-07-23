@@ -24,12 +24,24 @@
           </router-link>
         </nav>
         <div class="nav-actions">
-          <button class="btn-search" title="search" @click="toggleSearch" v-if="false">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </button>
+          <div class="search-wrap" :class="{ active: searchActive }">
+            <button class="btn-search" @click="toggleSearch" title="search">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <input
+              v-if="searchActive"
+              ref="searchInput"
+              v-model="searchQuery"
+              type="text"
+              class="search-input"
+              placeholder="search posts..."
+              @keydown.escape="closeSearch"
+              @keydown.enter="doSearch"
+            />
+          </div>
 
           <!-- 未登录 -->
           <template v-if="!isLoggedIn">
@@ -105,7 +117,15 @@
         <span class="filter-prompt">❯</span>
         <span class="filter-label">filter:</span>
         <span class="filter-tag">#{{ activeTag }}</span>
-        <router-link to="/HomePage" class="filter-clear">× clear</router-link>
+        <router-link :to="clearTagLink" class="filter-clear">× clear</router-link>
+      </div>
+
+      <!-- 搜索过滤提示 -->
+      <div v-if="activeSearch" class="tag-filter-bar" style="grid-column: 1 / -1; margin-bottom: -28px;">
+        <span class="filter-prompt">❯</span>
+        <span class="filter-label">search:</span>
+        <span class="filter-tag">&quot;{{ activeSearch }}&quot;</span>
+        <router-link :to="clearSearchLink" class="filter-clear">× clear</router-link>
       </div>
 
       <!-- 文章列表 — 模块化组件 -->
@@ -214,17 +234,23 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import PostList from './PostList.vue'
 import { useAuth } from '../../stores/auth.js'
 
 const route = useRoute()
+const router = useRouter()
 const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
 
 // ====== 用户菜单 ======
 const showUserMenu = ref(false)
 const userMenuRef = ref(null)
+
+// ====== 搜索状态 ======
+const searchActive = ref(false)
+const searchQuery = ref('')
+const searchInput = ref(null)
 
 function handleLogout() {
   showUserMenu.value = false
@@ -268,6 +294,19 @@ async function fetchTags() {
 const pinnedPost = computed(() => posts.value.find(p => p.is_pinned) || null)
 const hasMore = computed(() => currentPage.value < totalPages.value)
 const activeTag = computed(() => route.query.tag || '')
+const activeSearch = computed(() => route.query.search || '')
+
+const clearTagLink = computed(() => {
+  const query = { ...route.query }
+  delete query.tag
+  return { path: '/HomePage', query }
+})
+
+const clearSearchLink = computed(() => {
+  const query = { ...route.query }
+  delete query.search
+  return { path: '/HomePage', query }
+})
 
 // ====== 从 posts 聚合作者发文数 ======
 const contributors = computed(() => {
@@ -289,8 +328,10 @@ async function fetchPosts(page = 1) {
 
   try {
     const tagFilter = route.query.tag || ''
+    const searchFilter = route.query.search || ''
     let url = `/api/posts?page=${page}&status=published`
     if (tagFilter) url += `&tag=${encodeURIComponent(tagFilter)}`
+    if (searchFilter) url += `&search=${encodeURIComponent(searchFilter)}`
 
     const res = await fetch(url)
     const data = await res.json()
@@ -318,14 +359,41 @@ watch(() => route.query.tag, () => {
   fetchPosts(1)
 })
 
+// ====== 监听 query.search 变化重新获取 ======
+watch(() => route.query.search, () => {
+  fetchPosts(1)
+})
+
 // ====== 加载更多 ======
 async function loadMore() {
   loadingMore.value = true
   await fetchPosts(currentPage.value + 1)
 }
 
-// ====== 搜索（待实现） ======
-// function toggleSearch() {}
+// ====== 搜索 ======
+function toggleSearch() {
+  searchActive.value = !searchActive.value
+  if (searchActive.value) {
+    searchQuery.value = activeSearch.value
+    nextTick(() => searchInput.value?.focus())
+  }
+}
+
+function closeSearch() {
+  searchActive.value = false
+  searchQuery.value = ''
+}
+
+function doSearch() {
+  const query = { ...route.query }
+  if (searchQuery.value.trim()) {
+    query.search = searchQuery.value.trim()
+  } else {
+    delete query.search
+  }
+  router.push({ path: '/HomePage', query })
+  searchActive.value = false
+}
 
 // ====== 生命周期 ======
 onMounted(() => { fetchPosts(); fetchTags() })
@@ -417,6 +485,39 @@ onMounted(() => { fetchPosts(); fetchTags() })
 }
 
 .btn-search:hover { border-color: #00d4ff; color: #00d4ff; }
+
+/* ====== 搜索输入框 ====== */
+.search-wrap {
+  display: flex; align-items: center; gap: 0;
+  position: relative;
+}
+
+.search-wrap.active .btn-search {
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+  border-color: #00d4ff; color: #00d4ff;
+}
+
+.search-input {
+  width: 200px; height: 34px;
+  padding: 0 12px;
+  background: #0f1013; border: 1px solid #25262a; border-left: none;
+  border-radius: 0 6px 6px 0;
+  color: #c9d1d9;
+  font-family: inherit; font-size: 12px;
+  caret-color: #00d4ff;
+  outline: none;
+  animation: searchSlideIn 0.2s ease;
+}
+
+.search-input:focus { border-color: #00d4ff; }
+
+.search-input::placeholder { color: #33363c; }
+
+@keyframes searchSlideIn {
+  from { width: 0; opacity: 0; }
+  to { width: 200px; opacity: 1; }
+}
 
 .btn-write {
   display: flex; align-items: center; gap: 6px;

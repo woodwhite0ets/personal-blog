@@ -61,6 +61,7 @@ router.get('/', authOptional, async (req, res) => {
     let status     = req.query.status || 'published';
     const author   = req.query.author || '';
     const tag      = req.query.tag || '';
+    const search   = req.query.search || '';
 
     // status=all 仅 admin 可用
     if (status === 'all' && (!req.user || req.user.role !== 'admin')) {
@@ -98,6 +99,12 @@ router.get('/', authOptional, async (req, res) => {
       dataSql += ' JOIN tags t_filter ON pt_filter.tag_id = t_filter.id';
       conditions.push('(t_filter.slug = ? OR t_filter.name = ?)');
       params.push(tag, tag);
+    }
+
+    // search: match title, excerpt, or content
+    if (search) {
+      conditions.push('(p.title LIKE ? OR p.excerpt LIKE ? OR p.content LIKE ?)');
+      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
     }
 
     if (conditions.length > 0) {

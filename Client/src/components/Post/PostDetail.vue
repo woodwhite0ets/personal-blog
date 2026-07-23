@@ -61,12 +61,12 @@
         <!-- 标签 -->
         <div class="post-meta-top">
           <router-link
-            v-for="tag in post.tags"
+            v-for="tag in normalizedTags"
             :key="tag.slug || tag.name"
             :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
             class="post-tag"
           >#{{ tag.name }}</router-link>
-          <span v-if="!post.tags || post.tags.length === 0" class="post-tag">#uncategorized</span>
+          <span v-if="normalizedTags.length === 0" class="post-tag">#uncategorized</span>
           <span v-if="isAuthor" class="post-badge">author</span>
         </div>
 
@@ -431,6 +431,17 @@ const renderedContent = computed(() => {
   if (!post.value?.content) return ''
   const raw = marked(post.value.content)
   return DOMPurify.sanitize(raw)
+})
+
+// ====== 标签归一化（兼容新旧格式） ======
+const normalizedTags = computed(() => {
+  if (post.value?.tags && Array.isArray(post.value.tags) && post.value.tags.length > 0) {
+    return post.value.tags.map(t => typeof t === 'string' ? { name: t, slug: t } : t)
+  }
+  if (post.value?.tag && typeof post.value.tag === 'string') {
+    return [{ name: post.value.tag, slug: post.value.tag }]
+  }
+  return []
 })
 
 // ====== 获取文章 ======
