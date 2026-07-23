@@ -92,6 +92,8 @@ router.get('/', authOptional, async (req, res) => {
 
     // tag filter: join post_tags + tags
     if (tag) {
+      countSql += ' JOIN post_tags pt_filter ON p.id = pt_filter.post_id';
+      countSql += ' JOIN tags t_filter ON pt_filter.tag_id = t_filter.id';
       dataSql += ' JOIN post_tags pt_filter ON p.id = pt_filter.post_id';
       dataSql += ' JOIN tags t_filter ON pt_filter.tag_id = t_filter.id';
       conditions.push('(t_filter.slug = ? OR t_filter.name = ?)');
