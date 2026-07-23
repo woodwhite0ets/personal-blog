@@ -13,6 +13,9 @@ const PORT = process.env.PORT || 3000;
 
 // ====== 安全中间件（最先加载） ======
 
+// 信任 Caddy 反代传过来的 X-Forwarded-For 等头
+app.set('trust proxy', 1);
+
 // Helmet（HTTP 裸跑模式）
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -26,6 +29,7 @@ app.use(helmet({
 // CORS — 允许已知前端域名
 const allowedOrigins = [
   process.env.SITE_URL || 'http://localhost:5173',
+  'https://blog.woodwhite.top',
   'http://blog.woodwhite.top',
   'http://blog.woodwhite.top:3027',
   'http://woodwhite.top:3027',
