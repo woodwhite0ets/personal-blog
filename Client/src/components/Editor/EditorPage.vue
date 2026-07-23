@@ -275,8 +275,8 @@ function handleTagBackspace() {
 }
 
 function handleTagKeydown(e) {
-  // 逗号或空格自动添加 tag
-  if (e.key === ',' || e.key === ' ' || e.key === 'Spacebar') {
+  // 逗号自动添加 tag
+  if (e.key === ',') {
     e.preventDefault()
     addTag()
   }
