@@ -275,6 +275,7 @@ router.post('/', authRequired, async (req, res) => {
 
     // 标签长度限制
     const tagList = req.body.tags;
+    console.log(`[posts POST] body.tags:`, JSON.stringify(req.body.tags), `type:`, typeof req.body.tags, `isArray:`, Array.isArray(req.body.tags));
     if (tagList && (!Array.isArray(tagList) || tagList.length > MAX_TAGS)) {
       return res.status(400).json({ message: `max ${MAX_TAGS} tags allowed` });
     }

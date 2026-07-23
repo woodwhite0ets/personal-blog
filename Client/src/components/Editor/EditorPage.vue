@@ -514,6 +514,9 @@ async function savePost() {
     console.log('[editor] save response status:', res.status)
     console.log('[editor] payload tags:', JSON.stringify(payload.tags))
 
+    console.log('[editor] save response status:', res.status)
+    console.log('[editor] payload tags:', JSON.stringify(payload.tags))
+
     const data = await res.json()
     if (!res.ok) throw new Error(data.message || 'save failed')
 
