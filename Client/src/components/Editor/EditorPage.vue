@@ -256,7 +256,7 @@ const readTimePreview = computed(() => Math.max(1, Math.ceil(wordCount.value / 4
 
 // ====== 标签操作 ======
 function addTag() {
-  const val = tagInput.value.replace(/,/g, '').trim().toLowerCase()
+  const val = tagInput.value.replace(/,/g, '').trim()
   if (val && !formTags.value.includes(val) && formTags.value.length < 10) {
     formTags.value.push(val)
   }
