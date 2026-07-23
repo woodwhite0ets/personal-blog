@@ -655,8 +655,12 @@ async function syncTags(conn, postId, tagList) {
   for (const item of tagList) {
     const name = sanitizeTag(typeof item === 'string' ? item : item.name || item);
     if (!name) continue;
-    const tagSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    if (!tagSlug) continue;
+    // 生成 slug：英文用原名，纯中文等非英文字符生成短 hash
+    let tagSlug = name.toLowerCase().replace(/[^a-z0-9一-鿿]+/g, '-').replace(/^-|-$/g, '');
+    if (!tagSlug || tagSlug === '-') {
+      // 纯中文或无 ASCII 字符的标签，使用时间戳 hash
+      tagSlug = 'tag-' + Date.now().toString(36);
+    }
 
     // upsert tag
     const [existing] = await conn.query('SELECT id FROM tags WHERE name = ?', [name]);

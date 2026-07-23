@@ -76,7 +76,6 @@ app.get('/api/tags', async (req, res) => {
       `SELECT t.name, t.slug, COUNT(pt.post_id) AS post_count
        FROM tags t
        LEFT JOIN post_tags pt ON t.id = pt.tag_id
-       LEFT JOIN posts p ON pt.post_id = p.id AND p.status = 'published'
        GROUP BY t.id
        ORDER BY post_count DESC, t.name ASC
        LIMIT 50`
