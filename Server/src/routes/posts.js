@@ -306,6 +306,7 @@ router.post('/', authRequired, async (req, res) => {
     const postId = result.insertId;
 
     // 处理标签
+    console.log(`[posts] tagList received:`, JSON.stringify(tagList), `postId:`, postId);
     if (tagList && Array.isArray(tagList) && tagList.length > 0) {
       await syncTags(conn, postId, tagList);
     }
@@ -654,13 +655,18 @@ router.delete('/:slug/comments/:id', authRequired, async (req, res) => {
 async function syncTags(conn, postId, tagList) {
   for (const item of tagList) {
     const name = sanitizeTag(typeof item === 'string' ? item : item.name || item);
-    if (!name) continue;
-    // 生成 slug：英文用原名，纯中文等非英文字符生成短 hash
+    console.log(`[syncTags] raw item:`, JSON.stringify(item), `→ name:`, JSON.stringify(name));
+    if (!name) {
+      console.log(`[syncTags] SKIP: name is empty`);
+      continue;
+    }
+    // 生成 slug：英文用原名，中文等非英文字符生成短 hash
     let tagSlug = name.toLowerCase().replace(/[^a-z0-9一-鿿]+/g, '-').replace(/^-|-$/g, '');
     if (!tagSlug || tagSlug === '-') {
       // 纯中文或无 ASCII 字符的标签，使用时间戳 hash
       tagSlug = 'tag-' + Date.now().toString(36);
     }
+    console.log(`[syncTags] slug:`, tagSlug);
 
     // upsert tag
     const [existing] = await conn.query('SELECT id FROM tags WHERE name = ?', [name]);
