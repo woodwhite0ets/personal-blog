@@ -291,11 +291,15 @@ router.put('/:slug', authRequired, async (req, res) => {
     // 仅管理员可置顶
     const is_pinned = req.body.is_pinned && req.user.role === 'admin' ? 1 : 0;
 
-    // 校验 cover_image
-    const cover_image = req.body.cover_image !== undefined ? req.body.cover_image : undefined;
-    if (cover_image !== undefined && !validateCoverImage(cover_image)) {
-      return res.status(400).json({ message: 'invalid cover_image — must be /uploads/ path' });
-    }
+	// 校验 cover_image
+	let cover_image = req.body.cover_image !== undefined ? req.body.cover_image : undefined;
+	if (cover_image !== undefined) {
+	  if (!validateCoverImage(cover_image)) {
+	    return res.status(400).json({ message: 'invalid cover_image — must be /uploads/ path' });
+	  }
+	  // 标准化路径
+	  cover_image = cover_image.replace(/\.\./g, '').replace(/\\/g, '/');
+	}
 
     // 标签限制
     const tagList = req.body.tags;
