@@ -25,13 +25,10 @@ cp Server/.env.example Server/.env
 # 编辑 Server/.env，填入你的 MySQL 密码和邮箱配置
 
 # 4. 创建 uploads 目录
-mkdir Server\uploads
+mkdir Server/uploads
 
 # 5. 启动后端
 cd Server && npm run dev
-
-# 6. 启动前端开发服务器（可选，生产环境用 dist/）
-cd Client && npm run dev
 ```
 
 生产环境访问 `http://localhost:3027`，后端直接提供前端 dist/ 静态文件。
@@ -69,13 +66,13 @@ PORT=3027
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
-DB_PASSWORD=your_db_password
+DB_PASSWORD=你的MySQL密码
 DB_NAME=blog_byown
-JWT_SECRET=your_64_char_random_secret
+JWT_SECRET=换成你自己的64位随机字符串
 MAIL_HOST=smtp.qq.com
 MAIL_PORT=587
-MAIL_USER=your_email@qq.com
-MAIL_PASS=your_smtp_auth_code
-MAIL_FROM=your_email@qq.com
+MAIL_USER=你的QQ邮箱
+MAIL_PASS=SMTP授权码
+MAIL_FROM=你的QQ邮箱
 SITE_URL=http://localhost:3027
 ```
