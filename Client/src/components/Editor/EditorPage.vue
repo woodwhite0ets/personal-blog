@@ -25,11 +25,11 @@
             <span class="indicator-dot"></span>
             {{ form.status === 'published' ? 'PUBLISHED' : 'DRAFT' }}
           </span>
-          <button class="btn-action btn-draft" @click="saveDraft" :disabled="saving">
+          <button class="btn-action btn-draft" @click="saveDraft" :disabled="saving || !saveReady">
             <span class="btn-icon">💾</span> draft
             <span class="btn-shortcut">Ctrl+S</span>
           </button>
-          <button class="btn-action btn-publish" @click="publish" :disabled="saving">
+          <button class="btn-action btn-publish" @click="publish" :disabled="saving || !saveReady">
             <span class="btn-icon">🚀</span> publish
             <span class="btn-shortcut">Ctrl+Shift+P</span>
           </button>
@@ -173,6 +173,7 @@ const editSlug = computed(() => route.params.slug || '')
 
 // ====== 状态 ======
 const saving = ref(false)
+const saveReady = ref(true)  // 图片上传中禁止保存
 const serverError = ref('')
 const coverPreview = ref('')
 const coverFile = ref(null)
@@ -317,6 +318,8 @@ function handleAvatarFile(e) {
 }
 
 // ====== 图片粘贴 ======
+const uploadingImages = ref(0)  // 正在上传的图片计数
+
 function handleContentPaste(e) {
   const items = e.clipboardData?.items
   if (!items || items.length === 0) return
@@ -326,6 +329,9 @@ function handleContentPaste(e) {
       e.preventDefault()
       const file = item.getAsFile()
       if (!file) continue
+
+      uploadingImages.value++
+      saveReady.value = false
 
       // 上传图片并插入 Markdown 语法
       const reader = new FileReader()
@@ -369,6 +375,12 @@ async function uploadInlineImage(file) {
       ''
     )
     showToast('image upload failed', 'error')
+  } finally {
+    uploadingImages.value--
+    if (uploadingImages.value <= 0) {
+      uploadingImages.value = 0
+      saveReady.value = true
+    }
   }
 }
 
@@ -461,6 +473,12 @@ async function savePost() {
   if (!validate()) return
   if (!isLoggedIn.value) {
     router.push('/')
+    return
+  }
+
+  // 图片上传中，禁止保存
+  if (uploadingImages.value > 0) {
+    showToast(`${uploadingImages.value} image(s) uploading — please wait`, 'error')
     return
   }
 

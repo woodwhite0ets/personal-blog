@@ -26,6 +26,8 @@ function sanitizeContent(val) {
   return val
     .replace(/\x00/g, '')
     .replace(/[\x01-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+    // 剥离 base64 data URI（防存入数据库）
+    .replace(/!\[([^\]]*)\]\(data:[^)]+\)/g, '![$1](uploading...)')
     .slice(0, 200000); // 200KB max
 }
 
@@ -44,6 +46,8 @@ function validateCoverImage(url) {
   if (!url || url === '') return true; // null/空字符串允许
   if (typeof url !== 'string') return false;
   if (url.length > 500) return false;
+  // 清理路径遍历符号
+  url = url.replace(/\.\./g, '').replace(/\\/g, '/');
   // 只允许本地 /uploads/ 路径或相对路径
   return url.startsWith('/uploads/') || url.startsWith('./uploads/');
 }
