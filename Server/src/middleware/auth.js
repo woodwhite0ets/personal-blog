@@ -1,7 +1,11 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
+// JWT_SECRET 必须显式配置，缺失时直接抛错（防止静默使用弱默认值伪造 token）
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || JWT_SECRET.length < 32) {
+  throw new Error('JWT_SECRET must be set in .env (at least 32 chars)');
+}
 
 // ====== 生成 JWT ======
 function signToken(user) {
@@ -42,6 +46,15 @@ function authOptional(req, res, next) {
   next();
 }
 
+// ====== 禁止游客（需在 authRequired 之后使用） ======
+// 游客 JWT 的 id 恒为 0，所有"真实用户"写操作必须排除
+function authNoGuest(req, res, next) {
+  if (!req.user || req.user.id === 0 || req.user.isGuest) {
+    return res.status(403).json({ message: 'guest accounts cannot do this' });
+  }
+  next();
+}
+
 // ====== 管理员权限中间件（需在 authRequired 之后使用） ======
 function authAdmin(req, res, next) {
   if (!req.user || req.user.role !== 'admin') {
@@ -50,4 +63,4 @@ function authAdmin(req, res, next) {
   next();
 }
 
-module.exports = { signToken, authRequired, authOptional, authAdmin };
+module.exports = { signToken, authRequired, authOptional, authNoGuest, authAdmin };

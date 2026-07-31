@@ -58,7 +58,7 @@ defineProps({
   display: flex;
   gap: 20px;
   padding: 24px 0;
-  border-bottom: 1px solid #141419;
+  border-bottom: 1px solid var(--divider);
   animation: fadeUp 0.5s ease both;
 }
 
@@ -76,7 +76,7 @@ defineProps({
 .post-index {
   font-size: 12px;
   font-weight: 700;
-  color: #33363c;
+  color: var(--text-faint);
   min-width: 28px;
   padding-top: 2px;
 }
@@ -99,7 +99,7 @@ defineProps({
 
 .post-tag {
   font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
-  text-transform: uppercase; color: #00d4ff;
+  text-transform: uppercase; color: var(--accent);
   text-decoration: none;
   padding: 1px 4px;
   border-radius: 2px;
@@ -107,12 +107,12 @@ defineProps({
 }
 
 .post-tag:hover {
-  background: rgba(0,212,255,0.1);
+  background: var(--accent-a10);
 }
 
 .post-date {
   font-size: 11px;
-  color: #484b52;
+  color: var(--text-muted);
 }
 
 .post-author {
@@ -121,13 +121,13 @@ defineProps({
 }
 
 .post-author a {
-  color: #484b52;
+  color: var(--text-muted);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .post-author a:hover {
-  color: #00d4ff;
+  color: var(--accent);
 }
 
 .post-title {
@@ -138,18 +138,18 @@ defineProps({
 }
 
 .post-title a {
-  color: #c9d1d9;
+  color: var(--text);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .post-title a:hover {
-  color: #00d4ff;
+  color: var(--accent);
 }
 
 .post-excerpt {
   font-size: 13px;
-  color: #6e737a;
+  color: var(--text-dim);
   line-height: 1.65;
   margin: 0 0 12px;
 }
@@ -161,7 +161,7 @@ defineProps({
 }
 
 .footer-label {
-  color: #484b52;
+  color: var(--text-muted);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -169,30 +169,30 @@ defineProps({
 
 .post-read-time {
   font-size: 11px;
-  color: #484b52;
+  color: var(--text-muted);
 }
 
 .post-link {
   font-size: 11px;
   font-weight: 600;
-  color: #00d4ff;
+  color: var(--accent);
   text-decoration: none;
   transition: color 0.2s;
 }
 
-.post-link:hover { color: #00b8d4; }
+.post-link:hover { color: var(--accent-hover); }
 
 .post-stats {
   display: flex; align-items: center; gap: 12px;
 }
 
 .post-like-count, .post-comment-count {
-  font-size: 11px; color: #484b52;
+  font-size: 11px; color: var(--text-muted);
   display: flex; align-items: center; gap: 3px;
 }
 
 .post-like-count.liked {
-  color: #ff5f57;
+  color: var(--err);
 }
 
 .like-icon { font-size: 13px; }

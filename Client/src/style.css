@@ -1,3 +1,375 @@
+/* ============================================================
+   主题系统 — 所有颜色通过 CSS 变量控制
+   切换主题 = 切换 <html data-theme="xxx">
+
+   变量命名约定:
+   --bg-*        背景层级 (-deeper 最暗 → -elevated 卡片 → -float 浮层 → -code 代码区)
+   --text-*      文字层级 (-bright 标题 → 正文 → -dim 次要 → -muted 弱 → -faint 最弱 → -hint 提示)
+   --accent-*    强调色 (主按钮/链接/光标)；-aN 后缀表示 alpha 透明度百分比
+   --ok-* / --warn-* / --err-*   状态色 (成功/警告/错误)
+   --border-*    边框
+   --overlay-aN  覆盖层 (白/黑, alpha)
+   --navbar-bg   导航栏毛玻璃底色
+   --scanline    扫描线纹理 / --shadow 阴影
+
+   内置主题:
+   terminal (默认, 深色终端青) | paper (亮色纸面) | midnight (深蓝夜色) | solar (琥珀终端)
+   ============================================================ */
+
+/* ===== 默认主题: terminal ===== */
+:root,
+[data-theme="terminal"] {
+  color-scheme: dark;
+
+  --bg: #0a0a0c;
+  --bg-elevated: #0f1013;
+  --bg-float: #16171b;
+  --bg-deeper: #0c0c0d;
+  --bg-code: #0c0c0e;
+
+  --text: #c9d1d9;
+  --text-bright: #e6edf3;
+  --text-dim: #6e737a;
+  --text-muted: #484b52;
+  --text-faint: #33363c;
+  --text-secondary: #8b9098;
+  --text-hint: #5a5d64;
+
+  --accent: #00d4ff;
+  --accent-hover: #00b8d4;
+  --on-accent: #0a0a0c;
+  --accent-a2: rgba(0, 212, 255, 0.02);
+  --accent-a3: rgba(0, 212, 255, 0.03);
+  --accent-a4: rgba(0, 212, 255, 0.04);
+  --accent-a5: rgba(0, 212, 255, 0.05);
+  --accent-a6: rgba(0, 212, 255, 0.06);
+  --accent-a8: rgba(0, 212, 255, 0.08);
+  --accent-a10: rgba(0, 212, 255, 0.1);
+  --accent-a12: rgba(0, 212, 255, 0.12);
+  --accent-a15: rgba(0, 212, 255, 0.15);
+  --accent-a20: rgba(0, 212, 255, 0.2);
+  --accent-a25: rgba(0, 212, 255, 0.25);
+  --accent-a30: rgba(0, 212, 255, 0.3);
+  --accent-a50: rgba(0, 212, 255, 0.5);
+
+  --ok: #2bd64e;
+  --ok-hover: #25b543;
+  --ok-a6: rgba(43, 214, 78, 0.06);
+  --ok-a8: rgba(43, 214, 78, 0.08);
+  --ok-a10: rgba(43, 214, 78, 0.1);
+  --ok-a12: rgba(43, 214, 78, 0.12);
+  --ok-a20: rgba(43, 214, 78, 0.2);
+  --ok-a30: rgba(43, 214, 78, 0.3);
+  --ok-a40: rgba(43, 214, 78, 0.4);
+
+  --warn: #feba0a;
+  --warn-a8: rgba(254, 186, 10, 0.08);
+  --warn-a20: rgba(254, 186, 10, 0.2);
+
+  --err: #ff5f57;
+  --err-hover: #ff7570;
+  --err-a6: rgba(255, 95, 87, 0.06);
+  --err-a8: rgba(255, 95, 87, 0.08);
+  --err-a12: rgba(255, 95, 87, 0.12);
+  --err-a15: rgba(255, 95, 87, 0.15);
+  --err-a20: rgba(255, 95, 87, 0.2);
+  --err-a25: rgba(255, 95, 87, 0.25);
+  --err-a30: rgba(255, 95, 87, 0.3);
+
+  --purple: #a78bfa;
+
+  --border: #1c1d21;
+  --border-strong: #25262a;
+  --border-a30: rgba(28, 29, 33, 0.3);
+  --border-a50: rgba(28, 29, 33, 0.5);
+  --divider: #141419;
+
+  --overlay-a1: rgba(255, 255, 255, 0.01);
+  --overlay-a15: rgba(255, 255, 255, 0.015);
+  --overlay-a2: rgba(255, 255, 255, 0.02);
+  --overlay-a3: rgba(255, 255, 255, 0.03);
+  --overlay-a4: rgba(255, 255, 255, 0.04);
+  --overlay-a5: rgba(255, 255, 255, 0.05);
+  --overlay-a8: rgba(255, 255, 255, 0.08);
+  --overlay-a10: rgba(255, 255, 255, 0.1);
+  --overlay-a20: rgba(255, 255, 255, 0.2);
+
+  --text-secondary-a8: rgba(139, 144, 152, 0.08);
+  --text-secondary-a20: rgba(139, 144, 152, 0.2);
+
+  --navbar-bg: rgba(10, 10, 12, 0.88);
+  --scanline: rgba(0, 0, 0, 0.03);
+  --shadow: rgba(0, 0, 0, 0.5);
+  --shadow-deep: rgba(0, 0, 0, 0.7);
+  --modal-overlay: rgba(0, 0, 0, 0.6);
+  --white: #ffffff;
+}
+
+/* ===== 主题: paper (亮色纸面) ===== */
+[data-theme="paper"] {
+  color-scheme: light;
+
+  --bg: #f7f7f5;
+  --bg-elevated: #ffffff;
+  --bg-float: #ffffff;
+  --bg-deeper: #f0f0ec;
+  --bg-code: #f0f0ec;
+
+  --text: #2d2d31;
+  --text-bright: #141418;
+  --text-dim: #6d6d73;
+  --text-muted: #9b9ba2;
+  --text-faint: #c2c2c8;
+  --text-secondary: #8f8f96;
+  --text-hint: #a6a6ad;
+
+  --accent: #0a7f9e;
+  --accent-hover: #086b86;
+  --on-accent: #ffffff;
+  --accent-a2: rgba(10, 127, 158, 0.02);
+  --accent-a3: rgba(10, 127, 158, 0.03);
+  --accent-a4: rgba(10, 127, 158, 0.04);
+  --accent-a5: rgba(10, 127, 158, 0.05);
+  --accent-a6: rgba(10, 127, 158, 0.06);
+  --accent-a8: rgba(10, 127, 158, 0.08);
+  --accent-a10: rgba(10, 127, 158, 0.1);
+  --accent-a12: rgba(10, 127, 158, 0.12);
+  --accent-a15: rgba(10, 127, 158, 0.15);
+  --accent-a20: rgba(10, 127, 158, 0.2);
+  --accent-a25: rgba(10, 127, 158, 0.25);
+  --accent-a30: rgba(10, 127, 158, 0.3);
+  --accent-a50: rgba(10, 127, 158, 0.5);
+
+  --ok: #1f9d4a;
+  --ok-hover: #1b8840;
+  --ok-a6: rgba(31, 157, 74, 0.06);
+  --ok-a8: rgba(31, 157, 74, 0.08);
+  --ok-a10: rgba(31, 157, 74, 0.1);
+  --ok-a12: rgba(31, 157, 74, 0.12);
+  --ok-a20: rgba(31, 157, 74, 0.2);
+  --ok-a30: rgba(31, 157, 74, 0.3);
+  --ok-a40: rgba(31, 157, 74, 0.4);
+
+  --warn: #b9860a;
+  --warn-a8: rgba(185, 134, 10, 0.08);
+  --warn-a20: rgba(185, 134, 10, 0.2);
+
+  --err: #d9504a;
+  --err-hover: #c4423c;
+  --err-a6: rgba(217, 80, 74, 0.06);
+  --err-a8: rgba(217, 80, 74, 0.08);
+  --err-a12: rgba(217, 80, 74, 0.12);
+  --err-a15: rgba(217, 80, 74, 0.15);
+  --err-a20: rgba(217, 80, 74, 0.2);
+  --err-a25: rgba(217, 80, 74, 0.25);
+  --err-a30: rgba(217, 80, 74, 0.3);
+
+  --purple: #7c5cd6;
+
+  --border: #e2e2dd;
+  --border-strong: #d3d3cd;
+  --border-a30: rgba(0, 0, 0, 0.08);
+  --border-a50: rgba(0, 0, 0, 0.12);
+  --divider: #ececea;
+
+  --overlay-a1: rgba(0, 0, 0, 0.01);
+  --overlay-a15: rgba(0, 0, 0, 0.015);
+  --overlay-a2: rgba(0, 0, 0, 0.02);
+  --overlay-a3: rgba(0, 0, 0, 0.03);
+  --overlay-a4: rgba(0, 0, 0, 0.04);
+  --overlay-a5: rgba(0, 0, 0, 0.05);
+  --overlay-a8: rgba(0, 0, 0, 0.08);
+  --overlay-a10: rgba(0, 0, 0, 0.1);
+  --overlay-a20: rgba(0, 0, 0, 0.2);
+
+  --text-secondary-a8: rgba(0, 0, 0, 0.08);
+  --text-secondary-a20: rgba(0, 0, 0, 0.14);
+
+  --navbar-bg: rgba(247, 247, 245, 0.9);
+  --scanline: rgba(0, 0, 0, 0.02);
+  --shadow: rgba(0, 0, 0, 0.12);
+  --shadow-deep: rgba(0, 0, 0, 0.2);
+  --modal-overlay: rgba(0, 0, 0, 0.4);
+  --white: #ffffff;
+}
+
+/* ===== 主题: midnight (深蓝夜色) ===== */
+[data-theme="midnight"] {
+  color-scheme: dark;
+
+  --bg: #0d1117;
+  --bg-elevated: #161b22;
+  --bg-float: #1c2128;
+  --bg-deeper: #0d1117;
+  --bg-code: #161b22;
+
+  --text: #c9d1d9;
+  --text-bright: #f0f6fc;
+  --text-dim: #8b949e;
+  --text-muted: #6e7681;
+  --text-faint: #484f58;
+  --text-secondary: #8b949e;
+  --text-hint: #6e7681;
+
+  --accent: #58a6ff;
+  --accent-hover: #79c0ff;
+  --on-accent: #0d1117;
+  --accent-a2: rgba(88, 166, 255, 0.02);
+  --accent-a3: rgba(88, 166, 255, 0.03);
+  --accent-a4: rgba(88, 166, 255, 0.04);
+  --accent-a5: rgba(88, 166, 255, 0.05);
+  --accent-a6: rgba(88, 166, 255, 0.06);
+  --accent-a8: rgba(88, 166, 255, 0.08);
+  --accent-a10: rgba(88, 166, 255, 0.1);
+  --accent-a12: rgba(88, 166, 255, 0.12);
+  --accent-a15: rgba(88, 166, 255, 0.15);
+  --accent-a20: rgba(88, 166, 255, 0.2);
+  --accent-a25: rgba(88, 166, 255, 0.25);
+  --accent-a30: rgba(88, 166, 255, 0.3);
+  --accent-a50: rgba(88, 166, 255, 0.5);
+
+  --ok: #3fb950;
+  --ok-hover: #56d364;
+  --ok-a6: rgba(63, 185, 80, 0.06);
+  --ok-a8: rgba(63, 185, 80, 0.08);
+  --ok-a10: rgba(63, 185, 80, 0.1);
+  --ok-a12: rgba(63, 185, 80, 0.12);
+  --ok-a20: rgba(63, 185, 80, 0.2);
+  --ok-a30: rgba(63, 185, 80, 0.3);
+  --ok-a40: rgba(63, 185, 80, 0.4);
+
+  --warn: #d29922;
+  --warn-a8: rgba(210, 153, 34, 0.08);
+  --warn-a20: rgba(210, 153, 34, 0.2);
+
+  --err: #f85149;
+  --err-hover: #ff7b72;
+  --err-a6: rgba(248, 81, 73, 0.06);
+  --err-a8: rgba(248, 81, 73, 0.08);
+  --err-a12: rgba(248, 81, 73, 0.12);
+  --err-a15: rgba(248, 81, 73, 0.15);
+  --err-a20: rgba(248, 81, 73, 0.2);
+  --err-a25: rgba(248, 81, 73, 0.25);
+  --err-a30: rgba(248, 81, 73, 0.3);
+
+  --purple: #bc8cff;
+
+  --border: #30363d;
+  --border-strong: #3d444d;
+  --border-a30: rgba(48, 54, 61, 0.3);
+  --border-a50: rgba(48, 54, 61, 0.5);
+  --divider: #21262d;
+
+  --overlay-a1: rgba(255, 255, 255, 0.01);
+  --overlay-a15: rgba(255, 255, 255, 0.015);
+  --overlay-a2: rgba(255, 255, 255, 0.02);
+  --overlay-a3: rgba(255, 255, 255, 0.03);
+  --overlay-a4: rgba(255, 255, 255, 0.04);
+  --overlay-a5: rgba(255, 255, 255, 0.05);
+  --overlay-a8: rgba(255, 255, 255, 0.08);
+  --overlay-a10: rgba(255, 255, 255, 0.1);
+  --overlay-a20: rgba(255, 255, 255, 0.2);
+
+  --text-secondary-a8: rgba(139, 144, 152, 0.08);
+  --text-secondary-a20: rgba(139, 144, 152, 0.2);
+
+  --navbar-bg: rgba(13, 17, 23, 0.88);
+  --scanline: rgba(0, 0, 0, 0.04);
+  --shadow: rgba(0, 0, 0, 0.5);
+  --shadow-deep: rgba(0, 0, 0, 0.7);
+  --modal-overlay: rgba(0, 0, 0, 0.6);
+  --white: #ffffff;
+}
+
+/* ===== 主题: solar (琥珀终端) ===== */
+[data-theme="solar"] {
+  color-scheme: dark;
+
+  --bg: #12100e;
+  --bg-elevated: #1a1713;
+  --bg-float: #221e19;
+  --bg-deeper: #16130f;
+  --bg-code: #1a1713;
+
+  --text: #d6cec4;
+  --text-bright: #f2ece3;
+  --text-dim: #8a8072;
+  --text-muted: #5c554a;
+  --text-faint: #3a352d;
+  --text-secondary: #a09486;
+  --text-hint: #6e665a;
+
+  --accent: #ffb454;
+  --accent-hover: #ffc36e;
+  --on-accent: #241a0c;
+  --accent-a2: rgba(255, 180, 84, 0.02);
+  --accent-a3: rgba(255, 180, 84, 0.03);
+  --accent-a4: rgba(255, 180, 84, 0.04);
+  --accent-a5: rgba(255, 180, 84, 0.05);
+  --accent-a6: rgba(255, 180, 84, 0.06);
+  --accent-a8: rgba(255, 180, 84, 0.08);
+  --accent-a10: rgba(255, 180, 84, 0.1);
+  --accent-a12: rgba(255, 180, 84, 0.12);
+  --accent-a15: rgba(255, 180, 84, 0.15);
+  --accent-a20: rgba(255, 180, 84, 0.2);
+  --accent-a25: rgba(255, 180, 84, 0.25);
+  --accent-a30: rgba(255, 180, 84, 0.3);
+  --accent-a50: rgba(255, 180, 84, 0.5);
+
+  --ok: #7bd88f;
+  --ok-hover: #93e2a3;
+  --ok-a6: rgba(123, 216, 143, 0.06);
+  --ok-a8: rgba(123, 216, 143, 0.08);
+  --ok-a10: rgba(123, 216, 143, 0.1);
+  --ok-a12: rgba(123, 216, 143, 0.12);
+  --ok-a20: rgba(123, 216, 143, 0.2);
+  --ok-a30: rgba(123, 216, 143, 0.3);
+  --ok-a40: rgba(123, 216, 143, 0.4);
+
+  --warn: #e0af68;
+  --warn-a8: rgba(224, 175, 104, 0.08);
+  --warn-a20: rgba(224, 175, 104, 0.2);
+
+  --err: #f07178;
+  --err-hover: #f38ba1;
+  --err-a6: rgba(240, 113, 120, 0.06);
+  --err-a8: rgba(240, 113, 120, 0.08);
+  --err-a12: rgba(240, 113, 120, 0.12);
+  --err-a15: rgba(240, 113, 120, 0.15);
+  --err-a20: rgba(240, 113, 120, 0.2);
+  --err-a25: rgba(240, 113, 120, 0.25);
+  --err-a30: rgba(240, 113, 120, 0.3);
+
+  --purple: #c678dd;
+
+  --border: #2a251e;
+  --border-strong: #3a342a;
+  --border-a30: rgba(42, 37, 30, 0.3);
+  --border-a50: rgba(42, 37, 30, 0.5);
+  --divider: #201c16;
+
+  --overlay-a1: rgba(255, 255, 255, 0.01);
+  --overlay-a15: rgba(255, 255, 255, 0.015);
+  --overlay-a2: rgba(255, 255, 255, 0.02);
+  --overlay-a3: rgba(255, 255, 255, 0.03);
+  --overlay-a4: rgba(255, 255, 255, 0.04);
+  --overlay-a5: rgba(255, 255, 255, 0.05);
+  --overlay-a8: rgba(255, 255, 255, 0.08);
+  --overlay-a10: rgba(255, 255, 255, 0.1);
+  --overlay-a20: rgba(255, 255, 255, 0.2);
+
+  --text-secondary-a8: rgba(160, 148, 134, 0.08);
+  --text-secondary-a20: rgba(160, 148, 134, 0.2);
+
+  --navbar-bg: rgba(18, 16, 14, 0.9);
+  --scanline: rgba(0, 0, 0, 0.03);
+  --shadow: rgba(0, 0, 0, 0.55);
+  --shadow-deep: rgba(0, 0, 0, 0.7);
+  --modal-overlay: rgba(0, 0, 0, 0.6);
+  --white: #ffffff;
+}
+
+/* ===== 基础重置 ===== */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -6,8 +378,8 @@
 
 body {
   margin: 0;
-  background: #0a0a0c;
-  color: #c9d1d9;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -36,14 +408,14 @@ button {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0c;
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1c1d21;
+  background: var(--border);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #25262a;
+  background: var(--border-strong);
 }

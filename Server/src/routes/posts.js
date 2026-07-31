@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const pool = require('../config/db');
-const { authRequired, authOptional } = require('../middleware/auth');
+const { authRequired, authOptional, authNoGuest } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -260,7 +260,7 @@ router.get('/:slug', authOptional, async (req, res) => {
 });
 
 // ====== POST /api/posts — 创建文章 ======
-router.post('/', authRequired, async (req, res) => {
+router.post('/', authRequired, authNoGuest, async (req, res) => {
   const conn = await pool.getConnection();
   try {
     const title = sanitizeText(req.body.title, 200);
@@ -282,7 +282,6 @@ router.post('/', authRequired, async (req, res) => {
 
     // 标签长度限制
     const tagList = req.body.tags;
-    console.log(`[posts POST] body.tags:`, JSON.stringify(req.body.tags), `type:`, typeof req.body.tags, `isArray:`, Array.isArray(req.body.tags));
     if (tagList && (!Array.isArray(tagList) || tagList.length > MAX_TAGS)) {
       return res.status(400).json({ message: `max ${MAX_TAGS} tags allowed` });
     }
@@ -314,7 +313,6 @@ router.post('/', authRequired, async (req, res) => {
     const postId = result.insertId;
 
     // 处理标签
-    console.log(`[posts] tagList received:`, JSON.stringify(tagList), `postId:`, postId);
     if (tagList && Array.isArray(tagList) && tagList.length > 0) {
       await syncTags(conn, postId, tagList);
     }
@@ -341,7 +339,7 @@ router.post('/', authRequired, async (req, res) => {
 });
 
 // ====== PUT /api/posts/:slug — 更新文章（单事务） ======
-router.put('/:slug', authRequired, async (req, res) => {
+router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
   const conn = await pool.getConnection();
   try {
     const { slug } = req.params;
@@ -364,8 +362,11 @@ router.put('/:slug', authRequired, async (req, res) => {
       }
     }
 
-    // 仅管理员可置顶
-    const is_pinned = req.body.is_pinned && req.user.role === 'admin' ? 1 : 0;
+    // 仅管理员可置顶/取消置顶；非管理员未显式提交时不触碰 is_pinned
+    let is_pinned = undefined;
+    if (req.body.is_pinned !== undefined) {
+      is_pinned = req.user.role === 'admin' ? (req.body.is_pinned ? 1 : 0) : undefined;
+    }
 
 	// 校验 cover_image
 	let cover_image = req.body.cover_image !== undefined ? req.body.cover_image : undefined;
@@ -436,7 +437,7 @@ router.put('/:slug', authRequired, async (req, res) => {
 });
 
 // ====== DELETE /api/posts/:slug — 删除文章（作者本人或管理员） ======
-router.delete('/:slug', authRequired, async (req, res) => {
+router.delete('/:slug', authRequired, authNoGuest, async (req, res) => {
   const conn = await pool.getConnection();
   try {
     const { slug } = req.params;
@@ -483,7 +484,7 @@ router.delete('/:slug', authRequired, async (req, res) => {
 });
 
 // ====== POST /api/posts/:slug/like — 点赞/取消赞 ======
-router.post('/:slug/like', authRequired, async (req, res) => {
+router.post('/:slug/like', authRequired, authNoGuest, async (req, res) => {
   try {
     const { slug } = req.params;
 
@@ -571,7 +572,7 @@ router.get('/:slug/comments', async (req, res) => {
 });
 
 // ====== POST /api/posts/:slug/comments — 发表评论 ======
-router.post('/:slug/comments', authRequired, async (req, res) => {
+router.post('/:slug/comments', authRequired, authNoGuest, async (req, res) => {
   try {
     const { slug } = req.params;
     const content = req.body.content || '';
@@ -635,7 +636,7 @@ router.post('/:slug/comments', authRequired, async (req, res) => {
 });
 
 // ====== DELETE /api/posts/:slug/comments/:id — 删除评论 ======
-router.delete('/:slug/comments/:id', authRequired, async (req, res) => {
+router.delete('/:slug/comments/:id', authRequired, authNoGuest, async (req, res) => {
   try {
     const commentId = parseInt(req.params.id);
 
@@ -663,18 +664,13 @@ router.delete('/:slug/comments/:id', authRequired, async (req, res) => {
 async function syncTags(conn, postId, tagList) {
   for (const item of tagList) {
     const name = sanitizeTag(typeof item === 'string' ? item : item.name || item);
-    console.log(`[syncTags] raw item:`, JSON.stringify(item), `→ name:`, JSON.stringify(name));
-    if (!name) {
-      console.log(`[syncTags] SKIP: name is empty`);
-      continue;
-    }
+    if (!name) continue;
     // 生成 slug：英文用原名，中文等非英文字符生成短 hash
     let tagSlug = name.toLowerCase().replace(/[^a-z0-9一-鿿]+/g, '-').replace(/^-|-$/g, '');
     if (!tagSlug || tagSlug === '-') {
       // 纯中文或无 ASCII 字符的标签，使用时间戳 hash
       tagSlug = 'tag-' + Date.now().toString(36);
     }
-    console.log(`[syncTags] slug:`, tagSlug);
 
     // upsert tag
     const [existing] = await conn.query('SELECT id FROM tags WHERE name = ?', [name]);

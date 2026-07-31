@@ -1,6 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { getToken, isGuest } from '../stores/auth.js';
 
+// 安全解码 JWT payload（兼容 base64url 的 - _ 字符）
+function decodeTokenPayload(token) {
+  const payload = token.split('.')[1];
+  const b64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+  const pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
+  return JSON.parse(atob(b64 + pad));
+}
+
 const routes = [
   {
     path: '/',
@@ -97,7 +105,7 @@ router.beforeEach((to, from, next) => {
   // 1. 过期 token 快速清理
   if (token) {
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const payload = decodeTokenPayload(token);
       if (payload.exp && Date.now() > payload.exp * 1000) {
         localStorage.removeItem('token');
         localStorage.removeItem('token_expires');
@@ -122,15 +130,13 @@ router.beforeEach((to, from, next) => {
     if (!token || isGuest()) {
       return next({ path: '/', query: { redirect: to.fullPath } });
     }
-    let role = null;
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      role = payload.role;
+      const payload = decodeTokenPayload(token);
+      if (payload.role !== 'admin') {
+        return next({ path: '/HomePage' });
+      }
     } catch {
       return next({ path: '/', query: { redirect: to.fullPath } });
-    }
-    if (role !== 'admin') {
-      return next({ path: '/HomePage' });
     }
   }
 

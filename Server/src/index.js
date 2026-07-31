@@ -16,9 +16,22 @@ const PORT = process.env.PORT || 3000;
 // 信任 Caddy 反代传过来的 X-Forwarded-For 等头
 app.set('trust proxy', 1);
 
-// Helmet（HTTP 裸跑模式）
+// Helmet（HTTP 裸跑模式，TLS 由 Caddy 终结）
 app.use(helmet({
-  contentSecurityPolicy: false,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],   // 组件内联 style
+      imgSrc: ["'self'", 'data:', 'blob:'],
+      fontSrc: ["'self'", 'data:'],
+      connectSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+      frameAncestors: ["'none'"],
+    },
+  },
   strictTransportSecurity: false,
   crossOriginOpenerPolicy: false,
   crossOriginEmbedderPolicy: false,

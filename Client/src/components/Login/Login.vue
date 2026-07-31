@@ -191,9 +191,9 @@ async function handleGuestLogin() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0c0c0d;
+  background: var(--bg-deeper);
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
-  color: #c9d1d9;
+  color: var(--text);
   position: relative;
   overflow: hidden;
 }
@@ -203,8 +203,8 @@ async function handleGuestLogin() {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    linear-gradient(var(--overlay-a2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--overlay-a2) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
 }
@@ -217,7 +217,7 @@ async function handleGuestLogin() {
   transform: translateX(-50%);
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-a6) 0%, transparent 70%);
   pointer-events: none;
   animation: glowPulse 6s ease-in-out infinite;
 }
@@ -234,10 +234,10 @@ async function handleGuestLogin() {
   position: relative;
   width: 420px;
   max-width: 92vw;
-  background: #16171b;
-  border: 1px solid #25262a;
+  background: var(--bg-float);
+  border: 1px solid var(--border-strong);
   border-radius: 10px;
-  box-shadow: 0 0 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  box-shadow: 0 0 60px var(--shadow), 0 0 0 1px var(--overlay-a3) inset;
   overflow: hidden;
 }
  
@@ -247,8 +247,8 @@ async function handleGuestLogin() {
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  background: #1c1d21;
-  border-bottom: 1px solid #25262a;
+  background: var(--border);
+  border-bottom: 1px solid var(--border-strong);
 }
  
 .terminal-dot {
@@ -257,15 +257,15 @@ async function handleGuestLogin() {
   border-radius: 50%;
 }
  
-.dot-red    { background: #ff5f57; }
-.dot-yellow { background: #feba0a; }
-.dot-green  { background: #2bd64e; }
+.dot-red    { background: var(--err); }
+.dot-yellow { background: var(--warn); }
+.dot-green  { background: var(--ok); }
  
 .terminal-title {
   flex: 1;
   text-align: center;
   font-size: 11px;
-  color: #5a5d64;
+  color: var(--text-hint);
   letter-spacing: 1px;
 }
  
@@ -288,12 +288,12 @@ async function handleGuestLogin() {
 }
  
 .prompt-arrow {
-  color: #00d4ff;
+  color: var(--accent);
   font-weight: 700;
 }
  
 .prompt-cmd {
-  color: #e6edf3;
+  color: var(--text-bright);
   font-weight: 600;
   letter-spacing: 0.5px;
 }
@@ -301,12 +301,12 @@ async function handleGuestLogin() {
 .subtitle {
   margin: 0;
   font-size: 12px;
-  color: #484b52;
+  color: var(--text-muted);
   padding-left: 2px;
 }
  
 .comment {
-  color: #484b52;
+  color: var(--text-muted);
   font-style: italic;
 }
  
@@ -328,7 +328,7 @@ async function handleGuestLogin() {
 .field label {
   font-size: 11px;
   font-weight: 600;
-  color: #6e737a;
+  color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 1.5px;
   display: flex;
@@ -337,7 +337,7 @@ async function handleGuestLogin() {
 }
  
 .label-icon {
-  color: #00d4ff;
+  color: var(--accent);
   font-weight: 700;
 }
  
@@ -352,32 +352,32 @@ async function handleGuestLogin() {
   padding: 12px 14px;
   font-family: inherit;
   font-size: 14px;
-  color: #e6edf3;
-  background: #0f1013;
-  border: 1px solid #25262a;
+  color: var(--text-bright);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
   border-radius: 6px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
-  caret-color: #00d4ff;
+  caret-color: var(--accent);
 }
  
 .field input:focus {
-  border-color: #00d4ff;
-  box-shadow: 0 0 0 3px rgba(0,212,255,0.08), 0 0 20px rgba(0,212,255,0.04);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-a8), 0 0 20px var(--accent-a4);
 }
  
 .field input.error {
-  border-color: #ff5f57;
-  box-shadow: 0 0 0 3px rgba(255,95,87,0.08);
+  border-color: var(--err);
+  box-shadow: 0 0 0 3px var(--err-a8);
 }
  
 .field input::placeholder {
-  color: #33363c;
+  color: var(--text-faint);
 }
  
 .field-error {
   font-size: 11px;
-  color: #ff5f57;
+  color: var(--err);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -402,14 +402,14 @@ async function handleGuestLogin() {
 }
  
 .checkbox-label input[type='checkbox'] {
-  accent-color: #00d4ff;
+  accent-color: var(--accent);
   width: 15px;
   height: 15px;
 }
  
 .check-text {
   font-size: 12px;
-  color: #6e737a;
+  color: var(--text-dim);
 }
  
 /* ---- 按钮 ---- */
@@ -420,8 +420,8 @@ async function handleGuestLogin() {
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 1px;
-  color: #0c0c0d;
-  background: linear-gradient(135deg, #00d4ff 0%, #00b8d4 100%);
+  color: var(--bg-deeper);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -438,7 +438,7 @@ async function handleGuestLogin() {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+  background: linear-gradient(135deg, transparent 0%, var(--overlay-a10) 100%);
   opacity: 0;
   transition: opacity 0.2s;
 }
@@ -448,7 +448,7 @@ async function handleGuestLogin() {
 }
  
 .btn-login:hover:not(:disabled) {
-  box-shadow: 0 0 30px rgba(0,212,255,0.3), 0 0 60px rgba(0,212,255,0.1);
+  box-shadow: 0 0 30px var(--accent-a30), 0 0 60px var(--accent-a10);
   transform: translateY(-1px);
 }
  
@@ -471,9 +471,9 @@ async function handleGuestLogin() {
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #ff5f57;
-  background: rgba(255,95,87,0.06);
-  border: 1px solid rgba(255,95,87,0.15);
+  color: var(--err);
+  background: var(--err-a6);
+  border: 1px solid var(--err-a15);
   padding: 10px 14px;
   border-radius: 6px;
   margin: 0;
@@ -496,13 +496,13 @@ async function handleGuestLogin() {
 .divider-line {
   flex: 1;
   height: 1px;
-  background: #1c1d21;
+  background: var(--border);
 }
 
 .divider-text {
   font-size: 10px;
   font-weight: 600;
-  color: #33363c;
+  color: var(--text-faint);
   letter-spacing: 1.5px;
   text-transform: uppercase;
 }
@@ -514,9 +514,9 @@ async function handleGuestLogin() {
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 1px;
-  color: #00d4ff;
+  color: var(--accent);
   background: transparent;
-  border: 2px dashed #25262a;
+  border: 2px dashed var(--border-strong);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
@@ -527,9 +527,9 @@ async function handleGuestLogin() {
 }
 
 .btn-guest:hover:not(:disabled) {
-  border-color: #00d4ff;
-  background: rgba(0,212,255,0.04);
-  box-shadow: 0 0 24px rgba(0,212,255,0.12);
+  border-color: var(--accent);
+  background: var(--accent-a4);
+  box-shadow: 0 0 24px var(--accent-a12);
   transform: translateY(-1px);
 }
 
@@ -553,15 +553,15 @@ async function handleGuestLogin() {
 
 .guest-hint .comment {
   font-size: 11px;
-  color: #484b52;
+  color: var(--text-muted);
   font-style: italic;
 }
 
 .spinner-guest {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(0,212,255,0.15);
-  border-top-color: #00d4ff;
+  border: 2px solid var(--accent-a15);
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -574,13 +574,13 @@ async function handleGuestLogin() {
  
 .back-link a {
   font-size: 12px;
-  color: #484b52;
+  color: var(--text-muted);
   text-decoration: none;
   transition: color 0.2s;
 }
  
 .back-link a:hover {
-  color: #00d4ff;
+  color: var(--accent);
 }
  
 /* ---- 底部状态条 ---- */
@@ -589,10 +589,10 @@ async function handleGuestLogin() {
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
-  background: #0f1013;
-  border-top: 1px solid #25262a;
+  background: var(--bg-elevated);
+  border-top: 1px solid var(--border-strong);
   font-size: 10px;
-  color: #484b52;
+  color: var(--text-muted);
   letter-spacing: 1.5px;
 }
  
@@ -600,12 +600,12 @@ async function handleGuestLogin() {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #2bd64e;
-  box-shadow: 0 0 6px rgba(43,214,78,0.4);
+  background: var(--ok);
+  box-shadow: 0 0 6px var(--ok-a40);
 }
  
 .status-sep {
-  color: #25262a;
+  color: var(--border-strong);
 }
  
 /* ==============================
@@ -614,8 +614,8 @@ async function handleGuestLogin() {
 .spinner {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(12,12,13,0.3);
-  border-top-color: #0c0c0d;
+  border: 2px solid var(--bg-deeper);
+  border-top-color: var(--bg-deeper);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }

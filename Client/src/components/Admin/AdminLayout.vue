@@ -13,6 +13,7 @@
           <span class="brand-path">~/admin</span>
         </router-link>
         <div class="nav-actions">
+          <ThemeSwitcher />
           <span class="admin-badge">sudo mode</span>
           <router-link to="/HomePage" class="nav-link">← blog</router-link>
           <button class="btn-user" @click="showMenu = !showMenu">
@@ -90,6 +91,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuth } from '../../stores/auth.js'
+import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 
 const { currentUser, logout } = useAuth()
 const showMenu = ref(false)
@@ -117,30 +119,30 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 
 <style scoped>
 .admin-layout {
-  min-height: 100vh; background: #0a0a0c;
+  min-height: 100vh; background: var(--bg);
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
-  color: #c9d1d9; position: relative; overflow-x: hidden;
+  color: var(--text); position: relative; overflow-x: hidden;
 }
 
 .bg-grid {
   position: fixed; inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    linear-gradient(var(--overlay-a15) 1px, transparent 1px),
+    linear-gradient(90deg, var(--overlay-a15) 1px, transparent 1px);
   background-size: 64px 64px; pointer-events: none; z-index: 0;
 }
 
 .bg-scanline {
   position: fixed; inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scanline) 2px, var(--scanline) 4px);
   pointer-events: none; z-index: 0; animation: scan 8s linear infinite;
 }
 @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(4px); } }
 
 .navbar {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(10,10,12,0.88); backdrop-filter: blur(16px);
-  border-bottom: 1px solid #1c1d21;
+  background: var(--navbar-bg); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
 }
 
 .navbar-inner {
@@ -149,55 +151,55 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 }
 
 .brand { display: flex; align-items: baseline; gap: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
-.brand-bracket { color: #484b52; }
-.brand-text { color: #00d4ff; }
-.brand-path { color: #6e737a; margin-left: 8px; font-size: 12px; }
+.brand-bracket { color: var(--text-muted); }
+.brand-text { color: var(--accent); }
+.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; position: relative; }
 
 .admin-badge {
   font-size: 10px; font-weight: 700; letter-spacing: 1px;
-  color: #feba0a; padding: 4px 10px;
-  background: rgba(254,186,10,0.08); border: 1px solid rgba(254,186,10,0.2);
+  color: var(--warn); padding: 4px 10px;
+  background: var(--warn-a8); border: 1px solid var(--warn-a20);
   border-radius: 4px; text-transform: uppercase;
 }
 
-.nav-link { font-size: 12px; color: #6e737a; text-decoration: none; transition: color 0.2s; }
-.nav-link:hover { color: #00d4ff; }
+.nav-link { font-size: 12px; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+.nav-link:hover { color: var(--accent); }
 
 .btn-user {
   display: flex; align-items: center; gap: 8px;
   padding: 4px 10px 4px 4px;
   font-family: inherit; font-size: 12px;
-  color: #c9d1d9; background: rgba(255,255,255,0.04);
-  border: 1px solid #25262a; border-radius: 8px;
+  color: var(--text); background: var(--overlay-a4);
+  border: 1px solid var(--border-strong); border-radius: 8px;
   cursor: pointer; transition: all 0.2s;
 }
-.btn-user:hover { border-color: #00d4ff; background: rgba(0,212,255,0.06); }
+.btn-user:hover { border-color: var(--accent); background: var(--accent-a6); }
 
 .user-avatar {
   width: 26px; height: 26px;
   display: flex; align-items: center; justify-content: center;
-  background: #00d4ff; color: #0a0a0c;
+  background: var(--accent); color: var(--on-accent);
   font-weight: 700; font-size: 12px; border-radius: 6px; text-transform: uppercase;
 }
-.user-name { font-weight: 500; color: #8b9098; }
+.user-name { font-weight: 500; color: var(--text-secondary); }
 
 .user-dropdown {
   position: absolute; top: calc(100% + 8px); right: 0;
-  min-width: 160px; background: #16171b; border: 1px solid #25262a;
+  min-width: 160px; background: var(--bg-float); border: 1px solid var(--border-strong);
   border-radius: 8px; overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5); z-index: 200;
+  box-shadow: 0 12px 40px var(--shadow); z-index: 200;
 }
 
 .dropdown-item {
   display: flex; align-items: center; width: 100%; padding: 10px 14px;
   font-family: inherit; font-size: 12px; font-weight: 500;
-  color: #8b9098; background: none; border: none;
+  color: var(--text-secondary); background: none; border: none;
   text-decoration: none; cursor: pointer; transition: all 0.15s;
 }
-.dropdown-item:hover { color: #c9d1d9; background: rgba(255,255,255,0.03); }
-.dropdown-item.logout:hover { color: #ff5f57; }
+.dropdown-item:hover { color: var(--text); background: var(--overlay-a3); }
+.dropdown-item.logout:hover { color: var(--err); }
 
 .main-layout {
   position: relative; z-index: 1;
@@ -208,22 +210,22 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .sidebar { display: flex; flex-direction: column; gap: 16px; }
 
 .sidebar-panel {
-  background: #0f1013; border: 1px solid #1c1d21;
+  background: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; overflow: hidden;
 }
 
 .panel-bar {
   display: flex; align-items: center; gap: 6px;
-  padding: 8px 12px; background: rgba(255,255,255,0.015);
-  border-bottom: 1px solid #1c1d21;
+  padding: 8px 12px; background: var(--overlay-a15);
+  border-bottom: 1px solid var(--border);
 }
 .panel-dot { width: 8px; height: 8px; border-radius: 50%; }
-.dot-cyan { background: #00d4ff; }
-.dot-green { background: #2bd64e; }
+.dot-cyan { background: var(--accent); }
+.dot-green { background: var(--ok); }
 .dim { opacity: 0.3; }
 .panel-title {
   flex: 1; font-size: 10px; font-weight: 600;
-  color: #484b52; text-align: center; letter-spacing: 1.5px; text-transform: lowercase;
+  color: var(--text-muted); text-align: center; letter-spacing: 1.5px; text-transform: lowercase;
 }
 
 .panel-body { padding: 8px 0; }
@@ -233,28 +235,28 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .nav-item {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 16px; font-size: 12px; font-weight: 500;
-  color: #6e737a; text-decoration: none;
+  color: var(--text-dim); text-decoration: none;
   border-left: 2px solid transparent; transition: all 0.2s;
 }
-.nav-item:hover { color: #c9d1d9; background: rgba(255,255,255,0.02); }
-.nav-item.active { color: #00d4ff; border-left-color: #00d4ff; background: rgba(0,212,255,0.04); }
-.nav-num { color: #33363c; font-size: 10px; font-weight: 700; min-width: 18px; }
-.nav-item.active .nav-num { color: #00d4ff; }
+.nav-item:hover { color: var(--text); background: var(--overlay-a2); }
+.nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-a4); }
+.nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; min-width: 18px; }
+.nav-item.active .nav-num { color: var(--accent); }
 
 .info-line { display: flex; justify-content: space-between; padding: 5px 12px; font-size: 11px; }
-.info-key { color: #484b52; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-.info-val { color: #8b9098; }
-.terminal-green { color: #2bd64e; }
+.info-key { color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+.info-val { color: var(--text-secondary); }
+.terminal-green { color: var(--ok); }
 
 .content { min-height: 500px; }
 
 .footer {
   position: relative; z-index: 1;
-  border-top: 1px solid #1c1d21; padding: 24px; text-align: center;
+  border-top: 1px solid var(--border); padding: 24px; text-align: center;
 }
 .footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; }
-.footer-prompt { color: #00d4ff; }
-.footer-cmd { color: #484b52; }
+.footer-prompt { color: var(--accent); }
+.footer-cmd { color: var(--text-muted); }
 
 @media (max-width: 800px) {
   .main-layout { grid-template-columns: 1fr; }

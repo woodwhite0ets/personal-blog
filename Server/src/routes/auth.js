@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const pool = require('../config/db');
-const { signToken, authRequired } = require('../middleware/auth');
+const { signToken, authRequired, authNoGuest } = require('../middleware/auth');
 const { sendVerificationEmail } = require('../config/mail');
 const { loginLimiter, registerLimiter, resendVerifyLimiter } = require('../config/rateLimit');
 
@@ -10,7 +10,7 @@ const { loginLimiter, registerLimiter, resendVerifyLimiter } = require('../confi
 const rateLimit = require('express-rate-limit');
 const guestLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10,
+  max: 3,
   standardHeaders: true,
   legacyHeaders: false,
   message: { message: 'too many guest requests — slow down' },
@@ -237,7 +237,7 @@ router.get('/me', authRequired, async (req, res) => {
 });
 
 // ====== PUT /api/auth/change-password — 修改密码 ======
-router.put('/change-password', authRequired, async (req, res) => {
+router.put('/change-password', authRequired, authNoGuest, async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
 

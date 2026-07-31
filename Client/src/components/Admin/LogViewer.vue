@@ -138,12 +138,12 @@ onUnmounted(() => {
 .section-head {
   display: flex; align-items: center; gap: 8px;
   margin-bottom: 16px; padding-bottom: 12px;
-  border-bottom: 1px solid #1c1d21;
+  border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
 }
-.section-arrow { color: #00d4ff; font-weight: 700; }
-.section-title { font-size: 13px; font-weight: 600; color: #c9d1d9; letter-spacing: 0.5px; }
-.section-count { font-size: 11px; color: #484b52; }
+.section-arrow { color: var(--accent); font-weight: 700; }
+.section-title { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: 0.5px; }
+.section-count { font-size: 11px; color: var(--text-muted); }
 
 .head-actions { display: flex; gap: 6px; margin-left: auto; }
 
@@ -151,24 +151,24 @@ onUnmounted(() => {
   display: flex; align-items: center; gap: 4px;
   padding: 4px 10px; font-family: inherit; font-size: 11px; font-weight: 600;
   border-radius: 4px; cursor: pointer;
-  transition: all 0.2s; border: 1px solid #1c1d21;
-  background: none; color: #6e737a;
+  transition: all 0.2s; border: 1px solid var(--border);
+  background: none; color: var(--text-dim);
 }
-.btn-sm:hover { border-color: #484b52; color: #c9d1d9; }
-.btn-sm.active { border-color: #00d4ff; color: #00d4ff; background: rgba(0,212,255,0.06); }
+.btn-sm:hover { border-color: var(--text-muted); color: var(--text); }
+.btn-sm.active { border-color: var(--accent); color: var(--accent); background: var(--accent-a6); }
 
 .btn-filter { gap: 6px; min-width: 70px; }
 
 .filter-dot { width: 6px; height: 6px; border-radius: 50%; }
-.dot-red { background: #ff5f57; }
-.dot-yellow { background: #feba0a; }
-.dot-cyan { background: #00d4ff; }
+.dot-red { background: var(--err); }
+.dot-yellow { background: var(--warn); }
+.dot-cyan { background: var(--accent); }
 .dim { opacity: 0.3; }
 .filter-icon { font-size: 12px; }
 
 /* 终端日志区 */
 .log-terminal {
-  background: #0c0c0e; border: 1px solid #1c1d21; border-radius: 8px;
+  background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px;
   max-height: calc(100vh - 280px); min-height: 400px;
   overflow-y: auto; padding: 16px;
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
@@ -177,13 +177,13 @@ onUnmounted(() => {
 
 .log-line {
   display: flex; gap: 10px; align-items: baseline;
-  padding: 2px 0; border-bottom: 1px solid rgba(28,29,33,0.3);
+  padding: 2px 0; border-bottom: 1px solid var(--border-a30);
   white-space: nowrap;
 }
 .log-line:last-child { border-bottom: none; }
 
 .log-ts {
-  color: #484b52; font-size: 11px; flex-shrink: 0;
+  color: var(--text-muted); font-size: 11px; flex-shrink: 0;
   min-width: 148px;
 }
 
@@ -192,30 +192,30 @@ onUnmounted(() => {
   padding: 1px 6px; border-radius: 3px; flex-shrink: 0;
   min-width: 48px; text-align: center;
 }
-.badge-info  { color: #00d4ff; background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2); }
-.badge-warn  { color: #feba0a; background: rgba(254,186,10,0.08); border: 1px solid rgba(254,186,10,0.2); }
-.badge-error { color: #ff5f57; background: rgba(255,95,87,0.08); border: 1px solid rgba(255,95,87,0.2); }
+.badge-info  { color: var(--accent); background: var(--accent-a8); border: 1px solid var(--accent-a20); }
+.badge-warn  { color: var(--warn); background: var(--warn-a8); border: 1px solid var(--warn-a20); }
+.badge-error { color: var(--err); background: var(--err-a8); border: 1px solid var(--err-a20); }
 
 .log-msg {
-  color: #8b9098; overflow: hidden;
+  color: var(--text-secondary); overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.level-error .log-msg { color: #ff5f57; }
-.level-warn  .log-msg { color: #feba0a; }
+.level-error .log-msg { color: var(--err); }
+.level-warn  .log-msg { color: var(--warn); }
 
 /* 状态 */
 .state-box {
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; padding: 48px 20px; font-size: 13px; color: #484b52;
+  gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted);
 }
-.state-box.error { color: #ff5f57; flex-direction: column; gap: 8px; }
+.state-box.error { color: var(--err); flex-direction: column; gap: 8px; }
 .err-prefix { font-weight: 700; letter-spacing: 1px; }
 .state-text { color: inherit; }
 
 .spinner {
   width: 16px; height: 16px;
-  border: 2px solid #1c1d21; border-top-color: #00d4ff;
+  border: 2px solid var(--border); border-top-color: var(--accent);
   border-radius: 50%; animation: spin 0.7s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }

@@ -24,6 +24,7 @@
           </router-link>
         </nav>
         <div class="nav-actions">
+          <ThemeSwitcher />
           <div class="search-wrap" :class="{ active: searchActive }">
             <button class="btn-search" @click="toggleSearch" title="search">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -237,6 +238,7 @@
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PostList from './PostList.vue'
+import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import { useAuth } from '../../stores/auth.js'
 
 const route = useRoute()
@@ -405,9 +407,9 @@ onMounted(() => { fetchPosts(); fetchTags() })
 
 .home-page {
   min-height: 100vh;
-  background: #0a0a0c;
+  background: var(--bg);
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
-  color: #c9d1d9;
+  color: var(--text);
   position: relative;
   overflow-x: hidden;
 }
@@ -416,8 +418,8 @@ onMounted(() => { fetchPosts(); fetchTags() })
 .bg-grid {
   position: fixed; inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    linear-gradient(var(--overlay-a15) 1px, transparent 1px),
+    linear-gradient(90deg, var(--overlay-a15) 1px, transparent 1px);
   background-size: 64px 64px;
   pointer-events: none; z-index: 0;
 }
@@ -426,7 +428,7 @@ onMounted(() => { fetchPosts(); fetchTags() })
   position: fixed; inset: 0;
   background: repeating-linear-gradient(
     0deg, transparent, transparent 2px,
-    rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+    var(--scanline) 2px, var(--scanline) 4px
   );
   pointer-events: none; z-index: 0;
   animation: scan 8s linear infinite;
@@ -440,9 +442,9 @@ onMounted(() => { fetchPosts(); fetchTags() })
 /* ====== Navbar ====== */
 .navbar {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(10,10,12,0.88);
+  background: var(--navbar-bg);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid #1c1d21;
+  border-bottom: 1px solid var(--border);
 }
 
 .navbar-inner {
@@ -455,9 +457,9 @@ onMounted(() => { fetchPosts(); fetchTags() })
   text-decoration: none; font-size: 14px; font-weight: 600;
 }
 
-.brand-bracket { color: #484b52; }
-.brand-text { color: #00d4ff; }
-.brand-path { color: #6e737a; margin-left: 8px; font-size: 12px; }
+.brand-bracket { color: var(--text-muted); }
+.brand-text { color: var(--accent); }
+.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
 
 .nav-links {
   display: flex; gap: 28px; flex: 1;
@@ -466,25 +468,25 @@ onMounted(() => { fetchPosts(); fetchTags() })
 .nav-links a {
   display: flex; align-items: center; gap: 6px;
   text-decoration: none; font-size: 12px; font-weight: 500;
-  color: #6e737a; transition: color 0.2s; letter-spacing: 0.5px;
+  color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px;
 }
 
-.nav-num { color: #33363c; font-size: 10px; font-weight: 700; }
+.nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; }
 
 .nav-links a:hover,
-.nav-links a.router-link-active { color: #c9d1d9; }
-.nav-links a.router-link-active .nav-num { color: #00d4ff; }
+.nav-links a.router-link-active { color: var(--text); }
+.nav-links a.router-link-active .nav-num { color: var(--accent); }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
 
 .btn-search {
   width: 34px; height: 34px;
   display: flex; align-items: center; justify-content: center;
-  background: none; border: 1px solid #25262a; border-radius: 6px;
-  color: #6e737a; cursor: pointer; transition: all 0.2s;
+  background: none; border: 1px solid var(--border-strong); border-radius: 6px;
+  color: var(--text-dim); cursor: pointer; transition: all 0.2s;
 }
 
-.btn-search:hover { border-color: #00d4ff; color: #00d4ff; }
+.btn-search:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ====== 搜索输入框 ====== */
 .search-wrap {
@@ -495,24 +497,24 @@ onMounted(() => { fetchPosts(); fetchTags() })
 .search-wrap.active .btn-search {
   border-right: none;
   border-radius: 6px 0 0 6px;
-  border-color: #00d4ff; color: #00d4ff;
+  border-color: var(--accent); color: var(--accent);
 }
 
 .search-input {
   width: 200px; height: 34px;
   padding: 0 12px;
-  background: #0f1013; border: 1px solid #25262a; border-left: none;
+  background: var(--bg-elevated); border: 1px solid var(--border-strong); border-left: none;
   border-radius: 0 6px 6px 0;
-  color: #c9d1d9;
+  color: var(--text);
   font-family: inherit; font-size: 12px;
-  caret-color: #00d4ff;
+  caret-color: var(--accent);
   outline: none;
   animation: searchSlideIn 0.2s ease;
 }
 
-.search-input:focus { border-color: #00d4ff; }
+.search-input:focus { border-color: var(--accent); }
 
-.search-input::placeholder { color: #33363c; }
+.search-input::placeholder { color: var(--text-faint); }
 
 @keyframes searchSlideIn {
   from { width: 0; opacity: 0; }
@@ -523,13 +525,13 @@ onMounted(() => { fetchPosts(); fetchTags() })
   display: flex; align-items: center; gap: 6px;
   padding: 6px 16px;
   font-family: inherit; font-size: 12px; font-weight: 600;
-  color: #0a0a0c; background: #00d4ff; border-radius: 6px;
+  color: var(--on-accent); background: var(--accent); border-radius: 6px;
   text-decoration: none; transition: all 0.2s;
 }
 
 .btn-write:hover {
-  background: #00b8d4;
-  box-shadow: 0 0 20px rgba(0,212,255,0.25);
+  background: var(--accent-hover);
+  box-shadow: 0 0 20px var(--accent-a25);
   transform: translateY(-1px);
 }
 
@@ -542,25 +544,25 @@ onMounted(() => { fetchPosts(); fetchTags() })
   display: flex; align-items: center; gap: 8px;
   padding: 4px 10px 4px 4px;
   font-family: inherit; font-size: 12px;
-  color: #c9d1d9; background: rgba(255,255,255,0.04);
-  border: 1px solid #25262a; border-radius: 8px;
+  color: var(--text); background: var(--overlay-a4);
+  border: 1px solid var(--border-strong); border-radius: 8px;
   cursor: pointer; transition: all 0.2s;
 }
 
-.btn-user:hover { border-color: #00d4ff; background: rgba(0,212,255,0.06); }
+.btn-user:hover { border-color: var(--accent); background: var(--accent-a6); }
 
 .user-avatar {
   width: 26px; height: 26px;
   display: flex; align-items: center; justify-content: center;
-  background: #00d4ff; color: #0a0a0c;
+  background: var(--accent); color: var(--on-accent);
   font-weight: 700; font-size: 12px;
   border-radius: 6px; text-transform: uppercase;
 }
 
-.user-name { font-weight: 500; color: #8b9098; }
+.user-name { font-weight: 500; color: var(--text-secondary); }
 
 .user-caret {
-  font-size: 10px; color: #484b52; transition: transform 0.2s;
+  font-size: 10px; color: var(--text-muted); transition: transform 0.2s;
 }
 
 .user-caret.open { transform: rotate(180deg); }
@@ -568,9 +570,9 @@ onMounted(() => { fetchPosts(); fetchTags() })
 .user-dropdown {
   position: absolute; top: calc(100% + 8px); right: 0;
   min-width: 180px;
-  background: #16171b; border: 1px solid #25262a;
+  background: var(--bg-float); border: 1px solid var(--border-strong);
   border-radius: 8px; overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 12px 40px var(--shadow);
   z-index: 200;
 }
 
@@ -578,26 +580,26 @@ onMounted(() => { fetchPosts(); fetchTags() })
   display: flex; align-items: center; gap: 10px;
   width: 100%; padding: 10px 14px;
   font-family: inherit; font-size: 12px; font-weight: 500;
-  color: #8b9098; background: none; border: none;
+  color: var(--text-secondary); background: none; border: none;
   text-decoration: none; cursor: pointer;
   transition: all 0.15s;
 }
 
 .dropdown-item.admin-link {
-  color: #00d4ff;
-  border-bottom: 1px solid #1c1d21;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
 }
 .dropdown-item.admin-link:hover {
-  background: rgba(0,212,255,0.06);
+  background: var(--accent-a6);
 }
-.dropdown-item.logout:hover { color: #ff5f57; }
+.dropdown-item.logout:hover { color: var(--err); }
 .dropdown-icon { font-size: 13px; }
 
 /* ====== Hero ====== */
 .hero {
   position: relative; z-index: 1;
-  border-bottom: 1px solid #1c1d21;
-  background: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.03) 0%, transparent 60%);
+  border-bottom: 1px solid var(--border);
+  background: radial-gradient(ellipse at 50% 0%, var(--accent-a3) 0%, transparent 60%);
 }
 
 .hero-inner {
@@ -607,13 +609,13 @@ onMounted(() => { fetchPosts(); fetchTags() })
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 10px; font-weight: 700; letter-spacing: 2px;
-  color: #6e737a; margin-bottom: 20px; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 20px; text-transform: uppercase;
 }
 
 .badge-dot {
   width: 6px; height: 6px; border-radius: 50%;
-  background: #00d4ff;
-  box-shadow: 0 0 8px rgba(0,212,255,0.5);
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-a50);
 }
 
 .hero-title {
@@ -622,13 +624,13 @@ onMounted(() => { fetchPosts(); fetchTags() })
 }
 
 .hero-title a {
-  color: #e6edf3; text-decoration: none; transition: color 0.2s;
+  color: var(--text-bright); text-decoration: none; transition: color 0.2s;
 }
 
-.hero-title a:hover { color: #00d4ff; }
+.hero-title a:hover { color: var(--accent); }
 
 .hero-excerpt {
-  font-size: 15px; color: #6e737a; line-height: 1.7;
+  font-size: 15px; color: var(--text-dim); line-height: 1.7;
   margin: 0 0 24px; max-width: 560px;
 }
 
@@ -637,12 +639,12 @@ onMounted(() => { fetchPosts(); fetchTags() })
 .meta-item { display: flex; align-items: center; gap: 6px; font-size: 11px; }
 
 .meta-label {
-  color: #484b52; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
 }
 
-.meta-value { color: #8b9098; }
+.meta-value { color: var(--text-secondary); }
 
-.meta-sep { width: 1px; height: 12px; background: #1c1d21; }
+.meta-sep { width: 1px; height: 12px; background: var(--border); }
 
 /* ====== 主体布局 ====== */
 .main-layout {
@@ -655,26 +657,26 @@ onMounted(() => { fetchPosts(); fetchTags() })
 .sidebar { display: flex; flex-direction: column; gap: 20px; }
 
 .sidebar-panel {
-  background: #0f1013; border: 1px solid #1c1d21;
+  background: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; overflow: hidden;
 }
 
 .panel-bar {
   display: flex; align-items: center; gap: 6px;
   padding: 8px 12px;
-  background: rgba(255,255,255,0.015);
-  border-bottom: 1px solid #1c1d21;
+  background: var(--overlay-a15);
+  border-bottom: 1px solid var(--border);
 }
 
 .panel-dot { width: 8px; height: 8px; border-radius: 50%; }
-.dot-cyan   { background: #00d4ff; }
-.dot-yellow { background: #feba0a; }
-.dot-purple { background: #a78bfa; }
+.dot-cyan   { background: var(--accent); }
+.dot-yellow { background: var(--warn); }
+.dot-purple { background: var(--purple); }
 .dim { opacity: 0.3; }
 
 .panel-title {
   flex: 1; font-size: 10px; font-weight: 600;
-  color: #484b52; text-align: center;
+  color: var(--text-muted); text-align: center;
   letter-spacing: 1.5px; text-transform: lowercase;
 }
 
@@ -686,43 +688,43 @@ onMounted(() => { fetchPosts(); fetchTags() })
 }
 
 .info-key {
-  color: #484b52; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
 }
 
-.info-val { color: #8b9098; }
-.terminal-green { color: #2bd64e; }
+.info-val { color: var(--text-secondary); }
+.terminal-green { color: var(--ok); }
 
 /* ====== 标签过滤提示 ====== */
 .tag-filter-bar {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 16px; margin-bottom: 20px;
-  background: rgba(0,212,255,0.04);
-  border: 1px solid rgba(0,212,255,0.15);
+  background: var(--accent-a4);
+  border: 1px solid var(--accent-a15);
   border-radius: 6px; font-size: 12px;
 }
 
-.filter-prompt { color: #00d4ff; font-weight: 700; }
-.filter-label { color: #484b52; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
-.filter-tag { color: #00d4ff; font-weight: 600; }
+.filter-prompt { color: var(--accent); font-weight: 700; }
+.filter-label { color: var(--text-muted); text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+.filter-tag { color: var(--accent); font-weight: 600; }
 .filter-clear {
   margin-left: auto;
-  color: #6e737a; text-decoration: none; font-weight: 600;
+  color: var(--text-dim); text-decoration: none; font-weight: 600;
   transition: color 0.2s;
 }
-.filter-clear:hover { color: #ff5f57; }
+.filter-clear:hover { color: var(--err); }
 
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .tag {
   font-size: 11px; padding: 4px 10px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid #1c1d21; border-radius: 4px;
-  color: #6e737a; cursor: pointer; transition: all 0.2s;
+  background: var(--overlay-a3);
+  border: 1px solid var(--border); border-radius: 4px;
+  color: var(--text-dim); cursor: pointer; transition: all 0.2s;
   text-decoration: none;
 }
 
-.tag:hover { border-color: #00d4ff; color: #00d4ff; background: rgba(0,212,255,0.04); }
-.tag.router-link-active { border-color: #00d4ff; color: #00d4ff; }
+.tag:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-a4); }
+.tag.router-link-active { border-color: var(--accent); color: var(--accent); }
 .tag.lg { font-size: 13px; font-weight: 600; }
 .tag.md { font-size: 12px; }
 .tag.sm { font-size: 11px; }
@@ -731,28 +733,28 @@ onMounted(() => { fetchPosts(); fetchTags() })
 .link-item {
   display: flex; align-items: center; gap: 8px;
   padding: 6px 0; font-size: 11px;
-  color: #6e737a; text-decoration: none; transition: color 0.2s;
+  color: var(--text-dim); text-decoration: none; transition: color 0.2s;
 }
 
-.link-item:hover { color: #00d4ff; }
-.link-arrow { color: #484b52; font-weight: 700; }
+.link-item:hover { color: var(--accent); }
+.link-arrow { color: var(--text-muted); font-weight: 700; }
 
 /* ====== Contributors ====== */
-.dot-green { background: #2bd64e; }
+.dot-green { background: var(--ok); }
 
 .contributor-item {
   display: flex; align-items: center; gap: 8px;
   padding: 5px 0; font-size: 11px;
-  color: #6e737a; text-decoration: none;
+  color: var(--text-dim); text-decoration: none;
   transition: color 0.2s;
 }
 
-.contributor-item:hover { color: #00d4ff; }
+.contributor-item:hover { color: var(--accent); }
 
 .contributor-avatar {
   width: 20px; height: 20px;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0,212,255,0.1); color: #00d4ff;
+  background: var(--accent-a10); color: var(--accent);
   border-radius: 4px; font-size: 10px; font-weight: 700;
   text-transform: uppercase;
 }
@@ -760,19 +762,19 @@ onMounted(() => { fetchPosts(); fetchTags() })
 .contributor-name { flex: 1; }
 
 .contributor-count {
-  font-size: 10px; color: #484b52;
+  font-size: 10px; color: var(--text-muted);
   font-weight: 600;
 }
 
 /* ====== Footer ====== */
 .footer {
   position: relative; z-index: 1;
-  border-top: 1px solid #1c1d21; padding: 24px; text-align: center;
+  border-top: 1px solid var(--border); padding: 24px; text-align: center;
 }
 
 .footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; }
-.footer-prompt { color: #00d4ff; }
-.footer-cmd { color: #484b52; }
+.footer-prompt { color: var(--accent); }
+.footer-cmd { color: var(--text-muted); }
 
 /* ====== 响应式 ====== */
 @media (max-width: 800px) {

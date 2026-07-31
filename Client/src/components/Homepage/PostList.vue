@@ -97,33 +97,33 @@ defineEmits(['load-more', 'refresh'])
   gap: 8px;
   margin-bottom: 28px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #1c1d21;
+  border-bottom: 1px solid var(--border);
 }
 
 .section-arrow {
-  color: #00d4ff;
+  color: var(--accent);
   font-weight: 700;
 }
 
 .section-title {
   font-size: 13px;
   font-weight: 600;
-  color: #c9d1d9;
+  color: var(--text);
   letter-spacing: 0.5px;
 }
 
 .section-count {
   font-size: 11px;
-  color: #484b52;
+  color: var(--text-muted);
   margin-left: auto;
 }
 
 .btn-refresh {
   font-family: inherit;
   font-size: 14px;
-  color: #484b52;
+  color: var(--text-muted);
   background: none;
-  border: 1px solid #25262a;
+  border: 1px solid var(--border-strong);
   border-radius: 4px;
   cursor: pointer;
   padding: 2px 8px;
@@ -131,8 +131,8 @@ defineEmits(['load-more', 'refresh'])
 }
 
 .btn-refresh:hover {
-  color: #00d4ff;
-  border-color: #00d4ff;
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 /* ====== 状态 ====== */
@@ -143,11 +143,11 @@ defineEmits(['load-more', 'refresh'])
   gap: 10px;
   padding: 48px 20px;
   font-size: 13px;
-  color: #484b52;
+  color: var(--text-muted);
 }
 
 .state-box.error {
-  color: #ff5f57;
+  color: var(--err);
   flex-direction: column;
   gap: 8px;
 }
@@ -166,7 +166,7 @@ defineEmits(['load-more', 'refresh'])
   font-family: inherit;
   font-size: 12px;
   font-weight: 600;
-  color: #00d4ff;
+  color: var(--accent);
   background: none;
   border: none;
   cursor: pointer;
@@ -175,14 +175,14 @@ defineEmits(['load-more', 'refresh'])
 }
 
 .link-btn:hover {
-  color: #00b8d4;
+  color: var(--accent-hover);
 }
 
 .spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid #1c1d21;
-  border-top-color: #00d4ff;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -205,17 +205,17 @@ defineEmits(['load-more', 'refresh'])
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
   font-size: 12px;
   font-weight: 600;
-  color: #6e737a;
+  color: var(--text-dim);
   background: none;
-  border: 1px solid #25262a;
+  border: 1px solid var(--border-strong);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .btn-load-more:hover:not(:disabled) {
-  border-color: #00d4ff;
-  color: #00d4ff;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .btn-load-more:disabled {
@@ -224,6 +224,6 @@ defineEmits(['load-more', 'refresh'])
 }
 
 .btn-prompt {
-  color: #00d4ff;
+  color: var(--accent);
 }
 </style>

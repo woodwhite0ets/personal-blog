@@ -4,6 +4,13 @@ import { useRouter } from 'vue-router'
 const API_BASE = '/api'
 
 // ====== Token 存储助手 ======
+function decodeTokenPayload(token) {
+  const payload = token.split('.')[1]
+  const b64 = payload.replace(/-/g, '+').replace(/_/g, '/')
+  const pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4))
+  return JSON.parse(atob(b64 + pad))
+}
+
 function saveToken(token, remember) {
   // 清除所有旧数据
   localStorage.removeItem('token')
@@ -26,7 +33,7 @@ function saveToken(token, remember) {
 
   // 从 JWT 解码过期时间并存储（供路由守卫快速检测）
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]))
+    const payload = decodeTokenPayload(token)
     if (payload.exp) {
       const storage = remember ? localStorage : sessionStorage
       storage.setItem('token_expires', String(payload.exp * 1000))

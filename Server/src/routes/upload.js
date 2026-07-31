@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const pool = require('../config/db');
-const { authRequired } = require('../middleware/auth');
+const { authRequired, authNoGuest } = require('../middleware/auth');
 const { uploadLimiter } = require('../config/rateLimit');
 
 const router = express.Router();
@@ -51,7 +51,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const safeName = sanitizeFilename(file.originalname);
     const ext = path.extname(safeName).toLowerCase();
-    const allowed = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+    const allowed = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
     if (!allowed.includes(ext)) {
       return cb(new Error('unsupported file type'));
     }
@@ -68,7 +68,7 @@ const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
   fileFilter: (req, file, cb) => {
-    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);
     } else {
@@ -78,7 +78,7 @@ const upload = multer({
 });
 
 // ====== POST /api/upload ======
-router.post('/', authRequired, uploadLimiter, upload.single('file'), async (req, res) => {
+router.post('/', authRequired, authNoGuest, uploadLimiter, upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'no file uploaded' });

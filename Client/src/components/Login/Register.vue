@@ -379,9 +379,9 @@ async function handleResend() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0c0c0d;
+  background: var(--bg-deeper);
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
-  color: #c9d1d9;
+  color: var(--text);
   position: relative;
   overflow: hidden;
 }
@@ -389,8 +389,8 @@ async function handleResend() {
 .bg-grid {
   position: fixed; inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    linear-gradient(var(--overlay-a2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--overlay-a2) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
 }
@@ -399,7 +399,7 @@ async function handleResend() {
   position: fixed;
   top: -20%; left: 50%; transform: translateX(-50%);
   width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-a6) 0%, transparent 70%);
   pointer-events: none;
   animation: glowPulse 6s ease-in-out infinite;
 }
@@ -418,16 +418,16 @@ async function handleResend() {
 .avatar-circle {
   width: 64px; height: 64px;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, rgba(0,212,255,0.2) 0%, rgba(0,212,255,0.05) 100%);
-  border: 2px solid rgba(0,212,255,0.25);
+  background: linear-gradient(135deg, var(--accent-a20) 0%, var(--accent-a5) 100%);
+  border: 2px solid var(--accent-a25);
   border-radius: 12px;
-  font-size: 28px; font-weight: 800; color: #00d4ff;
+  font-size: 28px; font-weight: 800; color: var(--accent);
   text-transform: uppercase;
   transition: all 0.3s;
 }
 
 .avatar-hint {
-  font-size: 10px; color: #484b52;
+  font-size: 10px; color: var(--text-muted);
   letter-spacing: 1px; text-transform: lowercase;
 }
 
@@ -436,28 +436,28 @@ async function handleResend() {
   position: relative;
   width: 440px;
   max-width: 92vw;
-  background: #16171b;
-  border: 1px solid #25262a;
+  background: var(--bg-float);
+  border: 1px solid var(--border-strong);
   border-radius: 10px;
-  box-shadow: 0 0 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  box-shadow: 0 0 60px var(--shadow), 0 0 0 1px var(--overlay-a3) inset;
   overflow: hidden;
 }
  
 .terminal-bar {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 14px;
-  background: #1c1d21;
-  border-bottom: 1px solid #25262a;
+  background: var(--border);
+  border-bottom: 1px solid var(--border-strong);
 }
  
 .terminal-dot { width: 11px; height: 11px; border-radius: 50%; }
-.dot-red    { background: #ff5f57; }
-.dot-yellow { background: #feba0a; }
-.dot-green  { background: #2bd64e; }
+.dot-red    { background: var(--err); }
+.dot-yellow { background: var(--warn); }
+.dot-green  { background: var(--ok); }
  
 .terminal-title {
   flex: 1; text-align: center;
-  font-size: 11px; color: #5a5d64; letter-spacing: 1px;
+  font-size: 11px; color: var(--text-hint); letter-spacing: 1px;
 }
  
 .card-body {
@@ -479,32 +479,32 @@ async function handleResend() {
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
   font-size: 13px; font-weight: 700;
-  background: #1c1d21; color: #484b52;
-  border: 2px solid #25262a;
+  background: var(--border); color: var(--text-muted);
+  border: 2px solid var(--border-strong);
   transition: all 0.3s;
 }
  
 .step.active .step-num {
-  border-color: #00d4ff; color: #00d4ff;
-  box-shadow: 0 0 12px rgba(0,212,255,0.2);
+  border-color: var(--accent); color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-a20);
 }
  
 .step.done .step-num {
-  background: #00d4ff; color: #0c0c0d; border-color: #00d4ff;
+  background: var(--accent); color: var(--bg-deeper); border-color: var(--accent);
 }
  
 .step-label {
-  font-size: 10px; color: #484b52; letter-spacing: 1.5px; text-transform: uppercase;
+  font-size: 10px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase;
 }
  
-.step.active .step-label { color: #00d4ff; }
-.step.done .step-label { color: #6e737a; }
+.step.active .step-label { color: var(--accent); }
+.step.done .step-label { color: var(--text-dim); }
  
 .step-line {
-  width: 60px; height: 1px; background: #25262a; margin: 0 12px 22px; transition: background 0.3s;
+  width: 60px; height: 1px; background: var(--border-strong); margin: 0 12px 22px; transition: background 0.3s;
 }
  
-.step-line.done { background: #00d4ff; }
+.step-line.done { background: var(--accent); }
  
 /* ====== 头部 ====== */
 .header { margin-bottom: 28px; }
@@ -514,11 +514,11 @@ async function handleResend() {
   font-size: 16px; margin-bottom: 6px;
 }
  
-.prompt-arrow { color: #00d4ff; font-weight: 700; }
-.prompt-cmd { color: #e6edf3; font-weight: 600; }
+.prompt-arrow { color: var(--accent); font-weight: 700; }
+.prompt-cmd { color: var(--text-bright); font-weight: 600; }
  
-.subtitle { margin: 0; font-size: 12px; color: #484b52; }
-.comment { color: #484b52; font-style: italic; }
+.subtitle { margin: 0; font-size: 12px; color: var(--text-muted); }
+.comment { color: var(--text-muted); font-style: italic; }
  
 /* ====== 表单 ====== */
 .register-form {
@@ -530,12 +530,12 @@ async function handleResend() {
 }
  
 .field label {
-  font-size: 10px; font-weight: 600; color: #6e737a;
+  font-size: 10px; font-weight: 600; color: var(--text-dim);
   text-transform: uppercase; letter-spacing: 1.5px;
   display: flex; align-items: center; gap: 6px;
 }
  
-.label-icon { color: #00d4ff; font-weight: 700; }
+.label-icon { color: var(--accent); font-weight: 700; }
  
 .field input[type='text'],
 .field input[type='email'],
@@ -543,26 +543,26 @@ async function handleResend() {
   width: 100%;
   padding: 10px 12px;
   font-family: inherit; font-size: 13px;
-  color: #e6edf3;
-  background: #0f1013;
-  border: 1px solid #25262a;
+  color: var(--text-bright);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
   border-radius: 6px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
-  caret-color: #00d4ff;
+  caret-color: var(--accent);
 }
  
 .field input:focus {
-  border-color: #00d4ff;
-  box-shadow: 0 0 0 3px rgba(0,212,255,0.08), 0 0 20px rgba(0,212,255,0.04);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-a8), 0 0 20px var(--accent-a4);
 }
  
 .field input.error {
-  border-color: #ff5f57;
-  box-shadow: 0 0 0 3px rgba(255,95,87,0.08);
+  border-color: var(--err);
+  box-shadow: 0 0 0 3px var(--err-a8);
 }
  
-.field input::placeholder { color: #33363c; font-size: 12px; }
+.field input::placeholder { color: var(--text-faint); font-size: 12px; }
  
 /* 密码可见切换 */
 .password-wrap {
@@ -574,12 +574,12 @@ async function handleResend() {
 .toggle-pw {
   position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
   font-family: inherit; font-size: 10px; font-weight: 600;
-  color: #484b52; background: none; border: none;
+  color: var(--text-muted); background: none; border: none;
   cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
   transition: color 0.2s;
 }
  
-.toggle-pw:hover { color: #00d4ff; }
+.toggle-pw:hover { color: var(--accent); }
  
 /* 密码强度 */
 .password-strength {
@@ -587,21 +587,21 @@ async function handleResend() {
 }
  
 .strength-bar {
-  width: 100%; height: 3px; background: #1c1d21; border-radius: 2px;
+  width: 100%; height: 3px; background: var(--border); border-radius: 2px;
   transition: background 0.3s;
 }
  
-.strength-bar.bar-weak   { background: #ff5f57; }
-.strength-bar.bar-fair   { background: #feba0a; }
-.strength-bar.bar-good   { background: #2bd64e; }
-.strength-bar.bar-strong { background: #00d4ff; }
+.strength-bar.bar-weak   { background: var(--err); }
+.strength-bar.bar-fair   { background: var(--warn); }
+.strength-bar.bar-good   { background: var(--ok); }
+.strength-bar.bar-strong { background: var(--accent); }
  
 .strength-text {
-  font-size: 10px; margin-left: 6px; color: #484b52; min-width: 24px;
+  font-size: 10px; margin-left: 6px; color: var(--text-muted); min-width: 24px;
 }
  
 .field-error {
-  font-size: 11px; color: #ff5f57;
+  font-size: 11px; color: var(--err);
   display: flex; align-items: center; gap: 6px;
 }
  
@@ -611,8 +611,8 @@ async function handleResend() {
 .btn-submit {
   width: 100%; padding: 13px 0;
   font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 1px;
-  color: #0c0c0d;
-  background: linear-gradient(135deg, #00d4ff 0%, #00b8d4 100%);
+  color: var(--bg-deeper);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
   border: none; border-radius: 6px; cursor: pointer;
   transition: all 0.2s;
   display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -622,13 +622,13 @@ async function handleResend() {
  
 .btn-submit::before {
   content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+  background: linear-gradient(135deg, transparent 0%, var(--overlay-a10) 100%);
   opacity: 0; transition: opacity 0.2s;
 }
  
 .btn-submit:hover:not(:disabled)::before { opacity: 1; }
 .btn-submit:hover:not(:disabled) {
-  box-shadow: 0 0 30px rgba(0,212,255,0.3), 0 0 60px rgba(0,212,255,0.1);
+  box-shadow: 0 0 30px var(--accent-a30), 0 0 60px var(--accent-a10);
   transform: translateY(-1px);
 }
 .btn-submit:active:not(:disabled) { transform: translateY(0) scale(0.99); }
@@ -637,9 +637,9 @@ async function handleResend() {
  
 .server-error {
   display: flex; align-items: center; gap: 6px;
-  font-size: 12px; color: #ff5f57;
-  background: rgba(255,95,87,0.06);
-  border: 1px solid rgba(255,95,87,0.15);
+  font-size: 12px; color: var(--err);
+  background: var(--err-a6);
+  border: 1px solid var(--err-a15);
   padding: 10px 14px; border-radius: 6px; margin: 0;
 }
  
@@ -660,25 +660,25 @@ async function handleResend() {
 }
  
 .verify-text {
-  font-size: 14px; color: #8b9098; line-height: 1.7; margin: 20px 0 16px;
+  font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin: 20px 0 16px;
 }
  
 .verify-text strong {
-  color: #00d4ff; font-weight: 600;
+  color: var(--accent); font-weight: 600;
 }
  
 .verify-hint {
-  font-size: 12px; color: #484b52; line-height: 1.8;
+  font-size: 12px; color: var(--text-muted); line-height: 1.8;
 }
  
 .link-btn {
   font-family: inherit; font-size: 12px; font-weight: 600;
-  color: #00d4ff; background: none; border: none;
+  color: var(--accent); background: none; border: none;
   cursor: pointer; text-decoration: underline;
   transition: color 0.2s;
 }
  
-.link-btn:hover { color: #00b8d4; }
+.link-btn:hover { color: var(--accent-hover); }
 .link-btn:disabled { opacity: 0.5; cursor: not-allowed; }
  
 /* ====== 底部 ====== */
@@ -687,31 +687,31 @@ async function handleResend() {
 }
  
 .back-link a {
-  font-size: 12px; color: #484b52; text-decoration: none; transition: color 0.2s;
+  font-size: 12px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;
 }
  
-.back-link a:hover { color: #00d4ff; }
+.back-link a:hover { color: var(--accent); }
  
 .terminal-status {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 14px;
-  background: #0f1013; border-top: 1px solid #25262a;
-  font-size: 10px; color: #484b52; letter-spacing: 1.5px;
+  background: var(--bg-elevated); border-top: 1px solid var(--border-strong);
+  font-size: 10px; color: var(--text-muted); letter-spacing: 1.5px;
 }
  
 .status-dot {
   width: 7px; height: 7px; border-radius: 50%;
-  background: #2bd64e;
-  box-shadow: 0 0 6px rgba(43,214,78,0.4);
+  background: var(--ok);
+  box-shadow: 0 0 6px var(--ok-a40);
 }
  
-.status-sep { color: #25262a; }
+.status-sep { color: var(--border-strong); }
  
 /* ====== 加载 ====== */
 .spinner {
   width: 18px; height: 18px;
-  border: 2px solid rgba(12,12,13,0.3);
-  border-top-color: #0c0c0d;
+  border: 2px solid var(--bg-deeper);
+  border-top-color: var(--bg-deeper);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }

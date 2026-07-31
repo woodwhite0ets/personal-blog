@@ -37,11 +37,11 @@
 
         <div class="stat-card">
           <div class="stat-card-bar">
-            <span class="stat-dot" style="background:#2bd64e"></span>
+            <span class="stat-dot" style="background:var(--ok)"></span>
             <span class="stat-label">published</span>
           </div>
           <div class="stat-card-body">
-            <span class="stat-number" style="color:#2bd64e">{{ stats.posts.published }}</span>
+            <span class="stat-number" style="color:var(--ok)">{{ stats.posts.published }}</span>
             <span class="stat-sub">live posts</span>
           </div>
         </div>
@@ -52,7 +52,7 @@
             <span class="stat-label">drafts</span>
           </div>
           <div class="stat-card-body">
-            <span class="stat-number" style="color:#feba0a">{{ stats.posts.draft }}</span>
+            <span class="stat-number" style="color:var(--warn)">{{ stats.posts.draft }}</span>
             <span class="stat-sub">unpublished drafts</span>
           </div>
         </div>
@@ -158,21 +158,21 @@ onMounted(fetchStats)
 .section-head {
   display: flex; align-items: center; gap: 8px;
   margin-bottom: 28px; padding-bottom: 12px;
-  border-bottom: 1px solid #1c1d21;
+  border-bottom: 1px solid var(--border);
 }
-.section-arrow { color: #00d4ff; font-weight: 700; }
-.section-title { font-size: 13px; font-weight: 600; color: #c9d1d9; letter-spacing: 0.5px; }
+.section-arrow { color: var(--accent); font-weight: 700; }
+.section-title { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: 0.5px; }
 
 .state-box {
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; padding: 48px 20px; font-size: 13px; color: #484b52;
+  gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted);
 }
-.state-box.error { color: #ff5f57; flex-direction: column; gap: 8px; }
+.state-box.error { color: var(--err); flex-direction: column; gap: 8px; }
 .err-prefix { font-weight: 700; letter-spacing: 1px; }
 
 .spinner {
   width: 16px; height: 16px;
-  border: 2px solid #1c1d21; border-top-color: #00d4ff;
+  border: 2px solid var(--border); border-top-color: var(--accent);
   border-radius: 50%; animation: spin 0.7s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -184,23 +184,23 @@ onMounted(fetchStats)
 }
 
 .stat-card {
-  background: #0f1013; border: 1px solid #1c1d21;
+  background: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; overflow: hidden;
   transition: border-color 0.2s;
 }
-.stat-card:hover { border-color: #25262a; }
+.stat-card:hover { border-color: var(--border-strong); }
 
 .stat-card-bar {
   display: flex; align-items: center; gap: 6px;
-  padding: 8px 12px; background: rgba(255,255,255,0.015);
-  border-bottom: 1px solid #1c1d21;
+  padding: 8px 12px; background: var(--overlay-a15);
+  border-bottom: 1px solid var(--border);
 }
 .stat-dot { width: 7px; height: 7px; border-radius: 50%; }
-.dot-cyan { background: #00d4ff; }
-.dot-green { background: #2bd64e; }
-.dot-yellow { background: #feba0a; }
+.dot-cyan { background: var(--accent); }
+.dot-green { background: var(--ok); }
+.dot-yellow { background: var(--warn); }
 .stat-label {
-  font-size: 10px; font-weight: 600; color: #484b52;
+  font-size: 10px; font-weight: 600; color: var(--text-muted);
   letter-spacing: 1.5px; text-transform: lowercase;
 }
 
@@ -208,8 +208,8 @@ onMounted(fetchStats)
   padding: 16px; display: flex; flex-direction: column; gap: 4px;
 }
 
-.stat-number { font-size: 32px; font-weight: 800; color: #e6edf3; line-height: 1; }
-.stat-sub { font-size: 11px; color: #484b52; }
+.stat-number { font-size: 32px; font-weight: 800; color: var(--text-bright); line-height: 1; }
+.stat-sub { font-size: 11px; color: var(--text-muted); }
 
 /* 数据面板 */
 .data-grid {
@@ -217,20 +217,20 @@ onMounted(fetchStats)
 }
 
 .data-panel {
-  background: #0f1013; border: 1px solid #1c1d21;
+  background: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; overflow: hidden;
 }
 
 .panel-bar {
   display: flex; align-items: center; gap: 6px;
-  padding: 8px 12px; background: rgba(255,255,255,0.015);
-  border-bottom: 1px solid #1c1d21;
+  padding: 8px 12px; background: var(--overlay-a15);
+  border-bottom: 1px solid var(--border);
 }
 .panel-dot { width: 8px; height: 8px; border-radius: 50%; }
 .dim { opacity: 0.3; }
 .panel-title {
   flex: 1; font-size: 10px; font-weight: 600;
-  color: #484b52; text-align: center; letter-spacing: 1px;
+  color: var(--text-muted); text-align: center; letter-spacing: 1px;
 }
 
 .panel-body { padding: 0; }
@@ -238,35 +238,35 @@ onMounted(fetchStats)
 /* 表格 */
 .data-table { width: 100%; border-collapse: collapse; }
 .data-table th {
-  font-size: 10px; font-weight: 600; color: #484b52;
+  font-size: 10px; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px;
   text-align: left; padding: 10px 14px;
-  background: rgba(255,255,255,0.01);
-  border-bottom: 1px solid #1c1d21;
+  background: var(--overlay-a1);
+  border-bottom: 1px solid var(--border);
 }
 .data-table td {
-  padding: 9px 14px; font-size: 12px; color: #8b9098;
-  border-bottom: 1px solid rgba(28,29,33,0.5);
+  padding: 9px 14px; font-size: 12px; color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-a50);
 }
-.data-table tbody tr:hover { background: rgba(255,255,255,0.015); }
+.data-table tbody tr:hover { background: var(--overlay-a15); }
 .data-table tbody tr:last-child td { border-bottom: none; }
 
-.user-link { color: #00d4ff; text-decoration: none; transition: opacity 0.2s; }
+.user-link { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
 .user-link:hover { opacity: 0.8; }
 
 .role-badge, .status-badge {
   font-size: 10px; font-weight: 700; letter-spacing: 1px;
   padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
 }
-.role-badge.admin { color: #00d4ff; background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2); }
-.role-badge.author { color: #2bd64e; background: rgba(43,214,78,0.08); border: 1px solid rgba(43,214,78,0.2); }
-.role-badge.reader { color: #8b9098; background: rgba(139,144,152,0.08); border: 1px solid rgba(139,144,152,0.2); }
+.role-badge.admin { color: var(--accent); background: var(--accent-a8); border: 1px solid var(--accent-a20); }
+.role-badge.author { color: var(--ok); background: var(--ok-a8); border: 1px solid var(--ok-a20); }
+.role-badge.reader { color: var(--text-secondary); background: var(--text-secondary-a8); border: 1px solid var(--text-secondary-a20); }
 
-.status-badge.published { color: #2bd64e; background: rgba(43,214,78,0.08); border: 1px solid rgba(43,214,78,0.2); }
-.status-badge.draft { color: #feba0a; background: rgba(254,186,10,0.08); border: 1px solid rgba(254,186,10,0.2); }
-.status-badge.archived { color: #8b9098; background: rgba(139,144,152,0.08); border: 1px solid rgba(139,144,152,0.2); }
+.status-badge.published { color: var(--ok); background: var(--ok-a8); border: 1px solid var(--ok-a20); }
+.status-badge.draft { color: var(--warn); background: var(--warn-a8); border: 1px solid var(--warn-a20); }
+.status-badge.archived { color: var(--text-secondary); background: var(--text-secondary-a8); border: 1px solid var(--text-secondary-a20); }
 
-.muted { font-size: 11px; color: #484b52; }
+.muted { font-size: 11px; color: var(--text-muted); }
 
 @media (max-width: 900px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }

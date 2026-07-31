@@ -23,3 +23,13 @@ Server/logs/
 # 系统文件
 Thumbs.db
 Desktop.ini
+
+# 私钥与凭证（绝不可入库）
+*.pem
+*.key
+
+# Claude 工具与本地脚本
+.agents/
+.claude/skills/
+skills-lock.json
+verify-themes.mjs
