@@ -146,13 +146,7 @@
       </div>
     </div>
 
-    <!-- ====== 页脚 ====== -->
-    <footer class="footer">
-      <div class="footer-line">
-        <span class="footer-prompt">❯</span>
-        <span class="footer-cmd">{{ isEditMode ? 'vim' : 'touch' }} ./posts/{{ formSlug || 'new-post' }}.md</span>
-      </div>
-    </footer>
+    <SiteFooter :command="(isEditMode ? 'vim' : 'touch') + ' ./posts/' + (formSlug || 'new-post') + '.md'" />
   </div>
 </template>
 
@@ -163,6 +157,7 @@ import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import { useAuth, getToken } from '../../stores/auth.js'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import SiteFooter from '../common/SiteFooter.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -1158,16 +1153,6 @@ watch(
 .preview-body :deep(ol) { padding-left: 22px; margin: 10px 0; }
 .preview-body :deep(li) { margin: 5px 0; }
 .preview-body :deep(hr) { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
-
-/* ====== Footer ====== */
-.footer {
-  position: relative; z-index: 1;
-  border-top: 1px solid var(--border); padding: 20px 24px; text-align: center;
-}
-
-.footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; }
-.footer-prompt { color: var(--accent); }
-.footer-cmd { color: var(--text-muted); }
 
 /* ====== 响应式 ====== */
 @media (max-width: 900px) {

@@ -68,17 +68,13 @@
       </div>
     </div>
 
-    <footer class="footer">
-      <div class="footer-line">
-        <span class="footer-prompt">❯</span>
-        <span class="footer-cmd">cat /etc/motd</span>
-      </div>
-    </footer>
+    <SiteFooter command="cat /etc/motd" />
   </div>
 </template>
 
 <script setup>
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import SiteFooter from '../common/SiteFooter.vue'
 </script>
 
 <style scoped>
@@ -158,8 +154,4 @@ import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 .markdown-body li { margin: 4px 0; }
 .markdown-body strong { color: var(--text-bright); }
 
-.footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 24px; text-align: center; }
-.footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; }
-.footer-prompt { color: var(--accent); }
-.footer-cmd { color: var(--text-muted); }
 </style>

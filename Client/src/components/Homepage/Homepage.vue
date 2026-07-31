@@ -224,13 +224,7 @@
       </aside>
     </div>
 
-    <!-- ====== 页脚 ====== -->
-    <footer class="footer">
-      <div class="footer-line">
-        <span class="footer-prompt">❯</span>
-        <span class="footer-cmd">echo "© 2026 woodwhite@blog — a tech forum"</span>
-      </div>
-    </footer>
+    <SiteFooter command='echo "© 2026 woodwhite@blog — a tech forum"' />
   </div>
 </template>
 
@@ -239,6 +233,7 @@ import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PostList from './PostList.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import SiteFooter from '../common/SiteFooter.vue'
 import { useAuth } from '../../stores/auth.js'
 
 const route = useRoute()
@@ -765,16 +760,6 @@ onMounted(() => { fetchPosts(); fetchTags() })
   font-size: 10px; color: var(--text-muted);
   font-weight: 600;
 }
-
-/* ====== Footer ====== */
-.footer {
-  position: relative; z-index: 1;
-  border-top: 1px solid var(--border); padding: 24px; text-align: center;
-}
-
-.footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; }
-.footer-prompt { color: var(--accent); }
-.footer-cmd { color: var(--text-muted); }
 
 /* ====== 响应式 ====== */
 @media (max-width: 800px) {

@@ -216,13 +216,7 @@
       </div>
     </template>
 
-    <!-- ====== 页脚 ====== -->
-    <footer class="footer">
-      <div class="footer-line">
-        <span class="footer-prompt">❯</span>
-        <span class="footer-cmd">cat ./posts/{{ slug }}.md</span>
-      </div>
-    </footer>
+    <SiteFooter :command="'cat ./posts/' + slug + '.md'" />
 
     <!-- 确认弹窗 -->
     <ConfirmModal
@@ -246,6 +240,7 @@ import DOMPurify from 'dompurify'
 import { useAuth, getToken } from '../../stores/auth.js'
 import ConfirmModal from '../Admin/ConfirmModal.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import SiteFooter from '../common/SiteFooter.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -950,16 +945,6 @@ watch(slug, () => { fetchPost(); fetchComments() })
   gap: 8px; padding: 36px 0; font-size: 13px; color: var(--text-muted);
 }
 .empty-icon { font-size: 24px; opacity: 0.3; }
-
-/* ====== Footer ====== */
-.footer {
-  position: relative; z-index: 1;
-  border-top: 1px solid var(--border); padding: 24px; text-align: center;
-}
-
-.footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; }
-.footer-prompt { color: var(--accent); }
-.footer-cmd { color: var(--text-muted); }
 
 /* ====== 响应式 ====== */
 @media (max-width: 800px) {

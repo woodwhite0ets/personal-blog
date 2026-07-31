@@ -79,12 +79,7 @@
       </main>
     </div>
 
-    <footer class="footer">
-      <div class="footer-line">
-        <span class="footer-prompt">❯</span>
-        <span class="footer-cmd">sudo systemctl status blog-admin</span>
-      </div>
-    </footer>
+    <SiteFooter command="sudo systemctl status blog-admin" />
   </div>
 </template>
 
@@ -92,6 +87,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuth } from '../../stores/auth.js'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import SiteFooter from '../common/SiteFooter.vue'
 
 const { currentUser, logout } = useAuth()
 const showMenu = ref(false)
@@ -249,14 +245,6 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .terminal-green { color: var(--ok); }
 
 .content { min-height: 500px; }
-
-.footer {
-  position: relative; z-index: 1;
-  border-top: 1px solid var(--border); padding: 24px; text-align: center;
-}
-.footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; }
-.footer-prompt { color: var(--accent); }
-.footer-cmd { color: var(--text-muted); }
 
 @media (max-width: 800px) {
   .main-layout { grid-template-columns: 1fr; }
