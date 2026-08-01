@@ -337,9 +337,10 @@ function handleContentPaste(e) {
 
 async function uploadInlineImage(file) {
   const fd = new FormData()
-  fd.append('file', file)
+  // 注意: type/slug 必须先于 file 追加, 否则 multer destination 回调中 req.body 尚未解析完
   fd.append('type', 'content')
   fd.append('slug', formSlug.value)
+  fd.append('file', file)
 
   try {
     const res = await fetch(`${API_BASE}/upload`, {
@@ -407,9 +408,10 @@ async function uploadCover(postSlug) {
   if (!coverFile.value) return null
 
   const fd = new FormData()
-  fd.append('file', coverFile.value)
+  // 注意: type/slug 必须先于 file 追加, 否则 multer destination 回调中 req.body 尚未解析完
   fd.append('type', 'cover')
   fd.append('slug', postSlug)
+  fd.append('file', coverFile.value)
 
   try {
     const res = await fetch(`${API_BASE}/upload`, {

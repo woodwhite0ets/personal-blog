@@ -238,8 +238,9 @@ async function handleAvatarFile(e) {
   avatarUploading.value = true
   try {
     const fd = new FormData()
-    fd.append('file', file)
+    // 注意: type 必须先于 file 追加, 否则 multer destination 回调中 req.body 尚未解析完 type
     fd.append('type', 'avatar')
+    fd.append('file', file)
     const res = await fetch(`${API_BASE}/upload`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${getToken()}` },
