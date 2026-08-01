@@ -101,21 +101,6 @@
           <button v-if="coverPreview" class="btn-remove-cover" @click="removeCover">remove cover</button>
         </div>
 
-        <!-- 头像上传 -->
-        <div class="avatar-section">
-          <span class="label-hint">avatar:</span>
-          <div class="avatar-upload-row" @click="triggerAvatarUpload">
-            <div class="avatar-preview-sm">
-              <img v-if="avatarPreview" :src="avatarPreview" class="avatar-img" />
-              <span v-else class="avatar-char">{{ avatarChar }}</span>
-            </div>
-            <div class="avatar-actions">
-              <span class="avatar-hint">click to upload avatar</span>
-            </div>
-          </div>
-          <input ref="avatarInput" type="file" accept="image/*" hidden @change="handleAvatarFile" />
-        </div>
-
         <!-- 摘要 -->
         <textarea
           v-model="form.excerpt"
@@ -205,17 +190,6 @@ function showToast(message, type = 'success') {
   toast.show = true
   toast.timer = setTimeout(() => { toast.show = false }, 3000)
 }
-
-// ====== 头像上传 ======
-const avatarPreview = ref('')
-const avatarFile = ref(null)
-const avatarInput = ref(null)
-
-const avatarChar = computed(() => {
-  if (currentUser.value?.nickname) return currentUser.value.nickname.charAt(0).toUpperCase()
-  if (currentUser.value?.username) return currentUser.value.username.charAt(0).toUpperCase()
-  return '?'
-})
 
 const form = reactive({
   title: '',
@@ -327,20 +301,6 @@ function removeCover() {
   coverFile.value = null
   coverPreview.value = ''
   if (coverInput.value) coverInput.value.value = ''
-}
-
-// ====== 头像操作 ======
-function triggerAvatarUpload() {
-  avatarInput.value?.click()
-}
-
-function handleAvatarFile(e) {
-  const file = e.target.files?.[0]
-  if (!file) return
-  avatarFile.value = file
-  const reader = new FileReader()
-  reader.onload = () => { avatarPreview.value = reader.result }
-  reader.readAsDataURL(file)
 }
 
 // ====== 图片粘贴 ======
@@ -465,35 +425,6 @@ async function uploadCover(postSlug) {
   return null
 }
 
-async function uploadAvatar() {
-  if (!avatarFile.value) return null
-  const fd = new FormData()
-  fd.append('file', avatarFile.value)
-  fd.append('type', 'avatar')
-  try {
-    const res = await fetch(`${API_BASE}/upload`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${getToken()}` },
-      body: fd,
-    })
-    if (res.ok) {
-      const data = await res.json()
-      // 写入数据库并刷新 currentUser
-      try {
-        const apiBase = window.location.origin.includes('localhost') ? '/api' : '/api'
-        await fetch(`${apiBase}/auth/avatar`, {
-          method: 'PUT',
-          headers: { Authorization: `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ avatar: data.url }),
-        })
-        await fetchMe()
-      } catch { /* avatar save error — non-blocking */ }
-      return data.url
-    }
-  } catch { /* 上传失败不阻塞 */ }
-  return null
-}
-
 // ====== 保存 / 发布 ======
 async function saveDraft() {
   form.status = 'draft'
@@ -573,9 +504,6 @@ async function savePost() {
         }).catch(() => {})
       }
     }
-
-    // 如果有头像，上传
-    await uploadAvatar()
 
     // 清除本地草稿
     clearDraft()
@@ -980,40 +908,6 @@ watch(
 
 /* 封面上传 */
 .cover-section { display: flex; flex-direction: column; gap: 8px; }
-
-/* ====== 头像上传 ====== */
-.avatar-section { display: flex; flex-direction: column; gap: 8px; }
-
-.avatar-upload-row {
-  display: flex; align-items: center; gap: 16px;
-  padding: 12px; background: var(--bg-elevated);
-  border: 1px solid var(--border-strong); border-radius: 8px;
-  cursor: pointer; transition: border-color 0.2s;
-}
-
-.avatar-upload-row:hover { border-color: var(--accent); }
-
-.avatar-preview-sm {
-  width: 48px; height: 48px;
-  display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, var(--accent-a20) 0%, var(--accent-a5) 100%);
-  border: 2px solid var(--accent-a25);
-  border-radius: 8px; overflow: hidden; flex-shrink: 0;
-}
-
-.avatar-img {
-  width: 100%; height: 100%; object-fit: cover;
-}
-
-.avatar-char {
-  font-size: 20px; font-weight: 800; color: var(--accent); text-transform: uppercase;
-}
-
-.avatar-actions { flex: 1; }
-
-.avatar-hint {
-  font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px;
-}
 
 .cover-dropzone {
   display: flex; flex-direction: column; align-items: center; justify-content: center;

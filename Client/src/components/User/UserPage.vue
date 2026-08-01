@@ -35,7 +35,19 @@
     <!-- ====== 用户资料头 ====== -->
     <section class="user-hero">
       <div class="user-hero-inner">
-        <UserAvatar :src="profile?.avatar" :alt="(profile?.nickname || username)" size="xl" />
+        <div class="avatar-wrap" :class="{ 'avatar-editable': isOwnPage }" @click="isOwnPage && triggerAvatarUpload()">
+          <UserAvatar :src="profile?.avatar" :alt="(profile?.nickname || username)" size="xl" />
+          <span v-if="isOwnPage" class="avatar-edit-overlay" :class="{ uploading: avatarUploading }">
+            {{ avatarUploading ? '...' : '✎' }}
+          </span>
+        </div>
+        <input
+          ref="avatarInput"
+          type="file"
+          accept="image/*"
+          hidden
+          @change="handleAvatarFile"
+        />
         <div class="user-info">
           <div class="user-name-line">
             <span class="user-at">@{{ username }}</span>
@@ -190,7 +202,7 @@ import UserAvatar from '../common/UserAvatar.vue'
 import { useAuth, getToken } from '../../stores/auth.js'
 
 const route = useRoute()
-const { currentUser, isLoggedIn } = useAuth()
+const { currentUser, isLoggedIn, fetchMe } = useAuth()
 
 const API_BASE = '/api'
 
@@ -210,6 +222,43 @@ function openPwdModal() {
   pwdError.value = ''
   pwdDone.value = false
   showPwdModal.value = true
+}
+
+// ====== 头像上传 ======
+const avatarUploading = ref(false)
+const avatarInput = ref(null)
+
+function triggerAvatarUpload() {
+  avatarInput.value?.click()
+}
+
+async function handleAvatarFile(e) {
+  const file = e.target.files?.[0]
+  if (!file) return
+  avatarUploading.value = true
+  try {
+    const fd = new FormData()
+    fd.append('file', file)
+    fd.append('type', 'avatar')
+    const res = await fetch(`${API_BASE}/upload`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${getToken()}` },
+      body: fd,
+    })
+    if (res.ok) {
+      const data = await res.json()
+      await fetch(`${API_BASE}/auth/avatar`, {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ avatar: data.url }),
+      })
+      await fetchMe()
+      await fetchProfile()
+    }
+  } catch { /* ignore */ }
+  avatarUploading.value = false
+  // 清空 input 以支持重复上传同一文件
+  if (avatarInput.value) avatarInput.value.value = ''
 }
 
 async function handleChangePwd() {
@@ -455,6 +504,31 @@ watch(username, () => {
 .user-hero-inner {
   max-width: 1060px; margin: 0 auto; padding: 56px 24px 48px;
   display: flex; align-items: center; gap: 28px;
+}
+
+.avatar-wrap {
+  position: relative;
+  border-radius: 12px;
+}
+.avatar-wrap.avatar-editable {
+  cursor: pointer;
+}
+.avatar-wrap.avatar-editable:hover {
+  opacity: 0.9;
+}
+
+.avatar-edit-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.4);
+  border-radius: 12px;
+  color: var(--white);
+  font-size: 22px; font-weight: 700;
+  opacity: 0; transition: opacity 0.2s;
+}
+.avatar-wrap.avatar-editable:hover .avatar-edit-overlay,
+.avatar-edit-overlay.uploading {
+  opacity: 1;
 }
 
 .user-avatar-lg {
