@@ -58,7 +58,7 @@
             </router-link>
             <div class="user-menu-wrap" ref="userMenuRef">
               <button class="btn-user" @click="showUserMenu = !showUserMenu">
-                <span class="user-avatar">{{ currentUser?.nickname?.charAt(0) || currentUser?.username?.charAt(0) || '?' }}</span>
+                <UserAvatar :src="currentUser?.avatar" :alt="(currentUser?.nickname || currentUser?.username || '?')" size="sm" />
                 <span class="user-name">@{{ currentUser?.username }}</span>
                 <span class="user-caret" :class="{ open: showUserMenu }">▾</span>
               </button>
@@ -178,7 +178,7 @@
               :to="`/user/${c.username}`"
               class="contributor-item"
             >
-              <span class="contributor-avatar">{{ c.username.charAt(0).toUpperCase() }}</span>
+              <UserAvatar :src="c.avatar" :alt="c.username" size="xs" />
               <span class="contributor-name">@{{ c.username }}</span>
               <span class="contributor-count">({{ c.count }})</span>
             </router-link>
@@ -234,6 +234,7 @@ import { useRoute, useRouter } from 'vue-router'
 import PostList from './PostList.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteFooter from '../common/SiteFooter.vue'
+import UserAvatar from '../common/UserAvatar.vue'
 import { useAuth } from '../../stores/auth.js'
 
 const route = useRoute()

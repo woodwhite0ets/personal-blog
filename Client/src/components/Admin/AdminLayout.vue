@@ -17,7 +17,7 @@
           <span class="admin-badge">sudo mode</span>
           <router-link to="/HomePage" class="nav-link">← blog</router-link>
           <button class="btn-user" @click="showMenu = !showMenu">
-            <span class="user-avatar">{{ avatarChar }}</span>
+            <UserAvatar :src="currentUser?.avatar" :alt="(currentUser?.nickname || currentUser?.username || '?')" size="sm" />
             <span class="user-name">@{{ currentUser?.username }}</span>
           </button>
           <div v-if="showMenu" class="user-dropdown">
@@ -88,15 +88,10 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuth } from '../../stores/auth.js'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteFooter from '../common/SiteFooter.vue'
+import UserAvatar from '../common/UserAvatar.vue'
 
 const { currentUser, logout } = useAuth()
 const showMenu = ref(false)
-
-const avatarChar = computed(() => {
-  if (currentUser.value?.nickname) return currentUser.value.nickname.charAt(0).toUpperCase()
-  if (currentUser.value?.username) return currentUser.value.username.charAt(0).toUpperCase()
-  return '?'
-})
 
 function handleLogout() {
   showMenu.value = false

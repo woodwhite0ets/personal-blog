@@ -35,7 +35,7 @@
     <!-- ====== 用户资料头 ====== -->
     <section class="user-hero">
       <div class="user-hero-inner">
-        <div class="user-avatar-lg">{{ firstChar }}</div>
+        <UserAvatar :src="profile?.avatar" :alt="(profile?.nickname || username)" size="xl" />
         <div class="user-info">
           <div class="user-name-line">
             <span class="user-at">@{{ username }}</span>
@@ -186,6 +186,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import PostList from '../Homepage/PostList.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import UserAvatar from '../common/UserAvatar.vue'
 import { useAuth, getToken } from '../../stores/auth.js'
 
 const route = useRoute()
@@ -266,7 +267,6 @@ const currentPage = ref(1)
 const totalPages = ref(1)
 
 const username = computed(() => route.params.username)
-const firstChar = computed(() => (profile.value?.nickname || username.value).charAt(0).toUpperCase())
 const hasMore = computed(() => currentPage.value < totalPages.value)
 const totalPosts = computed(() => profile.value?.post_count ?? posts.value.length)
 

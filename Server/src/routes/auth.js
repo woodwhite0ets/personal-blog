@@ -280,6 +280,29 @@ router.put('/change-password', authRequired, authNoGuest, async (req, res) => {
   }
 });
 
+// ====== PUT /api/auth/avatar — 更新头像 ======
+router.put('/avatar', authRequired, authNoGuest, async (req, res) => {
+  try {
+    const { avatar } = req.body;
+    if (!avatar || typeof avatar !== 'string') {
+      return res.status(400).json({ message: 'avatar URL is required' });
+    }
+    // 路径穿越防护：只允许 /uploads/ 开头的合法路径
+    if (!avatar.startsWith('/uploads/') || avatar.includes('..')) {
+      return res.status(400).json({ message: 'invalid avatar path' });
+    }
+    if (avatar.length > 500) {
+      return res.status(400).json({ message: 'avatar URL too long' });
+    }
+
+    await pool.query('UPDATE users SET avatar = ? WHERE id = ?', [avatar, req.user.id]);
+    res.json({ message: 'avatar updated', avatar });
+  } catch (err) {
+    console.error('avatar update error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
 // ====== POST /api/auth/guest ======
 router.post('/guest', guestLimiter, async (req, res) => {
   try {

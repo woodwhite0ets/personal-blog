@@ -101,6 +101,21 @@
           <button v-if="coverPreview" class="btn-remove-cover" @click="removeCover">remove cover</button>
         </div>
 
+        <!-- 头像上传 -->
+        <div class="avatar-section">
+          <span class="label-hint">avatar:</span>
+          <div class="avatar-upload-row" @click="triggerAvatarUpload">
+            <div class="avatar-preview-sm">
+              <img v-if="avatarPreview" :src="avatarPreview" class="avatar-img" />
+              <span v-else class="avatar-char">{{ avatarChar }}</span>
+            </div>
+            <div class="avatar-actions">
+              <span class="avatar-hint">click to upload avatar</span>
+            </div>
+          </div>
+          <input ref="avatarInput" type="file" accept="image/*" hidden @change="handleAvatarFile" />
+        </div>
+
         <!-- 摘要 -->
         <textarea
           v-model="form.excerpt"
@@ -463,6 +478,16 @@ async function uploadAvatar() {
     })
     if (res.ok) {
       const data = await res.json()
+      // 写入数据库并刷新 currentUser
+      try {
+        const apiBase = window.location.origin.includes('localhost') ? '/api' : '/api'
+        await fetch(`${apiBase}/auth/avatar`, {
+          method: 'PUT',
+          headers: { Authorization: `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ avatar: data.url }),
+        })
+        await fetchMe()
+      } catch { /* avatar save error — non-blocking */ }
       return data.url
     }
   } catch { /* 上传失败不阻塞 */ }

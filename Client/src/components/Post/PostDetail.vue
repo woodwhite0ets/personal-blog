@@ -71,7 +71,7 @@
         <!-- 元信息 -->
         <div class="post-meta-line">
           <router-link v-if="post.author" :to="`/user/${post.author.username}`" class="post-author-link">
-            <span class="author-avatar-sm">{{ (post.author.nickname || post.author.username).charAt(0).toUpperCase() }}</span>
+            <UserAvatar :src="post.author.avatar" :alt="(post.author.nickname || post.author.username)" size="sm" />
             <span class="author-name">@{{ post.author.username }}</span>
           </router-link>
           <span class="meta-sep"></span>
@@ -137,7 +137,7 @@
         <!-- 评论列表 -->
         <div v-if="commentList.length > 0" class="comment-list">
           <div v-for="c in commentList" :key="c.id" class="comment-item">
-            <div class="comment-avatar">{{ (c.author.nickname || c.author.username).charAt(0).toUpperCase() }}</div>
+            <UserAvatar :src="c.author.avatar" :alt="(c.author.nickname || c.author.username)" size="sm" />
             <div class="comment-body">
               <div class="comment-header">
                 <router-link :to="`/user/${c.author.username}`" class="comment-author">@{{ c.author.username }}</router-link>
@@ -176,7 +176,7 @@
               <!-- 嵌套回复 -->
               <div v-if="c.replies && c.replies.length" class="reply-list">
                 <div v-for="r in c.replies" :key="r.id" class="comment-item reply-item">
-                  <div class="comment-avatar reply-avatar">{{ (r.author.nickname || r.author.username).charAt(0).toUpperCase() }}</div>
+                  <UserAvatar :src="r.author.avatar" :alt="(r.author.nickname || r.author.username)" size="xs" />
                   <div class="comment-body">
                     <div class="comment-header">
                       <router-link :to="`/user/${r.author.username}`" class="comment-author">@{{ r.author.username }}</router-link>
@@ -205,7 +205,7 @@
       <!-- 作者卡片 -->
       <div v-if="post.author" class="author-card">
         <router-link :to="`/user/${post.author.username}`" class="author-card-inner">
-          <div class="author-avatar-md">{{ (post.author.nickname || post.author.username).charAt(0).toUpperCase() }}</div>
+          <UserAvatar :src="post.author.avatar" :alt="(post.author.nickname || post.author.username)" size="md" />
           <div class="author-card-body">
             <span class="author-card-name">@{{ post.author.username }}</span>
             <span v-if="post.author.nickname" class="author-card-nick">{{ post.author.nickname }}</span>
@@ -241,6 +241,7 @@ import { useAuth, getToken } from '../../stores/auth.js'
 import ConfirmModal from '../Admin/ConfirmModal.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteFooter from '../common/SiteFooter.vue'
+import UserAvatar from '../common/UserAvatar.vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -52,7 +52,7 @@
           <tbody>
             <tr v-for="u in users" :key="u.id" :class="{ 'self-row': u.id === currentUser?.id }">
               <td class="td-avatar">
-                <span class="avatar-sm">{{ u.nickname.charAt(0).toUpperCase() }}</span>
+                <UserAvatar :src="u.avatar" :alt="u.nickname" size="xs" />
               </td>
               <td>
                 <router-link :to="`/user/${u.username}`" class="user-link">@{{ u.username }}</router-link>
@@ -117,6 +117,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useAuth, getToken } from '../../stores/auth.js'
 import ConfirmModal from './ConfirmModal.vue'
+import UserAvatar from '../common/UserAvatar.vue'
 
 const API_BASE = '/api'
 const { currentUser } = useAuth()
