@@ -53,7 +53,10 @@ router.post('/register', registerLimiter, async (req, res) => {
       [username, email]
     );
     if (existing.length > 0) {
-      return res.status(409).json({ message: 'username or email already taken' });
+      // 语义模糊化，避免用户名/邮箱枚举
+      return res.status(201).json({
+        message: 'registration initiated — please check your email to verify your account',
+      });
     }
 
     // 生成验证令牌
@@ -144,13 +147,14 @@ router.post('/resend-verification', resendVerifyLimiter, async (req, res) => {
     );
 
     if (rows.length === 0) {
-      return res.status(404).json({ message: 'no account found with this email' });
+      // 语义模糊化，避免邮箱枚举
+      return res.json({ message: 'if this email is registered, a verification email has been sent' });
     }
 
     const user = rows[0];
 
     if (user.is_verified) {
-      return res.json({ message: 'this email is already verified — please log in' });
+      return res.json({ message: 'if this email is registered, a verification email has been sent' });
     }
 
     // 重新生成 token
@@ -200,11 +204,7 @@ router.post('/login', loginLimiter, async (req, res) => {
     }
 
     if (!user.is_verified) {
-      return res.status(403).json({
-        message: 'please verify your email before logging in',
-        code: 'UNVERIFIED',
-        email: user.email,
-      });
+      return res.status(401).json({ message: 'invalid username or password' });
     }
 
     delete user.password_hash;

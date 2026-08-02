@@ -9,12 +9,17 @@ const globalLimiter = rateLimit({
   message: { message: 'too many requests — slow down' },
 });
 
-// ====== 严格限制：登录（防暴力破解） ======
+// ====== 严格限制：登录（防暴力破解，按 IP + 账号联合） ======
 const loginLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 5,               // 每分钟最多 5 次登录尝试
+  max: 5,               // 每分钟每 IP+账号 最多 5 次登录尝试
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: (req) => {
+    const username = (req.body && req.body.username) || '';
+    const ip = req.ip || 'unknown';
+    return `${ip}:${username}`;
+  },
   message: { message: 'too many login attempts — try again in 1 minute' },
 });
 

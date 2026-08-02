@@ -133,9 +133,9 @@ app.use((err, req, res, next) => {
 // ====== 启动 ======
 async function start() {
   await ensureDatabase();  // 自动检测并创建数据库/表
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-    console.log(`Uploads served at http://localhost:${PORT}/uploads`);
+  app.listen(PORT, '127.0.0.1', () => {
+    console.log(`Server running at http://127.0.0.1:${PORT}`);
+    console.log(`Uploads served at http://127.0.0.1:${PORT}/uploads`);
   });
 }
 start();

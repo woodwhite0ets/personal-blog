@@ -26,6 +26,11 @@ function sanitizeContent(val) {
   return val
     .replace(/\x00/g, '')
     .replace(/[\x01-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+    // 剥离危险标签（防存储型 XSS）
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
+    .replace(/<object[\s\S]*?<\/object>/gi, '')
+    .replace(/<embed[\s\S]*?>|<embed[\s\S]*?<\/embed>/gi, '')
     // 剥离 base64 data URI（防存入数据库）
     .replace(/!\[([^\]]*)\]\(data:[^)]+\)/g, '![$1](uploading...)')
     .slice(0, 200000); // 200KB max
@@ -63,8 +68,12 @@ router.get('/', authOptional, async (req, res) => {
     const tag      = req.query.tag || '';
     const search   = req.query.search || '';
 
-    // status=all 仅 admin 可用
-    if (status === 'all' && (!req.user || req.user.role !== 'admin')) {
+    // status=all 仅 admin 可用；非 admin 强制 published
+    const isAdmin = req.user && req.user.role === 'admin';
+    if (status !== 'published' && !isAdmin) {
+      status = 'published';
+    }
+    if (status === 'all' && !isAdmin) {
       status = 'published';
     }
 
@@ -207,6 +216,13 @@ router.get('/:slug', authOptional, async (req, res) => {
     }
 
     const p = rows[0];
+
+    // 非公开文章仅允许作者或 admin 查看
+    const isAdmin = req.user && req.user.role === 'admin';
+    const isAuthor = req.user && req.user.username === p.username;
+    if (p.status !== 'published' && !isAdmin && !isAuthor) {
+      return res.status(404).json({ message: 'post not found' });
+    }
 
     // 获取标签
     const [tagRows] = await pool.query(

@@ -140,17 +140,9 @@ async function ensureDatabase() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
-  // 7. 插入默认管理员
-  await initConn.query(`
-    INSERT INTO \`users\` (\`username\`, \`nickname\`, \`email\`, \`password_hash\`, \`role\`, \`is_verified\`)
-    VALUES ('WoodWhite', 'WoodWhite', 'admin@blog.local',
-      '$2b$12$tXsT4KlknCkzua6kzYiPtORbF8BcUmnGSGwg6R1vKAmHk.Z8UV0Yu',
-      'admin', 1)
-  `);
-
   await initConn.end();
-  console.log('[db] tables created, admin user inserted');
-  console.log('[db] default login: WoodWhite / 123456');
+  console.log('[db] tables created successfully');
+  console.log('[db] create your admin account via the registration page');
 }
 
 // ====== 增量迁移 ======

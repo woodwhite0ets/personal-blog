@@ -26,7 +26,7 @@ function authRequired(req, res, next) {
   }
 
   try {
-    req.user = jwt.verify(token, JWT_SECRET);
+    req.user = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
     next();
   } catch {
     return res.status(401).json({ message: 'invalid or expired token' });
@@ -40,7 +40,7 @@ function authOptional(req, res, next) {
 
   if (token) {
     try {
-      req.user = jwt.verify(token, JWT_SECRET);
+      req.user = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
     } catch { /* token 无效也放行 */ }
   }
   next();

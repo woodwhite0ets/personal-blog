@@ -422,7 +422,10 @@ const canDelete = computed(() => isAuthor.value || isAdmin.value)
 const renderedContent = computed(() => {
   if (!post.value?.content) return ''
   const raw = marked(post.value.content)
-  return DOMPurify.sanitize(raw)
+  return DOMPurify.sanitize(raw, {
+    FORBID_ATTR: ['style', 'id', 'name'],
+    ALLOWED_URI_REGEXP: /^(?:(?:https?|ftp):\/\/|\/)/i,
+  })
 })
 
 // ====== 标签归一化（兼容新旧格式） ======

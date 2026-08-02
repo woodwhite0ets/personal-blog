@@ -9,6 +9,15 @@ function decodeTokenPayload(token) {
   return JSON.parse(atob(b64 + pad));
 }
 
+function clearStaleToken() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('token_expires');
+  localStorage.removeItem('remember_me');
+  localStorage.removeItem('guest_mode');
+  localStorage.removeItem('guest_user');
+  sessionStorage.clear();
+}
+
 const routes = [
   {
     path: '/',
@@ -115,7 +124,11 @@ router.beforeEach((to, from, next) => {
         sessionStorage.clear();
         return next({ path: '/', query: { redirect: to.fullPath } });
       }
-    } catch { /* 无效 token 格式，放行 */ }
+    } catch {
+      // 无效 token 格式，清理后重定向
+      clearStaleToken();
+      return next({ path: '/', query: { redirect: to.fullPath } });
+    }
   }
 
   // 2. 需登录路由

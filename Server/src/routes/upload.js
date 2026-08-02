@@ -77,11 +77,41 @@ const upload = multer({
   },
 });
 
+// ====== 真实图片魔数校验（防止伪装成图片的 HTML/JS） ======
+function checkImageMagicBytes(filePath, ext) {
+  try {
+    const buf = fs.readFileSync(filePath);
+    if (buf.length < 12) return false;
+    const hex = buf.subarray(0, 12).toString('hex').toUpperCase();
+    switch (ext) {
+      case '.jpg': case '.jpeg':
+        return hex.startsWith('FFD8FF');
+      case '.png':
+        return hex.startsWith('89504E470D0A1A0A');
+      case '.gif':
+        return hex.startsWith('47494638');
+      case '.webp':
+        return hex.startsWith('52494646') && buf.subarray(8, 12).toString('ascii') === 'WEBP';
+      default:
+        return false;
+    }
+  } catch {
+    return false;
+  }
+}
+
 // ====== POST /api/upload ======
 router.post('/', authRequired, authNoGuest, uploadLimiter, upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'no file uploaded' });
+    }
+
+    // 魔数校验：确保文件真实是图片（防伪造扩展名的恶意内容）
+    const magicExt = path.extname(req.file.filename).toLowerCase();
+    if (!checkImageMagicBytes(req.file.path, magicExt)) {
+      try { fs.unlinkSync(req.file.path); } catch {}
+      return res.status(400).json({ message: 'file content does not match image type' });
     }
 
     const type = req.body.type || 'posts';

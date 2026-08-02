@@ -231,7 +231,10 @@ function snapshot() {
 const previewHtml = computed(() => {
   if (!form.content.trim()) return ''
   const raw = marked(form.content)
-  return DOMPurify.sanitize(raw)
+  return DOMPurify.sanitize(raw, {
+    FORBID_ATTR: ['style', 'id', 'name'],
+    ALLOWED_URI_REGEXP: /^(?:(?:https?|ftp):\/\/|\/)/i,
+  })
 })
 
 const wordCount = computed(() => {
