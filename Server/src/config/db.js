@@ -16,11 +16,19 @@ async function ensureDatabase() {
     password: DB_PASSWORD,
   });
 
-  // 创建数据库
-  await initConn.query(
-    `CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
+  // 检查数据库是否存在（避免最小权限账号需要全局 CREATE 权限）
+  const [dbRows] = await initConn.query(
+    'SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = ?',
+    [DB_NAME]
   );
-  console.log(`[db] database "${DB_NAME}" ready`);
+  if (dbRows.length === 0) {
+    await initConn.query(
+      `CREATE DATABASE \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
+    );
+    console.log(`[db] database "${DB_NAME}" created`);
+  } else {
+    console.log(`[db] database "${DB_NAME}" ready`);
+  }
 
   await initConn.query(`USE \`${DB_NAME}\``);
 

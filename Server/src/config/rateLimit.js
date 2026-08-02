@@ -1,4 +1,4 @@
-const rateLimit = require('express-rate-limit');
+const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
 
 // ====== 全局速率限制（所有请求） ======
 const globalLimiter = rateLimit({
@@ -17,7 +17,7 @@ const loginLimiter = rateLimit({
   legacyHeaders: false,
   keyGenerator: (req) => {
     const username = (req.body && req.body.username) || '';
-    const ip = req.ip || 'unknown';
+    const ip = ipKeyGenerator(req);  // 正确处理 IPv4/IPv6
     return `${ip}:${username}`;
   },
   message: { message: 'too many login attempts — try again in 1 minute' },
