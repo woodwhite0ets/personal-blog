@@ -152,10 +152,12 @@ router.post('/resend-verification', resendVerifyLimiter, async (req, res) => {
     if (!email) {
       return res.status(400).json({ message: 'email is required' });
     }
+    // 统一小写（与注册入库时一致，防大小写不一致导致查不到账号）
+    const normalizedEmail = email.trim().toLowerCase();
 
     const [rows] = await pool.query(
       'SELECT id, username, is_verified, verify_token, verify_expires FROM users WHERE email = ?',
-      [email]
+      [normalizedEmail]
     );
 
     if (rows.length === 0) {
