@@ -103,7 +103,7 @@
           <div class="contact-line">
             <span class="contact-icon">✉</span>
             <span class="contact-label">邮箱</span>
-            <a class="contact-val" href="mailto:woodwhite0ets@gmail.com">woodwhite0ets@gmail.com</a>
+            <a class="contact-val" href="mailto:1903784785@qq.com">1903784785@qq.com</a>
           </div>
           <div class="contact-line">
             <span class="contact-icon">⌥</span>
@@ -113,7 +113,7 @@
           <div class="contact-line">
             <span class="contact-icon">◆</span>
             <span class="contact-label">微信</span>
-            <span class="contact-val dim-val">（待补充）</span>
+            <span class="contact-val">Woodwhite-0827</span>
           </div>
         </div>
       </div>
