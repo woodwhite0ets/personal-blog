@@ -21,7 +21,8 @@ const router = express.Router();
 // ====== POST /api/auth/register ======
 router.post('/register', registerLimiter, async (req, res) => {
   try {
-    const { username, nickname, email, password } = req.body;
+    const { username, nickname, password } = req.body;
+    let email = req.body.email; // 需可重新赋值（后续小写化）
 
     if (!username || !nickname || !email || !password) {
       return res.status(400).json({ message: 'all fields are required' });
