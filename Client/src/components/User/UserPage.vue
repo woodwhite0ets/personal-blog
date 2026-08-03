@@ -32,8 +32,15 @@
       </div>
     </header>
 
+    <!-- ====== 用户不存在 ====== -->
+    <div v-if="notFound" class="user-notfound">
+      <div class="notfound-icon">?</div>
+      <p class="notfound-text">用户 @{{ username }} 不存在</p>
+      <router-link to="/HomePage" class="notfound-link">← 返回首页</router-link>
+    </div>
+
     <!-- ====== 用户资料头 ====== -->
-    <section class="user-hero">
+    <section v-else class="user-hero">
       <div class="user-hero-inner">
         <div class="avatar-wrap" :class="{ 'avatar-editable': isOwnPage }" @click="isOwnPage && triggerAvatarUpload()">
           <UserAvatar :src="profile?.avatar" :alt="(profile?.nickname || username)" size="xl" />
@@ -466,6 +473,7 @@ const posts = ref([])
 const loading = ref(true)
 const loadingMore = ref(false)
 const error = ref('')
+const notFound = ref(false)
 const currentPage = ref(1)
 const totalPages = ref(1)
 
@@ -488,12 +496,24 @@ const userTags = computed(() => {
     .slice(0, 10)
 })
 
+// ====== 请求序号守卫（防快速切用户时旧响应覆盖） ======
+let profileSeq = 0
+
 // ====== 获取用户资料 ======
 async function fetchProfile() {
+  const mySeq = ++profileSeq
   try {
     const res = await fetch(`${API_BASE}/users/${username.value}`)
+    if (res.status === 404) {
+      if (mySeq === profileSeq) notFound.value = true
+      return
+    }
     if (res.ok) {
-      profile.value = (await res.json()).user
+      const user = (await res.json()).user
+      if (mySeq === profileSeq) {
+        profile.value = user
+        notFound.value = false
+      }
     }
   } catch { /* 展示降级 UI */ }
 }
@@ -649,6 +669,21 @@ watch(username, () => {
 .btn-write-icon { font-size: 15px; font-weight: 700; }
 
 /* ====== Hero ====== */
+.user-notfound {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 80px 24px; text-align: center;
+}
+.notfound-icon {
+  width: 64px; height: 64px; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; font-weight: 700; color: var(--text-faint);
+  border: 2px solid var(--border); border-radius: 50%;
+}
+.notfound-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+.notfound-link { color: var(--accent); text-decoration: none; font-size: 13px; }
+.notfound-link:hover { color: var(--accent-hover); }
+
 .user-hero {
   position: relative; z-index: 1;
   border-bottom: 1px solid var(--border);

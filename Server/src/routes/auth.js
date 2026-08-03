@@ -43,6 +43,8 @@ router.post('/register', registerLimiter, async (req, res) => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return res.status(400).json({ message: 'invalid email format' });
     }
+    // 统一小写（防忘记密码/重发验证时大小写不一致导致收不到邮件）
+    email = email.trim().toLowerCase();
     // 昵称长度限制
     if (nickname.length > 50) {
       return res.status(400).json({ message: 'nickname too long (max 50 chars)' });
@@ -53,7 +55,8 @@ router.post('/register', registerLimiter, async (req, res) => {
       [username, email]
     );
     if (existing.length > 0) {
-      // 语义模糊化，避免用户名/邮箱枚举
+      // 语义模糊化 + 时序拉平（bcrypt 耗时一致，防用户名/邮箱枚举）
+      await bcrypt.hash(password, 12);
       return res.status(201).json({
         message: 'registration initiated — please check your email to verify your account',
       });
@@ -64,11 +67,21 @@ router.post('/register', registerLimiter, async (req, res) => {
     const verify_expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 小时
 
     const password_hash = await bcrypt.hash(password, 12);
-    const [result] = await pool.query(
-      `INSERT INTO users (username, nickname, email, password_hash, verify_token, verify_expires)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [username, nickname, email, password_hash, verify_token, verify_expires]
-    );
+    try {
+      const [result] = await pool.query(
+        `INSERT INTO users (username, nickname, email, password_hash, verify_token, verify_expires)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [username, nickname, email, password_hash, verify_token, verify_expires]
+      );
+    } catch (err) {
+      // 并发注册同用户名/邮箱 → 唯一键冲突，返回与已存在一致的响应
+      if (err.code === 'ER_DUP_ENTRY') {
+        return res.status(201).json({
+          message: 'registration initiated — please check your email to verify your account',
+        });
+      }
+      throw err;
+    }
 
     // 尝试发邮件（mail 未配置也不阻塞注册）
     try {
@@ -77,10 +90,9 @@ router.post('/register', registerLimiter, async (req, res) => {
       console.warn('Failed to send verification email:', mailErr.message);
     }
 
-    // 注册成功，但不自动登录 → 前端展示"去邮箱验证"
+    // 注册成功，但不自动登录 → 前端展示"去邮箱验证"（响应不含 email，防枚举）
     res.status(201).json({
       message: 'registration successful — please check your email to verify',
-      email,
     });
   } catch (err) {
     console.error('register error:', err);
@@ -381,13 +393,13 @@ router.put('/profile', authRequired, authNoGuest, async (req, res) => {
       newNickname = nickname.trim().replace(/<[^>]*>/g, '').slice(0, 50);
     }
 
-    // 校验 bio
+    // 校验 bio（users.bio 列为 VARCHAR(300)）
     let newBio;
     if (bio !== undefined) {
-      if (typeof bio !== 'string' || bio.length > 500) {
-        return res.status(400).json({ message: 'bio too long (max 500 chars)' });
+      if (typeof bio !== 'string' || bio.length > 300) {
+        return res.status(400).json({ message: 'bio too long (max 300 chars)' });
       }
-      newBio = bio.trim().replace(/<[^>]*>/g, '').slice(0, 500);
+      newBio = bio.trim().replace(/<[^>]*>/g, '').slice(0, 300);
     }
 
     // 当前用户

@@ -305,6 +305,7 @@ function validate() {
     valid = false
   } else if (form.password.length < 8) {
     errors.password = '密码至少 8 位'
+    valid = false
   } else if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(form.password)) {
     errors.password = '密码需包含字母和数字'
     valid = false

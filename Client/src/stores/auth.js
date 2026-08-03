@@ -55,7 +55,11 @@ function clearToken() {
   localStorage.removeItem('remember_me')
   localStorage.removeItem('guest_mode')
   localStorage.removeItem('guest_user')
-  sessionStorage.clear()
+  // 只清 token 相关，保留 sessionStorage 里的编辑器草稿（blog_editor_draft）
+  sessionStorage.removeItem('token')
+  sessionStorage.removeItem('token_expires')
+  sessionStorage.removeItem('guest_mode')
+  sessionStorage.removeItem('guest_user')
 }
 
 // ====== 全局单例状态 ======

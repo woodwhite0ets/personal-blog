@@ -235,7 +235,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
@@ -442,8 +442,12 @@ const normalizedTags = computed(() => {
   return []
 })
 
+// ====== 请求序号守卫（防快速切文章时旧响应覆盖） ======
+let fetchSeq = 0
+
 // ====== 获取文章 ======
 async function fetchPost() {
+  const mySeq = ++fetchSeq
   loading.value = true
   error.value = ''
 
@@ -458,12 +462,14 @@ async function fetchPost() {
       throw new Error(data.message || '请求失败')
     }
 
+    if (mySeq !== fetchSeq) return // 丢弃过期响应
     post.value = data.post
     updateSeoMeta(data.post)
   } catch (e) {
+    if (mySeq !== fetchSeq) return
     error.value = e.message || '获取文章失败'
   } finally {
-    loading.value = false
+    if (mySeq === fetchSeq) loading.value = false
   }
 }
 
@@ -500,9 +506,23 @@ function updateSeoMeta(p) {
   setMeta('link[rel="canonical"]', 'href', url)
 }
 
+// ====== 离开文章页时恢复默认 SEO（防标题/OG 残留） ======
+function resetSeoMeta() {
+  document.title = 'woodwhite@blog'
+  setMeta('meta[name="description"]', 'content', 'woodwhite@blog — a technical forum blog')
+  setMeta('meta[property="og:title"]', 'content', 'woodwhite@blog')
+  setMeta('meta[property="og:description"]', 'content', 'a technical forum blog')
+  setMeta('meta[property="og:url"]', 'content', SITE_URL)
+  setMeta('meta[property="og:type"]', 'content', 'website')
+  setMeta('meta[name="twitter:title"]', 'content', 'woodwhite@blog')
+  setMeta('meta[name="twitter:description"]', 'content', 'a technical forum blog')
+  setMeta('link[rel="canonical"]', 'href', SITE_URL)
+}
+
 // ====== 生命周期 ======
 onMounted(() => { fetchPost(); fetchComments() })
 watch(slug, () => { fetchPost(); fetchComments() })
+onBeforeUnmount(() => { resetSeoMeta() })
 </script>
 
 <style scoped>

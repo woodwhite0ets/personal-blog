@@ -6,6 +6,11 @@ const router = express.Router();
 // 站点配置（生产域名）
 const SITE_URL = process.env.SITE_URL || 'http://localhost:3027';
 
+// 安全包装 CDATA 内容：转义 ]]> 防止 CDATA 注入
+function cdata(text) {
+  return String(text || '').replace(/\]\]>/g, ']]]]><![CDATA[>');
+}
+
 // ====== GET /feed.xml — RSS 2.0 ======
 router.get('/feed.xml', async (req, res) => {
   try {
@@ -22,12 +27,12 @@ router.get('/feed.xml', async (req, res) => {
       const pubDate = p.published_at ? new Date(p.published_at).toUTCString() : new Date().toUTCString();
       const desc = (p.excerpt || p.content || '').slice(0, 300).replace(/<[^>]*>/g, '');
       return `    <item>
-      <title><![CDATA[${p.title}]]></title>
+      <title><![CDATA[${cdata(p.title)}]]></title>
       <link>${link}</link>
       <guid isPermaLink="true">${link}</guid>
       <pubDate>${pubDate}</pubDate>
-      <dc:creator><![CDATA[${p.username}]]></dc:creator>
-      <description><![CDATA[${desc}]]></description>
+      <dc:creator><![CDATA[${cdata(p.username)}]]></dc:creator>
+      <description><![CDATA[${cdata(desc)}]]></description>
     </item>`;
     }).join('\n');
 

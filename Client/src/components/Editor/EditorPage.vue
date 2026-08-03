@@ -354,7 +354,8 @@ function handleContentPaste(e) {
 async function uploadInlineImage(file, uid) {
   const fd = new FormData()
   // 注意: type/slug 必须先于 file 追加, 否则 multer destination 回调中 req.body 尚未解析完
-  fd.append('type', 'content')
+  // type 用 'posts' (后端白名单 avatar/posts/cover, 'content' 会被拒绝)
+  fd.append('type', 'posts')
   fd.append('slug', formSlug.value)
   fd.append('file', file)
 

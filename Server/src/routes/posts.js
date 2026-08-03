@@ -31,6 +31,10 @@ function sanitizeContent(val) {
     .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
     .replace(/<object[\s\S]*?<\/object>/gi, '')
     .replace(/<embed[\s\S]*?>|<embed[\s\S]*?<\/embed>/gi, '')
+    // 剥离事件处理器属性（onerror/onload/onclick 等）防 XSS
+    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]*)/gi, '')
+    // 剥离 javascript:/data: 危险协议
+    .replace(/(javascript|vbscript)\s*:/gi, 'blocked:')
     // 剥离 base64 data URI（防存入数据库）
     .replace(/!\[([^\]]*)\]\(data:[^)]+\)/g, '![$1](uploading...)')
     .slice(0, 200000); // 200KB max
@@ -80,13 +84,9 @@ router.get('/', authOptional, async (req, res) => {
     // - 未登录只能看 published
     const isAdmin = req.user && req.user.role === 'admin';
     const isLoggedIn = !!req.user && req.user.id > 0 && !req.user.isGuest;
-    if (!isAdmin && status !== 'published') {
-      if (!isLoggedIn) {
-        status = 'published';
-      } else {
-        // 非 admin 用户只能看自己的草稿/归档
-        status = 'published'; // 先重置，后面按需追加自己的
-      }
+    // 未登录非 admin 只能看 published；已登录用户可看自己的 draft/archived（后面追加 author_id）
+    if (!isAdmin && !isLoggedIn && status !== 'published') {
+      status = 'published';
     }
     if (status === 'all' && !isAdmin) {
       status = 'published';
@@ -134,8 +134,9 @@ router.get('/', authOptional, async (req, res) => {
     // search: match title, excerpt, or content（转义 LIKE 通配符 + 长度限制）
     if (search) {
       const escaped = search.replace(/[\\%_]/g, '\\$&').slice(0, 100);
-      conditions.push('(p.title LIKE ? OR p.excerpt LIKE ? OR p.content LIKE ?)');
-      params.push(`%${escaped}%`, `%${escaped}%`, `%${escaped}%`);
+      // 只搜 title/excerpt（避免对 LONGTEXT content 做全表 LIKE 慢查询）
+      conditions.push('(p.title LIKE ? OR p.excerpt LIKE ?)');
+      params.push(`%${escaped}%`, `%${escaped}%`);
     }
 
     if (conditions.length > 0) {
@@ -577,23 +578,27 @@ router.post('/:slug/like', authRequired, authNoGuest, async (req, res) => {
     const postId = rows[0].id;
     const userId = req.user.id;
 
-    // 检查是否已点赞
-    const [existing] = await pool.query(
-      'SELECT 1 FROM post_likes WHERE user_id = ? AND post_id = ?',
+    // 原子切换点赞：先尝试删除（若存在则取消），影响行数=0 则插入（点赞）
+    // 避免并发请求同时读到"未点赞"导致重复 INSERT 主键冲突
+    const [delResult] = await pool.query(
+      'DELETE FROM post_likes WHERE user_id = ? AND post_id = ?',
       [userId, postId]
     );
 
-    if (existing.length > 0) {
-      // 取消点赞
-      await pool.query('DELETE FROM post_likes WHERE user_id = ? AND post_id = ?', [userId, postId]);
-      const [count] = await pool.query('SELECT COUNT(*) AS count FROM post_likes WHERE post_id = ?', [postId]);
-      return res.json({ liked: false, like_count: count[0]?.count || 0 });
+    let liked;
+    if (delResult.affectedRows > 0) {
+      liked = false; // 取消点赞
     } else {
-      // 点赞
-      await pool.query('INSERT INTO post_likes (user_id, post_id) VALUES (?, ?)', [userId, postId]);
-      const [count] = await pool.query('SELECT COUNT(*) AS count FROM post_likes WHERE post_id = ?', [postId]);
-      return res.json({ liked: true, like_count: count[0]?.count || 0 });
+      // 点赞（INSERT IGNORE 防并发重复插入主键冲突）
+      await pool.query(
+        'INSERT IGNORE INTO post_likes (user_id, post_id) VALUES (?, ?)',
+        [userId, postId]
+      );
+      liked = true;
     }
+
+    const [count] = await pool.query('SELECT COUNT(*) AS count FROM post_likes WHERE post_id = ?', [postId]);
+    return res.json({ liked, like_count: count[0]?.count || 0 });
   } catch (err) {
     console.error('like toggle error:', err);
     res.status(500).json({ message: 'internal server error' });
@@ -601,13 +606,22 @@ router.post('/:slug/like', authRequired, authNoGuest, async (req, res) => {
 });
 
 // ====== GET /api/posts/:slug/comments — 获取评论 ======
-router.get('/:slug/comments', async (req, res) => {
+router.get('/:slug/comments', authOptional, async (req, res) => {
   try {
     const { slug } = req.params;
 
-    const [rows] = await pool.query('SELECT id FROM posts WHERE slug = ?', [slug]);
+    // 校验文章存在
+    const [rows] = await pool.query('SELECT id, status, author_id FROM posts WHERE slug = ?', [slug]);
     if (rows.length === 0) {
       return res.status(404).json({ message: 'post not found' });
+    }
+    // 非公开文章仅作者/admin 可看评论
+    if (rows[0].status !== 'published') {
+      const isAdmin = req.user && req.user.role === 'admin';
+      const isAuthor = req.user && req.user.id === rows[0].author_id;
+      if (!isAdmin && !isAuthor) {
+        return res.status(404).json({ message: 'post not found' });
+      }
     }
 
     const [comments] = await pool.query(
@@ -673,8 +687,12 @@ router.post('/:slug/comments', authRequired, authNoGuest, async (req, res) => {
       return res.status(400).json({ message: 'comment content is empty after sanitization' });
     }
 
-    const [rows] = await pool.query('SELECT id FROM posts WHERE slug = ?', [slug]);
+    // 校验文章存在且公开（草稿/归档不允许评论）
+    const [rows] = await pool.query('SELECT id, status FROM posts WHERE slug = ?', [slug]);
     if (rows.length === 0) {
+      return res.status(404).json({ message: 'post not found' });
+    }
+    if (rows[0].status !== 'published') {
       return res.status(404).json({ message: 'post not found' });
     }
 
@@ -753,17 +771,24 @@ async function syncTags(conn, postId, tagList) {
       tagSlug = 'tag-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6);
     }
 
-    // upsert tag
+    // upsert tag（原子处理并发：存在则复用 id，不存在则插入）
+    // 先查
     const [existing] = await conn.query('SELECT id FROM tags WHERE name = ?', [name]);
     let tagId;
     if (existing.length > 0) {
       tagId = existing[0].id;
     } else {
-      const [inserted] = await conn.query(
-        'INSERT INTO tags (name, slug) VALUES (?, ?)',
+      // 并发场景：另一个请求可能已插入同名 tag，用 INSERT IGNORE 防冲突后重新查询
+      await conn.query(
+        'INSERT IGNORE INTO tags (name, slug) VALUES (?, ?)',
         [name, tagSlug]
       );
-      tagId = inserted.insertId;
+      const [recheck] = await conn.query('SELECT id FROM tags WHERE name = ?', [name]);
+      tagId = recheck[0]?.id;
+      if (!tagId) {
+        // 兜底：极端情况下仍拿不到，跳过该标签
+        continue;
+      }
     }
 
     // 关联

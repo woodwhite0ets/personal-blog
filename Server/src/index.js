@@ -130,6 +130,13 @@ app.use((err, req, res, next) => {
   if (err.message && err.message.startsWith('CORS blocked')) {
     return res.status(403).json({ message: 'origin not allowed' });
   }
+  // URI 解码失败（爬虫访问畸形/GBK 中文 slug）→ 400 而非 500
+  if (err instanceof URIError || err.type === 'entity.parse.failed' || err.type === 'request.aborted') {
+    if (err.type === 'entity.parse.failed') {
+      return res.status(400).json({ message: 'invalid JSON body' });
+    }
+    return res.status(400).json({ message: 'bad request' });
+  }
   res.status(500).json({ message: 'internal server error' });
 });
 

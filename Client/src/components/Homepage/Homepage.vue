@@ -344,8 +344,12 @@ function switchSort(mode) {
   fetchPosts(1)
 }
 
+// ====== 请求序号守卫（防止快速切换筛选时乱序响应覆盖） ======
+let fetchSeq = 0
+
 // ====== 获取文章 ======
 async function fetchPosts(page = 1) {
+  const mySeq = ++fetchSeq
   if (page === 1) loading.value = true
   error.value = ''
 
@@ -361,19 +365,27 @@ async function fetchPosts(page = 1) {
 
     if (!res.ok) throw new Error(data.message || '请求失败')
 
+    // 丢弃过期响应（已有更新的请求发出）
+    if (mySeq !== fetchSeq) return
+
     if (page === 1) {
       posts.value = data.posts
     } else {
+      // loadMore 期间若筛选已变化，丢弃旧筛选的追加
+      if (mySeq !== fetchSeq) return
       posts.value.push(...data.posts)
     }
 
     currentPage.value = data.page
     totalPages.value = data.totalPages
   } catch (e) {
+    if (mySeq !== fetchSeq) return
     error.value = e.message || '获取文章失败'
   } finally {
-    loading.value = false
-    loadingMore.value = false
+    if (mySeq === fetchSeq) {
+      loading.value = false
+      loadingMore.value = false
+    }
   }
 }
 

@@ -148,8 +148,8 @@ function validate() {
   if (!form.password) {
     errors.password = '请输入密码'
     valid = false
-  } else if (form.password.length < 6) {
-    errors.password = '密码至少 6 位'
+  } else if (form.password.length < 8) {
+    errors.password = '密码至少 8 位'
     valid = false
   }
   return valid

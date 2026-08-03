@@ -110,6 +110,11 @@ const routes = [
       },
     ],
   },
+  // catch-all：未知路径重定向到首页
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/HomePage',
+  },
 ];
 
 const router = createRouter({
