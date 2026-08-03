@@ -303,6 +303,23 @@ async function fetchTags() {
   } catch { /* ignore */ }
 }
 
+// ====== 从 API 获取全站作者统计（贡献者列表，真实文章数） ======
+const contributors = ref([])
+
+async function fetchContributors() {
+  try {
+    const res = await fetch('/api/authors')
+    if (res.ok) {
+      const data = await res.json()
+      contributors.value = (data.authors || []).map(a => ({
+        username: a.username,
+        avatar: a.avatar || '',
+        count: a.post_count,
+      }))
+    }
+  } catch { /* ignore */ }
+}
+
 // ====== 计算属性 ======
 const pinnedPost = computed(() => posts.value.find(p => p.is_pinned) || null)
 const hasMore = computed(() => currentPage.value < totalPages.value)
@@ -322,20 +339,6 @@ const clearSearchLink = computed(() => {
 })
 
 // ====== 从 posts 聚合作者发文数 ======
-const contributors = computed(() => {
-  const map = {}
-  posts.value.forEach(p => {
-    if (p.author && p.author.username) {
-      const key = p.author.username
-      if (!map[key]) {
-        map[key] = { username: key, avatar: p.author.avatar || '', count: 0 }
-      }
-      map[key].count++
-    }
-  })
-  return Object.values(map).sort((a, b) => b.count - a.count)
-})
-
 const sortMode = ref('latest')
 
 function switchSort(mode) {
@@ -431,7 +434,7 @@ function doSearch() {
 }
 
 // ====== 生命周期 ======
-onMounted(() => { fetchPosts(); fetchTags() })
+onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 </script>
 
 <!-- ====== 样式：只保留 home-page 独有的，PostList 的样式已随组件带走 ====== -->

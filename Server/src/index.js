@@ -104,6 +104,23 @@ app.get('/api/tags', async (req, res) => {
   }
 });
 
+// 作者统计（供首页贡献者列表，统计全站已发布文章数，而非当前分页）
+app.get('/api/authors', async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT u.username, u.nickname, u.avatar, COUNT(p.id) AS post_count
+       FROM users u
+       JOIN posts p ON p.author_id = u.id AND p.status = 'published'
+       GROUP BY u.id
+       ORDER BY post_count DESC, u.username ASC`
+    );
+    res.json({ authors: rows });
+  } catch (err) {
+    console.error('authors error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
 app.use('/api/auth',   require('./routes/auth'));
 app.use('/api/posts',  require('./routes/posts'));
 app.use('/api/users',  require('./routes/users'));
