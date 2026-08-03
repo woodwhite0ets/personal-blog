@@ -326,12 +326,14 @@ const contributors = computed(() => {
   const map = {}
   posts.value.forEach(p => {
     if (p.author && p.author.username) {
-      map[p.author.username] = (map[p.author.username] || 0) + 1
+      const key = p.author.username
+      if (!map[key]) {
+        map[key] = { username: key, avatar: p.author.avatar || '', count: 0 }
+      }
+      map[key].count++
     }
   })
-  return Object.entries(map)
-    .map(([username, count]) => ({ username, count }))
-    .sort((a, b) => b.count - a.count)
+  return Object.values(map).sort((a, b) => b.count - a.count)
 })
 
 const sortMode = ref('latest')
