@@ -27,14 +27,14 @@
       <!-- 个人简介 -->
       <div class="about-hero">
         <div class="avatar-box">
-          <UserAvatar :src="''" :alt="'WoodWhite'" size="xl" />
+          <UserAvatar :src="profile?.avatar" :alt="'WoodWhite'" size="xl" />
         </div>
         <div class="hero-info">
           <h1 class="hero-name">WoodWhite</h1>
-          <p class="hero-tagline">全栈开发者 · 技术分享爱好者</p>
+          <p class="hero-tagline">应届毕业生 · Web 全栈开发</p>
           <p class="hero-desc">
-            一个热爱开源与终端美学的开发者，专注于 Web 全栈开发，
-            喜欢把复杂的问题用优雅简洁的方式解决。
+            本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL 等技术栈。
+            持续学习、乐于分享，希望在实践中不断成长。
           </p>
         </div>
       </div>
@@ -124,9 +124,23 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import UserAvatar from '../common/UserAvatar.vue'
 import SiteFooter from '../common/SiteFooter.vue'
+
+// 从后端动态获取头像，与用户主页头像保持同步
+const profile = ref(null)
+
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/users/WoodWhite')
+    if (res.ok) {
+      const data = await res.json()
+      profile.value = data.user || null
+    }
+  } catch { /* 头像获取失败则显示首字符占位 */ }
+})
 </script>
 
 <style scoped>
