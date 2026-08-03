@@ -419,3 +419,88 @@ button {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-strong);
 }
+
+/* ============================================================
+   全局动画 & 交互效果
+   ============================================================ */
+
+/* 页面进入动画 */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 页面根容器过渡 */
+.router-fade-enter-active { transition: opacity 0.25s ease; }
+.router-fade-leave-active { transition: opacity 0.15s ease; }
+.router-fade-enter-from, .router-fade-leave-to { opacity: 0; }
+
+/* 通用动画工具类 */
+.anim-fade-up { animation: fadeInUp 0.5s ease both; }
+.anim-fade { animation: fadeIn 0.4s ease both; }
+.anim-scale { animation: scaleIn 0.3s ease both; }
+.anim-slide-right { animation: slideInRight 0.4s ease both; }
+.anim-float { animation: floatY 3s ease-in-out infinite; }
+.anim-pulse { animation: pulseGlow 2s ease-in-out infinite; }
+
+/* 卡片悬浮效果 */
+.card-hover {
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-a30);
+  box-shadow: 0 8px 32px var(--shadow);
+}
+
+/* 按钮按压反馈 */
+.btn-press {
+  transition: transform 0.15s ease, opacity 0.2s;
+}
+.btn-press:active { transform: scale(0.97); }
+
+/* 渐变文字 */
+.text-gradient {
+  background: linear-gradient(90deg, var(--accent), var(--purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 骨架屏加载动画 */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-float) 50%, var(--bg-elevated) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* 滚动条宽度微调 */
+html { scroll-behavior: smooth; }

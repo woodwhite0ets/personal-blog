@@ -32,7 +32,7 @@ Registerview · VUE
           <!-- 实时头像预览 -->
           <div class="avatar-preview">
             <div class="avatar-circle">{{ previewChar }}</div>
-            <span class="avatar-hint">user.avatar</span>
+            <span class="avatar-hint">avatar 头像</span>
           </div>
 
           <div class="header">
@@ -48,7 +48,7 @@ Registerview · VUE
           <form @submit.prevent="handleRegister" class="register-form">
             <div class="field">
               <label for="username">
-                <span class="label-icon">@</span> username
+                <span class="label-icon">@</span> 用户名
               </label>
               <input
                 id="username"
@@ -65,7 +65,7 @@ Registerview · VUE
  
             <div class="field">
               <label for="nickname">
-                <span class="label-icon">N</span> nickname
+                <span class="label-icon">N</span> 昵称
               </label>
               <input
                 id="nickname"
@@ -81,7 +81,7 @@ Registerview · VUE
  
             <div class="field">
               <label for="email">
-                <span class="label-icon">@</span> email
+                <span class="label-icon">@</span> 邮箱
               </label>
               <input
                 id="email"
@@ -98,7 +98,7 @@ Registerview · VUE
  
             <div class="field">
               <label for="password">
-                <span class="label-icon">#</span> password
+                <span class="label-icon">#</span> 密码
               </label>
               <div class="password-wrap">
                 <input
@@ -115,7 +115,7 @@ Registerview · VUE
                   @click="showPassword = !showPassword"
                   tabindex="-1"
                 >
-                  {{ showPassword ? 'hide' : 'show' }}
+                  {{ showPassword ? '隐藏' : '显示' }}
                 </button>
               </div>
               <span v-if="errors.password" class="field-error">
@@ -134,7 +134,7 @@ Registerview · VUE
  
             <div class="field">
               <label for="confirm">
-                <span class="label-icon">#</span> confirm
+                <span class="label-icon">#</span> 确认密码
               </label>
               <input
                 id="confirm"
@@ -156,7 +156,7 @@ Registerview · VUE
             <button type="submit" class="btn-submit" :disabled="loading">
               <span v-if="loading" class="spinner"></span>
               <span v-if="!loading" class="btn-arrow">❯</span>
-              {{ loading ? 'Creating...' : 'Register' }}
+              {{ loading ? '注册中...' : '注册' }}
             </button>
           </form>
         </template>
@@ -177,14 +177,14 @@ Registerview · VUE
               点击邮件里的链接即可完成注册。<br/>
               没收到？检查垃圾邮件或
               <button class="link-btn" @click="handleResend" :disabled="resending">
-                {{ resending ? 'Sending...' : '重新发送' }}
+                {{ resending ? '发送中...' : '重新发送' }}
               </button>
             </p>
           </div>
         </template>
  
         <p class="back-link">
-          <router-link to="/">← Have account? to Login</router-link>
+          <router-link to="/">← 已有账号？去登录</router-link>
         </p>
       </div>
  

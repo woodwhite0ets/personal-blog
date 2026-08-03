@@ -3,7 +3,7 @@
     <div class="section-head">
       <span class="section-arrow">❯</span>
       <span class="section-title">cat /etc/passwd</span>
-      <span class="section-count">— {{ total }} users</span>
+      <span class="section-count">— 共 {{ total }} 名用户</span>
     </div>
 
     <!-- 筛选 -->
@@ -23,16 +23,16 @@
           v-model="searchQuery"
           type="text"
           class="search-input"
-          placeholder="grep username or email..."
+          placeholder="grep 用户名或邮箱..."
           @input="onSearchInput"
         />
       </div>
     </div>
 
     <!-- 状态 -->
-    <div v-if="loading" class="state-box"><span class="spinner"></span><span>loading...</span></div>
+    <div v-if="loading" class="state-box"><span class="spinner"></span><span>正在加载...</span></div>
     <div v-else-if="error" class="state-box error"><span class="err-prefix">ERR!</span><span>{{ error }}</span></div>
-    <div v-else-if="users.length === 0" class="state-box"><span>no users found</span></div>
+    <div v-else-if="users.length === 0" class="state-box"><span>未找到用户</span></div>
 
     <template v-else>
       <div class="table-wrap">
@@ -40,13 +40,13 @@
           <thead>
             <tr>
               <th class="th-avatar"></th>
-              <th>username</th>
-              <th>email</th>
-              <th>role</th>
-              <th>verified</th>
-              <th>posts</th>
-              <th>joined</th>
-              <th class="th-actions">actions</th>
+              <th>用户名</th>
+              <th>邮箱</th>
+              <th>角色</th>
+              <th>已验证</th>
+              <th>文章</th>
+              <th>注册时间</th>
+              <th class="th-actions">操作</th>
             </tr>
           </thead>
           <tbody>
@@ -56,7 +56,7 @@
               </td>
               <td>
                 <router-link :to="`/user/${u.username}`" class="user-link">@{{ u.username }}</router-link>
-                <span v-if="u.id === currentUser?.id" class="self-tag">you</span>
+                <span v-if="u.id === currentUser?.id" class="self-tag">你</span>
               </td>
               <td class="muted">{{ u.email }}</td>
               <td>
@@ -66,9 +66,9 @@
                   class="role-select"
                   @change="changeRole(u, ($event.target).value)"
                 >
-                  <option value="admin">admin</option>
-                  <option value="author">author</option>
-                  <option value="reader">reader</option>
+                  <option value="admin">管理员</option>
+                  <option value="author">作者</option>
+                  <option value="reader">读者</option>
                 </select>
                 <span v-else class="role-badge" :class="u.role">{{ u.role }}</span>
               </td>
@@ -84,7 +84,7 @@
                   v-if="u.id !== currentUser?.id"
                   class="btn-sm btn-del"
                   @click="confirmDelete(u)"
-                >del</button>
+                >删除</button>
               </td>
             </tr>
           </tbody>
@@ -94,7 +94,7 @@
       <div v-if="hasMore" class="load-more">
         <button class="btn-load-more" :disabled="loadingMore" @click="loadMore">
           <span class="btn-prompt">❯</span>
-          {{ loadingMore ? 'loading...' : 'more users' }}
+          {{ loadingMore ? '加载中...' : '更多用户' }}
         </button>
       </div>
     </template>
@@ -103,8 +103,8 @@
     <ConfirmModal
       :visible="showDeleteModal"
       :title="`userdel ${deleteTarget?.username}`"
-      :message="deleteTarget ? `Delete user @${deleteTarget.username} and all their posts? This cannot be undone.` : ''"
-      confirm-text="Delete"
+      :message="deleteTarget ? `删除用户 @${deleteTarget.username} 及其所有文章？此操作不可撤销。` : ''"
+      confirm-text="删除"
       :danger="true"
       :loading="deleting"
       @confirm="handleDelete"
@@ -138,10 +138,10 @@ const deleteTarget = ref(null)
 const deleting = ref(false)
 
 const roleOptions = [
-  { value: '', label: 'All' },
-  { value: 'admin', label: 'Admin' },
-  { value: 'author', label: 'Authors' },
-  { value: 'reader', label: 'Readers' },
+  { value: '', label: '全部' },
+  { value: 'admin', label: '管理员' },
+  { value: 'author', label: '作者' },
+  { value: 'reader', label: '读者' },
 ]
 
 const hasMore = computed(() => currentPage.value < totalPages.value)
@@ -179,7 +179,7 @@ async function fetchUsers(page = 1) {
     const res = await fetch(`${API_BASE}/admin/users?${params}`, {
       headers: { Authorization: `Bearer ${getToken()}` },
     })
-    if (!res.ok) throw new Error((await res.json()).message || 'fetch failed')
+    if (!res.ok) throw new Error((await res.json()).message || '获取失败')
     const data = await res.json()
 
     if (page === 1) {
@@ -213,7 +213,7 @@ async function changeRole(user, newRole) {
       },
       body: JSON.stringify({ role: newRole }),
     })
-    if (!res.ok) throw new Error((await res.json()).message || 'update failed')
+    if (!res.ok) throw new Error((await res.json()).message || '更新失败')
     user.role = newRole
   } catch (e) {
     error.value = e.message
@@ -233,7 +233,7 @@ async function handleDelete() {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${getToken()}` },
     })
-    if (!res.ok) throw new Error((await res.json()).message || 'delete failed')
+    if (!res.ok) throw new Error((await res.json()).message || '删除失败')
     users.value = users.value.filter(u => u.id !== deleteTarget.value.id)
     total.value--
     showDeleteModal.value = false

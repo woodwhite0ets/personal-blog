@@ -14,17 +14,17 @@
         </router-link>
         <div class="nav-actions">
           <ThemeSwitcher />
-          <span class="admin-badge">sudo mode</span>
-          <router-link to="/HomePage" class="nav-link">← blog</router-link>
+          <span class="admin-badge">sudo 模式</span>
+          <router-link to="/HomePage" class="nav-link">← 博客</router-link>
           <button class="btn-user" @click="showMenu = !showMenu">
             <UserAvatar :src="currentUser?.avatar" :alt="(currentUser?.nickname || currentUser?.username || '?')" size="sm" />
             <span class="user-name">@{{ currentUser?.username }}</span>
           </button>
           <div v-if="showMenu" class="user-dropdown">
             <router-link :to="`/user/${currentUser?.username}`" class="dropdown-item" @click="showMenu = false">
-              my page
+              我的主页
             </router-link>
-            <button class="dropdown-item logout" @click="handleLogout">logout</button>
+            <button class="dropdown-item logout" @click="handleLogout">退出登录</button>
           </div>
         </div>
       </div>
@@ -41,16 +41,16 @@
           </div>
           <div class="panel-body nav-body">
             <router-link to="/admin/dashboard" class="nav-item" active-class="active">
-              <span class="nav-num">01</span> dashboard
+              <span class="nav-num">01</span> 仪表盘
             </router-link>
             <router-link to="/admin/posts" class="nav-item" active-class="active">
-              <span class="nav-num">02</span> posts
+              <span class="nav-num">02</span> 文章
             </router-link>
             <router-link to="/admin/users" class="nav-item" active-class="active">
-              <span class="nav-num">03</span> users
+              <span class="nav-num">03</span> 用户
             </router-link>
             <router-link to="/admin/logs" class="nav-item" active-class="active">
-              <span class="nav-num">04</span> logs
+              <span class="nav-num">04</span> 日志
             </router-link>
           </div>
         </div>
@@ -63,12 +63,12 @@
           </div>
           <div class="panel-body">
             <div class="info-line">
-              <span class="info-key">os</span>
+              <span class="info-key">系统</span>
               <span class="info-val">blogOS v2.0.1</span>
             </div>
             <div class="info-line">
-              <span class="info-key">role</span>
-              <span class="info-val terminal-green">admin</span>
+              <span class="info-key">角色</span>
+              <span class="info-val terminal-green">管理员</span>
             </div>
           </div>
         </div>

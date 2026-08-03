@@ -14,19 +14,19 @@
         </router-link>
         <nav class="nav-links">
           <router-link to="/HomePage">
-            <span class="nav-num">01</span> home
+            <span class="nav-num">01</span> 首页
           </router-link>
           <router-link to="/archive">
-            <span class="nav-num">02</span> archive
+            <span class="nav-num">02</span> 归档
           </router-link>
           <router-link to="/about">
-            <span class="nav-num">03</span> about
+            <span class="nav-num">03</span> 关于
           </router-link>
         </nav>
         <div class="nav-actions">
           <ThemeSwitcher />
           <router-link v-if="isLoggedIn" to="/editor" class="btn-write">
-            <span class="btn-write-icon">+</span> new post
+            <span class="btn-write-icon">+</span> 新文章
           </router-link>
         </div>
       </div>
@@ -57,15 +57,15 @@
           <div class="user-stats">
             <div class="stat">
               <span class="stat-value">{{ totalPosts }}</span>
-              <span class="stat-label">posts</span>
+              <span class="stat-label">文章</span>
             </div>
             <div class="stat">
-              <span class="stat-value">{{ profile?.role || 'author' }}</span>
-              <span class="stat-label">role</span>
+              <span class="stat-value">{{ profile?.role || '作者' }}</span>
+              <span class="stat-label">角色</span>
             </div>
             <div class="stat">
               <span class="stat-value">{{ formatDate(profile?.created_at) }}</span>
-              <span class="stat-label">joined</span>
+              <span class="stat-label">加入</span>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
             </div>
             <div class="info-line">
               <span class="info-key">status</span>
-              <span class="info-val terminal-green">active</span>
+              <span class="info-val terminal-green">正常</span>
             </div>
           </div>
         </div>
@@ -116,9 +116,9 @@
             <span class="panel-title">account</span>
           </div>
           <div class="panel-body">
-            <button class="btn-change-pwd" @click="openProfileModal">edit profile</button>
+            <button class="btn-change-pwd" @click="openProfileModal">编辑资料</button>
             <button class="btn-change-pwd" @click="toggleDrafts">
-              my drafts
+              我的草稿
               <span v-if="draftCount > 0" class="draft-count">{{ draftCount }}</span>
             </button>
           </div>
@@ -132,9 +132,9 @@
             <span class="panel-title">drafts ({{ draftCount }})</span>
           </div>
           <div class="panel-body">
-            <div v-if="drafts.length === 0" class="no-drafts">— no drafts yet</div>
+            <div v-if="drafts.length === 0" class="no-drafts">— 暂无草稿</div>
             <div v-for="d in drafts" :key="d.id" class="draft-item">
-              <router-link :to="`/editor/${d.slug}`" class="draft-link">{{ d.title || 'untitled' }}</router-link>
+              <router-link :to="`/editor/${d.slug}`" class="draft-link">{{ d.title || '未命名' }}</router-link>
               <span class="draft-date">{{ formatDate(d.published_at || d.created_at) }}</span>
             </div>
           </div>
@@ -148,7 +148,7 @@
             <span class="panel-title">security.pwd</span>
           </div>
           <div class="panel-body">
-            <button class="btn-change-pwd" @click="openPwdModal">change password</button>
+            <button class="btn-change-pwd" @click="openPwdModal">修改密码</button>
           </div>
         </div>
 
@@ -168,7 +168,7 @@
               >
                 #{{ tag.name }}
               </router-link>
-              <span v-if="!userTags.length" class="no-tags">— no tags yet</span>
+              <span v-if="!userTags.length" class="no-tags">— 暂无标签</span>
             </div>
           </div>
         </div>
@@ -197,25 +197,25 @@
             <template v-if="pwdDone">
               <div class="pwd-done">
                 <span class="pwd-done-icon">✓</span>
-                <span>password changed</span>
+                <span>密码已修改</span>
               </div>
             </template>
             <template v-else>
               <div class="pwd-field">
-                <label>current password</label>
+                <label>当前密码</label>
                 <input v-model="pwdForm.oldPassword" type="password" placeholder="••••••••" />
               </div>
               <div class="pwd-field">
-                <label>new password</label>
-                <input v-model="pwdForm.newPassword" type="password" placeholder="at least 8 chars, letters + numbers" />
+                <label>新密码</label>
+                <input v-model="pwdForm.newPassword" type="password" placeholder="至少 8 位，需包含字母和数字" />
               </div>
               <div class="pwd-field">
-                <label>confirm new password</label>
-                <input v-model="pwdForm.confirm" type="password" placeholder="re-enter" />
+                <label>确认新密码</label>
+                <input v-model="pwdForm.confirm" type="password" placeholder="再次输入" />
               </div>
               <span v-if="pwdError" class="pwd-err">{{ pwdError }}</span>
               <button class="pwd-submit" @click="handleChangePwd" :disabled="pwdSaving">
-                {{ pwdSaving ? '...saving' : 'update password' }}
+                {{ pwdSaving ? '保存中...' : '更新密码' }}
               </button>
             </template>
           </div>
@@ -242,21 +242,21 @@
             </template>
             <template v-else>
               <div class="pwd-field">
-                <label>nickname</label>
-                <input v-model="profileForm.nickname" type="text" placeholder="display name" maxlength="50" />
+                <label>昵称</label>
+                <input v-model="profileForm.nickname" type="text" placeholder="显示名称" maxlength="50" />
               </div>
               <div class="pwd-field">
-                <label>bio</label>
-                <textarea v-model="profileForm.bio" rows="3" placeholder="short intro (max 500 chars)" maxlength="500"></textarea>
+                <label>简介</label>
+                <textarea v-model="profileForm.bio" rows="3" placeholder="简短介绍（最多 500 字）" maxlength="500"></textarea>
               </div>
               <div class="pwd-field">
-                <label>email</label>
+                <label>邮箱</label>
                 <input v-model="profileForm.email" type="email" placeholder="you@example.com" />
-                <span class="pwd-hint">// changing email requires re-verification</span>
+                <span class="pwd-hint">// 修改邮箱需要重新验证</span>
               </div>
               <span v-if="profileError" class="pwd-err">{{ profileError }}</span>
               <button class="pwd-submit" @click="handleSaveProfile" :disabled="profileSaving">
-                {{ profileSaving ? '...saving' : 'save profile' }}
+                {{ profileSaving ? '保存中...' : '保存资料' }}
               </button>
             </template>
           </div>
@@ -319,7 +319,7 @@ function openProfileModal() {
 async function handleSaveProfile() {
   profileError.value = ''
   if (!profileForm.value.nickname.trim()) {
-    profileError.value = 'nickname is required'
+    profileError.value = '昵称不能为空'
     return
   }
   profileSaving.value = true
@@ -337,12 +337,12 @@ async function handleSaveProfile() {
       }),
     })
     const data = await res.json()
-    if (!res.ok) throw new Error(data.message || 'update failed')
+    if (!res.ok) throw new Error(data.message || '更新失败')
 
     profileDone.value = true
     profileMsg.value = data.emailChanged
-      ? 'profile updated — please verify your new email'
-      : 'profile updated'
+      ? '资料已更新 — 请验证新邮箱'
+      : '资料已更新'
     // 刷新用户数据
     await fetchMe()
     await fetchProfile()
@@ -508,7 +508,7 @@ async function fetchPosts(page = 1) {
       `${API_BASE}/posts?page=${page}&status=published&author=${username.value}`
     )
     const data = await res.json()
-    if (!res.ok) throw new Error(data.message || 'request failed')
+    if (!res.ok) throw new Error(data.message || '请求失败')
 
     if (page === 1) {
       posts.value = data.posts

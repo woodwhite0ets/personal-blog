@@ -14,19 +14,19 @@
         </router-link>
         <nav class="nav-links">
           <router-link to="/HomePage">
-            <span class="nav-num">01</span> home
+            <span class="nav-num">01</span> 首页
           </router-link>
           <router-link to="/archive">
-            <span class="nav-num">02</span> archive
+            <span class="nav-num">02</span> 归档
           </router-link>
           <router-link to="/about">
-            <span class="nav-num">03</span> about
+            <span class="nav-num">03</span> 关于
           </router-link>
         </nav>
         <div class="nav-actions">
           <ThemeSwitcher />
           <div class="search-wrap" :class="{ active: searchActive }">
-            <button class="btn-search" @click="toggleSearch" title="search">
+            <button class="btn-search" @click="toggleSearch" title="搜索">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -38,7 +38,7 @@
               v-model="searchQuery"
               type="text"
               class="search-input"
-              placeholder="search posts..."
+              placeholder="搜索文章..."
               @keydown.escape="closeSearch"
               @keydown.enter="doSearch"
             />
@@ -47,14 +47,14 @@
           <!-- 未登录 -->
           <template v-if="!isLoggedIn">
             <router-link to="/" class="btn-write">
-              <span class="btn-write-icon">+</span> new post
+              <span class="btn-write-icon">+</span> 新文章
             </router-link>
           </template>
 
           <!-- 已登录 -->
           <template v-else>
             <router-link to="/editor" class="btn-write">
-              <span class="btn-write-icon">+</span> new post
+              <span class="btn-write-icon">+</span> 新文章
             </router-link>
             <div class="user-menu-wrap" ref="userMenuRef">
               <button class="btn-user" @click="showUserMenu = !showUserMenu">
@@ -64,13 +64,13 @@
               </button>
               <div v-if="showUserMenu" class="user-dropdown">
                 <router-link v-if="isAdmin" to="/admin/dashboard" class="dropdown-item admin-link" @click="showUserMenu = false">
-                  <span class="dropdown-icon">⚙</span> admin panel
+                  <span class="dropdown-icon">⚙</span> 管理面板
                 </router-link>
                 <router-link :to="`/user/${currentUser?.username}`" class="dropdown-item" @click="showUserMenu = false">
-                  <span class="dropdown-icon">🏠</span> my page
+                  <span class="dropdown-icon">🏠</span> 我的页面
                 </router-link>
                 <button class="dropdown-item logout" @click="handleLogout">
-                  <span class="dropdown-icon">⏻</span> logout
+                  <span class="dropdown-icon">⏻</span> 退出登录
                 </button>
               </div>
             </div>
@@ -84,7 +84,7 @@
       <div class="hero-inner">
         <div class="hero-badge">
           <span class="badge-dot"></span>
-          PINNED
+          置顶
         </div>
         <h1 class="hero-title">
           <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`">
@@ -94,17 +94,17 @@
         <p class="hero-excerpt">{{ pinnedPost.excerpt }}</p>
         <div class="hero-meta">
           <span class="meta-item">
-            <span class="meta-label">date</span>
+            <span class="meta-label">日期</span>
             <span class="meta-value">{{ pinnedPost.date }}</span>
           </span>
           <span class="meta-sep"></span>
           <span class="meta-item">
-            <span class="meta-label">read</span>
+            <span class="meta-label">阅读</span>
             <span class="meta-value">{{ pinnedPost.read_time }}</span>
           </span>
           <span class="meta-sep"></span>
           <span class="meta-item">
-            <span class="meta-label">tags</span>
+            <span class="meta-label">标签</span>
             <span class="meta-value">{{ pinnedPost.tag }}</span>
           </span>
         </div>
@@ -116,32 +116,32 @@
       <!-- 标签过滤提示 -->
       <div v-if="activeTag" class="tag-filter-bar" style="grid-column: 1 / -1; margin-bottom: -28px;">
         <span class="filter-prompt">❯</span>
-        <span class="filter-label">filter:</span>
+        <span class="filter-label">筛选:</span>
         <span class="filter-tag">#{{ activeTag }}</span>
-        <router-link :to="clearTagLink" class="filter-clear">× clear</router-link>
+        <router-link :to="clearTagLink" class="filter-clear">× 清除</router-link>
       </div>
 
       <!-- 搜索过滤提示 -->
       <div v-if="activeSearch" class="tag-filter-bar" style="grid-column: 1 / -1; margin-bottom: -28px;">
         <span class="filter-prompt">❯</span>
-        <span class="filter-label">search:</span>
+        <span class="filter-label">搜索:</span>
         <span class="filter-tag">&quot;{{ activeSearch }}&quot;</span>
-        <router-link :to="clearSearchLink" class="filter-clear">× clear</router-link>
+        <router-link :to="clearSearchLink" class="filter-clear">× 清除</router-link>
       </div>
 
       <!-- 排序切换 -->
       <div class="sort-bar">
-        <span class="sort-label">sort:</span>
+        <span class="sort-label">排序:</span>
         <button
           class="sort-btn"
           :class="{ active: sortMode === 'latest' }"
           @click="switchSort('latest')"
-        >latest</button>
+        >最新</button>
         <button
           class="sort-btn"
           :class="{ active: sortMode === 'popular' }"
           @click="switchSort('popular')"
-        >popular</button>
+        >热门</button>
       </div>
 
       <!-- 文章列表 — 模块化组件 -->
@@ -162,20 +162,20 @@
           <div class="panel-bar">
             <span class="panel-dot dot-cyan"></span>
             <span class="panel-dot dot-cyan dim"></span>
-            <span class="panel-title">system.info</span>
+            <span class="panel-title">系统.信息</span>
           </div>
           <div class="panel-body">
             <div class="info-line">
-              <span class="info-key">os</span>
-              <span class="info-val">blogOS v2.0.1</span>
+              <span class="info-key">系统</span>
+              <span class="info-val">博客系统 v2.0.1</span>
             </div>
             <div class="info-line">
-              <span class="info-key">uptime</span>
-              <span class="info-val terminal-green">online</span>
+              <span class="info-key">运行时间</span>
+              <span class="info-val terminal-green">在线</span>
             </div>
             <div class="info-line">
-              <span class="info-key">posts</span>
-              <span class="info-val">{{ posts.length }} published</span>
+              <span class="info-key">文章</span>
+              <span class="info-val">{{ posts.length }} 已发布</span>
             </div>
           </div>
         </div>
@@ -184,7 +184,7 @@
           <div class="panel-bar">
             <span class="panel-dot dot-green"></span>
             <span class="panel-dot dot-green dim"></span>
-            <span class="panel-title">contributors</span>
+            <span class="panel-title">贡献者</span>
           </div>
           <div class="panel-body">
             <router-link
@@ -204,7 +204,7 @@
           <div class="panel-bar">
             <span class="panel-dot dot-yellow"></span>
             <span class="panel-dot dot-yellow dim"></span>
-            <span class="panel-title">tags.index</span>
+            <span class="panel-title">标签.索引</span>
           </div>
           <div class="panel-body">
             <div class="tag-cloud">
@@ -216,7 +216,7 @@
               >
                 #{{ tag.name }}
               </router-link>
-              <span v-if="!tags.length" class="no-tags">— no tags yet</span>
+              <span v-if="!tags.length" class="no-tags">— 暂无标签</span>
             </div>
           </div>
         </div>
@@ -225,21 +225,21 @@
           <div class="panel-bar">
             <span class="panel-dot dot-purple"></span>
             <span class="panel-dot dot-purple dim"></span>
-            <span class="panel-title">links.symlink</span>
+            <span class="panel-title">链接.符号链接</span>
           </div>
           <div class="panel-body">
             <a href="https://github.com" target="_blank" class="link-item" v-if="false">
               <span class="link-arrow">→</span> github
             </a>
             <router-link to="/archive" class="link-item">
-              <span class="link-arrow">→</span> archive
+              <span class="link-arrow">→</span> 归档
             </router-link>
           </div>
         </div>
       </aside>
     </div>
 
-    <SiteFooter command='echo "© 2026 woodwhite@blog — a tech forum"' />
+    <SiteFooter command='echo "© 2026 woodwhite@blog — 技术论坛"' />
   </div>
 </template>
 

@@ -24,14 +24,14 @@
           <span v-if="autoSaveLabel" class="auto-save-hint">{{ autoSaveLabel }}</span>
           <span class="draft-indicator" :class="{ published: form.status === 'published' }">
             <span class="indicator-dot"></span>
-            {{ form.status === 'published' ? 'PUBLISHED' : 'DRAFT' }}
+            {{ form.status === 'published' ? '已发布' : '草稿' }}
           </span>
           <button class="btn-action btn-draft" @click="saveDraft" :disabled="saving || !saveReady">
-            <span class="btn-icon">💾</span> draft
+            <span class="btn-icon">💾</span> 存草稿
             <span class="btn-shortcut">Ctrl+S</span>
           </button>
           <button class="btn-action btn-publish" @click="publish" :disabled="saving || !saveReady">
-            <span class="btn-icon">🚀</span> publish
+            <span class="btn-icon">🚀</span> 发布
             <span class="btn-shortcut">Ctrl+Shift+P</span>
           </button>
         </div>
@@ -48,24 +48,24 @@
           v-model="form.title"
           type="text"
           class="input-title"
-          placeholder="post title..."
+          placeholder="文章标题..."
           :class="{ error: errors.title }"
         />
         <span v-if="errors.title" class="field-err">{{ errors.title }}</span>
 
         <!-- 标签 -->
         <div class="tags-row">
-          <span class="label-hint">tags: <span class="tag-count">{{ formTags.length }}/10</span></span>
+          <span class="label-hint">标签: <span class="tag-count">{{ formTags.length }}/10</span></span>
           <div class="tags-input-wrap">
             <span v-for="(t, i) in formTags" :key="i" class="tag-chip">
               #{{ t }}
-              <button class="tag-remove" @click="removeTag(i)" title="remove">×</button>
+              <button class="tag-remove" @click="removeTag(i)" title="移除">×</button>
             </span>
             <input
               v-model="tagInput"
               type="text"
               class="input-tag"
-              placeholder="add tag..."
+              placeholder="添加标签..."
               :disabled="formTags.length >= 10"
               @keydown.enter.prevent="addTag"
               @keydown.backspace="handleTagBackspace"
@@ -77,7 +77,7 @@
 
         <!-- 封面图区域 -->
         <div class="cover-section">
-          <span class="label-hint">cover:</span>
+          <span class="label-hint">封面:</span>
           <div
             class="cover-dropzone"
             :class="{ hasImage: coverPreview }"
@@ -88,7 +88,7 @@
             <img v-if="coverPreview" :src="coverPreview" class="cover-preview" />
             <template v-else>
               <span class="dropzone-icon">🖼</span>
-              <span class="dropzone-text">drop cover image or click</span>
+              <span class="dropzone-text">拖拽封面图或点击上传</span>
             </template>
             <input
               ref="coverInput"
@@ -98,14 +98,14 @@
               @change="handleCoverFile"
             />
           </div>
-          <button v-if="coverPreview" class="btn-remove-cover" @click="removeCover">remove cover</button>
+          <button v-if="coverPreview" class="btn-remove-cover" @click="removeCover">移除封面</button>
         </div>
 
         <!-- 摘要 -->
         <textarea
           v-model="form.excerpt"
           class="input-excerpt"
-          placeholder="excerpt (optional — auto-generated from content if empty)..."
+          placeholder="摘要（可选 — 留空则自动从正文生成）..."
           rows="2"
         ></textarea>
 
@@ -114,7 +114,7 @@
           ref="contentInput"
           v-model="form.content"
           class="input-content"
-          placeholder="write markdown here...&#10;&#10;Tip: Ctrl+S to save draft · Ctrl+Shift+P to publish · paste images directly"
+          placeholder="在此编写 Markdown...&#10;&#10;提示: Ctrl+S 保存草稿 · Ctrl+Shift+P 发布 · 可直接粘贴图片"
           :class="{ error: errors.content }"
           @paste="handleContentPaste"
         ></textarea>
@@ -124,7 +124,7 @@
         <!-- 置顶复选框（仅管理员可见） -->
         <label v-if="isAdmin" class="checkbox-row">
           <input v-model="form.is_pinned" type="checkbox" />
-          <span class="check-text">--pinned (show in hero)</span>
+          <span class="check-text">--pinned（首页推荐位置顶展示）</span>
         </label>
       </div>
 
@@ -132,13 +132,13 @@
       <div class="preview-pane">
         <div class="preview-header">
           <span class="preview-title">preview.md</span>
-          <span class="preview-hint">{{ wordCount }} chars · ~{{ readTimePreview }} min read</span>
+          <span class="preview-hint">{{ wordCount }} 字符 · 约 {{ readTimePreview }} 分钟阅读</span>
         </div>
         <div class="preview-scroll">
           <!-- 空状态 -->
           <div v-if="!form.content.trim()" class="preview-empty">
             <span class="preview-empty-icon">📄</span>
-            <span>start typing to preview...</span>
+            <span>开始输入以预览...</span>
           </div>
           <!-- 渲染内容 -->
           <div v-else class="preview-body markdown-body" v-html="previewHtml"></div>
@@ -298,11 +298,11 @@ function readCoverFile(file) {
   // 客户端预校验：类型 + 大小（最大 10MB，与后端一致）
   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
   if (!allowedTypes.includes(file.type)) {
-    showToast('cover must be jpg/png/gif/webp', 'error')
+    showToast('封面必须是 jpg/png/gif/webp 格式', 'error')
     return
   }
   if (file.size > 10 * 1024 * 1024) {
-    showToast('cover too large (max 10 MB)', 'error')
+    showToast('封面过大（最大 10 MB）', 'error')
     return
   }
   coverFile.value = file
@@ -364,7 +364,7 @@ async function uploadInlineImage(file, uid) {
       headers: { Authorization: `Bearer ${getToken()}` },
       body: fd,
     })
-    if (!res.ok) throw new Error('upload failed')
+    if (!res.ok) throw new Error('上传失败')
     const data = await res.json()
     // 按唯一 id 精确替换占位符（避免并发时错位）
     form.content = form.content.replace(
@@ -377,7 +377,7 @@ async function uploadInlineImage(file, uid) {
       new RegExp(`!\\[uploading-${uid}\\]\\(data:image\\/[^)]+\\)\\n?`),
       ''
     )
-    showToast('image upload failed', 'error')
+    showToast('图片上传失败', 'error')
   } finally {
     uploadingImages.value--
     if (uploadingImages.value <= 0) {
@@ -409,11 +409,11 @@ function validate() {
   errors.content = ''
 
   if (!form.title.trim()) {
-    errors.title = 'title is required'
+    errors.title = '请输入标题'
     valid = false
   }
   if (!form.content.trim()) {
-    errors.content = 'content is required'
+    errors.content = '请输入内容'
     valid = false
   }
   return valid
@@ -468,7 +468,7 @@ async function savePost() {
 
   // 图片上传中，禁止保存
   if (uploadingImages.value > 0) {
-    showToast(`${uploadingImages.value} image(s) uploading — please wait`, 'error')
+    showToast(`${uploadingImages.value} 张图片上传中 — 请稍候`, 'error')
     return
   }
 
@@ -506,7 +506,7 @@ async function savePost() {
 
 
     const data = await res.json()
-    if (!res.ok) throw new Error(data.message || 'save failed')
+    if (!res.ok) throw new Error(data.message || '保存失败')
 
     const savedSlug = data.post?.slug || data.slug || formSlug.value
 
@@ -538,8 +538,8 @@ async function savePost() {
     coverFile.value = null
 
     // Toast
-    let toastMsg = isPublish ? 'published!' : 'draft saved'
-    if (coverFailed) toastMsg += ' (cover upload failed)'
+    let toastMsg = isPublish ? '发布成功！' : '草稿已保存'
+    if (coverFailed) toastMsg += '（封面上传失败）'
     showToast(toastMsg, coverFailed ? 'error' : 'success')
     autoSaveLabel.value = ''
 
@@ -550,7 +550,7 @@ async function savePost() {
     return true
   } catch (e) {
     serverError.value = e.message || '保存失败'
-    showToast(e.message || 'save failed', 'error')
+    showToast(e.message || '保存失败', 'error')
     return false
   } finally {
     saving.value = false
@@ -567,16 +567,16 @@ async function loadPost() {
     })
     if (!res.ok) {
       if (res.status === 404) {
-        serverError.value = 'post not found'
+        serverError.value = '文章不存在'
         return
       }
-      throw new Error('load failed')
+      throw new Error('加载失败')
     }
     const data = await res.json()
     const p = data.post
 
     if (p.author && currentUser.value && p.author.username !== currentUser.value.username && !isAdmin.value) {
-      serverError.value = 'you are not the author'
+      serverError.value = '你不是该文章作者'
       return
     }
 
@@ -622,7 +622,7 @@ function saveDraftLocal() {
       savedAt: Date.now(),
     }
     sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
-    autoSaveLabel.value = 'auto-saved'
+    autoSaveLabel.value = '已自动保存'
     setTimeout(() => { autoSaveLabel.value = '' }, 2000)
   } catch { /* storage full */ }
 }
@@ -671,11 +671,11 @@ function handleKeyboard(e) {
 onBeforeRouteLeave((to, from, next) => {
   // 保存中禁止离开，避免 savePost 完成后强制跳转打断用户
   if (saving.value) {
-    window.alert('saving in progress — please wait')
+    window.alert('正在保存中 — 请稍候')
     return next(false)
   }
   if (isDirty.value) {
-    const leave = window.confirm('you have unsaved changes — leave anyway?')
+    const leave = window.confirm('存在未保存的更改 — 仍要离开吗？')
     if (!leave) return next(false)
   }
   next()
@@ -707,7 +707,7 @@ onMounted(async () => {
     formSlug.value = 'new-' + Date.now().toString(36)
     const restored = restoreDraft()
     if (restored) {
-      showToast('draft restored from last session')
+      showToast('已恢复上次会话的草稿')
     }
   }
 

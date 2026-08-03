@@ -3,25 +3,25 @@
     <div class="section-head">
       <span class="section-arrow">❯</span>
       <span class="section-title">journalctl -f -n {{ limit }}</span>
-      <span class="section-count">— {{ total }} lines</span>
+      <span class="section-count">— 共 {{ total }} 行</span>
       <div class="head-actions">
         <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'error' }" @click="toggleFilter('error')">
           <span class="filter-dot dot-red" :class="{ dim: filterLevel !== 'error' }"></span>
-          errors
+          错误
         </button>
         <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'warn' }" @click="toggleFilter('warn')">
           <span class="filter-dot dot-yellow" :class="{ dim: filterLevel !== 'warn' }"></span>
-          warns
+          警告
         </button>
         <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'info' }" @click="toggleFilter('info')">
           <span class="filter-dot dot-cyan" :class="{ dim: filterLevel !== 'info' }"></span>
-          info
+          信息
         </button>
         <button class="btn-sm btn-filter" @click="clearLogs">
-          <span class="filter-icon">🗑</span> clear
+          <span class="filter-icon">🗑</span> 清空
         </button>
         <button class="btn-sm btn-refresh" @click="fetchLogs">
-          <span class="filter-icon">↻</span> refresh
+          <span class="filter-icon">↻</span> 刷新
         </button>
       </div>
     </div>
@@ -29,7 +29,7 @@
     <!-- 加载 -->
     <div v-if="loading" class="state-box">
       <span class="spinner"></span>
-      <span>loading logs...</span>
+      <span>正在加载日志...</span>
     </div>
 
     <!-- 错误 -->
@@ -42,7 +42,7 @@
     <template v-else>
       <div class="log-terminal" ref="logContainer">
         <div v-if="logs.length === 0" class="state-box">
-          <span class="state-text">no logs captured yet</span>
+          <span class="state-text">暂无日志记录</span>
         </div>
         <div
           v-for="(line, i) in logs"
@@ -89,7 +89,7 @@ async function fetchLogs() {
     const res = await fetch(`${API_BASE}/admin/logs?${params}`, {
       headers: { Authorization: `Bearer ${getToken()}` },
     })
-    if (!res.ok) throw new Error((await res.json()).message || 'fetch failed')
+    if (!res.ok) throw new Error((await res.json()).message || '获取失败')
     const data = await res.json()
     logs.value = data.logs
     total.value = data.total

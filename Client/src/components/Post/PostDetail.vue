@@ -14,19 +14,19 @@
         </router-link>
         <nav class="nav-links">
           <router-link to="/HomePage">
-            <span class="nav-num">01</span> home
+            <span class="nav-num">01</span> 首页
           </router-link>
           <router-link to="/archive">
-            <span class="nav-num">02</span> archive
+            <span class="nav-num">02</span> 归档
           </router-link>
           <router-link to="/about">
-            <span class="nav-num">03</span> about
+            <span class="nav-num">03</span> 关于
           </router-link>
         </nav>
         <div class="nav-actions">
           <ThemeSwitcher />
           <router-link v-if="isLoggedIn" to="/editor" class="btn-write">
-            <span class="btn-write-icon">+</span> new post
+            <span class="btn-write-icon">+</span> 新文章
           </router-link>
         </div>
       </div>
@@ -35,14 +35,14 @@
     <!-- ====== 加载状态 ====== -->
     <div v-if="loading" class="state-box">
       <span class="spinner"></span>
-      <span class="state-text">loading post...</span>
+      <span class="state-text">正在加载文章...</span>
     </div>
 
     <!-- ====== 错误状态 ====== -->
     <div v-else-if="error" class="state-box error">
       <span class="err-prefix">ERR!</span>
       <span class="state-text">{{ error }}</span>
-      <router-link to="/HomePage" class="link-btn">← back to home</router-link>
+      <router-link to="/HomePage" class="link-btn">← 返回首页</router-link>
     </div>
 
     <!-- ====== 文章内容 ====== -->
@@ -61,8 +61,8 @@
             :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
             class="post-tag"
           >#{{ tag.name }}</router-link>
-          <span v-if="normalizedTags.length === 0" class="post-tag">#uncategorized</span>
-          <span v-if="isAuthor" class="post-badge">author</span>
+          <span v-if="normalizedTags.length === 0" class="post-tag">#未分类</span>
+          <span v-if="isAuthor" class="post-badge">作者</span>
         </div>
 
         <!-- 标题 -->
@@ -79,7 +79,7 @@
           <span class="meta-sep"></span>
           <span class="meta-item">{{ post.read_time }}</span>
           <span class="meta-sep"></span>
-          <span class="meta-item view-count">👁 {{ post.views || 0 }}</span>
+          <span class="meta-item view-count">👁 {{ post.views || 0 }} 浏览</span>
         </div>
 
         <!-- 正文 -->
@@ -90,19 +90,19 @@
           <!-- 点赞按钮 -->
           <button class="btn-like" :class="{ liked: post.user_liked }" @click="toggleLike" :disabled="liking || !isLoggedIn">
             <span class="btn-icon">{{ post.user_liked ? '♥' : '♡' }}</span>
-            <span>{{ post.like_count || 0 }} {{ post.user_liked ? 'liked' : 'likes' }}</span>
+            <span>{{ post.like_count || 0 }} {{ post.user_liked ? '已赞' : '点赞' }}</span>
           </button>
           <span class="comment-count-badge">
-            <span class="btn-icon">💬</span> {{ post.comment_count || 0 }} comments
+            <span class="btn-icon">💬</span> {{ post.comment_count || 0 }} 条评论
           </span>
           <router-link v-if="canEdit" :to="`/editor/${post.slug || post.id}`" class="btn-edit">
-            <span class="btn-icon">✎</span> edit this post
+            <span class="btn-icon">✎</span> 编辑文章
           </router-link>
           <button v-if="canDelete" class="btn-delete" @click="confirmDeletePost">
-            <span class="btn-icon">🗑</span> delete this post
+            <span class="btn-icon">🗑</span> 删除文章
           </button>
           <router-link to="/HomePage" class="btn-back">
-            <span class="btn-icon">←</span> back to home
+            <span class="btn-icon">←</span> 返回首页
           </router-link>
         </div>
       </article>
@@ -112,7 +112,7 @@
         <div class="comment-head">
           <span class="section-prompt">❯</span>
           <span class="section-title">cat ./comments.log</span>
-          <span class="section-count">— {{ commentList.length }} comments</span>
+          <span class="section-count">— {{ commentList.length }} 条评论</span>
         </div>
 
         <!-- 发表评论 -->
@@ -120,20 +120,20 @@
           <textarea
             v-model="commentText"
             class="comment-textarea"
-            placeholder="write a comment..."
+            placeholder="写评论..."
             rows="3"
             :disabled="commenting"
           ></textarea>
           <div class="comment-form-actions">
             <span class="comment-char-count">{{ commentText.length }}/2000</span>
             <button class="btn-comment-submit" @click="submitComment()" :disabled="commenting || !commentText.trim()">
-              {{ commenting ? 'posting...' : 'post comment' }}
+              {{ commenting ? '发布中...' : '发表评论' }}
             </button>
           </div>
           <span v-if="commentError" class="comment-err">{{ commentError }}</span>
         </div>
         <div v-else class="comment-login-hint">
-          <router-link to="/">log in</router-link> to leave a comment
+          <router-link to="/">登录</router-link> 后即可发表评论
         </div>
 
         <!-- 评论列表 -->
@@ -148,15 +148,15 @@
               <p class="comment-content">{{ c.content }}</p>
               <div class="comment-actions">
                 <button v-if="isLoggedIn" class="btn-reply" @click="startReply(c.id)">
-                  {{ replyingTo === c.id ? 'cancel' : 'reply' }}
+                  {{ replyingTo === c.id ? '取消' : '回复' }}
                 </button>
-                <span v-if="c.replies && c.replies.length" class="reply-count">{{ c.replies.length }} repl{{ c.replies.length === 1 ? 'y' : 'ies' }}</span>
+                <span v-if="c.replies && c.replies.length" class="reply-count">{{ c.replies.length }} 条回复</span>
                 <button
                   v-if="canDeleteComment(c)"
                   class="btn-comment-delete"
                   @click="deleteComment(c.id)"
                   :disabled="deletingComment === c.id"
-                >{{ deletingComment === c.id ? '...' : 'delete' }}</button>
+                >{{ deletingComment === c.id ? '...' : '删除' }}</button>
               </div>
 
               <!-- 回复输入 -->
@@ -164,13 +164,13 @@
                 <textarea
                   v-model="replyText"
                   class="comment-textarea"
-                  placeholder="write a reply..."
+                  placeholder="写回复..."
                   rows="2"
                   :disabled="commenting"
                 ></textarea>
                 <div class="comment-form-actions">
                   <button class="btn-comment-submit" @click="submitComment(c.id)" :disabled="commenting || !replyText.trim()">
-                    {{ commenting ? 'posting...' : 'reply' }}
+                    {{ commenting ? '发布中...' : '回复' }}
                   </button>
                 </div>
               </div>
@@ -190,7 +190,7 @@
                       class="btn-comment-delete"
                       @click="deleteComment(r.id)"
                       :disabled="deletingComment === r.id"
-                    >{{ deletingComment === r.id ? '...' : 'delete' }}</button>
+                    >{{ deletingComment === r.id ? '...' : '删除' }}</button>
                   </div>
                 </div>
               </div>
@@ -200,7 +200,7 @@
 
         <div v-else-if="!commentLoading" class="comment-empty">
           <span class="empty-icon">💬</span>
-          <span>no comments yet — be the first!</span>
+          <span>暂无评论 — 抢占沙发！</span>
         </div>
       </section>
 
@@ -224,8 +224,8 @@
     <ConfirmModal
       :visible="showDeleteModal"
       :title="`rm -rf ./posts/${post?.slug || slug}`"
-      :message="'Permanently delete &quot;' + (post?.title || '') + '&quot;? This cannot be undone.'"
-      confirm-text="Delete"
+      :message="'确定永久删除 &quot;' + (post?.title || '') + '&quot;? 此操作无法撤销。'"
+      confirm-text="删除"
       :danger="true"
       :loading="deleting"
       @confirm="handleDelete"
@@ -288,7 +288,7 @@ async function handleDelete() {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${getToken()}` },
     })
-    if (!res.ok) throw new Error((await res.json()).message || 'delete failed')
+    if (!res.ok) throw new Error((await res.json()).message || '删除失败')
     router.push('/HomePage')
   } catch (e) {
     error.value = e.message
@@ -349,7 +349,7 @@ async function submitComment(parentId = null) {
     })
     if (!res.ok) {
       const data = await res.json()
-      throw new Error(data.message || 'post failed')
+      throw new Error(data.message || '评论失败')
     }
     const data = await res.json()
 
@@ -454,8 +454,8 @@ async function fetchPost() {
     const data = await res.json()
 
     if (!res.ok) {
-      if (res.status === 404) throw new Error('post not found')
-      throw new Error(data.message || 'request failed')
+      if (res.status === 404) throw new Error('文章不存在')
+      throw new Error(data.message || '请求失败')
     }
 
     post.value = data.post
