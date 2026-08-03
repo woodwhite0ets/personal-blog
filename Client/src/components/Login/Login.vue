@@ -105,6 +105,8 @@
 
         <p class="back-link">
           <router-link to="/RegisterPage">← register for more</router-link>
+          <span class="back-sep">·</span>
+          <router-link to="/forgot-password" class="forgot-link">forgot password?</router-link>
         </p>
       </div>
  
@@ -582,7 +584,16 @@ async function handleGuestLogin() {
 .back-link a:hover {
   color: var(--accent);
 }
- 
+
+.back-sep {
+  margin: 0 6px;
+  color: var(--text-faint);
+}
+
+.forgot-link {
+  color: var(--warn) !important;
+}
+
 /* ---- 底部状态条 ---- */
 .terminal-status {
   display: flex;

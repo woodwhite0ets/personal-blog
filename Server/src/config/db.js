@@ -194,6 +194,25 @@ async function runMigrations(conn) {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
   }
+
+  // 为现有表添加新列（检查列是否存在）
+  const [userCols] = await conn.query('SHOW COLUMNS FROM `users`');
+  const userColNames = userCols.map(c => c.Field);
+  if (!userColNames.includes('reset_token')) {
+    console.log('[db] migration: adding users.reset_token');
+    await conn.query('ALTER TABLE `users` ADD COLUMN `reset_token` VARCHAR(64) DEFAULT NULL');
+  }
+  if (!userColNames.includes('reset_expires')) {
+    console.log('[db] migration: adding users.reset_expires');
+    await conn.query('ALTER TABLE `users` ADD COLUMN `reset_expires` DATETIME DEFAULT NULL');
+  }
+
+  const [postCols] = await conn.query('SHOW COLUMNS FROM `posts`');
+  const postColNames = postCols.map(c => c.Field);
+  if (!postColNames.includes('views')) {
+    console.log('[db] migration: adding posts.views');
+    await conn.query('ALTER TABLE `posts` ADD COLUMN `views` INT UNSIGNED NOT NULL DEFAULT 0');
+  }
 }
 
 // ====== 创建连接池 ======

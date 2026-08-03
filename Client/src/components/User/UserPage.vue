@@ -108,6 +108,38 @@
           </div>
         </div>
 
+        <!-- 编辑资料 + 草稿（仅本人可见） -->
+        <div v-if="isOwnPage" class="sidebar-panel">
+          <div class="panel-bar">
+            <span class="panel-dot dot-cyan"></span>
+            <span class="panel-dot dot-cyan dim"></span>
+            <span class="panel-title">account</span>
+          </div>
+          <div class="panel-body">
+            <button class="btn-change-pwd" @click="openProfileModal">edit profile</button>
+            <button class="btn-change-pwd" @click="toggleDrafts">
+              my drafts
+              <span v-if="draftCount > 0" class="draft-count">{{ draftCount }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 草稿列表 -->
+        <div v-if="isOwnPage && showDrafts" class="sidebar-panel">
+          <div class="panel-bar">
+            <span class="panel-dot dot-yellow"></span>
+            <span class="panel-dot dot-yellow dim"></span>
+            <span class="panel-title">drafts ({{ draftCount }})</span>
+          </div>
+          <div class="panel-body">
+            <div v-if="drafts.length === 0" class="no-drafts">— no drafts yet</div>
+            <div v-for="d in drafts" :key="d.id" class="draft-item">
+              <router-link :to="`/editor/${d.slug}`" class="draft-link">{{ d.title || 'untitled' }}</router-link>
+              <span class="draft-date">{{ formatDate(d.published_at || d.created_at) }}</span>
+            </div>
+          </div>
+        </div>
+
         <!-- 修改密码（仅本人可见） -->
         <div v-if="isOwnPage" class="sidebar-panel">
           <div class="panel-bar">
@@ -190,6 +222,47 @@
         </div>
       </div>
     </Transition>
+
+    <!-- ====== 编辑资料弹窗 ====== -->
+    <Transition name="modal">
+      <div v-if="showProfileModal" class="modal-overlay" @click.self="showProfileModal = false">
+        <div class="pwd-modal">
+          <div class="pwd-modal-bar">
+            <span class="panel-dot dot-cyan"></span>
+            <span class="panel-dot dot-cyan dim"></span>
+            <span class="panel-title">edit profile</span>
+            <button class="pwd-modal-close" @click="showProfileModal = false">×</button>
+          </div>
+          <div class="pwd-modal-body">
+            <template v-if="profileDone">
+              <div class="pwd-done">
+                <span class="pwd-done-icon">✓</span>
+                <span>{{ profileMsg }}</span>
+              </div>
+            </template>
+            <template v-else>
+              <div class="pwd-field">
+                <label>nickname</label>
+                <input v-model="profileForm.nickname" type="text" placeholder="display name" maxlength="50" />
+              </div>
+              <div class="pwd-field">
+                <label>bio</label>
+                <textarea v-model="profileForm.bio" rows="3" placeholder="short intro (max 500 chars)" maxlength="500"></textarea>
+              </div>
+              <div class="pwd-field">
+                <label>email</label>
+                <input v-model="profileForm.email" type="email" placeholder="you@example.com" />
+                <span class="pwd-hint">// changing email requires re-verification</span>
+              </div>
+              <span v-if="profileError" class="pwd-err">{{ profileError }}</span>
+              <button class="pwd-submit" @click="handleSaveProfile" :disabled="profileSaving">
+                {{ profileSaving ? '...saving' : 'save profile' }}
+              </button>
+            </template>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -222,6 +295,86 @@ function openPwdModal() {
   pwdError.value = ''
   pwdDone.value = false
   showPwdModal.value = true
+}
+
+// ====== 编辑资料弹窗 ======
+const showProfileModal = ref(false)
+const profileForm = ref({ nickname: '', bio: '', email: '' })
+const profileError = ref('')
+const profileSaving = ref(false)
+const profileDone = ref(false)
+const profileMsg = ref('')
+
+function openProfileModal() {
+  profileForm.value = {
+    nickname: profile.value?.nickname || '',
+    bio: profile.value?.bio || '',
+    email: profile.value?.email || '',
+  }
+  profileError.value = ''
+  profileDone.value = false
+  showProfileModal.value = true
+}
+
+async function handleSaveProfile() {
+  profileError.value = ''
+  if (!profileForm.value.nickname.trim()) {
+    profileError.value = 'nickname is required'
+    return
+  }
+  profileSaving.value = true
+  try {
+    const res = await fetch(`${API_BASE}/auth/profile`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify({
+        nickname: profileForm.value.nickname.trim(),
+        bio: profileForm.value.bio,
+        email: profileForm.value.email,
+      }),
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'update failed')
+
+    profileDone.value = true
+    profileMsg.value = data.emailChanged
+      ? 'profile updated — please verify your new email'
+      : 'profile updated'
+    // 刷新用户数据
+    await fetchMe()
+    await fetchProfile()
+  } catch (e) {
+    profileError.value = e.message
+  } finally {
+    profileSaving.value = false
+  }
+}
+
+// ====== 我的草稿 ======
+const showDrafts = ref(false)
+const drafts = ref([])
+const draftCount = computed(() => drafts.value.length)
+
+async function toggleDrafts() {
+  showDrafts.value = !showDrafts.value
+  if (showDrafts.value && drafts.value.length === 0) {
+    await fetchDrafts()
+  }
+}
+
+async function fetchDrafts() {
+  try {
+    const res = await fetch(`${API_BASE}/posts?status=draft`, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    })
+    if (res.ok) {
+      const data = await res.json()
+      drafts.value = data.posts || []
+    }
+  } catch { /* ignore */ }
 }
 
 // ====== 头像上传 ======
@@ -658,6 +811,26 @@ watch(username, () => {
 .btn-change-pwd:hover {
   background: var(--ok-a12); border-color: var(--ok);
 }
+.btn-change-pwd + .btn-change-pwd { margin-top: 6px; }
+.draft-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 5px; margin-left: 6px;
+  font-size: 10px; font-weight: 700; color: var(--text);
+  background: var(--accent-a20); border: 1px solid var(--accent-a30);
+  border-radius: 9px;
+}
+.draft-item {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border);
+}
+.draft-item:last-child { border-bottom: none; }
+.draft-link {
+  font-size: 12px; color: var(--text); text-decoration: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.draft-link:hover { color: var(--accent); }
+.draft-date { font-size: 10px; color: var(--text-faint); flex-shrink: 0; }
+.no-drafts { font-size: 12px; color: var(--text-faint); }
 
 /* 密码弹窗 */
 .modal-overlay {
@@ -694,6 +867,14 @@ watch(username, () => {
   outline: none; caret-color: var(--accent);
 }
 .pwd-field input:focus { border-color: var(--accent); }
+.pwd-field textarea {
+  width: 100%; padding: 10px 12px;
+  font-family: inherit; font-size: 13px; color: var(--text);
+  background: var(--bg); border: 1px solid var(--border-strong); border-radius: 4px;
+  outline: none; caret-color: var(--accent); resize: vertical;
+}
+.pwd-field textarea:focus { border-color: var(--accent); }
+.pwd-hint { font-size: 10px; color: var(--text-faint); }
 .pwd-err {
   font-size: 11px; color: var(--err); display: flex; align-items: center; gap: 4px;
 }

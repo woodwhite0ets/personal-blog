@@ -129,6 +129,21 @@
         <router-link :to="clearSearchLink" class="filter-clear">× clear</router-link>
       </div>
 
+      <!-- 排序切换 -->
+      <div class="sort-bar">
+        <span class="sort-label">sort:</span>
+        <button
+          class="sort-btn"
+          :class="{ active: sortMode === 'latest' }"
+          @click="switchSort('latest')"
+        >latest</button>
+        <button
+          class="sort-btn"
+          :class="{ active: sortMode === 'popular' }"
+          @click="switchSort('popular')"
+        >popular</button>
+      </div>
+
       <!-- 文章列表 — 模块化组件 -->
       <PostList
         :posts="posts"
@@ -319,6 +334,14 @@ const contributors = computed(() => {
     .sort((a, b) => b.count - a.count)
 })
 
+const sortMode = ref('latest')
+
+function switchSort(mode) {
+  if (sortMode.value === mode) return
+  sortMode.value = mode
+  fetchPosts(1)
+}
+
 // ====== 获取文章 ======
 async function fetchPosts(page = 1) {
   if (page === 1) loading.value = true
@@ -327,7 +350,7 @@ async function fetchPosts(page = 1) {
   try {
     const tagFilter = route.query.tag || ''
     const searchFilter = route.query.search || ''
-    let url = `/api/posts?page=${page}&status=published`
+    let url = `/api/posts?page=${page}&status=published&sort=${sortMode.value}`
     if (tagFilter) url += `&tag=${encodeURIComponent(tagFilter)}`
     if (searchFilter) url += `&search=${encodeURIComponent(searchFilter)}`
 
@@ -698,6 +721,28 @@ onMounted(() => { fetchPosts(); fetchTags() })
   border: 1px solid var(--accent-a15);
   border-radius: 6px; font-size: 12px;
 }
+
+.sort-bar {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+}
+.sort-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--text-muted);
+}
+.sort-btn {
+  padding: 4px 12px;
+  font-family: inherit; font-size: 11px; font-weight: 600;
+  color: var(--text-dim); background: var(--bg-elevated);
+  border: 1px solid var(--border); border-radius: 4px;
+  cursor: pointer; transition: all 0.2s;
+}
+.sort-btn:hover { border-color: var(--accent-a30); color: var(--text); }
+.sort-btn.active {
+  color: var(--on-accent); background: var(--accent);
+  border-color: var(--accent);
+}
+
 
 .filter-prompt { color: var(--accent); font-weight: 700; }
 .filter-label { color: var(--text-muted); text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }

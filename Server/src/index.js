@@ -110,6 +110,9 @@ app.use('/api/users',  require('./routes/users'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/admin',  require('./routes/admin'));
 
+// ====== SEO 路由（feed.xml / sitemap.xml，需在 SPA fallback 之前） ======
+app.use(require('./routes/seo'));
+
 // ====== SPA 兜底 + API 404（必须在 API 路由之后） ======
 // 非 API 的请求全部返回 index.html，由前端路由处理
 app.use((req, res, next) => {

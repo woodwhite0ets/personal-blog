@@ -67,11 +67,26 @@ router.get('/', authOptional, async (req, res) => {
     const author   = req.query.author || '';
     const tag      = req.query.tag || '';
     const search   = req.query.search || '';
+    const sort     = req.query.sort || 'latest';
 
-    // status=all 仅 admin 可用；非 admin 强制 published
-    const isAdmin = req.user && req.user.role === 'admin';
-    if (status !== 'published' && !isAdmin) {
+    // status 校验
+    if (status !== 'published' && status !== 'draft' && status !== 'archived' && status !== 'all') {
       status = 'published';
+    }
+
+    // 权限控制：
+    // - admin 可看所有状态
+    // - 普通登录用户可看自己的 draft/archived
+    // - 未登录只能看 published
+    const isAdmin = req.user && req.user.role === 'admin';
+    const isLoggedIn = !!req.user && req.user.id > 0 && !req.user.isGuest;
+    if (!isAdmin && status !== 'published') {
+      if (!isLoggedIn) {
+        status = 'published';
+      } else {
+        // 非 admin 用户只能看自己的草稿/归档
+        status = 'published'; // 先重置，后面按需追加自己的
+      }
     }
     if (status === 'all' && !isAdmin) {
       status = 'published';
@@ -82,7 +97,7 @@ router.get('/', authOptional, async (req, res) => {
     let dataSql   = `
       SELECT DISTINCT
         p.id, p.title, p.slug, p.excerpt, p.cover_image,
-        p.is_pinned, p.status, p.read_time, p.published_at AS date,
+        p.is_pinned, p.status, p.read_time, p.published_at AS date, p.views,
         u.username, u.nickname, u.avatar
       FROM posts p
       JOIN users u ON p.author_id = u.id
@@ -93,6 +108,12 @@ router.get('/', authOptional, async (req, res) => {
     if (status !== 'all') {
       conditions.push('p.status = ?');
       params.push(status);
+    }
+    // 非 admin 用户请求 draft/archived 时，限定只能看自己的
+    if (!isAdmin && req.user && req.user.id > 0 && !req.user.isGuest &&
+        (req.query.status === 'draft' || req.query.status === 'archived')) {
+      conditions.push('p.author_id = ?');
+      params.push(req.user.id);
     }
 
     if (author) {
@@ -123,7 +144,12 @@ router.get('/', authOptional, async (req, res) => {
       dataSql += where;
     }
 
-    dataSql += ' ORDER BY p.is_pinned DESC, p.published_at DESC LIMIT ? OFFSET ?';
+    // 排序：latest（默认）按发布时间，popular 按浏览量
+    if (sort === 'popular') {
+      dataSql += ' ORDER BY p.is_pinned DESC, p.views DESC, p.published_at DESC LIMIT ? OFFSET ?';
+    } else {
+      dataSql += ' ORDER BY p.is_pinned DESC, p.published_at DESC LIMIT ? OFFSET ?';
+    }
 
     // 并行查询
     const [countResult, [rows]] = await Promise.all([
@@ -268,6 +294,12 @@ router.get('/:slug', authOptional, async (req, res) => {
       comment_count: commentCount,
       date: p.published_at ? p.published_at.toISOString().split('T')[0] : '',
     };
+
+    // 浏览量自增（仅对 published 文章计数，防作者反复看自己草稿刷量）
+    if (p.status === 'published') {
+      await pool.query('UPDATE posts SET views = views + 1 WHERE id = ?', [p.id]);
+      post.views = (post.views || 0) + 1;
+    }
 
     res.json({ post });
   } catch (err) {

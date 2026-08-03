@@ -78,6 +78,8 @@
           <span class="meta-item">{{ post.date }}</span>
           <span class="meta-sep"></span>
           <span class="meta-item">{{ post.read_time }}</span>
+          <span class="meta-sep"></span>
+          <span class="meta-item view-count">👁 {{ post.views || 0 }}</span>
         </div>
 
         <!-- 正文 -->
@@ -457,11 +459,45 @@ async function fetchPost() {
     }
 
     post.value = data.post
+    updateSeoMeta(data.post)
   } catch (e) {
     error.value = e.message || '获取文章失败'
   } finally {
     loading.value = false
   }
+}
+
+// ====== 动态 SEO（document.title + OpenGraph） ======
+const SITE_URL = 'https://blog.woodwhite.top'
+
+function setMeta(selector, attr, value) {
+  let el = document.querySelector(selector)
+  if (!el) {
+    el = document.createElement('meta')
+    const [_, property, content] = selector.match(/meta\[(\w+)=\"([^\"]+)\"\]/)
+    el.setAttribute(property, content)
+    document.head.appendChild(el)
+  }
+  el.setAttribute(attr, value)
+}
+
+function updateSeoMeta(p) {
+  if (!p) return
+  const title = `${p.title} — woodwhite@blog`
+  const desc = (p.excerpt || p.content || '').replace(/<[^>]*>/g, '').slice(0, 150)
+  const url = `${SITE_URL}/post/${p.slug}`
+  const image = p.cover_image ? `${SITE_URL}${p.cover_image}` : `${SITE_URL}/favicon.svg`
+
+  document.title = title
+  setMeta('meta[name="description"]', 'content', desc)
+  setMeta('meta[property="og:title"]', 'content', title)
+  setMeta('meta[property="og:description"]', 'content', desc)
+  setMeta('meta[property="og:url"]', 'content', url)
+  setMeta('meta[property="og:type"]', 'content', 'article')
+  if (p.cover_image) setMeta('meta[property="og:image"]', 'content', image)
+  setMeta('meta[name="twitter:title"]', 'content', title)
+  setMeta('meta[name="twitter:description"]', 'content', desc)
+  setMeta('link[rel="canonical"]', 'href', url)
 }
 
 // ====== 生命周期 ======

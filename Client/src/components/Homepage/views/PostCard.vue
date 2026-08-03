@@ -27,6 +27,9 @@
           <span class="footer-label">read:</span> {{ post.read_time }}
         </span>
         <div class="post-stats">
+          <span class="post-view-count">
+            <span class="view-icon">👁</span> {{ post.views || 0 }}
+          </span>
           <span class="post-like-count" :class="{ liked: post.user_liked }">
             <span class="like-icon">{{ post.user_liked ? '♥' : '♡' }}</span> {{ post.like_count || 0 }}
           </span>

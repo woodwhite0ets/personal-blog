@@ -60,6 +60,16 @@ const routes = [
     component: () => import('../components/Login/VerifyEmail.vue'),
   },
   {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import('../components/Login/ForgotPassword.vue'),
+  },
+  {
+    path: '/reset-password/:token',
+    name: 'ResetPassword',
+    component: () => import('../components/Login/ResetPassword.vue'),
+  },
+  {
     path: '/editor',
     name: 'EditorNew',
     component: () => import('../components/Editor/EditorPage.vue'),
