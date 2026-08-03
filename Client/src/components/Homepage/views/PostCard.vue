@@ -189,9 +189,10 @@ defineProps({
   display: flex; align-items: center; gap: 12px;
 }
 
-.post-like-count, .post-comment-count {
+.post-like-count, .post-comment-count, .post-view-count {
   font-size: 11px; color: var(--text-muted);
   display: flex; align-items: center; gap: 3px;
+  white-space: nowrap;
 }
 
 .post-like-count.liked {
@@ -200,6 +201,7 @@ defineProps({
 
 .like-icon { font-size: 13px; }
 .comment-icon { font-size: 12px; }
+.view-icon { font-size: 12px; }
 
 /* ====== 响应式 ====== */
 @media (max-width: 800px) {

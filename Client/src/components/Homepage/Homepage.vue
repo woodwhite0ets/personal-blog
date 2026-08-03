@@ -723,8 +723,13 @@ onMounted(() => { fetchPosts(); fetchTags() })
 }
 
 .sort-bar {
+  grid-column: 1 / -1;   /* 横跨左右两列，避免与 sidebar 并排错位 */
   display: flex; align-items: center; gap: 8px;
   margin-bottom: 16px;
+  padding: 10px 16px;
+  background: var(--accent-a4);
+  border: 1px solid var(--accent-a15);
+  border-radius: 6px;
 }
 .sort-label {
   font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
