@@ -104,7 +104,7 @@ app.get('/api/tags', async (req, res) => {
   }
 });
 
-// 作者统计（供首页贡献者列表，统计全站已发布文章数，而非当前分页）
+// 作者统计（供首页贡献者列表 + 全站已发布文章总数，而非当前分页）
 app.get('/api/authors', async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -114,7 +114,10 @@ app.get('/api/authors', async (req, res) => {
        GROUP BY u.id
        ORDER BY post_count DESC, u.username ASC`
     );
-    res.json({ authors: rows });
+    const [totalRows] = await pool.query(
+      `SELECT COUNT(*) AS total FROM posts WHERE status = 'published'`
+    );
+    res.json({ authors: rows, total_published: totalRows[0]?.total || 0 });
   } catch (err) {
     console.error('authors error:', err);
     res.status(500).json({ message: 'internal server error' });

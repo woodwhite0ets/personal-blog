@@ -175,7 +175,7 @@
             </div>
             <div class="info-line">
               <span class="info-key">文章</span>
-              <span class="info-val">{{ posts.length }} 已发布</span>
+              <span class="info-val">{{ totalPublished }} 已发布</span>
             </div>
           </div>
         </div>
@@ -303,8 +303,9 @@ async function fetchTags() {
   } catch { /* ignore */ }
 }
 
-// ====== 从 API 获取全站作者统计（贡献者列表，真实文章数） ======
+// ====== 从 API 获取全站作者统计 + 已发布总数（真实值，非当前分页） ======
 const contributors = ref([])
+const totalPublished = ref(0)
 
 async function fetchContributors() {
   try {
@@ -316,6 +317,7 @@ async function fetchContributors() {
         avatar: a.avatar || '',
         count: a.post_count,
       }))
+      totalPublished.value = data.total_published || 0
     }
   } catch { /* ignore */ }
 }
