@@ -82,12 +82,38 @@
               <span class="ptag">Vue 3</span><span class="ptag">Express</span><span class="ptag">MySQL</span><span class="ptag">Docker 部署</span>
             </div>
           </div>
+
           <div class="project-item">
             <div class="project-head">
-              <span class="project-name">更多项目整理中...</span>
-              <span class="project-status dim-status">待补充</span>
+              <span class="project-name">智能电力监控平台</span>
+              <span class="project-status dim-status">多协议工业数据采集</span>
             </div>
-            <p class="project-desc">这里可以补充你的其他项目经历、工作经历、开源贡献等。</p>
+            <p class="project-desc">面向工业场景的电力监控系统，支持多种协议的数据采集与整合。</p>
+            <div class="project-tags">
+              <span class="ptag">数据采集</span><span class="ptag">多协议</span><span class="ptag">工业物联网</span>
+            </div>
+          </div>
+
+          <div class="project-item">
+            <div class="project-head">
+              <span class="project-name">乐清市充电桩分布图</span>
+              <span class="project-status dim-status">检定监管平台</span>
+            </div>
+            <p class="project-desc">充电桩分布与检定监管系统，经历过从单体 SQLite 到 Docker + PostGIS 的架构升级，涉及地理信息可视化与数据管理。</p>
+            <div class="project-tags">
+              <span class="ptag">PostGIS</span><span class="ptag">Docker</span><span class="ptag">GIS 可视化</span><span class="ptag">架构升级</span>
+            </div>
+          </div>
+
+          <div class="project-item">
+            <div class="project-head">
+              <span class="project-name">AI 工具链实践</span>
+              <span class="project-status dim-status">Claude Code 生态</span>
+            </div>
+            <p class="project-desc">围绕 Claude Code / CC Switch / Router / DeepSeek 等 AI 开发工具的使用与排障，分享配置方法与实战经验。</p>
+            <div class="project-tags">
+              <span class="ptag">Claude Code</span><span class="ptag">AI 工具</span><span class="ptag">效率提升</span>
+            </div>
           </div>
         </div>
       </div>
