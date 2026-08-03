@@ -54,7 +54,7 @@ function validateCoverImage(url) {
   // 清理路径遍历符号
   url = url.replace(/\.\./g, '').replace(/\\/g, '/');
   // 只允许本地 /uploads/ 路径或相对路径
-  return url.startsWith('/uploads/') || url.startsWith('./uploads/');
+  return url.startsWith('/uploads/');
 }
 
 // ====== GET /api/posts — 文章列表（分页 + 作者筛选） ======
@@ -110,10 +110,11 @@ router.get('/', authOptional, async (req, res) => {
       params.push(tag, tag);
     }
 
-    // search: match title, excerpt, or content
+    // search: match title, excerpt, or content（转义 LIKE 通配符 + 长度限制）
     if (search) {
+      const escaped = search.replace(/[\\%_]/g, '\\$&').slice(0, 100);
       conditions.push('(p.title LIKE ? OR p.excerpt LIKE ? OR p.content LIKE ?)');
-      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+      params.push(`%${escaped}%`, `%${escaped}%`, `%${escaped}%`);
     }
 
     if (conditions.length > 0) {
@@ -287,7 +288,10 @@ router.post('/', authRequired, authNoGuest, async (req, res) => {
       return res.status(400).json({ message: 'title and content are required' });
     }
 
-    // 校验 status
+    // 校验 status（先检查类型，防止非字符串 .toLowerCase() 抛 TypeError）
+    if (req.body.status !== undefined && typeof req.body.status !== 'string') {
+      return res.status(400).json({ message: 'invalid status' });
+    }
     let status = (req.body.status || 'draft').toLowerCase();
     if (!ALLOWED_STATUS.includes(status)) {
       return res.status(400).json({ message: `invalid status: ${status}` });
@@ -302,13 +306,26 @@ router.post('/', authRequired, authNoGuest, async (req, res) => {
       return res.status(400).json({ message: `max ${MAX_TAGS} tags allowed` });
     }
 
-    // 生成 slug
-    const baseSlug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9一-鿿]+/g, '-')
-      .replace(/^-|-$/g, '')
-      .slice(0, 100) || 'post';
-    const slug = baseSlug + '-' + Date.now().toString(36);
+    // 优先使用前端提供的 slug（已上传内联图片的临时 slug），否则自动生成
+    let slug;
+    if (req.body.slug && typeof req.body.slug === 'string') {
+      slug = req.body.slug
+        .toLowerCase()
+        .replace(/[^a-z0-9一-鿿-]+/g, '-')
+        .replace(/^-|-$/g, '')
+        .replace(/\.\./g, '')
+        .slice(0, 120);
+      if (!slug || slug.length < 3) {
+        return res.status(400).json({ message: 'invalid slug' });
+      }
+    } else {
+      const baseSlug = title
+        .toLowerCase()
+        .replace(/[^a-z0-9一-鿿]+/g, '-')
+        .replace(/^-|-$/g, '')
+        .slice(0, 100) || 'post';
+      slug = baseSlug + '-' + Date.now().toString(36);
+    }
 
     // 计算字数和阅读时间
     const wordCount = content.replace(/\s/g, '').length;
@@ -346,7 +363,10 @@ router.post('/', authRequired, authNoGuest, async (req, res) => {
 
     res.status(201).json({ message: 'post created', post });
   } catch (err) {
-    await conn.rollback();
+    // 仅在事务进行中才 rollback（beginTransaction 之前抛错时不 rollback）
+    if (conn._protocolStarted !== false) {
+      try { await conn.rollback(); } catch {}
+    }
     console.error('create post error:', err);
     res.status(500).json({ message: 'internal server error' });
   } finally {
@@ -369,9 +389,12 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
       return res.status(403).json({ message: 'you are not the author' });
     }
 
-    // 校验 status
+    // 校验 status（先检查类型）
     let status = undefined;
     if (req.body.status !== undefined) {
+      if (typeof req.body.status !== 'string') {
+        return res.status(400).json({ message: 'invalid status' });
+      }
       status = req.body.status.toLowerCase();
       if (!ALLOWED_STATUS.includes(status)) {
         return res.status(400).json({ message: `invalid status: ${status}` });
@@ -404,6 +427,10 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
     const excerpt = req.body.excerpt !== undefined ? sanitizeText(req.body.excerpt, 500) : undefined;
     const content = req.body.content !== undefined ? sanitizeContent(req.body.content) : undefined;
 
+    // 禁止通过 PUT 将 title 或 content 清空
+    if (title === '') return res.status(400).json({ message: 'title cannot be empty' });
+    if (content === '') return res.status(400).json({ message: 'content cannot be empty' });
+
     const wordCount = content ? content.replace(/\s/g, '').length : undefined;
     const readTime = wordCount ? Math.max(1, Math.ceil(wordCount / 400)) + ' min read' : undefined;
 
@@ -422,8 +449,11 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
     if (readTime !== undefined)    fields.read_time = readTime;
     if (wordCount !== undefined)   fields.word_count = wordCount;
     if (cover_image !== undefined) fields.cover_image = cover_image;
-    if (published_at !== null && status === 'published' && !rows[0].published_at) {
+    if (status === 'published' && !rows[0].published_at) {
       fields.published_at = published_at;
+    } else if (status && status !== 'published' && rows[0].published_at) {
+      // 从 published 改到 draft/archived 时清除发布时间
+      fields.published_at = null;
     }
 
     if (Object.keys(fields).length > 0) {
@@ -444,7 +474,10 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
 
     res.json({ message: 'post updated', slug });
   } catch (err) {
-    await conn.rollback();
+    // 仅在事务进行中才 rollback
+    if (conn._protocolStarted !== false) {
+      try { await conn.rollback(); } catch {}
+    }
     console.error('update post error:', err);
     res.status(500).json({ message: 'internal server error' });
   } finally {
@@ -684,8 +717,8 @@ async function syncTags(conn, postId, tagList) {
     // 生成 slug：英文用原名，中文等非英文字符生成短 hash
     let tagSlug = name.toLowerCase().replace(/[^a-z0-9一-鿿]+/g, '-').replace(/^-|-$/g, '');
     if (!tagSlug || tagSlug === '-') {
-      // 纯中文或无 ASCII 字符的标签，使用时间戳 hash
-      tagSlug = 'tag-' + Date.now().toString(36);
+      // 纯中文或无 ASCII 字符的标签，使用时间戳 hash + 随机后缀防冲突
+      tagSlug = 'tag-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6);
     }
 
     // upsert tag

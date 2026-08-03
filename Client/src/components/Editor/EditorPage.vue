@@ -223,6 +223,7 @@ function snapshot() {
     content: form.content,
     excerpt: form.excerpt,
     status: form.status,
+    is_pinned: form.is_pinned,
     tags: [...formTags.value],
   }
 }
@@ -294,6 +295,16 @@ function handleCoverDrop(e) {
 }
 
 function readCoverFile(file) {
+  // 客户端预校验：类型 + 大小（最大 10MB，与后端一致）
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+  if (!allowedTypes.includes(file.type)) {
+    showToast('cover must be jpg/png/gif/webp', 'error')
+    return
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    showToast('cover too large (max 10 MB)', 'error')
+    return
+  }
   coverFile.value = file
   const reader = new FileReader()
   reader.onload = () => { coverPreview.value = reader.result }
@@ -322,23 +333,25 @@ function handleContentPaste(e) {
       uploadingImages.value++
       saveReady.value = false
 
+      // 生成唯一 id，避免多图并发时占位符替换错位
+      const uid = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6)
+
       // 上传图片并插入 Markdown 语法
       const reader = new FileReader()
       reader.onload = () => {
-        // 先在预览中显示 base64（临时）
-        const placeholder = `![uploading...](data:${item.type};base64,${reader.result.split(',')[1]})`
+        // 先在预览中显示 base64（临时），占位符带唯一 id
+        const placeholder = `![uploading-${uid}](data:${item.type};base64,${reader.result.split(',')[1]})`
         insertAtCursor(contentInput.value, `\n${placeholder}\n`)
       }
       reader.readAsDataURL(file)
 
-      // 异步上传
-      uploadInlineImage(file)
-      break // 一次只处理一张
+      // 异步上传（支持多图，不再 break）
+      uploadInlineImage(file, uid)
     }
   }
 }
 
-async function uploadInlineImage(file) {
+async function uploadInlineImage(file, uid) {
   const fd = new FormData()
   // 注意: type/slug 必须先于 file 追加, 否则 multer destination 回调中 req.body 尚未解析完
   fd.append('type', 'content')
@@ -353,15 +366,15 @@ async function uploadInlineImage(file) {
     })
     if (!res.ok) throw new Error('upload failed')
     const data = await res.json()
-    // 替换临时占位符为真实 URL
+    // 按唯一 id 精确替换占位符（避免并发时错位）
     form.content = form.content.replace(
-      /!\[uploading\.\.\.\]\(data:image\/[^)]+\)/,
+      new RegExp(`!\\[uploading-${uid}\\]\\(data:image\\/[^)]+\\)`),
       `![image](${data.url})`
     )
   } catch {
-    // 移除失败的占位符
+    // 按唯一 id 移除失败的占位符
     form.content = form.content.replace(
-      /!\[uploading\.\.\.\]\(data:image\/[^)]+\)\n?/g,
+      new RegExp(`!\\[uploading-${uid}\\]\\(data:image\\/[^)]+\\)\\n?`),
       ''
     )
     showToast('image upload failed', 'error')
@@ -437,15 +450,20 @@ async function saveDraft() {
 }
 
 async function publish() {
+  const prevStatus = form.status
   form.status = 'published'
-  await savePost()
+  const ok = await savePost()
+  // 保存失败时回滚 status 指示器
+  if (!ok) form.status = prevStatus
 }
 
 async function savePost() {
-  if (!validate()) return
+  // 并发保护：重复调用时忽略
+  if (saving.value) return false
+  if (!validate()) return false
   if (!isLoggedIn.value) {
     router.push('/')
-    return
+    return false
   }
 
   // 图片上传中，禁止保存
@@ -470,8 +488,11 @@ async function savePost() {
       excerpt: form.excerpt.trim() || form.content.trim().slice(0, 150),
       content: form.content,
       tags: formTags.value,
-      is_pinned: form.is_pinned,
       status: form.status,
+    }
+    // 仅管理员发送 is_pinned
+    if (isAdmin.value) {
+      payload.is_pinned = form.is_pinned
     }
 
     const res = await fetch(url, {
@@ -483,22 +504,19 @@ async function savePost() {
       body: JSON.stringify(payload),
     })
 
-    console.log('[editor] save response status:', res.status)
-    console.log('[editor] payload tags:', JSON.stringify(payload.tags))
-
-    console.log('[editor] save response status:', res.status)
-    console.log('[editor] payload tags:', JSON.stringify(payload.tags))
 
     const data = await res.json()
     if (!res.ok) throw new Error(data.message || 'save failed')
 
     const savedSlug = data.post?.slug || data.slug || formSlug.value
 
-    // 如果有封面图，上传
+    const isPublish = form.status === 'published'
+    let coverFailed = false
+
+    // 如果有封面图，上传并回填
     if (coverFile.value && savedSlug) {
       const coverUrl = await uploadCover(savedSlug)
       if (coverUrl) {
-        // 更新文章的 cover_image
         await fetch(`${API_BASE}/posts/${savedSlug}`, {
           method: 'PUT',
           headers: {
@@ -507,6 +525,8 @@ async function savePost() {
           },
           body: JSON.stringify({ cover_image: coverUrl }),
         }).catch(() => {})
+      } else {
+        coverFailed = true
       }
     }
 
@@ -517,13 +537,21 @@ async function savePost() {
     snapshot()
     coverFile.value = null
 
-    showToast(form.status === 'published' ? 'published!' : 'draft saved')
+    // Toast
+    let toastMsg = isPublish ? 'published!' : 'draft saved'
+    if (coverFailed) toastMsg += ' (cover upload failed)'
+    showToast(toastMsg, coverFailed ? 'error' : 'success')
     autoSaveLabel.value = ''
 
-    router.push(`/post/${savedSlug}`)
+    // 草稿留在编辑器；发布成功才跳文章详情
+    if (isPublish) {
+      router.push(`/post/${savedSlug}`)
+    }
+    return true
   } catch (e) {
     serverError.value = e.message || '保存失败'
     showToast(e.message || 'save failed', 'error')
+    return false
   } finally {
     saving.value = false
   }
@@ -534,7 +562,9 @@ async function loadPost() {
   if (!isEditMode.value) return
 
   try {
-    const res = await fetch(`${API_BASE}/posts/${editSlug.value}`)
+    const res = await fetch(`${API_BASE}/posts/${editSlug.value}`, {
+      headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
+    })
     if (!res.ok) {
       if (res.status === 404) {
         serverError.value = 'post not found'
@@ -602,8 +632,8 @@ function restoreDraft() {
     const raw = sessionStorage.getItem(DRAFT_KEY)
     if (!raw) return
     const draft = JSON.parse(raw)
-    // 只恢复 30 分钟内的草稿
-    if (Date.now() - draft.savedAt > 30 * 60 * 1000) {
+    // 草稿 TTL 放宽到 12 小时（避免长时间编辑被误清）
+    if (Date.now() - draft.savedAt > 12 * 60 * 60 * 1000) {
       sessionStorage.removeItem(DRAFT_KEY)
       return
     }
@@ -639,7 +669,12 @@ function handleKeyboard(e) {
 
 // ====== 离开确认（未保存内容） ======
 onBeforeRouteLeave((to, from, next) => {
-  if (isDirty.value && !saving.value) {
+  // 保存中禁止离开，避免 savePost 完成后强制跳转打断用户
+  if (saving.value) {
+    window.alert('saving in progress — please wait')
+    return next(false)
+  }
+  if (isDirty.value) {
     const leave = window.confirm('you have unsaved changes — leave anyway?')
     if (!leave) return next(false)
   }
@@ -648,6 +683,8 @@ onBeforeRouteLeave((to, from, next) => {
 
 function handleBeforeUnload(e) {
   if (isDirty.value) {
+    // 同步保存草稿（sessionStorage 是同步 API，beforeunload 中安全）
+    saveDraftLocal()
     e.preventDefault()
     e.returnValue = '' // Chrome 需要
   }
@@ -689,17 +726,19 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => {
-  // 离开前保存草稿
-  if (isDirty.value && (form.title.trim() || form.content.trim())) {
+  // 清理防抖定时器，防止卸载后回写已发布内容
+  clearTimeout(autoSaveTimer)
+  // 离开前保存草稿（仅新建模式，编辑模式不覆盖本地草稿）
+  if (!isEditMode.value && isDirty.value && (form.title.trim() || form.content.trim())) {
     saveDraftLocal()
   }
   window.removeEventListener('keydown', handleKeyboard)
   window.removeEventListener('beforeunload', handleBeforeUnload)
 })
 
-// 内容变化时自动存草稿（3秒防抖）
+// 内容变化时自动存草稿（3秒防抖），包含 is_pinned
 watch(
-  () => [form.title, form.content, form.excerpt, formTags.value],
+  () => [form.title, form.content, form.excerpt, formTags.value, form.is_pinned],
   () => {
     if (isEditMode.value) return // 编辑模式不自动存
     clearTimeout(autoSaveTimer)

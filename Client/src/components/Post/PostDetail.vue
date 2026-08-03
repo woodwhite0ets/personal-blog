@@ -238,6 +238,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import { useAuth, getToken } from '../../stores/auth.js'
+import { isGuest } from '../../stores/auth.js'
 import ConfirmModal from '../Admin/ConfirmModal.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteFooter from '../common/SiteFooter.vue'
@@ -445,7 +446,9 @@ async function fetchPost() {
   error.value = ''
 
   try {
-    const res = await fetch(`${API_BASE}/posts/${slug.value}`)
+    // 携带 token 以便作者/admin 预览草稿/归档
+    const headers = getToken() && !isGuest() ? { Authorization: `Bearer ${getToken()}` } : {}
+    const res = await fetch(`${API_BASE}/posts/${slug.value}`, { headers })
     const data = await res.json()
 
     if (!res.ok) {
