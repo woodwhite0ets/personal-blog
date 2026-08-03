@@ -125,18 +125,22 @@ app.use((req, res, next) => {
 
 // ====== 全局错误处理（不泄露堆栈） ======
 app.use((err, req, res, next) => {
-  console.error('unhandled error:', err.message);
-  // 不向客户端暴露内部错误细节
+  // 客户端畸形请求（URI 解码失败、非法 JSON、请求中断）→ 400，不污染 error 日志
+  if (err instanceof URIError) {
+    return res.status(400).json({ message: 'bad request' });
+  }
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ message: 'invalid JSON body' });
+  }
+  if (err.type === 'request.aborted') {
+    return res.status(400).json({ message: 'request aborted' });
+  }
+  // CORS
   if (err.message && err.message.startsWith('CORS blocked')) {
     return res.status(403).json({ message: 'origin not allowed' });
   }
-  // URI 解码失败（爬虫访问畸形/GBK 中文 slug）→ 400 而非 500
-  if (err instanceof URIError || err.type === 'entity.parse.failed' || err.type === 'request.aborted') {
-    if (err.type === 'entity.parse.failed') {
-      return res.status(400).json({ message: 'invalid JSON body' });
-    }
-    return res.status(400).json({ message: 'bad request' });
-  }
+  // 真正的服务端错误才记录并返回 500
+  console.error('unhandled error:', err.message);
   res.status(500).json({ message: 'internal server error' });
 });
 
