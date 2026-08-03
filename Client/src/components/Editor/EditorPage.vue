@@ -511,6 +511,12 @@ async function savePost() {
 
     const savedSlug = data.post?.slug || data.slug || formSlug.value
 
+    // 新建文章成功后，切换到编辑模式（后续保存走 PUT 而非 POST，避免 slug 重复创建）
+    if (!isEditMode.value && savedSlug) {
+      formSlug.value = savedSlug
+      router.replace(`/editor/${savedSlug}`)
+    }
+
     const isPublish = form.status === 'published'
     let coverFailed = false
 
