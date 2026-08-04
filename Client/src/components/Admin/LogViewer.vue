@@ -134,6 +134,9 @@ function toggleFilter(level) {
 
 async function fetchLogs() {
   error.value = ''
+  // 记录当前是否在底部附近（跟随最新日志）；否则刷新后保持当前位置，不弹跳
+  const nearBottom = logContainer.value && logContainer.value.scrollHeight > 0 &&
+    (logContainer.value.scrollHeight - logContainer.value.scrollTop - logContainer.value.clientHeight) < 80
   try {
     const params = new URLSearchParams({ limit: String(limit.value) })
     if (filterLevel.value) params.set('level', filterLevel.value)
@@ -150,9 +153,9 @@ async function fetchLogs() {
     logs.value = data.logs
     total.value = data.total
 
-    // 自动滚到底部
+    // 仅当用户之前在看底部时才跟随到最新；否则保持滚动位置不动
     await nextTick()
-    if (logContainer.value) {
+    if (logContainer.value && nearBottom) {
       logContainer.value.scrollTop = logContainer.value.scrollHeight
     }
   } catch (e) {
