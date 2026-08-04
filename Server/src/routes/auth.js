@@ -6,6 +6,7 @@ const { signToken, authRequired, authNoGuest } = require('../middleware/auth');
 const { sendVerificationEmail, sendResetPasswordEmail } = require('../config/mail');
 const { loginLimiter, registerLimiter, resendVerifyLimiter } = require('../config/rateLimit');
 const { createCaptcha, verifyCaptcha } = require('../config/captcha');
+const { containsBannedWord } = require('../config/wordFilter');
 
 // 导入通用限制器（guest 防滥用）
 const rateLimit = require('express-rate-limit');
@@ -47,6 +48,11 @@ router.post('/register', registerLimiter, async (req, res) => {
     }
 
     const { username, nickname, password } = req.body;
+
+    // 违禁词检查（用户名/昵称，防挑衅辱骂）
+    if (containsBannedWord(username) || containsBannedWord(nickname)) {
+      return res.status(400).json({ message: 'username or nickname contains inappropriate words' });
+    }
     let email = req.body.email; // 需可重新赋值（后续小写化）
 
     if (!username || !nickname || !email || !password) {
@@ -419,6 +425,10 @@ router.put('/profile', authRequired, authNoGuest, async (req, res) => {
         return res.status(400).json({ message: 'nickname must be 1-50 characters' });
       }
       newNickname = nickname.trim().replace(/<[^>]*>/g, '').slice(0, 50);
+      // 违禁词检查
+      if (containsBannedWord(newNickname)) {
+        return res.status(400).json({ message: 'nickname contains inappropriate words' });
+      }
     }
 
     // 校验 bio（users.bio 列为 VARCHAR(300)）
@@ -428,6 +438,10 @@ router.put('/profile', authRequired, authNoGuest, async (req, res) => {
         return res.status(400).json({ message: 'bio too long (max 300 chars)' });
       }
       newBio = bio.trim().replace(/<[^>]*>/g, '').slice(0, 300);
+      // 违禁词检查
+      if (containsBannedWord(newBio)) {
+        return res.status(400).json({ message: 'bio contains inappropriate words' });
+      }
     }
 
     // 当前用户
