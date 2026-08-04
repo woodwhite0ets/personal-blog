@@ -16,7 +16,10 @@ function parseCaddyLogLine(line) {
     if (j.logger && j.logger.startsWith('http.log.access') && j.request) {
       const req = j.request;
       const ip = req.client_ip || req.remote_ip || '';
-      const ts = new Date(j.ts * 1000).toISOString().replace('T', ' ').slice(0, 19);
+      // Caddy ts 为 UTC，转成服务器本地时区（Asia/Shanghai 北京时间）
+      const d = new Date(j.ts * 1000);
+      const pad = n => String(n).padStart(2, '0');
+      const ts = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
       const dur = j.duration ? Math.round(j.duration * 1000) + 'ms' : '';
       return {
         ts,
