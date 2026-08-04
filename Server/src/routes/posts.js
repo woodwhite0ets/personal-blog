@@ -8,6 +8,7 @@ const router = express.Router();
 
 // ====== 输入清理（防 XSS & 长度限制） ======
 const ALLOWED_STATUS = ['draft', 'published', 'archived'];
+const ALLOWED_POST_TYPES = ['blog', 'forum'];
 const MAX_TAGS = 10;
 
 function sanitizeText(val, maxLen = 500) {
@@ -72,6 +73,7 @@ router.get('/', authOptional, async (req, res) => {
     const tag      = req.query.tag || '';
     const search   = req.query.search || '';
     const sort     = req.query.sort || 'latest';
+    const postType = req.query.type || '';  // 'blog' | 'forum' | '' (all)
 
     // status 校验
     if (status !== 'published' && status !== 'draft' && status !== 'archived' && status !== 'all') {
@@ -97,7 +99,7 @@ router.get('/', authOptional, async (req, res) => {
     let dataSql   = `
       SELECT DISTINCT
         p.id, p.title, p.slug, p.excerpt, p.cover_image,
-        p.is_pinned, p.status, p.read_time, p.published_at AS date, p.views,
+        p.is_pinned, p.status, p.post_type, p.read_time, p.published_at AS date, p.views,
         u.username, u.nickname, u.avatar
       FROM posts p
       JOIN users u ON p.author_id = u.id
@@ -114,6 +116,12 @@ router.get('/', authOptional, async (req, res) => {
         (req.query.status === 'draft' || req.query.status === 'archived')) {
       conditions.push('p.author_id = ?');
       params.push(req.user.id);
+    }
+
+    // post_type 过滤（blog / forum）
+    if (postType === 'blog' || postType === 'forum') {
+      conditions.push('p.post_type = ?');
+      params.push(postType);
     }
 
     if (author) {
@@ -330,6 +338,23 @@ router.post('/', authRequired, authNoGuest, async (req, res) => {
       return res.status(400).json({ message: `invalid status: ${status}` });
     }
 
+    // post_type：非管理员只能创建论坛帖子
+    let post_type = 'forum';
+    if (req.body.post_type && typeof req.body.post_type === 'string') {
+      const pt = req.body.post_type.toLowerCase();
+      if (ALLOWED_POST_TYPES.includes(pt)) {
+        post_type = pt;
+      }
+    }
+    // 管理员未指定时默认 blog，普通用户强制 forum
+    if (req.user.role === 'admin') {
+      if (!req.body.post_type || !ALLOWED_POST_TYPES.includes(req.body.post_type.toLowerCase())) {
+        post_type = 'blog';
+      }
+    } else {
+      post_type = 'forum';
+    }
+
     // 仅管理员可置顶
     const is_pinned = req.body.is_pinned && req.user.role === 'admin' ? 1 : 0;
 
@@ -371,9 +396,9 @@ router.post('/', authRequired, authNoGuest, async (req, res) => {
     const image_dir = `/uploads/posts/${slug}`;
 
     const [result] = await conn.query(
-      `INSERT INTO posts (title, slug, excerpt, content, image_dir, status, is_pinned, read_time, word_count, author_id, published_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [title, slug, excerpt || '', content, image_dir, status, is_pinned, readTime, wordCount, req.user.id, published_at]
+      `INSERT INTO posts (title, slug, excerpt, content, image_dir, status, is_pinned, post_type, read_time, word_count, author_id, published_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [title, slug, excerpt || '', content, image_dir, status, is_pinned, post_type, readTime, wordCount, req.user.id, published_at]
     );
 
     const postId = result.insertId;
@@ -390,6 +415,7 @@ router.post('/', authRequired, authNoGuest, async (req, res) => {
       status, is_pinned: !!is_pinned,
       read_time: readTime, word_count: wordCount,
       author: { username: req.user.username },
+      post_type,
       tags: tagList || [],
       date: published_at ? published_at.toISOString().split('T')[0] : '',
     };
@@ -450,6 +476,16 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
 	  cover_image = cover_image.replace(/\.\./g, '').replace(/\\/g, '/');
 	}
 
+    // post_type：仅管理员可修改
+    let post_type_put = undefined;
+    if (req.body.post_type !== undefined && req.user.role === 'admin') {
+      if (typeof req.body.post_type === 'string' && ALLOWED_POST_TYPES.includes(req.body.post_type.toLowerCase())) {
+        post_type_put = req.body.post_type.toLowerCase();
+      } else {
+        return res.status(400).json({ message: 'invalid post_type' });
+      }
+    }
+
     // 标签限制
     const tagList = req.body.tags;
     if (tagList && (!Array.isArray(tagList) || tagList.length > MAX_TAGS)) {
@@ -479,6 +515,7 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
     if (content !== undefined)     fields.content = content;
     if (status !== undefined)      fields.status = status;
     if (is_pinned !== undefined)   fields.is_pinned = is_pinned;  // 已预处理
+    if (post_type_put !== undefined) fields.post_type = post_type_put;
     if (readTime !== undefined)    fields.read_time = readTime;
     if (wordCount !== undefined)   fields.word_count = wordCount;
     if (cover_image !== undefined) fields.cover_image = cover_image;

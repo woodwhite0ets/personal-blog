@@ -40,6 +40,11 @@ const routes = [
     component: () => import('../components/Post/PostDetail.vue'),
   },
   {
+    path: '/forum',
+    name: 'Forum',
+    component: () => import('../components/Homepage/ForumPage.vue'),
+  },
+  {
     path: '/archive',
     name: 'Archive',
     component: () => import('../components/Homepage/ArchivePage.vue'),

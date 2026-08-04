@@ -121,6 +121,19 @@
         <span v-if="errors.content" class="field-err">{{ errors.content }}</span>
         <span v-if="serverError" class="field-err server-err">{{ serverError }}</span>
 
+        <!-- 发布类型选择（仅管理员可见） -->
+        <div v-if="isAdmin" class="post-type-row">
+          <span class="label-hint">发布到:</span>
+          <label class="radio-row">
+            <input v-model="form.post_type" type="radio" value="blog" />
+            <span class="check-text">📝 博客（首页展示）</span>
+          </label>
+          <label class="radio-row">
+            <input v-model="form.post_type" type="radio" value="forum" />
+            <span class="check-text">💬 论坛（社区讨论）</span>
+          </label>
+        </div>
+
         <!-- 置顶复选框（仅管理员可见） -->
         <label v-if="isAdmin" class="checkbox-row">
           <input v-model="form.is_pinned" type="checkbox" />
@@ -169,6 +182,15 @@ const API_BASE = '/api'
 const isEditMode = computed(() => !!route.params.slug)
 const editSlug = computed(() => route.params.slug || '')
 
+// 从 URL query 读取默认 post_type（如 /editor?type=forum）
+if (route.query.type === 'forum') {
+  form.post_type = 'forum'
+}
+// 非管理员强制 forum
+if (!isAdmin.value) {
+  form.post_type = 'forum'
+}
+
 // ====== 状态 ======
 const saving = ref(false)
 const saveReady = ref(true)  // 图片上传中禁止保存
@@ -197,6 +219,7 @@ const form = reactive({
   content: '',
   is_pinned: false,
   status: 'draft',
+  post_type: 'blog',  // 'blog' | 'forum' — 非管理员强制 forum
 })
 
 const formSlug = ref('')
@@ -490,6 +513,7 @@ async function savePost() {
       content: form.content,
       tags: formTags.value,
       status: form.status,
+      post_type: form.post_type,
     }
     // 仅管理员发送 is_pinned
     if (isAdmin.value) {
@@ -592,6 +616,7 @@ async function loadPost() {
     form.content = p.content || ''
     form.is_pinned = p.is_pinned || false
     form.status = p.status || 'draft'
+    form.post_type = p.post_type || 'blog'
     formSlug.value = p.slug || editSlug.value
 
     // 解析标签
@@ -1030,6 +1055,18 @@ watch(
   border-radius: 4px;
 }
 .server-err::before { display: none; }
+
+/* 发布类型选择 */
+.post-type-row {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.radio-row {
+  display: flex; align-items: center; gap: 6px; cursor: pointer;
+}
+
+.radio-row input[type='radio'] { accent-color: var(--accent); width: 14px; height: 14px; }
 
 /* 复选框 */
 .checkbox-row {

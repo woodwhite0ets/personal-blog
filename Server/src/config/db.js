@@ -213,6 +213,11 @@ async function runMigrations(conn) {
     console.log('[db] migration: adding posts.views');
     await conn.query('ALTER TABLE `posts` ADD COLUMN `views` INT UNSIGNED NOT NULL DEFAULT 0');
   }
+  if (!postColNames.includes('post_type')) {
+    console.log('[db] migration: adding posts.post_type');
+    await conn.query("ALTER TABLE `posts` ADD COLUMN `post_type` ENUM('blog','forum') NOT NULL DEFAULT 'blog'");
+    await conn.query("ALTER TABLE `posts` ADD INDEX `idx_post_type` (`post_type`)");
+  }
 }
 
 // ====== 创建连接池 ======

@@ -14,8 +14,11 @@
         </router-link>
         <nav class="nav-links">
           <router-link to="/HomePage"><span class="nav-num">01</span> 首页</router-link>
-          <router-link to="/archive"><span class="nav-num">02</span> 归档</router-link>
-          <router-link to="/about"><span class="nav-num">03</span> 关于</router-link>
+          <router-link to="/forum">
+            <span class="nav-num">02</span> 论坛
+          </router-link>
+          <router-link to="/archive"><span class="nav-num">03</span> 归档</router-link>
+          <router-link to="/about"><span class="nav-num">04</span> 关于</router-link>
         </nav>
         <div class="nav-actions">
           <ThemeSwitcher />
