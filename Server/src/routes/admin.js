@@ -288,7 +288,7 @@ router.delete('/users/:id', async (req, res) => {
 // ====== GET /api/admin/logs — 查看服务器日志 ======
 router.get('/logs', async (req, res) => {
   try {
-    const limit = Math.min(500, Math.max(1, parseInt(req.query.limit) || 100));
+    const limit = Math.min(2000, Math.max(1, parseInt(req.query.limit) || 500));
     const level = req.query.level || '';
     const logs = getLogs(limit, level || undefined);
     res.json({ logs, total: logs.length });
@@ -312,17 +312,18 @@ router.delete('/logs', async (req, res) => {
 // ====== GET /api/admin/logs/caddy — 查看 Caddy 访问日志 ======
 router.get('/logs/caddy', async (req, res) => {
   try {
-    const limit = Math.min(500, Math.max(1, parseInt(req.query.limit) || 100));
+    const limit = Math.min(2000, Math.max(1, parseInt(req.query.limit) || 500));
+    const includeAdmin = req.query.include_admin === '1';  // 前端「显示管理员日志」开关
     if (!fs.existsSync(CADDY_LOG_PATH)) {
       return res.json({ logs: [], total: 0, source: 'caddy' });
     }
     const raw = fs.readFileSync(CADDY_LOG_PATH, 'utf8');
     const lines = raw.split('\n').filter(Boolean).slice(-limit);
-    // 过滤管理员访问控制台的请求（/api/admin/* 只有管理员能访问），避免日志被自己的操作刷屏
+    // 默认过滤管理员访问控制台的请求（/api/admin/* 只有管理员能访问），避免日志被自己的操作刷屏
     const logs = lines
       .map(parseCaddyLogLine)
       .filter(Boolean)
-      .filter(l => !l.uri.startsWith('/api/admin/'));
+      .filter(l => includeAdmin || !l.uri.startsWith('/api/admin/'));
     res.json({ logs, total: logs.length, source: 'caddy' });
   } catch (err) {
     console.error('admin caddy logs error:', err);

@@ -30,6 +30,10 @@
             <span class="filter-icon">🗑</span> 清空
           </button>
         </template>
+        <label v-if="logSource === 'caddy'" class="toggle-admin">
+          <input v-model="showAdmin" type="checkbox" @change="fetchLogs" />
+          <span>显示管理员日志</span>
+        </label>
         <button class="btn-sm btn-refresh" @click="fetchLogs">
           <span class="filter-icon">↻</span> 刷新
         </button>
@@ -106,12 +110,13 @@ const API_BASE = '/api'
 
 const logs = ref([])
 const total = ref(0)
-const limit = ref(100)
+const limit = ref(500)
 const filterLevel = ref('')
 const loading = ref(true)
 const error = ref('')
 const logContainer = ref(null)
 const logSource = ref('backend')  // 'backend' | 'caddy'
+const showAdmin = ref(false)       // Caddy 日志是否显示管理员控制台操作
 
 let autoRefreshTimer = null
 
@@ -132,6 +137,7 @@ async function fetchLogs() {
   try {
     const params = new URLSearchParams({ limit: String(limit.value) })
     if (filterLevel.value) params.set('level', filterLevel.value)
+    if (logSource.value === 'caddy' && showAdmin.value) params.set('include_admin', '1')
 
     const url = logSource.value === 'caddy'
       ? `${API_BASE}/admin/logs/caddy?${params}`
@@ -225,6 +231,17 @@ onUnmounted(() => {
 .btn-sm.active { border-color: var(--accent); color: var(--accent); background: var(--accent-a6); }
 
 .btn-filter { gap: 6px; min-width: 70px; }
+
+/* 显示管理员日志开关 */
+.toggle-admin {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  cursor: pointer; padding: 4px 8px;
+  border: 1px dashed var(--border); border-radius: 4px;
+  transition: all 0.2s;
+}
+.toggle-admin:hover { color: var(--text); border-color: var(--text-muted); }
+.toggle-admin input { accent-color: var(--accent); cursor: pointer; }
 
 .filter-dot { width: 6px; height: 6px; border-radius: 50%; }
 .dot-red { background: var(--err); }
