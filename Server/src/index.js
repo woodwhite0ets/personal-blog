@@ -75,6 +75,17 @@ app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 // 全局速率限制
 app.use(globalLimiter);
 
+// ====== 访问日志（记录客户端 IP / 方法 / 路径 / 状态码，供安全追溯） ======
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    // 跳过静态资源（assets/uploads 为前端文件，同一 IP 批量加载，减少噪音）
+    if (req.path.startsWith('/uploads/') || req.path.startsWith('/assets/')) return;
+    console.log(`[req] ${req.ip} ${req.method} ${req.originalUrl} ${res.statusCode} ${Date.now() - start}ms`);
+  });
+  next();
+});
+
 // 静态文件 — 上传目录
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
