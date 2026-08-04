@@ -99,11 +99,13 @@ router.post('/register', registerLimiter, async (req, res) => {
     const verify_expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 小时
 
     const password_hash = await bcrypt.hash(password, 12);
+    // 记录注册客户端 IP（配合 Caddy 反代 X-Forwarded-For；Node 绑定 127.0.0.1 只能经 Caddy 访问，无法伪造）
+    const registerIp = req.ip || null;
     try {
       const [result] = await pool.query(
-        `INSERT INTO users (username, nickname, email, password_hash, verify_token, verify_expires)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [username, nickname, email, password_hash, verify_token, verify_expires]
+        `INSERT INTO users (username, nickname, email, password_hash, verify_token, verify_expires, register_ip)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [username, nickname, email, password_hash, verify_token, verify_expires, registerIp]
       );
     } catch (err) {
       // 并发注册同用户名/邮箱 → 唯一键冲突，返回与已存在一致的响应
