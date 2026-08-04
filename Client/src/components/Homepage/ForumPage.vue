@@ -350,7 +350,7 @@ async function fetchPosts(page = 1) {
   try {
     const tagFilter = route.query.tag || ''
     const searchFilter = route.query.search || ''
-    let url = `/api/posts?page=${page}&status=published&sort=${sortMode.value}&type=forum`
+    let url = `/api/posts?page=${page}&status=published&sort=${sortMode.value}`
     if (tagFilter) url += `&tag=${encodeURIComponent(tagFilter)}`
     if (searchFilter) url += `&search=${encodeURIComponent(searchFilter)}`
 
