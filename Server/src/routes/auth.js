@@ -5,6 +5,7 @@ const pool = require('../config/db');
 const { signToken, authRequired, authNoGuest } = require('../middleware/auth');
 const { sendVerificationEmail, sendResetPasswordEmail } = require('../config/mail');
 const { loginLimiter, registerLimiter, resendVerifyLimiter } = require('../config/rateLimit');
+const { createCaptcha, verifyCaptcha } = require('../config/captcha');
 
 // 导入通用限制器（guest 防滥用）
 const rateLimit = require('express-rate-limit');
@@ -18,9 +19,33 @@ const guestLimiter = rateLimit({
 
 const router = express.Router();
 
+// ====== GET /api/auth/captcha — 图形验证码（防批量注册） ======
+const captchaLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,              // 每 IP 每分钟最多 20 次获取验证码
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'too many captcha requests — slow down' },
+});
+router.get('/captcha', captchaLimiter, (req, res) => {
+  try {
+    const { id, svg } = createCaptcha();
+    res.json({ captcha_id: id, svg });
+  } catch (err) {
+    console.error('captcha error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
 // ====== POST /api/auth/register ======
 router.post('/register', registerLimiter, async (req, res) => {
   try {
+    // 图形验证码校验（防批量注册/机器人）
+    const { captcha_id, captcha_text } = req.body || {};
+    if (!verifyCaptcha(captcha_id, captcha_text)) {
+      return res.status(400).json({ message: 'captcha verification failed — please refresh and try again' });
+    }
+
     const { username, nickname, password } = req.body;
     let email = req.body.email; // 需可重新赋值（后续小写化）
 

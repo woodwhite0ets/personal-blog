@@ -149,6 +149,37 @@ Registerview · VUE
               </span>
             </div>
  
+            <!-- 图形验证码 -->
+            <div class="field">
+              <label for="captcha">
+                <span class="label-icon">✓</span> 验证码
+              </label>
+              <div class="captcha-wrap">
+                <input
+                  id="captcha"
+                  v-model.trim="form.captcha"
+                  type="text"
+                  placeholder="输入图中字符（不区分大小写）"
+                  autocomplete="off"
+                  :class="{ error: errors.captcha }"
+                  maxlength="6"
+                />
+                <button
+                  type="button"
+                  class="captcha-img"
+                  :class="{ loading: captchaLoading }"
+                  @click="loadCaptcha"
+                  title="点击刷新验证码"
+                >
+                  <span v-if="captchaSvg" v-html="captchaSvg"></span>
+                  <span v-else class="captcha-loading">加载中...</span>
+                </button>
+              </div>
+              <span v-if="errors.captcha" class="field-error">
+                <span class="err-prefix">ERR!</span> {{ errors.captcha }}
+              </span>
+            </div>
+ 
             <p v-if="serverError" class="server-error">
               <span class="err-prefix">ERR!</span> {{ serverError }}
             </p>
@@ -199,12 +230,14 @@ Registerview · VUE
 </template>
  
 <script setup>
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../../stores/auth.js'
 
 const router = useRouter()
 const { login: authLogin } = useAuth()
+
+onMounted(loadCaptcha)
 
 const API_BASE = '/api'
 
@@ -213,6 +246,9 @@ const loading = ref(false)
 const resending = ref(false)
 const serverError = ref('')
 const showPassword = ref(false)
+const captchaSvg = ref('')
+const captchaId = ref('')
+const captchaLoading = ref(false)
  
 const form = reactive({
   username: '',
@@ -220,6 +256,7 @@ const form = reactive({
   email: '',
   password: '',
   confirm: '',
+  captcha: '',
 })
  
 const errors = reactive({
@@ -228,6 +265,7 @@ const errors = reactive({
   email: '',
   password: '',
   confirm: '',
+  captcha: '',
 })
  
 // ====== 密码强度 ======
@@ -274,6 +312,7 @@ function validate() {
   errors.email = ''
   errors.password = ''
   errors.confirm = ''
+  errors.captcha = ''
   serverError.value = ''
  
   if (!form.username) {
@@ -316,9 +355,32 @@ function validate() {
     valid = false
   }
  
+  if (!form.captcha) {
+    errors.captcha = '请输入验证码'
+    valid = false
+  }
+ 
   return valid
 }
  
+// ====== 加载验证码 ======
+async function loadCaptcha() {
+  if (captchaLoading.value) return
+  captchaLoading.value = true
+  try {
+    const res = await fetch(`${API_BASE}/auth/captcha`)
+    const data = await res.json()
+    if (res.ok && data.captcha_id) {
+      captchaId.value = data.captcha_id
+      captchaSvg.value = data.svg
+      form.captcha = ''
+      errors.captcha = ''
+    }
+  } catch { /* 忽略网络错误，不阻塞 */ } finally {
+    captchaLoading.value = false
+  }
+}
+
 // ====== 提交注册 ======
 async function handleRegister() {
   if (!validate()) return
@@ -333,6 +395,8 @@ async function handleRegister() {
         nickname: form.nickname,
         email: form.email,
         password: form.password,
+        captcha_id: captchaId.value,
+        captcha_text: form.captcha,
       }),
     })
  
@@ -340,6 +404,7 @@ async function handleRegister() {
  
     if (!res.ok) {
       serverError.value = data.message || '注册失败'
+      loadCaptcha()  // 失败即刷新验证码（验证码一次性）
       return
     }
  
@@ -682,6 +747,32 @@ async function handleResend() {
 .link-btn:hover { color: var(--accent-hover); }
 .link-btn:disabled { opacity: 0.5; cursor: not-allowed; }
  
+/* ====== 验证码 ====== */
+.captcha-wrap {
+  display: flex; gap: 8px;
+}
+
+.captcha-wrap input { flex: 1; }
+
+.captcha-img {
+  width: 110px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.captcha-img:hover { border-color: var(--accent); box-shadow: 0 0 12px var(--accent-a15); }
+.captcha-img:active { transform: scale(0.98); }
+.captcha-img.loading { cursor: wait; opacity: 0.7; }
+.captcha-img svg { width: 100%; height: 100%; display: block; }
+.captcha-loading { font-size: 10px; color: var(--text-muted); }
+
 /* ====== 底部 ====== */
 .back-link {
   text-align: center; margin: 22px 0 0;
