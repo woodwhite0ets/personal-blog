@@ -240,8 +240,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { marked } from 'marked'
-import DOMPurify from 'dompurify'
+import { renderMarkdown } from '../../utils/markdown.js'
 import { useAuth, getToken } from '../../stores/auth.js'
 import { isGuest } from '../../stores/auth.js'
 import ConfirmModal from '../Admin/ConfirmModal.vue'
@@ -426,12 +425,7 @@ const canDelete = computed(() => isAuthor.value || isAdmin.value)
 
 // ====== Markdown 渲染（XSS 消毒） ======
 const renderedContent = computed(() => {
-  if (!post.value?.content) return ''
-  const raw = marked(post.value.content)
-  return DOMPurify.sanitize(raw, {
-    FORBID_ATTR: ['style', 'id', 'name'],
-    ALLOWED_URI_REGEXP: /^(?:(?:https?|ftp):\/\/|\/)/i,
-  })
+  return renderMarkdown(post.value?.content)
 })
 
 // ====== 标签归一化（兼容新旧格式） ======

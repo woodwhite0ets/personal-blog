@@ -166,8 +166,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
-import { marked } from 'marked'
-import DOMPurify from 'dompurify'
+import { renderMarkdown } from '../../utils/markdown.js'
 import { useAuth, getToken } from '../../stores/auth.js'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteFooter from '../common/SiteFooter.vue'
@@ -254,11 +253,7 @@ function snapshot() {
 // ====== 预览（XSS 消毒） ======
 const previewHtml = computed(() => {
   if (!form.content.trim()) return ''
-  const raw = marked(form.content)
-  return DOMPurify.sanitize(raw, {
-    FORBID_ATTR: ['style', 'id', 'name'],
-    ALLOWED_URI_REGEXP: /^(?:(?:https?|ftp):\/\/|\/)/i,
-  })
+  return renderMarkdown(form.content)
 })
 
 const wordCount = computed(() => {
