@@ -7,6 +7,7 @@
       </a>
       <span class="beian-sep">|</span>
       <a href="https://beian.mps.gov.cn/#/query/webSearch?code=33038202005059" target="_blank" rel="noopener noreferrer" class="beian-link beian-ga">
+        <img src="/beian-icon.png" alt="" class="beian-ga-icon" />
         浙公网安备33038202005059号
       </a>
     </div>
@@ -56,8 +57,17 @@ defineProps({
 }
 
 .beian-ga {
-  /* 公安备案可以用微妙的绿色提示，与 ICP 备案区分 */
   color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.beian-ga-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 .footer-line {
