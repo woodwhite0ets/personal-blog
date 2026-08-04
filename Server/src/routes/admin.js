@@ -1,9 +1,39 @@
 const express = require('express');
+const fs = require('fs');
 const pool = require('../config/db');
 const { authRequired, authAdmin } = require('../middleware/auth');
 const { getLogs, clearLogs } = require('../config/logger');
 
 const router = express.Router();
+
+// ====== Caddy 访问日志路径（服务器环境为 /var/log/caddy/blog-access.log） ======
+const CADDY_LOG_PATH = process.env.CADDY_LOG_PATH || '/var/log/caddy/blog-access.log';
+
+// 解析 Caddy JSON 日志行 → 简洁对象（供管理面板展示）
+function parseCaddyLogLine(line) {
+  try {
+    const j = JSON.parse(line);
+    if (j.logger && j.logger.startsWith('http.log.access') && j.request) {
+      const req = j.request;
+      const ip = req.client_ip || req.remote_ip || '';
+      const ts = new Date(j.ts * 1000).toISOString().replace('T', ' ').slice(0, 19);
+      const dur = j.duration ? Math.round(j.duration * 1000) + 'ms' : '';
+      return {
+        ts,
+        level: j.status >= 500 ? 'error' : j.status >= 400 ? 'warn' : 'info',
+        message: `${ip} ${req.method} ${req.uri} ${j.status || ''} ${dur}`,
+        ip,
+        method: req.method,
+        uri: req.uri,
+        status: j.status,
+        duration: j.duration ? Math.round(j.duration * 1000) + 'ms' : '',
+      };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 // 所有 admin 路由都需要管理员权限
 router.use(authRequired, authAdmin);
@@ -275,6 +305,23 @@ router.delete('/logs', async (req, res) => {
     res.json({ message: 'logs cleared' });
   } catch (err) {
     console.error('admin clear logs error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
+// ====== GET /api/admin/logs/caddy — 查看 Caddy 访问日志 ======
+router.get('/logs/caddy', async (req, res) => {
+  try {
+    const limit = Math.min(500, Math.max(1, parseInt(req.query.limit) || 100));
+    if (!fs.existsSync(CADDY_LOG_PATH)) {
+      return res.json({ logs: [], total: 0, source: 'caddy' });
+    }
+    const raw = fs.readFileSync(CADDY_LOG_PATH, 'utf8');
+    const lines = raw.split('\n').filter(Boolean).slice(-limit);
+    const logs = lines.map(parseCaddyLogLine).filter(Boolean);
+    res.json({ logs, total: logs.length, source: 'caddy' });
+  } catch (err) {
+    console.error('admin caddy logs error:', err);
     res.status(500).json({ message: 'internal server error' });
   }
 });

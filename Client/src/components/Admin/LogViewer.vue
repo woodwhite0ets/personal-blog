@@ -2,28 +2,48 @@
   <div class="log-viewer">
     <div class="section-head">
       <span class="section-arrow">❯</span>
-      <span class="section-title">journalctl -f -n {{ limit }}</span>
+      <!-- 日志来源切换 -->
+      <div class="source-tabs">
+        <button class="source-tab" :class="{ active: logSource === 'backend' }" @click="switchSource('backend')">
+          后端日志
+        </button>
+        <button class="source-tab" :class="{ active: logSource === 'caddy' }" @click="switchSource('caddy')">
+          Caddy 访问日志
+        </button>
+      </div>
       <span class="section-count">— 共 {{ total }} 行</span>
       <div class="head-actions">
-        <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'error' }" @click="toggleFilter('error')">
-          <span class="filter-dot dot-red" :class="{ dim: filterLevel !== 'error' }"></span>
-          错误
-        </button>
-        <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'warn' }" @click="toggleFilter('warn')">
-          <span class="filter-dot dot-yellow" :class="{ dim: filterLevel !== 'warn' }"></span>
-          警告
-        </button>
-        <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'info' }" @click="toggleFilter('info')">
-          <span class="filter-dot dot-cyan" :class="{ dim: filterLevel !== 'info' }"></span>
-          信息
-        </button>
-        <button class="btn-sm btn-filter" @click="clearLogs">
-          <span class="filter-icon">🗑</span> 清空
-        </button>
+        <template v-if="logSource === 'backend'">
+          <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'error' }" @click="toggleFilter('error')">
+            <span class="filter-dot dot-red" :class="{ dim: filterLevel !== 'error' }"></span>
+            错误
+          </button>
+          <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'warn' }" @click="toggleFilter('warn')">
+            <span class="filter-dot dot-yellow" :class="{ dim: filterLevel !== 'warn' }"></span>
+            警告
+          </button>
+          <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'info' }" @click="toggleFilter('info')">
+            <span class="filter-dot dot-cyan" :class="{ dim: filterLevel !== 'info' }"></span>
+            信息
+          </button>
+          <button class="btn-sm btn-filter" @click="clearLogs">
+            <span class="filter-icon">🗑</span> 清空
+          </button>
+        </template>
         <button class="btn-sm btn-refresh" @click="fetchLogs">
           <span class="filter-icon">↻</span> 刷新
         </button>
       </div>
+    </div>
+
+    <!-- Caddy 日志：列头 -->
+    <div v-if="logSource === 'caddy' && logs.length" class="caddy-cols">
+      <span>时间</span>
+      <span>IP</span>
+      <span>方法</span>
+      <span>路径</span>
+      <span>状态</span>
+      <span>耗时</span>
     </div>
 
     <!-- 加载 -->
@@ -44,7 +64,10 @@
         <div v-if="logs.length === 0" class="state-box">
           <span class="state-text">暂无日志记录</span>
         </div>
+
+        <!-- 后端日志：终端行 -->
         <div
+          v-if="logSource === 'backend'"
           v-for="(line, i) in logs"
           :key="i"
           class="log-line"
@@ -53,6 +76,22 @@
           <span class="log-ts">[{{ line.ts }}]</span>
           <span class="log-level" :class="'badge-' + line.level">{{ line.level.toUpperCase() }}</span>
           <span class="log-msg">{{ line.message }}</span>
+        </div>
+
+        <!-- Caddy 日志：IP/请求/状态 表格 -->
+        <div
+          v-if="logSource === 'caddy'"
+          v-for="(line, i) in logs"
+          :key="i"
+          class="caddy-line"
+          :class="'caddy-status-' + (line.status >= 500 ? 'err' : line.status >= 400 ? 'warn' : 'ok')"
+        >
+          <span class="caddy-ts">{{ line.ts }}</span>
+          <span class="caddy-ip">{{ line.ip }}</span>
+          <span class="caddy-method">{{ line.method }}</span>
+          <span class="caddy-uri">{{ line.uri }}</span>
+          <span class="caddy-status">{{ line.status }}</span>
+          <span class="caddy-dur">{{ line.duration }}</span>
         </div>
       </div>
     </template>
@@ -72,8 +111,16 @@ const filterLevel = ref('')
 const loading = ref(true)
 const error = ref('')
 const logContainer = ref(null)
+const logSource = ref('backend')  // 'backend' | 'caddy'
 
 let autoRefreshTimer = null
+
+function switchSource(src) {
+  if (logSource.value === src) return
+  logSource.value = src
+  filterLevel.value = ''
+  fetchLogs()
+}
 
 function toggleFilter(level) {
   filterLevel.value = filterLevel.value === level ? '' : level
@@ -86,7 +133,10 @@ async function fetchLogs() {
     const params = new URLSearchParams({ limit: String(limit.value) })
     if (filterLevel.value) params.set('level', filterLevel.value)
 
-    const res = await fetch(`${API_BASE}/admin/logs?${params}`, {
+    const url = logSource.value === 'caddy'
+      ? `${API_BASE}/admin/logs/caddy?${params}`
+      : `${API_BASE}/admin/logs?${params}`
+    const res = await fetch(url, {
       headers: { Authorization: `Bearer ${getToken()}` },
     })
     if (!res.ok) throw new Error((await res.json()).message || '获取失败')
@@ -107,6 +157,7 @@ async function fetchLogs() {
 }
 
 async function clearLogs() {
+  if (logSource.value === 'caddy') return  // Caddy 日志由 Caddy 持有，不能清空
   try {
     await fetch(`${API_BASE}/admin/logs`, {
       method: 'DELETE',
@@ -142,8 +193,24 @@ onUnmounted(() => {
   flex-wrap: wrap;
 }
 .section-arrow { color: var(--accent); font-weight: 700; }
-.section-title { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: 0.5px; }
 .section-count { font-size: 11px; color: var(--text-muted); }
+
+/* 日志来源切换 */
+.source-tabs {
+  display: flex; gap: 4px;
+  background: var(--bg-code); border: 1px solid var(--border);
+  border-radius: 6px; padding: 3px;
+}
+.source-tab {
+  padding: 5px 14px; font-family: inherit; font-size: 11px; font-weight: 600;
+  color: var(--text-muted); background: none; border: none; border-radius: 4px;
+  cursor: pointer; transition: all 0.2s;
+}
+.source-tab:hover { color: var(--text); }
+.source-tab.active {
+  color: var(--accent); background: var(--accent-a8);
+  box-shadow: 0 0 10px var(--accent-a15);
+}
 
 .head-actions { display: flex; gap: 6px; margin-left: auto; }
 
@@ -166,6 +233,16 @@ onUnmounted(() => {
 .dim { opacity: 0.3; }
 .filter-icon { font-size: 12px; }
 
+/* Caddy 日志列头 */
+.caddy-cols {
+  display: grid; grid-template-columns: 150px 130px 60px 1fr 60px 60px;
+  gap: 10px; padding: 7px 16px;
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  color: var(--text-muted); text-transform: uppercase;
+  background: var(--overlay-a10); border: 1px solid var(--border);
+  border-bottom: none; border-radius: 8px 8px 0 0;
+}
+
 /* 终端日志区 */
 .log-terminal {
   background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px;
@@ -174,6 +251,7 @@ onUnmounted(() => {
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
   font-size: 12px; line-height: 1.8;
 }
+.log-terminal:has(.caddy-line) { padding: 0; border-radius: 0 0 8px 8px; }
 
 .log-line {
   display: flex; gap: 10px; align-items: baseline;
@@ -203,6 +281,25 @@ onUnmounted(() => {
 
 .level-error .log-msg { color: var(--err); }
 .level-warn  .log-msg { color: var(--warn); }
+
+/* Caddy 日志行 */
+.caddy-line {
+  display: grid; grid-template-columns: 150px 130px 60px 1fr 60px 60px;
+  gap: 10px; padding: 5px 16px; align-items: baseline;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 12px; line-height: 1.6;
+  background: var(--bg-code); border-bottom: 1px solid var(--border-a30);
+}
+.caddy-line:last-child { border-radius: 0 0 8px 8px; border-bottom: none; }
+.caddy-ts { color: var(--text-muted); font-size: 11px; }
+.caddy-ip { color: var(--accent); font-weight: 600; }
+.caddy-method { color: var(--text-secondary); }
+.caddy-uri { color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.caddy-status { font-weight: 700; text-align: center; }
+.caddy-dur { color: var(--text-muted); font-size: 11px; }
+.caddy-status-ok .caddy-status { color: var(--ok); }
+.caddy-status-warn .caddy-status { color: var(--warn); }
+.caddy-status-err .caddy-status { color: var(--err); }
 
 /* 状态 */
 .state-box {
