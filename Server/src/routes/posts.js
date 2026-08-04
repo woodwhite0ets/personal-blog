@@ -118,10 +118,14 @@ router.get('/', authOptional, async (req, res) => {
       params.push(req.user.id);
     }
 
-    // post_type 过滤（blog / forum）
+    // post_type 过滤：
+    // - blog / forum：按类型过滤
+    // - owner：首页模式 — 仅站长（admin）的文章，无论 blog 还是 forum 都显示
     if (postType === 'blog' || postType === 'forum') {
       conditions.push('p.post_type = ?');
       params.push(postType);
+    } else if (postType === 'owner') {
+      conditions.push("u.role = 'admin'");
     }
 
     if (author) {
