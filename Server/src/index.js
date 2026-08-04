@@ -79,8 +79,9 @@ app.use(globalLimiter);
 app.use((req, res, next) => {
   const start = Date.now();
   res.on('finish', () => {
-    // 跳过静态资源（assets/uploads 为前端文件，同一 IP 批量加载，减少噪音）
+    // 跳过静态资源 + 管理员控制台操作（assets/uploads 为前端文件批量加载；/api/admin/ 为管理员正常操作）
     if (req.path.startsWith('/uploads/') || req.path.startsWith('/assets/')) return;
+    if (req.path.startsWith('/api/admin/')) return;  // 过滤管理员访问控制台的日志
     console.log(`[req] ${req.ip} ${req.method} ${req.originalUrl} ${res.statusCode} ${Date.now() - start}ms`);
   });
   next();

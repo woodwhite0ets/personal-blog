@@ -318,7 +318,11 @@ router.get('/logs/caddy', async (req, res) => {
     }
     const raw = fs.readFileSync(CADDY_LOG_PATH, 'utf8');
     const lines = raw.split('\n').filter(Boolean).slice(-limit);
-    const logs = lines.map(parseCaddyLogLine).filter(Boolean);
+    // 过滤管理员访问控制台的请求（/api/admin/* 只有管理员能访问），避免日志被自己的操作刷屏
+    const logs = lines
+      .map(parseCaddyLogLine)
+      .filter(Boolean)
+      .filter(l => !l.uri.startsWith('/api/admin/'));
     res.json({ logs, total: logs.length, source: 'caddy' });
   } catch (err) {
     console.error('admin caddy logs error:', err);
