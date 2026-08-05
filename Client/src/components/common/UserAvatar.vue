@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
   src: { type: String, default: '' },
@@ -16,6 +16,9 @@ const props = defineProps({
 })
 
 const imgFailed = ref(false)
+
+// src 变化时重置加载失败状态（坏头像不再永久遮挡后续有效头像）
+watch(() => props.src, () => { imgFailed.value = false })
 
 const tag = computed(() => (props.link ? 'router-link' : 'span'))
 const char = computed(() => {

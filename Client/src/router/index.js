@@ -40,6 +40,11 @@ const routes = [
     component: () => import('../components/Post/PostDetail.vue'),
   },
   {
+    path: '/forum',
+    name: 'Forum',
+    component: () => import('../components/Homepage/ForumPage.vue'),
+  },
+  {
     path: '/archive',
     name: 'Archive',
     component: () => import('../components/Homepage/ArchivePage.vue'),
@@ -58,6 +63,16 @@ const routes = [
     path: '/verify-email/:token',
     name: 'VerifyEmail',
     component: () => import('../components/Login/VerifyEmail.vue'),
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import('../components/Login/ForgotPassword.vue'),
+  },
+  {
+    path: '/reset-password/:token',
+    name: 'ResetPassword',
+    component: () => import('../components/Login/ResetPassword.vue'),
   },
   {
     path: '/editor',
@@ -99,6 +114,11 @@ const routes = [
         component: () => import('../components/Admin/LogViewer.vue'),
       },
     ],
+  },
+  // catch-all：未知路径重定向到首页
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/HomePage',
   },
 ];
 

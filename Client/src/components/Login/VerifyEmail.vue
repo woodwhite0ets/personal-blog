@@ -87,11 +87,13 @@ onMounted(async () => {
     success.value = true
     username.value = data.user?.username || ''
 
-    // 验证成功 → 自动保存 JWT
+    // 验证成功 → 自动保存 JWT（同时清理 localStorage + sessionStorage 的游客态）
     if (data.token) {
       localStorage.setItem('token', data.token)
       localStorage.removeItem('guest_mode')
       localStorage.removeItem('guest_user')
+      sessionStorage.removeItem('guest_mode')
+      sessionStorage.removeItem('guest_user')
       await fetchMe()
     }
   } catch {

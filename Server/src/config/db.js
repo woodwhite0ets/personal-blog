@@ -194,6 +194,38 @@ async function runMigrations(conn) {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
   }
+
+  // 为现有表添加新列（检查列是否存在）
+  const [userCols] = await conn.query('SHOW COLUMNS FROM `users`');
+  const userColNames = userCols.map(c => c.Field);
+  if (!userColNames.includes('reset_token')) {
+    console.log('[db] migration: adding users.reset_token');
+    await conn.query('ALTER TABLE `users` ADD COLUMN `reset_token` VARCHAR(64) DEFAULT NULL');
+  }
+  if (!userColNames.includes('reset_expires')) {
+    console.log('[db] migration: adding users.reset_expires');
+    await conn.query('ALTER TABLE `users` ADD COLUMN `reset_expires` DATETIME DEFAULT NULL');
+  }
+
+  const [postCols] = await conn.query('SHOW COLUMNS FROM `posts`');
+  const postColNames = postCols.map(c => c.Field);
+  if (!postColNames.includes('views')) {
+    console.log('[db] migration: adding posts.views');
+    await conn.query('ALTER TABLE `posts` ADD COLUMN `views` INT UNSIGNED NOT NULL DEFAULT 0');
+  }
+  if (!postColNames.includes('post_type')) {
+    console.log('[db] migration: adding posts.post_type');
+    await conn.query("ALTER TABLE `posts` ADD COLUMN `post_type` ENUM('blog','forum') NOT NULL DEFAULT 'blog'");
+    await conn.query("ALTER TABLE `posts` ADD INDEX `idx_post_type` (`post_type`)");
+  }
+
+  // 用户注册 IP（防挑衅/追溯）
+  const [userCols2] = await conn.query('SHOW COLUMNS FROM `users`');
+  const userColNames2 = userCols2.map(c => c.Field);
+  if (!userColNames2.includes('register_ip')) {
+    console.log('[db] migration: adding users.register_ip');
+    await conn.query("ALTER TABLE `users` ADD COLUMN `register_ip` VARCHAR(45) DEFAULT NULL");
+  }
 }
 
 // ====== 创建连接池 ======

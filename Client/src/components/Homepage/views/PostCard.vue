@@ -5,7 +5,7 @@
       <div class="post-meta-row">
         <span class="post-tags">
           <router-link
-            v-for="tag in (post.tags && post.tags.length ? post.tags : [{ name: post.tag || 'uncategorized' }])"
+            v-for="tag in (post.tags && post.tags.length ? post.tags : [{ name: post.tag || '未分类' }])"
             :key="typeof tag === 'string' ? tag : tag.name"
             :to="`/HomePage?tag=${encodeURIComponent(typeof tag === 'string' ? tag : tag.name)}`"
             class="post-tag"
@@ -24,9 +24,12 @@
       <p class="post-excerpt">{{ post.excerpt }}</p>
       <div class="post-footer">
         <span class="post-read-time">
-          <span class="footer-label">read:</span> {{ post.read_time }}
+          <span class="footer-label">阅读:</span> {{ post.read_time }}
         </span>
         <div class="post-stats">
+          <span class="post-view-count">
+            <span class="view-icon">👁</span> {{ post.views || 0 }}
+          </span>
           <span class="post-like-count" :class="{ liked: post.user_liked }">
             <span class="like-icon">{{ post.user_liked ? '♥' : '♡' }}</span> {{ post.like_count || 0 }}
           </span>
@@ -34,7 +37,7 @@
             <span class="comment-icon">💬</span> {{ post.comment_count || 0 }}
           </span>
         </div>
-        <router-link :to="`/post/${post.slug || post.id}`" class="post-link">read →</router-link>
+        <router-link :to="`/post/${post.slug || post.id}`" class="post-link">阅读 →</router-link>
       </div>
     </div>
   </article>
@@ -186,9 +189,10 @@ defineProps({
   display: flex; align-items: center; gap: 12px;
 }
 
-.post-like-count, .post-comment-count {
+.post-like-count, .post-comment-count, .post-view-count {
   font-size: 11px; color: var(--text-muted);
   display: flex; align-items: center; gap: 3px;
+  white-space: nowrap;
 }
 
 .post-like-count.liked {
@@ -197,6 +201,7 @@ defineProps({
 
 .like-icon { font-size: 13px; }
 .comment-icon { font-size: 12px; }
+.view-icon { font-size: 12px; }
 
 /* ====== 响应式 ====== */
 @media (max-width: 800px) {

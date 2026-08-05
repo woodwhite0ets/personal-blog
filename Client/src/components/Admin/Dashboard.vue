@@ -7,7 +7,7 @@
 
     <div v-if="loading" class="state-box">
       <span class="spinner"></span>
-      <span class="state-text">loading stats...</span>
+      <span class="state-text">正在加载统计...</span>
     </div>
 
     <template v-else-if="stats">
@@ -16,44 +16,44 @@
         <div class="stat-card">
           <div class="stat-card-bar">
             <span class="stat-dot dot-green"></span>
-            <span class="stat-label">users</span>
+            <span class="stat-label">用户</span>
           </div>
           <div class="stat-card-body">
             <span class="stat-number">{{ stats.users || 0 }}</span>
-            <span class="stat-sub">registered users</span>
+            <span class="stat-sub">注册用户</span>
           </div>
         </div>
 
         <div class="stat-card">
           <div class="stat-card-bar">
             <span class="stat-dot dot-cyan"></span>
-            <span class="stat-label">posts</span>
+            <span class="stat-label">文章</span>
           </div>
           <div class="stat-card-body">
             <span class="stat-number">{{ stats.posts.total }}</span>
-            <span class="stat-sub">total posts</span>
+            <span class="stat-sub">文章总数</span>
           </div>
         </div>
 
         <div class="stat-card">
           <div class="stat-card-bar">
             <span class="stat-dot" style="background:var(--ok)"></span>
-            <span class="stat-label">published</span>
+            <span class="stat-label">已发布</span>
           </div>
           <div class="stat-card-body">
             <span class="stat-number" style="color:var(--ok)">{{ stats.posts.published }}</span>
-            <span class="stat-sub">live posts</span>
+            <span class="stat-sub">已上线文章</span>
           </div>
         </div>
 
         <div class="stat-card">
           <div class="stat-card-bar">
             <span class="stat-dot dot-yellow"></span>
-            <span class="stat-label">drafts</span>
+            <span class="stat-label">草稿</span>
           </div>
           <div class="stat-card-body">
             <span class="stat-number" style="color:var(--warn)">{{ stats.posts.draft }}</span>
-            <span class="stat-sub">unpublished drafts</span>
+            <span class="stat-sub">未发布草稿</span>
           </div>
         </div>
       </div>
@@ -69,7 +69,7 @@
           <div class="panel-body">
             <table class="data-table">
               <thead>
-                <tr><th>username</th><th>role</th><th>joined</th></tr>
+                <tr><th>用户名</th><th>角色</th><th>注册时间</th></tr>
               </thead>
               <tbody>
                 <tr v-for="u in stats.recent_users" :key="u.id">
@@ -93,7 +93,7 @@
           <div class="panel-body">
             <table class="data-table">
               <thead>
-                <tr><th>title</th><th>status</th><th>author</th></tr>
+                <tr><th>标题</th><th>状态</th><th>作者</th></tr>
               </thead>
               <tbody>
                 <tr v-for="p in stats.recent_posts" :key="p.slug">
@@ -139,10 +139,10 @@ async function fetchStats() {
     const res = await fetch(`${API_BASE}/admin/stats`, {
       headers: { Authorization: `Bearer ${getToken()}` },
     })
-    if (!res.ok) throw new Error((await res.json()).message || 'fetch failed')
+    if (!res.ok) throw new Error((await res.json()).message || '获取失败')
     stats.value = await res.json()
   } catch (e) {
-    error.value = e.message || 'connection refused'
+    error.value = e.message || '连接被拒绝'
   } finally {
     loading.value = false
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="forum-page">
     <div class="bg-grid"></div>
     <div class="bg-scanline"></div>
 
@@ -10,7 +10,7 @@
           <span class="brand-bracket">[</span>
           <span class="brand-text">woodwhite@blog</span>
           <span class="brand-bracket">]</span>
-          <span class="brand-path">~/main</span>
+          <span class="brand-path">~/forum</span>
         </router-link>
         <nav class="nav-links">
           <router-link to="/HomePage">
@@ -41,7 +41,7 @@
               v-model="searchQuery"
               type="text"
               class="search-input"
-              placeholder="搜索文章..."
+              placeholder="搜索帖子..."
               @keydown.escape="closeSearch"
               @keydown.enter="doSearch"
             />
@@ -50,14 +50,14 @@
           <!-- 未登录 -->
           <template v-if="!isLoggedIn">
             <router-link to="/" class="btn-write">
-              <span class="btn-write-icon">+</span> 新文章
+              <span class="btn-write-icon">+</span> 发帖
             </router-link>
           </template>
 
           <!-- 已登录 -->
           <template v-else>
-            <router-link to="/editor" class="btn-write">
-              <span class="btn-write-icon">+</span> 新文章
+            <router-link to="/editor?type=forum" class="btn-write">
+              <span class="btn-write-icon">+</span> 发帖
             </router-link>
             <div class="user-menu-wrap" ref="userMenuRef">
               <button class="btn-user" @click="showUserMenu = !showUserMenu">
@@ -82,34 +82,24 @@
       </div>
     </header>
 
-    <!-- ====== Hero：置顶文章 ====== -->
-    <section v-if="pinnedPost" class="hero">
+    <!-- ====== Hero：论坛介绍 ====== -->
+    <section class="hero">
       <div class="hero-inner">
         <div class="hero-badge">
           <span class="badge-dot"></span>
-          置顶
+          社区论坛
         </div>
-        <h1 class="hero-title">
-          <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`">
-            {{ pinnedPost.title }}
+        <h1 class="hero-title">技术交流 · 自由讨论</h1>
+        <p class="hero-excerpt">
+          欢迎来到 woodwhite@blog 的社区论坛。在这里可以自由发帖讨论技术话题、分享经验、提问求助。
+        </p>
+        <div class="hero-actions">
+          <router-link v-if="isLoggedIn" to="/editor?type=forum" class="btn-hero-write">
+            <span>+</span> 发布新帖
           </router-link>
-        </h1>
-        <p class="hero-excerpt">{{ pinnedPost.excerpt }}</p>
-        <div class="hero-meta">
-          <span class="meta-item">
-            <span class="meta-label">日期</span>
-            <span class="meta-value">{{ pinnedPost.date }}</span>
-          </span>
-          <span class="meta-sep"></span>
-          <span class="meta-item">
-            <span class="meta-label">阅读</span>
-            <span class="meta-value">{{ pinnedPost.read_time }}</span>
-          </span>
-          <span class="meta-sep"></span>
-          <span class="meta-item">
-            <span class="meta-label">标签</span>
-            <span class="meta-value">{{ pinnedPost.tag }}</span>
-          </span>
+          <router-link v-else to="/" class="btn-hero-write">
+            <span>→</span> 登录后发帖
+          </router-link>
         </div>
       </div>
     </section>
@@ -147,38 +137,38 @@
         >热门</button>
       </div>
 
-      <!-- 文章列表 — 模块化组件 -->
+      <!-- 帖子列表 -->
       <PostList
         :posts="posts"
         :loading="loading"
         :loading-more="loadingMore"
         :error="error"
         :has-more="hasMore"
-        empty-text="暂无文章，稍后再来看看。"
+        empty-text="暂无帖子，来发布第一个话题吧。"
         @load-more="loadMore"
         @refresh="fetchPosts"
       />
 
-      <!-- 侧边栏 — 保持不变 -->
+      <!-- 侧边栏 -->
       <aside class="sidebar">
         <div class="sidebar-panel">
           <div class="panel-bar">
             <span class="panel-dot dot-cyan"></span>
             <span class="panel-dot dot-cyan dim"></span>
-            <span class="panel-title">系统.信息</span>
+            <span class="panel-title">论坛.信息</span>
           </div>
           <div class="panel-body">
             <div class="info-line">
-              <span class="info-key">系统</span>
-              <span class="info-val">博客系统 v2.0.1</span>
+              <span class="info-key">板块</span>
+              <span class="info-val">技术交流</span>
             </div>
             <div class="info-line">
-              <span class="info-key">运行时间</span>
-              <span class="info-val terminal-green">在线</span>
+              <span class="info-key">帖子</span>
+              <span class="info-val">{{ totalPosts }} 篇</span>
             </div>
             <div class="info-line">
-              <span class="info-key">文章</span>
-              <span class="info-val">{{ totalPublished }} 已发布</span>
+              <span class="info-key">状态</span>
+              <span class="info-val terminal-green">开放中</span>
             </div>
           </div>
         </div>
@@ -187,7 +177,7 @@
           <div class="panel-bar">
             <span class="panel-dot dot-green"></span>
             <span class="panel-dot dot-green dim"></span>
-            <span class="panel-title">贡献者</span>
+            <span class="panel-title">活跃用户</span>
           </div>
           <div class="panel-body">
             <router-link
@@ -214,7 +204,7 @@
               <router-link
                 v-for="tag in tags"
                 :key="tag.name"
-                :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
+                :to="`/forum?tag=${encodeURIComponent(tag.name)}`"
                 class="tag" :class="tag.size"
               >
                 #{{ tag.name }}
@@ -231,18 +221,18 @@
             <span class="panel-title">链接.符号链接</span>
           </div>
           <div class="panel-body">
-            <a href="https://github.com" target="_blank" class="link-item" v-if="false">
-              <span class="link-arrow">→</span> github
-            </a>
+            <router-link to="/HomePage" class="link-item">
+              <span class="link-arrow">→</span> 博客首页
+            </router-link>
             <router-link to="/archive" class="link-item">
-              <span class="link-arrow">→</span> 归档
+              <span class="link-arrow">→</span> 文章归档
             </router-link>
           </div>
         </div>
       </aside>
     </div>
 
-    <SiteFooter command='echo "© 2026 woodwhite@blog — 技术论坛"' />
+    <SiteFooter command='echo "© 2026 woodwhite@blog — 社区论坛"' />
   </div>
 </template>
 
@@ -289,6 +279,7 @@ const loadingMore = ref(false)
 const error = ref('')
 const currentPage = ref(1)
 const totalPages = ref(1)
+const totalPosts = ref(0)
 
 // ====== 从 API 获取全站标签 ======
 const tags = ref([])
@@ -306,9 +297,8 @@ async function fetchTags() {
   } catch { /* ignore */ }
 }
 
-// ====== 从 API 获取全站作者统计 + 已发布总数（真实值，非当前分页） ======
+// ====== 论坛活跃用户 ======
 const contributors = ref([])
-const totalPublished = ref(0)
 
 async function fetchContributors() {
   try {
@@ -320,13 +310,11 @@ async function fetchContributors() {
         avatar: a.avatar || '',
         count: a.post_count,
       }))
-      totalPublished.value = data.total_published || 0
     }
   } catch { /* ignore */ }
 }
 
 // ====== 计算属性 ======
-const pinnedPost = computed(() => posts.value.find(p => p.is_pinned) || null)
 const hasMore = computed(() => currentPage.value < totalPages.value)
 const activeTag = computed(() => route.query.tag || '')
 const activeSearch = computed(() => route.query.search || '')
@@ -334,16 +322,15 @@ const activeSearch = computed(() => route.query.search || '')
 const clearTagLink = computed(() => {
   const query = { ...route.query }
   delete query.tag
-  return { path: '/HomePage', query }
+  return { path: '/forum', query }
 })
 
 const clearSearchLink = computed(() => {
   const query = { ...route.query }
   delete query.search
-  return { path: '/HomePage', query }
+  return { path: '/forum', query }
 })
 
-// ====== 从 posts 聚合作者发文数 ======
 const sortMode = ref('latest')
 
 function switchSort(mode) {
@@ -352,10 +339,9 @@ function switchSort(mode) {
   fetchPosts(1)
 }
 
-// ====== 请求序号守卫（防止快速切换筛选时乱序响应覆盖） ======
+// ====== 请求序号守卫 ======
 let fetchSeq = 0
 
-// ====== 获取文章 ======
 async function fetchPosts(page = 1) {
   const mySeq = ++fetchSeq
   if (page === 1) loading.value = true
@@ -364,7 +350,7 @@ async function fetchPosts(page = 1) {
   try {
     const tagFilter = route.query.tag || ''
     const searchFilter = route.query.search || ''
-    let url = `/api/posts?page=${page}&status=published&sort=${sortMode.value}&type=owner`
+    let url = `/api/posts?page=${page}&status=published&sort=${sortMode.value}`
     if (tagFilter) url += `&tag=${encodeURIComponent(tagFilter)}`
     if (searchFilter) url += `&search=${encodeURIComponent(searchFilter)}`
 
@@ -373,22 +359,21 @@ async function fetchPosts(page = 1) {
 
     if (!res.ok) throw new Error(data.message || '请求失败')
 
-    // 丢弃过期响应（已有更新的请求发出）
     if (mySeq !== fetchSeq) return
 
     if (page === 1) {
       posts.value = data.posts
     } else {
-      // loadMore 期间若筛选已变化，丢弃旧筛选的追加
       if (mySeq !== fetchSeq) return
       posts.value.push(...data.posts)
     }
 
     currentPage.value = data.page
     totalPages.value = data.totalPages
+    totalPosts.value = data.total
   } catch (e) {
     if (mySeq !== fetchSeq) return
-    error.value = e.message || '获取文章失败'
+    error.value = e.message || '获取帖子失败'
   } finally {
     if (mySeq === fetchSeq) {
       loading.value = false
@@ -397,17 +382,9 @@ async function fetchPosts(page = 1) {
   }
 }
 
-// ====== 监听 query.tag 变化重新获取 ======
-watch(() => route.query.tag, () => {
-  fetchPosts(1)
-})
+watch(() => route.query.tag, () => { fetchPosts(1) })
+watch(() => route.query.search, () => { fetchPosts(1) })
 
-// ====== 监听 query.search 变化重新获取 ======
-watch(() => route.query.search, () => {
-  fetchPosts(1)
-})
-
-// ====== 加载更多 ======
 async function loadMore() {
   loadingMore.value = true
   await fetchPosts(currentPage.value + 1)
@@ -434,19 +411,17 @@ function doSearch() {
   } else {
     delete query.search
   }
-  router.push({ path: '/HomePage', query })
+  router.push({ path: '/forum', query })
   searchActive.value = false
 }
 
-// ====== 生命周期 ======
 onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 </script>
 
-<!-- ====== 样式：只保留 home-page 独有的，PostList 的样式已随组件带走 ====== -->
 <style scoped>
 :root { color-scheme: dark; }
 
-.home-page {
+.forum-page {
   min-height: 100vh;
   background: var(--bg);
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
@@ -529,7 +504,6 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .btn-search:hover { border-color: var(--accent); color: var(--accent); }
 
-/* ====== 搜索输入框 ====== */
 .search-wrap {
   display: flex; align-items: center; gap: 0;
   position: relative;
@@ -592,14 +566,6 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .btn-user:hover { border-color: var(--accent); background: var(--accent-a6); }
 
-.user-avatar {
-  width: 26px; height: 26px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--accent); color: var(--on-accent);
-  font-weight: 700; font-size: 12px;
-  border-radius: 6px; text-transform: uppercase;
-}
-
 .user-name { font-weight: 500; color: var(--text-secondary); }
 
 .user-caret {
@@ -644,13 +610,14 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 }
 
 .hero-inner {
-  max-width: 1060px; margin: 0 auto; padding: 72px 24px 64px;
+  max-width: 1060px; margin: 0 auto; padding: 56px 24px 48px;
+  text-align: center;
 }
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 10px; font-weight: 700; letter-spacing: 2px;
-  color: var(--text-dim); margin-bottom: 20px; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 16px; text-transform: uppercase;
 }
 
 .badge-dot {
@@ -660,32 +627,33 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 }
 
 .hero-title {
-  font-size: 34px; font-weight: 800; line-height: 1.3;
-  margin: 0 0 16px; max-width: 680px; letter-spacing: -0.5px;
+  font-size: 28px; font-weight: 800; line-height: 1.3;
+  margin: 0 0 12px; letter-spacing: -0.5px;
+  color: var(--text-bright);
 }
-
-.hero-title a {
-  color: var(--text-bright); text-decoration: none; transition: color 0.2s;
-}
-
-.hero-title a:hover { color: var(--accent); }
 
 .hero-excerpt {
-  font-size: 15px; color: var(--text-dim); line-height: 1.7;
-  margin: 0 0 24px; max-width: 560px;
+  font-size: 14px; color: var(--text-dim); line-height: 1.7;
+  margin: 0 auto 24px; max-width: 500px;
 }
 
-.hero-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-
-.meta-item { display: flex; align-items: center; gap: 6px; font-size: 11px; }
-
-.meta-label {
-  color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+.hero-actions {
+  display: flex; justify-content: center; gap: 12px;
 }
 
-.meta-value { color: var(--text-secondary); }
+.btn-hero-write {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 24px;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  color: var(--on-accent); background: var(--accent); border-radius: 6px;
+  text-decoration: none; transition: all 0.2s;
+}
 
-.meta-sep { width: 1px; height: 12px; background: var(--border); }
+.btn-hero-write:hover {
+  background: var(--accent-hover);
+  box-shadow: 0 0 24px var(--accent-a25);
+  transform: translateY(-1px);
+}
 
 /* ====== 主体布局 ====== */
 .main-layout {
@@ -745,7 +713,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 }
 
 .sort-bar {
-  grid-column: 1 / -1;   /* 横跨左右两列，避免与 sidebar 并排错位 */
+  grid-column: 1 / -1;
   display: flex; align-items: center; gap: 8px;
   margin-bottom: 16px;
   padding: 10px 16px;
@@ -769,7 +737,6 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   color: var(--on-accent); background: var(--accent);
   border-color: var(--accent);
 }
-
 
 .filter-prompt { color: var(--accent); font-weight: 700; }
 .filter-label { color: var(--text-muted); text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
@@ -819,14 +786,6 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .contributor-item:hover { color: var(--accent); }
 
-.contributor-avatar {
-  width: 20px; height: 20px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--accent-a10); color: var(--accent);
-  border-radius: 4px; font-size: 10px; font-weight: 700;
-  text-transform: uppercase;
-}
-
 .contributor-name { flex: 1; }
 
 .contributor-count {
@@ -834,11 +793,15 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   font-weight: 600;
 }
 
+.no-tags {
+  font-size: 11px; color: var(--text-muted);
+}
+
 /* ====== 响应式 ====== */
 @media (max-width: 800px) {
   .main-layout { grid-template-columns: 1fr; gap: 48px; }
   .nav-links { display: none; }
-  .hero-inner { padding: 48px 20px 40px; }
-  .hero-title { font-size: 24px; }
+  .hero-inner { padding: 40px 20px 36px; }
+  .hero-title { font-size: 22px; }
 }
 </style>

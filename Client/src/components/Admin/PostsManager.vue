@@ -3,7 +3,7 @@
     <div class="section-head">
       <span class="section-arrow">❯</span>
       <span class="section-title">ls -la /var/posts</span>
-      <span class="section-count">— {{ total }} entries</span>
+      <span class="section-count">— 共 {{ total }} 条记录</span>
     </div>
 
     <!-- 筛选栏 -->
@@ -23,7 +23,7 @@
           v-model="searchQuery"
           type="text"
           class="search-input"
-          placeholder="grep title or author..."
+          placeholder="grep 标题或作者..."
           @input="onSearchInput"
         />
       </div>
@@ -32,7 +32,7 @@
     <!-- 加载状态 -->
     <div v-if="loading" class="state-box">
       <span class="spinner"></span>
-      <span>loading...</span>
+      <span>正在加载...</span>
     </div>
 
     <!-- 错误 -->
@@ -43,7 +43,7 @@
 
     <!-- 无数据 -->
     <div v-else-if="posts.length === 0" class="state-box">
-      <span>no posts found</span>
+      <span>未找到文章</span>
     </div>
 
     <!-- 文章表格 -->
@@ -52,18 +52,18 @@
         <table class="post-table">
           <thead>
             <tr>
-              <th>title</th>
-              <th>status</th>
-              <th>author</th>
-              <th>date</th>
-              <th class="th-actions">actions</th>
+              <th>标题</th>
+              <th>状态</th>
+              <th>作者</th>
+              <th>日期</th>
+              <th class="th-actions">操作</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="p in posts" :key="p.id">
               <td>
                 <router-link :to="`/post/${p.slug}`" class="post-link">{{ p.title }}</router-link>
-                <span v-if="p.is_pinned" class="pinned-tag">PINNED</span>
+                <span v-if="p.is_pinned" class="pinned-tag">置顶</span>
               </td>
               <td><span class="status-badge" :class="p.status">{{ p.status }}</span></td>
               <td>
@@ -73,8 +73,8 @@
               </td>
               <td class="muted">{{ p.date }}</td>
               <td class="td-actions">
-                <router-link :to="`/editor/${p.slug}`" class="btn-sm btn-edit">edit</router-link>
-                <button class="btn-sm btn-del" @click="confirmDelete(p)">del</button>
+                <router-link :to="`/editor/${p.slug}`" class="btn-sm btn-edit">编辑</router-link>
+                <button class="btn-sm btn-del" @click="confirmDelete(p)">删除</button>
               </td>
             </tr>
           </tbody>
@@ -85,7 +85,7 @@
       <div v-if="hasMore" class="load-more">
         <button class="btn-load-more" :disabled="loadingMore" @click="loadMore">
           <span class="btn-prompt">❯</span>
-          {{ loadingMore ? 'loading...' : 'more posts' }}
+          {{ loadingMore ? '加载中...' : '更多文章' }}
         </button>
       </div>
     </template>
@@ -94,8 +94,8 @@
     <ConfirmModal
       :visible="showDeleteModal"
       :title="`rm -rf ./posts/${deleteTarget?.slug}`"
-      :message="deleteTarget ? 'Permanently delete &quot;' + deleteTarget.title + '&quot;? This cannot be undone.' : ''"
-      confirm-text="Delete"
+      :message="deleteTarget ? '确定永久删除 &quot;' + deleteTarget.title + '&quot;？此操作不可撤销。' : ''"
+      confirm-text="删除"
       :danger="true"
       :loading="deleting"
       @confirm="handleDelete"
@@ -128,10 +128,10 @@ const deleteTarget = ref(null)
 const deleting = ref(false)
 
 const statuses = [
-  { value: 'all', label: 'All' },
-  { value: 'published', label: 'Published' },
-  { value: 'draft', label: 'Drafts' },
-  { value: 'archived', label: 'Archived' },
+  { value: 'all', label: '全部' },
+  { value: 'published', label: '已发布' },
+  { value: 'draft', label: '草稿' },
+  { value: 'archived', label: '已归档' },
 ]
 
 const hasMore = computed(() => currentPage.value < totalPages.value)
@@ -166,7 +166,7 @@ async function fetchPosts(page = 1) {
     const res = await fetch(`${API_BASE}/admin/posts?${params}`, {
       headers: { Authorization: `Bearer ${getToken()}` },
     })
-    if (!res.ok) throw new Error((await res.json()).message || 'fetch failed')
+    if (!res.ok) throw new Error((await res.json()).message || '获取失败')
     const data = await res.json()
 
     if (page === 1) {
@@ -203,7 +203,7 @@ async function handleDelete() {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${getToken()}` },
     })
-    if (!res.ok) throw new Error((await res.json()).message || 'delete failed')
+    if (!res.ok) throw new Error((await res.json()).message || '删除失败')
     posts.value = posts.value.filter(p => p.slug !== deleteTarget.value.slug)
     total.value--
     showDeleteModal.value = false

@@ -30,7 +30,7 @@
         <form @submit.prevent="handleLogin" class="login-form">
           <div class="field">
             <label for="username">
-              <span class="label-icon">@</span> username
+              <span class="label-icon">@</span> 用户名
             </label>
             <div class="input-wrap">
               <input
@@ -51,7 +51,7 @@
  
           <div class="field">
             <label for="password">
-              <span class="label-icon">#</span> password
+              <span class="label-icon">#</span> 密码
             </label>
             <div class="input-wrap">
               <input
@@ -71,7 +71,7 @@
           <div class="field-row">
             <label class="checkbox-label">
               <input v-model="form.remember" type="checkbox" />
-              <span class="check-text">--keep-alive (stay logged in)</span>
+              <span class="check-text">-- 记住我（保持登录状态）</span>
             </label>
           </div>
  
@@ -82,7 +82,7 @@
           <button type="submit" class="btn-login" :disabled="loading">
             <span v-if="loading" class="spinner"></span>
             <span v-if="!loading" class="btn-arrow">❯</span>
-            {{ loading ? 'Authenticating...' : 'Enter' }}
+            {{ loading ? '登录中...' : '进入' }}
           </button>
         </form>
 
@@ -90,13 +90,13 @@
         <div class="guest-section">
           <div class="guest-divider">
             <span class="divider-line"></span>
-            <span class="divider-text">-- or --</span>
+            <span class="divider-text">-- 或 --</span>
             <span class="divider-line"></span>
           </div>
           <button class="btn-guest" @click="handleGuestLogin" :disabled="guestLoading">
             <span v-if="guestLoading" class="spinner-guest"></span>
             <span v-else class="guest-icon">👤</span>
-            {{ guestLoading ? 'Entering...' : 'Continue as Guest' }}
+            {{ guestLoading ? '进入中...' : '以游客身份浏览' }}
           </button>
           <p class="guest-hint">
             <span class="comment">// 只读模式：可浏览文章，无需注册</span>
@@ -104,7 +104,9 @@
         </div>
 
         <p class="back-link">
-          <router-link to="/RegisterPage">← register for more</router-link>
+          <router-link to="/RegisterPage">← 注册一个账号</router-link>
+          <span class="back-sep">·</span>
+          <router-link to="/forgot-password" class="forgot-link">忘记密码？</router-link>
         </p>
       </div>
  
@@ -140,14 +142,14 @@ function validate() {
   serverError.value = ''
 
   if (!form.username) {
-    errors.username = 'username is required'
+    errors.username = '请输入用户名'
     valid = false
   }
   if (!form.password) {
-    errors.password = 'password is required'
+    errors.password = '请输入密码'
     valid = false
-  } else if (form.password.length < 6) {
-    errors.password = 'minimum 6 characters'
+  } else if (form.password.length < 8) {
+    errors.password = '密码至少 8 位'
     valid = false
   }
   return valid
@@ -161,7 +163,7 @@ async function handleLogin() {
     const redirect = route.query.redirect || '/HomePage'
     router.push(redirect)
   } catch (e) {
-    serverError.value = e.message || 'connection refused'
+    serverError.value = e.message || '连接失败，请重试'
   } finally {
     loading.value = false
   }
@@ -175,7 +177,7 @@ async function handleGuestLogin() {
     const redirect = route.query.redirect || '/HomePage'
     router.push(redirect)
   } catch (e) {
-    serverError.value = e.message || 'guest login failed'
+    serverError.value = e.message || '游客登录失败'
   } finally {
     guestLoading.value = false
   }
@@ -582,7 +584,16 @@ async function handleGuestLogin() {
 .back-link a:hover {
   color: var(--accent);
 }
- 
+
+.back-sep {
+  margin: 0 6px;
+  color: var(--text-faint);
+}
+
+.forgot-link {
+  color: var(--warn) !important;
+}
+
 /* ---- 底部状态条 ---- */
 .terminal-status {
   display: flex;

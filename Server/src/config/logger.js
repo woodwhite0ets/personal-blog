@@ -10,7 +10,10 @@ const originalWarn = console.warn.bind(console);
 const originalError = console.error.bind(console);
 
 function timestamp() {
-  return new Date().toISOString().replace('T', ' ').slice(0, 19);
+  // 使用服务器本地时区（Asia/Shanghai 北京时间），toISOString 是 UTC 会差 8 小时
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
 
 function push(level, ...args) {

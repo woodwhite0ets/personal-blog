@@ -13,13 +13,16 @@
         </router-link>
         <nav class="nav-links">
           <router-link to="/HomePage">
-            <span class="nav-num">01</span> home
+            <span class="nav-num">01</span> 首页
+          </router-link>
+          <router-link to="/forum">
+            <span class="nav-num">02</span> 论坛
           </router-link>
           <router-link to="/archive">
-            <span class="nav-num">02</span> archive
+            <span class="nav-num">03</span> 归档
           </router-link>
           <router-link to="/about">
-            <span class="nav-num">03</span> about
+            <span class="nav-num">04</span> 关于
           </router-link>
         </nav>
         <div class="nav-actions">
@@ -31,12 +34,12 @@
     <div class="archive-main">
       <div class="archive-header">
         <h1 class="archive-title">~/posts/archive</h1>
-        <p class="archive-sub">total {{ posts.length }} posts indexed</p>
+        <p class="archive-sub">共收录 {{ posts.length }} 篇文章</p>
       </div>
 
       <div v-if="loading" class="state-box">
         <span class="spinner"></span>
-        <span>loading archive...</span>
+        <span>正在加载归档...</span>
       </div>
 
       <div v-else-if="error" class="state-box error">
@@ -44,7 +47,7 @@
       </div>
 
       <div v-else-if="!posts.length" class="state-box">
-        no posts yet.
+        暂无文章。
       </div>
 
       <div v-else class="archive-list">
@@ -53,7 +56,7 @@
             <span class="year-bracket">[</span>
             <span class="year-num">{{ year }}</span>
             <span class="year-bracket">]</span>
-            <span class="year-count">{{ group.length }} posts</span>
+            <span class="year-count">{{ group.length }} 篇文章</span>
           </div>
           <div class="year-posts">
             <router-link
@@ -88,7 +91,7 @@ const error = ref('')
 const groupedPosts = computed(() => {
   const groups = {}
   posts.value.forEach(p => {
-    const year = (p.date || '').slice(0, 4) || 'unknown'
+    const year = (p.date || '').slice(0, 4) || '未知'
     if (!groups[year]) groups[year] = []
     groups[year].push(p)
   })
@@ -102,7 +105,7 @@ onMounted(async () => {
   try {
     const res = await fetch('/api/posts?status=published&page=1')
     const data = await res.json()
-    if (!res.ok) throw new Error(data.message || 'load failed')
+    if (!res.ok) throw new Error(data.message || '加载失败')
     // fetch all pages
     posts.value.push(...data.posts)
     for (let p = 2; p <= data.totalPages; p++) {

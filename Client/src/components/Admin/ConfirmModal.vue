@@ -12,7 +12,7 @@
         <div class="modal-body">
           <p class="modal-message">{{ message }}</p>
           <div class="modal-actions">
-            <button class="btn-cancel" @click="$emit('cancel')" :disabled="loading">cancel</button>
+            <button class="btn-cancel" @click="$emit('cancel')" :disabled="loading">取消</button>
             <button
               class="btn-confirm"
               :class="{ danger }"
@@ -32,9 +32,9 @@
 <script setup>
 defineProps({
   visible: { type: Boolean, default: false },
-  title: { type: String, default: 'confirm' },
-  message: { type: String, default: 'Are you sure?' },
-  confirmText: { type: String, default: 'Delete' },
+  title: { type: String, default: '确认' },
+  message: { type: String, default: '确定吗？' },
+  confirmText: { type: String, default: '删除' },
   danger: { type: Boolean, default: true },
   loading: { type: Boolean, default: false },
 })

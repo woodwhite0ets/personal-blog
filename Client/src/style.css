@@ -419,3 +419,161 @@ button {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-strong);
 }
+
+/* ============================================================
+   全局动画 & 交互效果
+   ============================================================ */
+
+/* 页面进入动画 */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 页面根容器过渡 */
+.router-fade-enter-active { transition: opacity 0.25s ease; }
+.router-fade-leave-active { transition: opacity 0.15s ease; }
+.router-fade-enter-from, .router-fade-leave-to { opacity: 0; }
+
+/* 通用动画工具类 */
+.anim-fade-up { animation: fadeInUp 0.5s ease both; }
+.anim-fade { animation: fadeIn 0.4s ease both; }
+.anim-scale { animation: scaleIn 0.3s ease both; }
+.anim-slide-right { animation: slideInRight 0.4s ease both; }
+.anim-float { animation: floatY 3s ease-in-out infinite; }
+.anim-pulse { animation: pulseGlow 2s ease-in-out infinite; }
+
+/* 卡片悬浮效果 */
+.card-hover {
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-a30);
+  box-shadow: 0 8px 32px var(--shadow);
+}
+
+/* 按钮按压反馈 */
+.btn-press {
+  transition: transform 0.15s ease, opacity 0.2s;
+}
+.btn-press:active { transform: scale(0.97); }
+
+/* 渐变文字 */
+.text-gradient {
+  background: linear-gradient(90deg, var(--accent), var(--purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 骨架屏加载动画 */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-float) 50%, var(--bg-elevated) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* 滚动条宽度微调 */
+html { scroll-behavior: smooth; }
+
+/* ============================================================
+   代码语法高亮（highlight.js）— 适配暗色主题的 token 配色
+   GitHub Dark 风格，代码块背景沿用 pre 的 --bg-elevated
+   ============================================================ */
+.hljs {
+  color: #d4d4d4;
+  background: transparent;
+}
+
+.hljs-comment,
+.hljs-quote { color: #8b949e; font-style: italic; }
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal { color: #ff7b72; }
+
+.hljs-string,
+.hljs-doctag,
+.hljs-regexp { color: #a5d6ff; }
+
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet { color: #79c0ff; }
+
+.hljs-title,
+.hljs-section,
+.hljs-function .hljs-title { color: #d2a8ff; }
+
+.hljs-name,
+.hljs-tag { color: #7ee787; }
+
+.hljs-attr,
+.hljs-attribute { color: #79c0ff; }
+
+.hljs-built_in,
+.hljs-type,
+.hljs-class .hljs-title { color: #ffa657; }
+
+.hljs-meta,
+.hljs-selector-id,
+.hljs-selector-class { color: #ffa657; }
+
+.hljs-variable,
+.hljs-template-variable { color: #ffa657; }
+
+.hljs-addition { color: #7ee787; }
+.hljs-deletion { color: #ff7b72; }
+
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: bold; }
+.hljs-link { color: #58a6ff; }
+
+/* 亮色主题（paper）下代码块背景变亮，token 配色微调保证可读性 */
+[data-theme='paper'] .hljs { color: #24292e; }
+[data-theme='paper'] .hljs-comment,
+[data-theme='paper'] .hljs-quote { color: #6a737d; }
+[data-theme='paper'] .hljs-keyword,
+[data-theme='paper'] .hljs-selector-tag,
+[data-theme='paper'] .hljs-literal { color: #d73a49; }
+[data-theme='paper'] .hljs-string,
+[data-theme='paper'] .hljs-doctag,
+[data-theme='paper'] .hljs-regexp { color: #032f62; }
+[data-theme='paper'] .hljs-number,
+[data-theme='paper'] .hljs-symbol,
+[data-theme='paper'] .hljs-bullet { color: #005cc5; }
+[data-theme='paper'] .hljs-title,
+[data-theme='paper'] .hljs-section { color: #6f42c1; }
+[data-theme='paper'] .hljs-name,
+[data-theme='paper'] .hljs-tag { color: #22863a; }
+[data-theme='paper'] .hljs-built_in,
+[data-theme='paper'] .hljs-type,
+[data-theme='paper'] .hljs-attr { color: #e36209; }

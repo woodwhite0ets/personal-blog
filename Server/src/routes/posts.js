@@ -8,6 +8,7 @@ const router = express.Router();
 
 // ====== 输入清理（防 XSS & 长度限制） ======
 const ALLOWED_STATUS = ['draft', 'published', 'archived'];
+const ALLOWED_POST_TYPES = ['blog', 'forum'];
 const MAX_TAGS = 10;
 
 function sanitizeText(val, maxLen = 500) {
@@ -31,6 +32,10 @@ function sanitizeContent(val) {
     .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
     .replace(/<object[\s\S]*?<\/object>/gi, '')
     .replace(/<embed[\s\S]*?>|<embed[\s\S]*?<\/embed>/gi, '')
+    // 剥离事件处理器属性（onerror/onload/onclick 等）防 XSS
+    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]*)/gi, '')
+    // 剥离 javascript:/data: 危险协议
+    .replace(/(javascript|vbscript)\s*:/gi, 'blocked:')
     // 剥离 base64 data URI（防存入数据库）
     .replace(/!\[([^\]]*)\]\(data:[^)]+\)/g, '![$1](uploading...)')
     .slice(0, 200000); // 200KB max
@@ -54,7 +59,7 @@ function validateCoverImage(url) {
   // 清理路径遍历符号
   url = url.replace(/\.\./g, '').replace(/\\/g, '/');
   // 只允许本地 /uploads/ 路径或相对路径
-  return url.startsWith('/uploads/') || url.startsWith('./uploads/');
+  return url.startsWith('/uploads/');
 }
 
 // ====== GET /api/posts — 文章列表（分页 + 作者筛选） ======
@@ -67,10 +72,22 @@ router.get('/', authOptional, async (req, res) => {
     const author   = req.query.author || '';
     const tag      = req.query.tag || '';
     const search   = req.query.search || '';
+    const sort     = req.query.sort || 'latest';
+    const postType = req.query.type || '';  // 'blog' | 'forum' | '' (all)
 
-    // status=all 仅 admin 可用；非 admin 强制 published
+    // status 校验
+    if (status !== 'published' && status !== 'draft' && status !== 'archived' && status !== 'all') {
+      status = 'published';
+    }
+
+    // 权限控制：
+    // - admin 可看所有状态
+    // - 普通登录用户可看自己的 draft/archived
+    // - 未登录只能看 published
     const isAdmin = req.user && req.user.role === 'admin';
-    if (status !== 'published' && !isAdmin) {
+    const isLoggedIn = !!req.user && req.user.id > 0 && !req.user.isGuest;
+    // 未登录非 admin 只能看 published；已登录用户可看自己的 draft/archived（后面追加 author_id）
+    if (!isAdmin && !isLoggedIn && status !== 'published') {
       status = 'published';
     }
     if (status === 'all' && !isAdmin) {
@@ -82,7 +99,7 @@ router.get('/', authOptional, async (req, res) => {
     let dataSql   = `
       SELECT DISTINCT
         p.id, p.title, p.slug, p.excerpt, p.cover_image,
-        p.is_pinned, p.status, p.read_time, p.published_at AS date,
+        p.is_pinned, p.status, p.post_type, p.read_time, p.published_at AS date, p.views,
         u.username, u.nickname, u.avatar
       FROM posts p
       JOIN users u ON p.author_id = u.id
@@ -93,6 +110,22 @@ router.get('/', authOptional, async (req, res) => {
     if (status !== 'all') {
       conditions.push('p.status = ?');
       params.push(status);
+    }
+    // 非 admin 用户请求 draft/archived 时，限定只能看自己的
+    if (!isAdmin && req.user && req.user.id > 0 && !req.user.isGuest &&
+        (req.query.status === 'draft' || req.query.status === 'archived')) {
+      conditions.push('p.author_id = ?');
+      params.push(req.user.id);
+    }
+
+    // post_type 过滤：
+    // - blog / forum：按类型过滤
+    // - owner：首页模式 — 仅站长（admin）的文章，无论 blog 还是 forum 都显示
+    if (postType === 'blog' || postType === 'forum') {
+      conditions.push('p.post_type = ?');
+      params.push(postType);
+    } else if (postType === 'owner') {
+      conditions.push("u.role = 'admin'");
     }
 
     if (author) {
@@ -110,10 +143,12 @@ router.get('/', authOptional, async (req, res) => {
       params.push(tag, tag);
     }
 
-    // search: match title, excerpt, or content
+    // search: match title, excerpt, or content（转义 LIKE 通配符 + 长度限制）
     if (search) {
-      conditions.push('(p.title LIKE ? OR p.excerpt LIKE ? OR p.content LIKE ?)');
-      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+      const escaped = search.replace(/[\\%_]/g, '\\$&').slice(0, 100);
+      // 只搜 title/excerpt（避免对 LONGTEXT content 做全表 LIKE 慢查询）
+      conditions.push('(p.title LIKE ? OR p.excerpt LIKE ?)');
+      params.push(`%${escaped}%`, `%${escaped}%`);
     }
 
     if (conditions.length > 0) {
@@ -122,7 +157,12 @@ router.get('/', authOptional, async (req, res) => {
       dataSql += where;
     }
 
-    dataSql += ' ORDER BY p.is_pinned DESC, p.published_at DESC LIMIT ? OFFSET ?';
+    // 排序：latest（默认）按发布时间，popular 按浏览量
+    if (sort === 'popular') {
+      dataSql += ' ORDER BY p.is_pinned DESC, p.views DESC, p.published_at DESC LIMIT ? OFFSET ?';
+    } else {
+      dataSql += ' ORDER BY p.is_pinned DESC, p.published_at DESC LIMIT ? OFFSET ?';
+    }
 
     // 并行查询
     const [countResult, [rows]] = await Promise.all([
@@ -268,6 +308,12 @@ router.get('/:slug', authOptional, async (req, res) => {
       date: p.published_at ? p.published_at.toISOString().split('T')[0] : '',
     };
 
+    // 浏览量自增（仅对 published 文章计数，防作者反复看自己草稿刷量）
+    if (p.status === 'published') {
+      await pool.query('UPDATE posts SET views = views + 1 WHERE id = ?', [p.id]);
+      post.views = (post.views || 0) + 1;
+    }
+
     res.json({ post });
   } catch (err) {
     console.error('get post error:', err);
@@ -287,10 +333,30 @@ router.post('/', authRequired, authNoGuest, async (req, res) => {
       return res.status(400).json({ message: 'title and content are required' });
     }
 
-    // 校验 status
+    // 校验 status（先检查类型，防止非字符串 .toLowerCase() 抛 TypeError）
+    if (req.body.status !== undefined && typeof req.body.status !== 'string') {
+      return res.status(400).json({ message: 'invalid status' });
+    }
     let status = (req.body.status || 'draft').toLowerCase();
     if (!ALLOWED_STATUS.includes(status)) {
       return res.status(400).json({ message: `invalid status: ${status}` });
+    }
+
+    // post_type：非管理员只能创建论坛帖子
+    let post_type = 'forum';
+    if (req.body.post_type && typeof req.body.post_type === 'string') {
+      const pt = req.body.post_type.toLowerCase();
+      if (ALLOWED_POST_TYPES.includes(pt)) {
+        post_type = pt;
+      }
+    }
+    // 管理员未指定时默认 blog，普通用户强制 forum
+    if (req.user.role === 'admin') {
+      if (!req.body.post_type || !ALLOWED_POST_TYPES.includes(req.body.post_type.toLowerCase())) {
+        post_type = 'blog';
+      }
+    } else {
+      post_type = 'forum';
     }
 
     // 仅管理员可置顶
@@ -302,13 +368,26 @@ router.post('/', authRequired, authNoGuest, async (req, res) => {
       return res.status(400).json({ message: `max ${MAX_TAGS} tags allowed` });
     }
 
-    // 生成 slug
-    const baseSlug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9一-鿿]+/g, '-')
-      .replace(/^-|-$/g, '')
-      .slice(0, 100) || 'post';
-    const slug = baseSlug + '-' + Date.now().toString(36);
+    // 优先使用前端提供的 slug（已上传内联图片的临时 slug），否则自动生成
+    let slug;
+    if (req.body.slug && typeof req.body.slug === 'string') {
+      slug = req.body.slug
+        .toLowerCase()
+        .replace(/[^a-z0-9一-鿿-]+/g, '-')
+        .replace(/^-|-$/g, '')
+        .replace(/\.\./g, '')
+        .slice(0, 120);
+      if (!slug || slug.length < 3) {
+        return res.status(400).json({ message: 'invalid slug' });
+      }
+    } else {
+      const baseSlug = title
+        .toLowerCase()
+        .replace(/[^a-z0-9一-鿿]+/g, '-')
+        .replace(/^-|-$/g, '')
+        .slice(0, 100) || 'post';
+      slug = baseSlug + '-' + Date.now().toString(36);
+    }
 
     // 计算字数和阅读时间
     const wordCount = content.replace(/\s/g, '').length;
@@ -321,9 +400,9 @@ router.post('/', authRequired, authNoGuest, async (req, res) => {
     const image_dir = `/uploads/posts/${slug}`;
 
     const [result] = await conn.query(
-      `INSERT INTO posts (title, slug, excerpt, content, image_dir, status, is_pinned, read_time, word_count, author_id, published_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [title, slug, excerpt || '', content, image_dir, status, is_pinned, readTime, wordCount, req.user.id, published_at]
+      `INSERT INTO posts (title, slug, excerpt, content, image_dir, status, is_pinned, post_type, read_time, word_count, author_id, published_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [title, slug, excerpt || '', content, image_dir, status, is_pinned, post_type, readTime, wordCount, req.user.id, published_at]
     );
 
     const postId = result.insertId;
@@ -340,13 +419,17 @@ router.post('/', authRequired, authNoGuest, async (req, res) => {
       status, is_pinned: !!is_pinned,
       read_time: readTime, word_count: wordCount,
       author: { username: req.user.username },
+      post_type,
       tags: tagList || [],
       date: published_at ? published_at.toISOString().split('T')[0] : '',
     };
 
     res.status(201).json({ message: 'post created', post });
   } catch (err) {
-    await conn.rollback();
+    // 仅在事务进行中才 rollback（beginTransaction 之前抛错时不 rollback）
+    if (conn._protocolStarted !== false) {
+      try { await conn.rollback(); } catch {}
+    }
     console.error('create post error:', err);
     res.status(500).json({ message: 'internal server error' });
   } finally {
@@ -369,9 +452,12 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
       return res.status(403).json({ message: 'you are not the author' });
     }
 
-    // 校验 status
+    // 校验 status（先检查类型）
     let status = undefined;
     if (req.body.status !== undefined) {
+      if (typeof req.body.status !== 'string') {
+        return res.status(400).json({ message: 'invalid status' });
+      }
       status = req.body.status.toLowerCase();
       if (!ALLOWED_STATUS.includes(status)) {
         return res.status(400).json({ message: `invalid status: ${status}` });
@@ -394,6 +480,16 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
 	  cover_image = cover_image.replace(/\.\./g, '').replace(/\\/g, '/');
 	}
 
+    // post_type：仅管理员可修改
+    let post_type_put = undefined;
+    if (req.body.post_type !== undefined && req.user.role === 'admin') {
+      if (typeof req.body.post_type === 'string' && ALLOWED_POST_TYPES.includes(req.body.post_type.toLowerCase())) {
+        post_type_put = req.body.post_type.toLowerCase();
+      } else {
+        return res.status(400).json({ message: 'invalid post_type' });
+      }
+    }
+
     // 标签限制
     const tagList = req.body.tags;
     if (tagList && (!Array.isArray(tagList) || tagList.length > MAX_TAGS)) {
@@ -403,6 +499,10 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
     const title = req.body.title !== undefined ? sanitizeText(req.body.title, 200) : undefined;
     const excerpt = req.body.excerpt !== undefined ? sanitizeText(req.body.excerpt, 500) : undefined;
     const content = req.body.content !== undefined ? sanitizeContent(req.body.content) : undefined;
+
+    // 禁止通过 PUT 将 title 或 content 清空
+    if (title === '') return res.status(400).json({ message: 'title cannot be empty' });
+    if (content === '') return res.status(400).json({ message: 'content cannot be empty' });
 
     const wordCount = content ? content.replace(/\s/g, '').length : undefined;
     const readTime = wordCount ? Math.max(1, Math.ceil(wordCount / 400)) + ' min read' : undefined;
@@ -419,11 +519,15 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
     if (content !== undefined)     fields.content = content;
     if (status !== undefined)      fields.status = status;
     if (is_pinned !== undefined)   fields.is_pinned = is_pinned;  // 已预处理
+    if (post_type_put !== undefined) fields.post_type = post_type_put;
     if (readTime !== undefined)    fields.read_time = readTime;
     if (wordCount !== undefined)   fields.word_count = wordCount;
     if (cover_image !== undefined) fields.cover_image = cover_image;
-    if (published_at !== null && status === 'published' && !rows[0].published_at) {
+    if (status === 'published' && !rows[0].published_at) {
       fields.published_at = published_at;
+    } else if (status && status !== 'published' && rows[0].published_at) {
+      // 从 published 改到 draft/archived 时清除发布时间
+      fields.published_at = null;
     }
 
     if (Object.keys(fields).length > 0) {
@@ -444,7 +548,10 @@ router.put('/:slug', authRequired, authNoGuest, async (req, res) => {
 
     res.json({ message: 'post updated', slug });
   } catch (err) {
-    await conn.rollback();
+    // 仅在事务进行中才 rollback
+    if (conn._protocolStarted !== false) {
+      try { await conn.rollback(); } catch {}
+    }
     console.error('update post error:', err);
     res.status(500).json({ message: 'internal server error' });
   } finally {
@@ -512,23 +619,27 @@ router.post('/:slug/like', authRequired, authNoGuest, async (req, res) => {
     const postId = rows[0].id;
     const userId = req.user.id;
 
-    // 检查是否已点赞
-    const [existing] = await pool.query(
-      'SELECT 1 FROM post_likes WHERE user_id = ? AND post_id = ?',
+    // 原子切换点赞：先尝试删除（若存在则取消），影响行数=0 则插入（点赞）
+    // 避免并发请求同时读到"未点赞"导致重复 INSERT 主键冲突
+    const [delResult] = await pool.query(
+      'DELETE FROM post_likes WHERE user_id = ? AND post_id = ?',
       [userId, postId]
     );
 
-    if (existing.length > 0) {
-      // 取消点赞
-      await pool.query('DELETE FROM post_likes WHERE user_id = ? AND post_id = ?', [userId, postId]);
-      const [count] = await pool.query('SELECT COUNT(*) AS count FROM post_likes WHERE post_id = ?', [postId]);
-      return res.json({ liked: false, like_count: count[0]?.count || 0 });
+    let liked;
+    if (delResult.affectedRows > 0) {
+      liked = false; // 取消点赞
     } else {
-      // 点赞
-      await pool.query('INSERT INTO post_likes (user_id, post_id) VALUES (?, ?)', [userId, postId]);
-      const [count] = await pool.query('SELECT COUNT(*) AS count FROM post_likes WHERE post_id = ?', [postId]);
-      return res.json({ liked: true, like_count: count[0]?.count || 0 });
+      // 点赞（INSERT IGNORE 防并发重复插入主键冲突）
+      await pool.query(
+        'INSERT IGNORE INTO post_likes (user_id, post_id) VALUES (?, ?)',
+        [userId, postId]
+      );
+      liked = true;
     }
+
+    const [count] = await pool.query('SELECT COUNT(*) AS count FROM post_likes WHERE post_id = ?', [postId]);
+    return res.json({ liked, like_count: count[0]?.count || 0 });
   } catch (err) {
     console.error('like toggle error:', err);
     res.status(500).json({ message: 'internal server error' });
@@ -536,13 +647,22 @@ router.post('/:slug/like', authRequired, authNoGuest, async (req, res) => {
 });
 
 // ====== GET /api/posts/:slug/comments — 获取评论 ======
-router.get('/:slug/comments', async (req, res) => {
+router.get('/:slug/comments', authOptional, async (req, res) => {
   try {
     const { slug } = req.params;
 
-    const [rows] = await pool.query('SELECT id FROM posts WHERE slug = ?', [slug]);
+    // 校验文章存在
+    const [rows] = await pool.query('SELECT id, status, author_id FROM posts WHERE slug = ?', [slug]);
     if (rows.length === 0) {
       return res.status(404).json({ message: 'post not found' });
+    }
+    // 非公开文章仅作者/admin 可看评论
+    if (rows[0].status !== 'published') {
+      const isAdmin = req.user && req.user.role === 'admin';
+      const isAuthor = req.user && req.user.id === rows[0].author_id;
+      if (!isAdmin && !isAuthor) {
+        return res.status(404).json({ message: 'post not found' });
+      }
     }
 
     const [comments] = await pool.query(
@@ -608,8 +728,12 @@ router.post('/:slug/comments', authRequired, authNoGuest, async (req, res) => {
       return res.status(400).json({ message: 'comment content is empty after sanitization' });
     }
 
-    const [rows] = await pool.query('SELECT id FROM posts WHERE slug = ?', [slug]);
+    // 校验文章存在且公开（草稿/归档不允许评论）
+    const [rows] = await pool.query('SELECT id, status FROM posts WHERE slug = ?', [slug]);
     if (rows.length === 0) {
+      return res.status(404).json({ message: 'post not found' });
+    }
+    if (rows[0].status !== 'published') {
       return res.status(404).json({ message: 'post not found' });
     }
 
@@ -684,21 +808,28 @@ async function syncTags(conn, postId, tagList) {
     // 生成 slug：英文用原名，中文等非英文字符生成短 hash
     let tagSlug = name.toLowerCase().replace(/[^a-z0-9一-鿿]+/g, '-').replace(/^-|-$/g, '');
     if (!tagSlug || tagSlug === '-') {
-      // 纯中文或无 ASCII 字符的标签，使用时间戳 hash
-      tagSlug = 'tag-' + Date.now().toString(36);
+      // 纯中文或无 ASCII 字符的标签，使用时间戳 hash + 随机后缀防冲突
+      tagSlug = 'tag-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6);
     }
 
-    // upsert tag
+    // upsert tag（原子处理并发：存在则复用 id，不存在则插入）
+    // 先查
     const [existing] = await conn.query('SELECT id FROM tags WHERE name = ?', [name]);
     let tagId;
     if (existing.length > 0) {
       tagId = existing[0].id;
     } else {
-      const [inserted] = await conn.query(
-        'INSERT INTO tags (name, slug) VALUES (?, ?)',
+      // 并发场景：另一个请求可能已插入同名 tag，用 INSERT IGNORE 防冲突后重新查询
+      await conn.query(
+        'INSERT IGNORE INTO tags (name, slug) VALUES (?, ?)',
         [name, tagSlug]
       );
-      tagId = inserted.insertId;
+      const [recheck] = await conn.query('SELECT id FROM tags WHERE name = ?', [name]);
+      tagId = recheck[0]?.id;
+      if (!tagId) {
+        // 兜底：极端情况下仍拿不到，跳过该标签
+        continue;
+      }
     }
 
     // 关联

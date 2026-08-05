@@ -24,14 +24,14 @@
           <span v-if="autoSaveLabel" class="auto-save-hint">{{ autoSaveLabel }}</span>
           <span class="draft-indicator" :class="{ published: form.status === 'published' }">
             <span class="indicator-dot"></span>
-            {{ form.status === 'published' ? 'PUBLISHED' : 'DRAFT' }}
+            {{ form.status === 'published' ? '已发布' : '草稿' }}
           </span>
           <button class="btn-action btn-draft" @click="saveDraft" :disabled="saving || !saveReady">
-            <span class="btn-icon">💾</span> draft
+            <span class="btn-icon">💾</span> 存草稿
             <span class="btn-shortcut">Ctrl+S</span>
           </button>
           <button class="btn-action btn-publish" @click="publish" :disabled="saving || !saveReady">
-            <span class="btn-icon">🚀</span> publish
+            <span class="btn-icon">🚀</span> 发布
             <span class="btn-shortcut">Ctrl+Shift+P</span>
           </button>
         </div>
@@ -48,24 +48,24 @@
           v-model="form.title"
           type="text"
           class="input-title"
-          placeholder="post title..."
+          placeholder="文章标题..."
           :class="{ error: errors.title }"
         />
         <span v-if="errors.title" class="field-err">{{ errors.title }}</span>
 
         <!-- 标签 -->
         <div class="tags-row">
-          <span class="label-hint">tags: <span class="tag-count">{{ formTags.length }}/10</span></span>
+          <span class="label-hint">标签: <span class="tag-count">{{ formTags.length }}/10</span></span>
           <div class="tags-input-wrap">
             <span v-for="(t, i) in formTags" :key="i" class="tag-chip">
               #{{ t }}
-              <button class="tag-remove" @click="removeTag(i)" title="remove">×</button>
+              <button class="tag-remove" @click="removeTag(i)" title="移除">×</button>
             </span>
             <input
               v-model="tagInput"
               type="text"
               class="input-tag"
-              placeholder="add tag..."
+              placeholder="添加标签..."
               :disabled="formTags.length >= 10"
               @keydown.enter.prevent="addTag"
               @keydown.backspace="handleTagBackspace"
@@ -77,7 +77,7 @@
 
         <!-- 封面图区域 -->
         <div class="cover-section">
-          <span class="label-hint">cover:</span>
+          <span class="label-hint">封面:</span>
           <div
             class="cover-dropzone"
             :class="{ hasImage: coverPreview }"
@@ -88,7 +88,7 @@
             <img v-if="coverPreview" :src="coverPreview" class="cover-preview" />
             <template v-else>
               <span class="dropzone-icon">🖼</span>
-              <span class="dropzone-text">drop cover image or click</span>
+              <span class="dropzone-text">拖拽封面图或点击上传</span>
             </template>
             <input
               ref="coverInput"
@@ -98,14 +98,14 @@
               @change="handleCoverFile"
             />
           </div>
-          <button v-if="coverPreview" class="btn-remove-cover" @click="removeCover">remove cover</button>
+          <button v-if="coverPreview" class="btn-remove-cover" @click="removeCover">移除封面</button>
         </div>
 
         <!-- 摘要 -->
         <textarea
           v-model="form.excerpt"
           class="input-excerpt"
-          placeholder="excerpt (optional — auto-generated from content if empty)..."
+          placeholder="摘要（可选 — 留空则自动从正文生成）..."
           rows="2"
         ></textarea>
 
@@ -114,17 +114,30 @@
           ref="contentInput"
           v-model="form.content"
           class="input-content"
-          placeholder="write markdown here...&#10;&#10;Tip: Ctrl+S to save draft · Ctrl+Shift+P to publish · paste images directly"
+          placeholder="在此编写 Markdown...&#10;&#10;提示: Ctrl+S 保存草稿 · Ctrl+Shift+P 发布 · 可直接粘贴图片"
           :class="{ error: errors.content }"
           @paste="handleContentPaste"
         ></textarea>
         <span v-if="errors.content" class="field-err">{{ errors.content }}</span>
         <span v-if="serverError" class="field-err server-err">{{ serverError }}</span>
 
+        <!-- 发布类型选择（仅管理员可见） -->
+        <div v-if="isAdmin" class="post-type-row">
+          <span class="label-hint">发布到:</span>
+          <label class="radio-row">
+            <input v-model="form.post_type" type="radio" value="blog" />
+            <span class="check-text">📝 博客（首页展示）</span>
+          </label>
+          <label class="radio-row">
+            <input v-model="form.post_type" type="radio" value="forum" />
+            <span class="check-text">💬 论坛（社区讨论）</span>
+          </label>
+        </div>
+
         <!-- 置顶复选框（仅管理员可见） -->
         <label v-if="isAdmin" class="checkbox-row">
           <input v-model="form.is_pinned" type="checkbox" />
-          <span class="check-text">--pinned (show in hero)</span>
+          <span class="check-text">--pinned（首页推荐位置顶展示）</span>
         </label>
       </div>
 
@@ -132,13 +145,13 @@
       <div class="preview-pane">
         <div class="preview-header">
           <span class="preview-title">preview.md</span>
-          <span class="preview-hint">{{ wordCount }} chars · ~{{ readTimePreview }} min read</span>
+          <span class="preview-hint">{{ wordCount }} 字符 · 约 {{ readTimePreview }} 分钟阅读</span>
         </div>
         <div class="preview-scroll">
           <!-- 空状态 -->
           <div v-if="!form.content.trim()" class="preview-empty">
             <span class="preview-empty-icon">📄</span>
-            <span>start typing to preview...</span>
+            <span>开始输入以预览...</span>
           </div>
           <!-- 渲染内容 -->
           <div v-else class="preview-body markdown-body" v-html="previewHtml"></div>
@@ -153,8 +166,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
-import { marked } from 'marked'
-import DOMPurify from 'dompurify'
+import { renderMarkdown } from '../../utils/markdown.js'
 import { useAuth, getToken } from '../../stores/auth.js'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteFooter from '../common/SiteFooter.vue'
@@ -168,6 +180,15 @@ const API_BASE = '/api'
 // ====== 模式判断 ======
 const isEditMode = computed(() => !!route.params.slug)
 const editSlug = computed(() => route.params.slug || '')
+
+// 从 URL query 读取默认 post_type（如 /editor?type=forum）
+if (route.query.type === 'forum') {
+  form.post_type = 'forum'
+}
+// 非管理员强制 forum
+if (!isAdmin.value) {
+  form.post_type = 'forum'
+}
 
 // ====== 状态 ======
 const saving = ref(false)
@@ -197,6 +218,7 @@ const form = reactive({
   content: '',
   is_pinned: false,
   status: 'draft',
+  post_type: 'blog',  // 'blog' | 'forum' — 非管理员强制 forum
 })
 
 const formSlug = ref('')
@@ -223,6 +245,7 @@ function snapshot() {
     content: form.content,
     excerpt: form.excerpt,
     status: form.status,
+    is_pinned: form.is_pinned,
     tags: [...formTags.value],
   }
 }
@@ -230,11 +253,7 @@ function snapshot() {
 // ====== 预览（XSS 消毒） ======
 const previewHtml = computed(() => {
   if (!form.content.trim()) return ''
-  const raw = marked(form.content)
-  return DOMPurify.sanitize(raw, {
-    FORBID_ATTR: ['style', 'id', 'name'],
-    ALLOWED_URI_REGEXP: /^(?:(?:https?|ftp):\/\/|\/)/i,
-  })
+  return renderMarkdown(form.content)
 })
 
 const wordCount = computed(() => {
@@ -294,6 +313,16 @@ function handleCoverDrop(e) {
 }
 
 function readCoverFile(file) {
+  // 客户端预校验：类型 + 大小（最大 10MB，与后端一致）
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+  if (!allowedTypes.includes(file.type)) {
+    showToast('封面必须是 jpg/png/gif/webp 格式', 'error')
+    return
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    showToast('封面过大（最大 10 MB）', 'error')
+    return
+  }
   coverFile.value = file
   const reader = new FileReader()
   reader.onload = () => { coverPreview.value = reader.result }
@@ -322,26 +351,29 @@ function handleContentPaste(e) {
       uploadingImages.value++
       saveReady.value = false
 
+      // 生成唯一 id，避免多图并发时占位符替换错位
+      const uid = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6)
+
       // 上传图片并插入 Markdown 语法
       const reader = new FileReader()
       reader.onload = () => {
-        // 先在预览中显示 base64（临时）
-        const placeholder = `![uploading...](data:${item.type};base64,${reader.result.split(',')[1]})`
+        // 先在预览中显示 base64（临时），占位符带唯一 id
+        const placeholder = `![uploading-${uid}](data:${item.type};base64,${reader.result.split(',')[1]})`
         insertAtCursor(contentInput.value, `\n${placeholder}\n`)
       }
       reader.readAsDataURL(file)
 
-      // 异步上传
-      uploadInlineImage(file)
-      break // 一次只处理一张
+      // 异步上传（支持多图，不再 break）
+      uploadInlineImage(file, uid)
     }
   }
 }
 
-async function uploadInlineImage(file) {
+async function uploadInlineImage(file, uid) {
   const fd = new FormData()
   // 注意: type/slug 必须先于 file 追加, 否则 multer destination 回调中 req.body 尚未解析完
-  fd.append('type', 'content')
+  // type 用 'posts' (后端白名单 avatar/posts/cover, 'content' 会被拒绝)
+  fd.append('type', 'posts')
   fd.append('slug', formSlug.value)
   fd.append('file', file)
 
@@ -351,20 +383,20 @@ async function uploadInlineImage(file) {
       headers: { Authorization: `Bearer ${getToken()}` },
       body: fd,
     })
-    if (!res.ok) throw new Error('upload failed')
+    if (!res.ok) throw new Error('上传失败')
     const data = await res.json()
-    // 替换临时占位符为真实 URL
+    // 按唯一 id 精确替换占位符（避免并发时错位）
     form.content = form.content.replace(
-      /!\[uploading\.\.\.\]\(data:image\/[^)]+\)/,
+      new RegExp(`!\\[uploading-${uid}\\]\\(data:image\\/[^)]+\\)`),
       `![image](${data.url})`
     )
   } catch {
-    // 移除失败的占位符
+    // 按唯一 id 移除失败的占位符
     form.content = form.content.replace(
-      /!\[uploading\.\.\.\]\(data:image\/[^)]+\)\n?/g,
+      new RegExp(`!\\[uploading-${uid}\\]\\(data:image\\/[^)]+\\)\\n?`),
       ''
     )
-    showToast('image upload failed', 'error')
+    showToast('图片上传失败', 'error')
   } finally {
     uploadingImages.value--
     if (uploadingImages.value <= 0) {
@@ -396,11 +428,11 @@ function validate() {
   errors.content = ''
 
   if (!form.title.trim()) {
-    errors.title = 'title is required'
+    errors.title = '请输入标题'
     valid = false
   }
   if (!form.content.trim()) {
-    errors.content = 'content is required'
+    errors.content = '请输入内容'
     valid = false
   }
   return valid
@@ -437,20 +469,25 @@ async function saveDraft() {
 }
 
 async function publish() {
+  const prevStatus = form.status
   form.status = 'published'
-  await savePost()
+  const ok = await savePost()
+  // 保存失败时回滚 status 指示器
+  if (!ok) form.status = prevStatus
 }
 
 async function savePost() {
-  if (!validate()) return
+  // 并发保护：重复调用时忽略
+  if (saving.value) return false
+  if (!validate()) return false
   if (!isLoggedIn.value) {
     router.push('/')
-    return
+    return false
   }
 
   // 图片上传中，禁止保存
   if (uploadingImages.value > 0) {
-    showToast(`${uploadingImages.value} image(s) uploading — please wait`, 'error')
+    showToast(`${uploadingImages.value} 张图片上传中 — 请稍候`, 'error')
     return
   }
 
@@ -470,8 +507,12 @@ async function savePost() {
       excerpt: form.excerpt.trim() || form.content.trim().slice(0, 150),
       content: form.content,
       tags: formTags.value,
-      is_pinned: form.is_pinned,
       status: form.status,
+      post_type: form.post_type,
+    }
+    // 仅管理员发送 is_pinned
+    if (isAdmin.value) {
+      payload.is_pinned = form.is_pinned
     }
 
     const res = await fetch(url, {
@@ -483,22 +524,25 @@ async function savePost() {
       body: JSON.stringify(payload),
     })
 
-    console.log('[editor] save response status:', res.status)
-    console.log('[editor] payload tags:', JSON.stringify(payload.tags))
-
-    console.log('[editor] save response status:', res.status)
-    console.log('[editor] payload tags:', JSON.stringify(payload.tags))
 
     const data = await res.json()
-    if (!res.ok) throw new Error(data.message || 'save failed')
+    if (!res.ok) throw new Error(data.message || '保存失败')
 
     const savedSlug = data.post?.slug || data.slug || formSlug.value
 
-    // 如果有封面图，上传
+    // 新建文章成功后，切换到编辑模式（后续保存走 PUT 而非 POST，避免 slug 重复创建）
+    if (!isEditMode.value && savedSlug) {
+      formSlug.value = savedSlug
+      router.replace(`/editor/${savedSlug}`)
+    }
+
+    const isPublish = form.status === 'published'
+    let coverFailed = false
+
+    // 如果有封面图，上传并回填
     if (coverFile.value && savedSlug) {
       const coverUrl = await uploadCover(savedSlug)
       if (coverUrl) {
-        // 更新文章的 cover_image
         await fetch(`${API_BASE}/posts/${savedSlug}`, {
           method: 'PUT',
           headers: {
@@ -507,6 +551,8 @@ async function savePost() {
           },
           body: JSON.stringify({ cover_image: coverUrl }),
         }).catch(() => {})
+      } else {
+        coverFailed = true
       }
     }
 
@@ -517,13 +563,21 @@ async function savePost() {
     snapshot()
     coverFile.value = null
 
-    showToast(form.status === 'published' ? 'published!' : 'draft saved')
+    // Toast
+    let toastMsg = isPublish ? '发布成功！' : '草稿已保存'
+    if (coverFailed) toastMsg += '（封面上传失败）'
+    showToast(toastMsg, coverFailed ? 'error' : 'success')
     autoSaveLabel.value = ''
 
-    router.push(`/post/${savedSlug}`)
+    // 草稿留在编辑器；发布成功才跳文章详情
+    if (isPublish) {
+      router.push(`/post/${savedSlug}`)
+    }
+    return true
   } catch (e) {
     serverError.value = e.message || '保存失败'
-    showToast(e.message || 'save failed', 'error')
+    showToast(e.message || '保存失败', 'error')
+    return false
   } finally {
     saving.value = false
   }
@@ -534,19 +588,21 @@ async function loadPost() {
   if (!isEditMode.value) return
 
   try {
-    const res = await fetch(`${API_BASE}/posts/${editSlug.value}`)
+    const res = await fetch(`${API_BASE}/posts/${editSlug.value}`, {
+      headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
+    })
     if (!res.ok) {
       if (res.status === 404) {
-        serverError.value = 'post not found'
+        serverError.value = '文章不存在'
         return
       }
-      throw new Error('load failed')
+      throw new Error('加载失败')
     }
     const data = await res.json()
     const p = data.post
 
     if (p.author && currentUser.value && p.author.username !== currentUser.value.username && !isAdmin.value) {
-      serverError.value = 'you are not the author'
+      serverError.value = '你不是该文章作者'
       return
     }
 
@@ -555,6 +611,7 @@ async function loadPost() {
     form.content = p.content || ''
     form.is_pinned = p.is_pinned || false
     form.status = p.status || 'draft'
+    form.post_type = p.post_type || 'blog'
     formSlug.value = p.slug || editSlug.value
 
     // 解析标签
@@ -592,7 +649,7 @@ function saveDraftLocal() {
       savedAt: Date.now(),
     }
     sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
-    autoSaveLabel.value = 'auto-saved'
+    autoSaveLabel.value = '已自动保存'
     setTimeout(() => { autoSaveLabel.value = '' }, 2000)
   } catch { /* storage full */ }
 }
@@ -602,8 +659,8 @@ function restoreDraft() {
     const raw = sessionStorage.getItem(DRAFT_KEY)
     if (!raw) return
     const draft = JSON.parse(raw)
-    // 只恢复 30 分钟内的草稿
-    if (Date.now() - draft.savedAt > 30 * 60 * 1000) {
+    // 草稿 TTL 放宽到 12 小时（避免长时间编辑被误清）
+    if (Date.now() - draft.savedAt > 12 * 60 * 60 * 1000) {
       sessionStorage.removeItem(DRAFT_KEY)
       return
     }
@@ -639,8 +696,13 @@ function handleKeyboard(e) {
 
 // ====== 离开确认（未保存内容） ======
 onBeforeRouteLeave((to, from, next) => {
-  if (isDirty.value && !saving.value) {
-    const leave = window.confirm('you have unsaved changes — leave anyway?')
+  // 保存中禁止离开，避免 savePost 完成后强制跳转打断用户
+  if (saving.value) {
+    window.alert('正在保存中 — 请稍候')
+    return next(false)
+  }
+  if (isDirty.value) {
+    const leave = window.confirm('存在未保存的更改 — 仍要离开吗？')
     if (!leave) return next(false)
   }
   next()
@@ -648,6 +710,8 @@ onBeforeRouteLeave((to, from, next) => {
 
 function handleBeforeUnload(e) {
   if (isDirty.value) {
+    // 同步保存草稿（sessionStorage 是同步 API，beforeunload 中安全）
+    saveDraftLocal()
     e.preventDefault()
     e.returnValue = '' // Chrome 需要
   }
@@ -670,7 +734,7 @@ onMounted(async () => {
     formSlug.value = 'new-' + Date.now().toString(36)
     const restored = restoreDraft()
     if (restored) {
-      showToast('draft restored from last session')
+      showToast('已恢复上次会话的草稿')
     }
   }
 
@@ -689,17 +753,19 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => {
-  // 离开前保存草稿
-  if (isDirty.value && (form.title.trim() || form.content.trim())) {
+  // 清理防抖定时器，防止卸载后回写已发布内容
+  clearTimeout(autoSaveTimer)
+  // 离开前保存草稿（仅新建模式，编辑模式不覆盖本地草稿）
+  if (!isEditMode.value && isDirty.value && (form.title.trim() || form.content.trim())) {
     saveDraftLocal()
   }
   window.removeEventListener('keydown', handleKeyboard)
   window.removeEventListener('beforeunload', handleBeforeUnload)
 })
 
-// 内容变化时自动存草稿（3秒防抖）
+// 内容变化时自动存草稿（3秒防抖），包含 is_pinned
 watch(
-  () => [form.title, form.content, form.excerpt, formTags.value],
+  () => [form.title, form.content, form.excerpt, formTags.value, form.is_pinned],
   () => {
     if (isEditMode.value) return // 编辑模式不自动存
     clearTimeout(autoSaveTimer)
@@ -984,6 +1050,18 @@ watch(
   border-radius: 4px;
 }
 .server-err::before { display: none; }
+
+/* 发布类型选择 */
+.post-type-row {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.radio-row {
+  display: flex; align-items: center; gap: 6px; cursor: pointer;
+}
+
+.radio-row input[type='radio'] { accent-color: var(--accent); width: 14px; height: 14px; }
 
 /* 复选框 */
 .checkbox-row {

@@ -75,6 +75,18 @@ app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 // 全局速率限制
 app.use(globalLimiter);
 
+// ====== 访问日志（记录客户端 IP / 方法 / 路径 / 状态码，供安全追溯） ======
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    // 跳过静态资源 + 管理员控制台操作（assets/uploads 为前端文件批量加载；/api/admin/ 为管理员正常操作）
+    if (req.path.startsWith('/uploads/') || req.path.startsWith('/assets/')) return;
+    if (req.path.startsWith('/api/admin/')) return;  // 过滤管理员访问控制台的日志
+    console.log(`[req] ${req.ip} ${req.method} ${req.originalUrl} ${res.statusCode} ${Date.now() - start}ms`);
+  });
+  next();
+});
+
 // 静态文件 — 上传目录
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
@@ -104,52 +116,34 @@ app.get('/api/tags', async (req, res) => {
   }
 });
 
+// 作者统计（供首页贡献者列表 + 全站已发布文章总数，而非当前分页）
+app.get('/api/authors', async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT u.username, u.nickname, u.avatar, COUNT(p.id) AS post_count
+       FROM users u
+       JOIN posts p ON p.author_id = u.id AND p.status = 'published'
+       GROUP BY u.id
+       ORDER BY post_count DESC, u.username ASC`
+    );
+    const [totalRows] = await pool.query(
+      `SELECT COUNT(*) AS total FROM posts WHERE status = 'published'`
+    );
+    res.json({ authors: rows, total_published: totalRows[0]?.total || 0 });
+  } catch (err) {
+    console.error('authors error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
 app.use('/api/auth',   require('./routes/auth'));
 app.use('/api/posts',  require('./routes/posts'));
 app.use('/api/users',  require('./routes/users'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/admin',  require('./routes/admin'));
 
-// ====== 动态 sitemap（供百度/Google 收录） ======
-// Express 优先于 SPA 兜底，/sitemap.xml 和 /robots.txt 会命中此路由
-app.get('/sitemap.xml', async (req, res) => {
-  try {
-    const [posts] = await pool.query(
-      'SELECT slug, updated_at FROM posts WHERE status = ? ORDER BY updated_at DESC',
-      ['published']
-    );
-    const host = 'https://blog.woodwhite.top';
-    const urls = [
-      { loc: `${host}/HomePage`, changefreq: 'daily', priority: '1.0' },
-      { loc: `${host}/archive`, changefreq: 'weekly', priority: '0.8' },
-      { loc: `${host}/about`, changefreq: 'monthly', priority: '0.5' },
-      ...posts.map(p => ({
-        loc: `${host}/post/${p.slug}`,
-        lastmod: new Date(p.updated_at).toISOString().slice(0, 10),
-        changefreq: 'weekly',
-        priority: '0.7',
-      })),
-    ];
-    const xml = [
-      '<?xml version="1.0" encoding="UTF-8"?>',
-      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-      ...urls.map(u => {
-        const parts = [
-          `    <loc>${u.loc}</loc>`,
-          u.lastmod ? `    <lastmod>${u.lastmod}</lastmod>` : '',
-          `    <changefreq>${u.changefreq}</changefreq>`,
-          `    <priority>${u.priority}</priority>`,
-        ];
-        return `  <url>\n${parts.filter(Boolean).join('\n')}\n  </url>`;
-      }),
-      '</urlset>',
-    ].join('\n');
-    res.type('application/xml').send(xml + '\n');
-  } catch (err) {
-    console.error('sitemap error:', err);
-    res.status(500).send('internal error');
-  }
-});
+// ====== SEO 路由（feed.xml / sitemap.xml，需在 SPA fallback 之前） ======
+app.use(require('./routes/seo'));
 
 // ====== SPA 兜底 + API 404（必须在 API 路由之后） ======
 // 非 API 的请求全部返回 index.html，由前端路由处理
@@ -163,11 +157,22 @@ app.use((req, res, next) => {
 
 // ====== 全局错误处理（不泄露堆栈） ======
 app.use((err, req, res, next) => {
-  console.error('unhandled error:', err.message);
-  // 不向客户端暴露内部错误细节
+  // 客户端畸形请求（URI 解码失败、非法 JSON、请求中断）→ 400，不污染 error 日志
+  if (err instanceof URIError) {
+    return res.status(400).json({ message: 'bad request' });
+  }
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ message: 'invalid JSON body' });
+  }
+  if (err.type === 'request.aborted') {
+    return res.status(400).json({ message: 'request aborted' });
+  }
+  // CORS
   if (err.message && err.message.startsWith('CORS blocked')) {
     return res.status(403).json({ message: 'origin not allowed' });
   }
+  // 真正的服务端错误才记录并返回 500
+  console.error('unhandled error:', err.message);
   res.status(500).json({ message: 'internal server error' });
 });
 

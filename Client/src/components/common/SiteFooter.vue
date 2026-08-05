@@ -5,6 +5,11 @@
       <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="beian-link">
         浙ICP备2026059663号-1
       </a>
+      <span class="beian-sep">|</span>
+      <a href="https://beian.mps.gov.cn/#/query/webSearch?code=33038202005059" target="_blank" rel="noopener noreferrer" class="beian-link beian-ga">
+        <img src="/beian-icon.png" alt="" class="beian-ga-icon" />
+        浙公网安备33038202005059号
+      </a>
     </div>
     <!-- 终端命令行 -->
     <div class="footer-line">
@@ -43,6 +48,26 @@ defineProps({
 
 .beian-link:hover {
   color: var(--accent);
+}
+
+.beian-sep {
+  margin: 0 8px;
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.beian-ga {
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.beian-ga-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 .footer-line {

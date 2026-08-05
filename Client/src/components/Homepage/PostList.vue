@@ -4,7 +4,7 @@
     <div class="section-head">
       <span class="section-arrow">❯</span>
       <span class="section-title">ls -la ./posts</span>
-      <span class="section-count">— {{ posts.length }} entries</span>
+      <span class="section-count">— {{ posts.length }} 篇文章</span>
       <button v-if="emptyText" class="btn-refresh" @click="$emit('refresh')" title="刷新">
         ↻
       </button>
@@ -13,14 +13,14 @@
     <!-- 加载状态 -->
     <div v-if="loading" class="state-box">
       <span class="spinner"></span>
-      <span class="state-text">loading posts...</span>
+      <span class="state-text">正在加载文章...</span>
     </div>
 
     <!-- 错误状态 -->
     <div v-else-if="error" class="state-box error">
-      <span class="err-prefix">ERR!</span>
+      <span class="err-prefix">错误!</span>
       <span class="state-text">{{ error }}</span>
-      <button class="link-btn" @click="$emit('refresh')">retry</button>
+      <button class="link-btn" @click="$emit('refresh')">重试</button>
     </div>
 
     <!-- 空状态 -->
@@ -45,7 +45,7 @@
           :disabled="loadingMore"
         >
           <span class="btn-prompt">❯</span>
-          {{ loadingMore ? 'loading...' : 'more posts' }}
+          {{ loadingMore ? '加载中...' : '更多文章' }}
         </button>
       </div>
     </template>

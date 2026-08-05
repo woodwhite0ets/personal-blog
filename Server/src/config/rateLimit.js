@@ -1,4 +1,4 @@
-const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
+const { rateLimit } = require('express-rate-limit');
 
 // ====== 全局速率限制（所有请求） ======
 const globalLimiter = rateLimit({
@@ -9,17 +9,12 @@ const globalLimiter = rateLimit({
   message: { message: 'too many requests — slow down' },
 });
 
-// ====== 严格限制：登录（防暴力破解，按 IP + 账号联合） ======
+// ====== 严格限制：登录（防暴力破解/喷口令，按 IP 计数） ======
 const loginLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 5,               // 每分钟每 IP+账号 最多 5 次登录尝试
+  max: 10,              // 每 IP 每分钟最多 10 次登录尝试（防单账号爆破 + 多账号喷洒）
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => {
-    const username = (req.body && req.body.username) || '';
-    const ip = ipKeyGenerator(req);  // 正确处理 IPv4/IPv6
-    return `${ip}:${username}`;
-  },
   message: { message: 'too many login attempts — try again in 1 minute' },
 });
 
