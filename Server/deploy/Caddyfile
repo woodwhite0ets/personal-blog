@@ -1,10 +1,9 @@
-{
+﻿{
 	email woodwhite0ets@gmail.com
 	acme_ca https://acme-v02.api.letsencrypt.org/directory
 }
 
 blog.woodwhite.top {
-	# 访问日志（含客户端 IP）
 	log {
 		output file /var/log/caddy/blog-access.log {
 			roll_size 10MiB
@@ -13,9 +12,31 @@ blog.woodwhite.top {
 		format json
 	}
 
-	# 拦截敏感文件探测（.env / AWS 凭证 / Stripe / git/svn 目录 / 备份文件等），直接 404
-	@probe path /*.env* /.aws/* /aws-ses* /.stripe* /stripe* /.git/* /.svn/* /*.DS_Store /test.php /*.bak /*.old /*.backup /*.save /*.local
-	respond @probe 404
+	# === 蜜罐：敏感文件探测 -> 统一返回假 .env ===
+	@env_probe {
+		path *.env* /.aws/* /aws-ses* /.stripe* /stripe* /.ssh/* /.git/* /.svn/* /*.DS_Store /test.php /*.bak /*.old /*.backup /*.save /*.local
+		path /wp-config* /wp-admin* /phpinfo* /server-status* /config.json* /docker-compose* /Caddyfile*
+	}
+	route @env_probe {
+		header Server "Apache/2.4.41 (Ubuntu)"
+		header Content-Type "text/plain; charset=utf-8"
+		rewrite * /.env
+		root * /var/www/honeypot
+		file_server
+	}
+
+	# === 蜜罐：WordPress 扫描 -> troll JSON ===
+	@wp_probe {
+		path /wp-includes/* /wp-content/* /wp-json/* /xmlrpc* /wlwmanifest*
+		path /blog/wp-includes/* /web/wp-includes/* /wordpress/wp-includes/* /wp/wp-includes/*
+	}
+	route @wp_probe {
+		header Server "Apache/2.4.41 (Ubuntu)"
+		header Content-Type "application/json"
+		rewrite * /troll.json
+		root * /var/www/honeypot
+		file_server
+	}
 
 	header {
 		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
