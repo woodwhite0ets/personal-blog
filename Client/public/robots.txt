@@ -1,0 +1,15 @@
+# https://blog.woodwhite.top/robots.txt
+# 允许所有爬虫抓取
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /editor
+
+# 指向 sitemap
+Sitemap: https://blog.woodwhite.top/sitemap.xml
+
+# 百度蜘蛛特殊规则 (Baiduspider 有时请求频率过高)
+User-agent: Baiduspider
+Crawl-delay: 3

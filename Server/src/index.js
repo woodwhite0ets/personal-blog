@@ -110,6 +110,47 @@ app.use('/api/users',  require('./routes/users'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/admin',  require('./routes/admin'));
 
+// ====== 动态 sitemap（供百度/Google 收录） ======
+// Express 优先于 SPA 兜底，/sitemap.xml 和 /robots.txt 会命中此路由
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const [posts] = await pool.query(
+      'SELECT slug, updated_at FROM posts WHERE status = ? ORDER BY updated_at DESC',
+      ['published']
+    );
+    const host = 'https://blog.woodwhite.top';
+    const urls = [
+      { loc: `${host}/HomePage`, changefreq: 'daily', priority: '1.0' },
+      { loc: `${host}/archive`, changefreq: 'weekly', priority: '0.8' },
+      { loc: `${host}/about`, changefreq: 'monthly', priority: '0.5' },
+      ...posts.map(p => ({
+        loc: `${host}/post/${p.slug}`,
+        lastmod: new Date(p.updated_at).toISOString().slice(0, 10),
+        changefreq: 'weekly',
+        priority: '0.7',
+      })),
+    ];
+    const xml = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+      ...urls.map(u => {
+        const parts = [
+          `    <loc>${u.loc}</loc>`,
+          u.lastmod ? `    <lastmod>${u.lastmod}</lastmod>` : '',
+          `    <changefreq>${u.changefreq}</changefreq>`,
+          `    <priority>${u.priority}</priority>`,
+        ];
+        return `  <url>\n${parts.filter(Boolean).join('\n')}\n  </url>`;
+      }),
+      '</urlset>',
+    ].join('\n');
+    res.type('application/xml').send(xml + '\n');
+  } catch (err) {
+    console.error('sitemap error:', err);
+    res.status(500).send('internal error');
+  }
+});
+
 // ====== SPA 兜底 + API 404（必须在 API 路由之后） ======
 // 非 API 的请求全部返回 index.html，由前端路由处理
 app.use((req, res, next) => {
