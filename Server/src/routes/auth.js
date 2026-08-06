@@ -20,6 +20,10 @@ const guestLimiter = rateLimit({
 
 const router = express.Router();
 
+// 保留用户名（防抢注 admin/root 等冒充管理员/系统账号）
+const RESERVED_USERNAMES = ['admin', 'administrator', 'root', 'sysadmin', 'superuser', 'superadmin', 'system'];
+
+
 // ====== GET /api/auth/captcha — 图形验证码（防批量注册） ======
 const captchaLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -60,6 +64,10 @@ router.post('/register', registerLimiter, async (req, res) => {
     }
     if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
       return res.status(400).json({ message: 'username: 3-20 chars, letters/numbers/underscore only' });
+    }
+    // 保留用户名黑名单（防抢注 admin/root 冒充管理员）
+    if (RESERVED_USERNAMES.includes(username.toLowerCase())) {
+      return res.status(400).json({ message: 'this username is reserved and cannot be used' });
     }
     // 密码强度：至少 8 位，包含字母和数字
     if (password.length < 8) {

@@ -49,10 +49,9 @@ const uploadLimiter = rateLimit({
 const emailResetLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 小时
   max: 3,                   // 每邮箱每小时最多 3 次重置/重发请求
-  ipv6Subnet: 64,           // IPv6 键规范化（防 ERR_ERL_KEY_GEN_IPV6）
   keyGenerator: (req) => {
     const e = req.body && typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
-    return e || req.ip;
+    return e || 'no-email-request';
   },
   standardHeaders: true,
   legacyHeaders: false,
