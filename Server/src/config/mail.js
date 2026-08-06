@@ -22,7 +22,24 @@ transporter.verify().then(() => {
 });
 
 // ====== 发送验证邮件 ======
+// ====== 全局邮件发送节流（防邮件轰炸拖垮 SMTP 配额 / 服务器资源） ======
+const _mailTimestamps = [];
+const MAIL_WINDOW_MS = 60 * 1000; // 60 秒窗口
+const MAIL_MAX_PER_WINDOW = 10;   // 每 60 秒最多 10 封（单进程内存计数，PM2 fork 单实例有效）
+function assertMailRate() {
+  const now = Date.now();
+  while (_mailTimestamps.length && now - _mailTimestamps[0] > MAIL_WINDOW_MS) {
+    _mailTimestamps.shift();
+  }
+  if (_mailTimestamps.length >= MAIL_MAX_PER_WINDOW) {
+    throw new Error(`mail rate limit reached (${MAIL_MAX_PER_WINDOW}/min)`);
+  }
+  _mailTimestamps.push(now);
+}
+
+
 async function sendVerificationEmail(to, username, token) {
+  assertMailRate(); // 全局邮件节流（防轰炸）
   const siteUrl = process.env.SITE_URL || 'http://localhost:5173';
   const verifyUrl = `${siteUrl}/verify-email/${token}`;
 
@@ -58,6 +75,7 @@ async function sendVerificationEmail(to, username, token) {
 
 // ====== 发送重置密码邮件 ======
 async function sendResetPasswordEmail(to, username, token) {
+  assertMailRate(); // 全局邮件节流（防轰炸）
   const siteUrl = process.env.SITE_URL || 'http://localhost:5173';
   const resetUrl = `${siteUrl}/reset-password/${token}`;
 

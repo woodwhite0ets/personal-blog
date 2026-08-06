@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const pool = require('../config/db');
 const { signToken, authRequired, authNoGuest } = require('../middleware/auth');
 const { sendVerificationEmail, sendResetPasswordEmail } = require('../config/mail');
-const { loginLimiter, registerLimiter, resendVerifyLimiter } = require('../config/rateLimit');
+const { loginLimiter, registerLimiter, resendVerifyLimiter, emailResetLimiter } = require('../config/rateLimit');
 const { createCaptcha, verifyCaptcha } = require('../config/captcha');
 const { containsBannedWord } = require('../config/wordFilter');
 
@@ -180,7 +180,7 @@ router.get('/verify-email/:token', async (req, res) => {
 });
 
 // ====== POST /api/auth/resend-verification ======
-router.post('/resend-verification', resendVerifyLimiter, async (req, res) => {
+router.post('/resend-verification', resendVerifyLimiter, emailResetLimiter, async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
@@ -329,7 +329,7 @@ router.put('/change-password', authRequired, authNoGuest, async (req, res) => {
 });
 
 // ====== POST /api/auth/forgot-password — 发送重置密码邮件 ======
-router.post('/forgot-password', resendVerifyLimiter, async (req, res) => {
+router.post('/forgot-password', resendVerifyLimiter, emailResetLimiter, async (req, res) => {
   try {
     const { email } = req.body;
     if (!email || typeof email !== 'string') {
