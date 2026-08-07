@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
     const type = req.body.type || 'posts'; // cover | content | avatar
 
     // 安全：验证 type 参数，防止路径遍历
-    if (type !== 'avatar' && type !== 'posts' && type !== 'cover') {
+    if (type !== 'avatar' && type !== 'posts' && type !== 'cover' && type !== 'content') {
       return cb(new Error('invalid upload type'), '');
     }
 
@@ -169,7 +169,7 @@ router.use((err, req, res, next) => {
     }
     return res.status(400).json({ message: err.message });
   }
-  if (err.message === 'only image files are allowed' || err.message === 'unsupported file type') {
+  if (err.message === 'only image files are allowed' || err.message === 'unsupported file type' || err.message === 'invalid upload type') {
     return res.status(400).json({ message: err.message });
   }
   next(err);
