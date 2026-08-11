@@ -42,6 +42,8 @@ app.use(helmet({
 // CORS — 允许已知前端域名
 const allowedOrigins = [
   process.env.SITE_URL || 'http://localhost:5173',
+  'https://woodwhite.top',
+  'http://woodwhite.top',
   'https://blog.woodwhite.top',
   'http://blog.woodwhite.top',
   'http://blog.woodwhite.top:3027',
