@@ -17,6 +17,7 @@ function sanitizeText(val, maxLen = 500) {
     .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')  // 去除控制字符（保留 \n \t）
     .replace(/<[^>]*>/g, '')       // 去除 HTML 标签
     .replace(/[<>]/g, '')          // 去除残留尖括号
+    .replace(/&#(?:x[0-9a-fA-F]{1,6}|[0-9]{1,7});/gi, '')   // 剥离数字字符引用（防实体混淆）
     .slice(0, maxLen)
     .trim();
 }
@@ -27,6 +28,8 @@ function sanitizeContent(val) {
   return val
     .replace(/\x00/g, '')
     .replace(/[\x01-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+    // 剥离数字字符引用（&#61; / &#x61;），防实体混淆的 XSS（如 jav&#x61;script:、<scr&#105;pt>）
+    .replace(/&#(?:x[0-9a-fA-F]{1,6}|[0-9]{1,7});/gi, '')
     // 剥离危险标签（防存储型 XSS）
     .replace(/<script[\s\S]*?<\/script>/gi, '')
     .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
@@ -38,6 +41,8 @@ function sanitizeContent(val) {
     .replace(/(javascript|vbscript)\s*:/gi, 'blocked:')
     // 剥离 base64 data URI（防存入数据库）
     .replace(/!\[([^\]]*)\]\(data:[^)]+\)/g, '![$1](uploading...)')
+    // 剥离 data: 协议链接（图片内嵌 data URI 已在上方保留）
+    .replace(/\[([^\]]*)\]\(data:[^)]*\)/g, '[$1](blocked:)')
     .slice(0, 200000); // 200KB max
 }
 

@@ -1,0 +1,14 @@
+# https://blog.woodwhite.top/robots.txt
+User-agent: Baiduspider
+Disallow: /api/
+Disallow: /admin/
+Disallow: /editor
+Crawl-delay: 3
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /editor
+
+Sitemap: https://blog.woodwhite.top/sitemap.xml

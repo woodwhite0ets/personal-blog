@@ -45,10 +45,24 @@ const uploadLimiter = rateLimit({
   message: { message: 'too many uploads — slow down' },
 });
 
+// ====== 严格限制：按邮箱（防邮件轰炸 — 多 IP 换着打同一邮箱也限住） ======
+const emailResetLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 小时
+  max: 3,                   // 每邮箱每小时最多 3 次重置/重发请求
+  keyGenerator: (req) => {
+    const e = req.body && typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+    return e || 'no-email-request';
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'too many email requests for this address — try again later' },
+});
+
 module.exports = {
   globalLimiter,
   loginLimiter,
   registerLimiter,
   resendVerifyLimiter,
+  emailResetLimiter,
   uploadLimiter,
 };
