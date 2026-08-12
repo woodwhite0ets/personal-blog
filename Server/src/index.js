@@ -23,7 +23,12 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],   // 组件内联 style
-      imgSrc: ["'self'", 'data:', 'blob:', 'https:'],
+      imgSrc: ["'self'", 'data:', 'blob:',
+        'https://img.shields.io',           // 技术徽章
+        'https://github.com', 'https://*.github.com',      // GitHub 图片/CAMO
+        'https://*.githubusercontent.com',  // GitHub user content
+        'https://cdn.jsdelivr.net',         // npm/开源 CDN
+      ],
       fontSrc: ["'self'", 'data:'],
       connectSrc: ["'self'"],
       objectSrc: ["'none'"],
