@@ -91,7 +91,7 @@
         <!-- 底部操作 -->
         <div class="post-actions">
           <!-- 点赞按钮 -->
-          <button class="btn-like" :class="{ liked: post.user_liked }" @click="toggleLike" :disabled="liking || !isLoggedIn">
+          <button class="btn-like" :class="{ liked: post.user_liked }" @click="onLikeClick" :disabled="liking">
             <span class="btn-icon">{{ post.user_liked ? '♥' : '♡' }}</span>
             <span>{{ post.like_count || 0 }} {{ post.user_liked ? '已赞' : '点赞' }}</span>
           </button>
@@ -298,6 +298,16 @@ async function handleDelete() {
     deleting.value = false
     showDeleteModal.value = false
   }
+}
+
+// ====== 点赞点击（未登录/游客先提示登录） ======
+function onLikeClick() {
+  if (!isLoggedIn.value) {
+    // 未登录 → 跳转登录页（HR 等访客看到提示后自行登录）
+    router.push('/')
+    return
+  }
+  toggleLike()
 }
 
 // ====== 点赞/取消赞 ======
