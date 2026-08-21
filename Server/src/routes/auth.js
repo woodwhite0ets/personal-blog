@@ -12,7 +12,7 @@ const { containsBannedWord } = require('../config/wordFilter');
 const rateLimit = require('express-rate-limit');
 const guestLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 3,
+  max: 30,             // 游客登录限流放宽（防误伤正常访客/HR 浏览）
   standardHeaders: true,
   legacyHeaders: false,
   message: { message: 'too many guest requests — slow down' },
