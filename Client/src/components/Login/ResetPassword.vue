@@ -26,7 +26,7 @@
         <div v-if="done" class="success-box">
           <div class="success-icon">✓</div>
           <p class="success-text">password reset successful!</p>
-          <router-link to="/" class="btn-back">← go to login</router-link>
+          <router-link to="/login" class="btn-back">← go to login</router-link>
         </div>
 
         <!-- 表单 -->
@@ -73,7 +73,7 @@
         </form>
 
         <p class="back-link">
-          <router-link to="/">← back to login</router-link>
+          <router-link to="/login">← back to login</router-link>
         </p>
       </div>
     </div>

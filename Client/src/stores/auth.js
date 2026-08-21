@@ -142,7 +142,7 @@ export function useAuth() {
   function logout() {
     clearToken()
     currentUser.value = null
-    router.push('/')
+    router.push('/HomePage')
   }
 
   return {

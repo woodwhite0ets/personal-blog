@@ -481,7 +481,7 @@ async function savePost() {
   if (saving.value) return false
   if (!validate()) return false
   if (!isLoggedIn.value) {
-    router.push('/')
+    router.push('/login')
     return false
   }
 
@@ -724,7 +724,7 @@ onMounted(async () => {
   if (!isLoggedIn.value) {
     const token = getToken()
     if (!token) {
-      router.push('/')
+      router.push('/login')
       return
     }
   }

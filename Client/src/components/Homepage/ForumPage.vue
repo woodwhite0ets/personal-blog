@@ -49,7 +49,7 @@
 
           <!-- 未登录 -->
           <template v-if="!isLoggedIn">
-            <router-link to="/" class="btn-write">
+            <router-link to="/login" class="btn-write">
               <span class="btn-write-icon">+</span> 发帖
             </router-link>
           </template>
@@ -97,7 +97,7 @@
           <router-link v-if="isLoggedIn" to="/editor?type=forum" class="btn-hero-write">
             <span>+</span> 发布新帖
           </router-link>
-          <router-link v-else to="/" class="btn-hero-write">
+          <router-link v-else to="/login" class="btn-hero-write">
             <span>→</span> 登录后发帖
           </router-link>
         </div>

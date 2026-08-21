@@ -27,7 +27,7 @@
           <div class="success-icon">✓</div>
           <p class="success-text">if this email is registered, a reset link has been sent.</p>
           <p class="comment success-hint">// 请查收邮箱（含垃圾箱），链接 1 小时内有效</p>
-          <router-link to="/" class="btn-back">← back to login</router-link>
+          <router-link to="/login" class="btn-back">← back to login</router-link>
         </div>
 
         <!-- 表单 -->
@@ -57,7 +57,7 @@
         </form>
 
         <p class="back-link">
-          <router-link to="/">← back to login</router-link>
+          <router-link to="/login">← back to login</router-link>
         </p>
       </div>
     </div>

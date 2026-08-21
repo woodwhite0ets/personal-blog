@@ -215,7 +215,7 @@ Registerview · VUE
         </template>
  
         <p class="back-link">
-          <router-link to="/">← 已有账号？去登录</router-link>
+          <router-link to="/login">← 已有账号？去登录</router-link>
         </p>
       </div>
  

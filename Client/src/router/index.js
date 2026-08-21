@@ -21,6 +21,10 @@ function clearStaleToken() {
 const routes = [
   {
     path: '/',
+    redirect: '/HomePage',
+  },
+  {
+    path: '/login',
     name: 'LoginPage',
     component: () => import('../components/Login/Login.vue'),
   },
@@ -142,26 +146,26 @@ router.beforeEach((to, from, next) => {
         localStorage.removeItem('guest_mode');
         localStorage.removeItem('guest_user');
         sessionStorage.clear();
-        return next({ path: '/', query: { redirect: to.fullPath } });
+        return next({ path: '/login', query: { redirect: to.fullPath } });
       }
     } catch {
       // 无效 token 格式，清理后重定向
       clearStaleToken();
-      return next({ path: '/', query: { redirect: to.fullPath } });
+      return next({ path: '/login', query: { redirect: to.fullPath } });
     }
   }
 
   // 2. 需登录路由
   if (to.meta.requiresAuth) {
     if (!token || isGuest()) {
-      return next({ path: '/', query: { redirect: to.fullPath } });
+      return next({ path: '/login', query: { redirect: to.fullPath } });
     }
   }
 
   // 3. 需管理员路由
   if (to.meta.requiresAdmin) {
     if (!token || isGuest()) {
-      return next({ path: '/', query: { redirect: to.fullPath } });
+      return next({ path: '/login', query: { redirect: to.fullPath } });
     }
     try {
       const payload = decodeTokenPayload(token);
@@ -169,7 +173,7 @@ router.beforeEach((to, from, next) => {
         return next({ path: '/HomePage' });
       }
     } catch {
-      return next({ path: '/', query: { redirect: to.fullPath } });
+      return next({ path: '/login', query: { redirect: to.fullPath } });
     }
   }
 

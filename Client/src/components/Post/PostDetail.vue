@@ -136,7 +136,7 @@
           <span v-if="commentError" class="comment-err">{{ commentError }}</span>
         </div>
         <div v-else class="comment-login-hint">
-          <router-link to="/">登录</router-link> 后即可发表评论
+          <router-link to="/login">登录</router-link> 后即可发表评论
         </div>
 
         <!-- 评论列表 -->
@@ -304,7 +304,7 @@ async function handleDelete() {
 function onLikeClick() {
   if (!isLoggedIn.value) {
     // 未登录 → 跳转登录页（HR 等访客看到提示后自行登录）
-    router.push('/')
+    router.push('/login')
     return
   }
   toggleLike()

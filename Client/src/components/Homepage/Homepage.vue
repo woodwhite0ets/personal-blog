@@ -49,7 +49,7 @@
 
           <!-- 未登录 -->
           <template v-if="!isLoggedIn">
-            <router-link to="/" class="btn-write">
+            <router-link to="/login" class="btn-write">
               <span class="btn-write-icon">+</span> 新文章
             </router-link>
           </template>
