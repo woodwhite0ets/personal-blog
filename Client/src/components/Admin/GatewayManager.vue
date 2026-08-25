@@ -70,6 +70,7 @@
     </template>
 
     <!-- 开通网关权限 -->
+    <Teleport to="body">
     <div v-if="grantVisible" class="modal-mask" @click.self="grantVisible = false">
       <div class="modal-card">
         <h3>开通网关权限</h3>
@@ -105,8 +106,10 @@
         </div>
       </div>
     </div>
+    </Teleport>
 
     <!-- 编辑权限 -->
+    <Teleport to="body">
     <div v-if="editVisible" class="modal-mask" @click.self="editVisible = false">
       <div class="modal-card">
         <h3>编辑网关权限 — {{ editTarget.blog?.username || editTarget.id }}</h3>
@@ -135,6 +138,7 @@
         </div>
       </div>
     </div>
+    </Teleport>
 
     <!-- 确认移除 -->
     <ConfirmModal
@@ -349,7 +353,7 @@ onMounted(load)
 .btn-del { color: var(--err); background: var(--err-a6); border-color: var(--err-a20); }
 .btn-del:hover { background: var(--err-a12); border-color: var(--err); }
 
-.modal-mask { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,.55); }
+.modal-mask { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,.55); }
 .modal-card { width: min(560px, 100%); max-height: 86vh; overflow-y: auto; padding: 22px; background: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 10px; }
 .modal-card h3 { margin: 0 0 6px; color: var(--text-bright); font-size: 16px; }
 .modal-card label { display: block; margin: 14px 0 6px; color: var(--text-secondary); font-size: 12px; }
