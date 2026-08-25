@@ -3,6 +3,49 @@
 	acme_ca https://acme-v02.api.letsencrypt.org/directory
 }
 
+woodwhite.top {
+	log {
+		output file /var/log/caddy/woodwhite-access.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+		format json
+	}
+
+	# === honeypot: sensitive file probes ===
+	@env_probe {
+		path *.env* /.aws/* /aws-ses* /.stripe* /stripe* /.ssh/* /.git/* /.svn/* /*.DS_Store /test.php /*.bak /*.old /*.backup /*.save /*.local
+		path /wp-config* /wp-admin* /phpinfo* /server-status* /config.json* /docker-compose* /Caddyfile*
+	}
+	route @env_probe {
+		header Server "Apache/2.4.41 (Ubuntu)"
+		header Content-Type "text/plain; charset=utf-8"
+		rewrite * /.env
+		root * /var/www/honeypot
+		file_server
+	}
+
+	# === honeypot: WordPress scan ===
+	@wp_probe {
+		path /wp-includes/* /wp-content/* /wp-json/* /xmlrpc* /wlwmanifest*
+		path /blog/wp-includes/* /web/wp-includes/* /wordpress/wp-includes/* /wp/wp-includes/*
+	}
+	route @wp_probe {
+		header Server "Apache/2.4.41 (Ubuntu)"
+		header Content-Type "application/json"
+		rewrite * /troll.json
+		root * /var/www/honeypot
+		file_server
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+	}
+
+	reverse_proxy 127.0.0.1:3027
+}
+
 blog.woodwhite.top {
 	log {
 		output file /var/log/caddy/blog-access.log {
@@ -43,8 +86,7 @@ blog.woodwhite.top {
 		file_server
 	}
 
-	# === Gateway 控制面（合并版控制台） ===
-	# 合并后的 Gateway 控制台由博客 Vue SPA 在 /gateway 提供，此处不做 /gateway 重定向。
+	# === Gateway 控制面（单前端：合并版控制台在 /gateway，由博客 Vue SPA 提供） ===
 	# API 与控制面路径经反向 SSH 隧道（127.0.0.1:18081）转发到网关主机，
 	# 请求以 Host: mcp.woodwhite.top 匹配网关侧 Caddy。
 	handle_path /api/gateway/* {
@@ -80,13 +122,110 @@ blog.woodwhite.top {
 		}
 	}
 
-	# 旧独立 /console 控制台已退役：合并版在 /gateway，这里做一次 302 引导。
-	# 部署时请确认线上 Caddy 已删除历史遗留的 `@legacy_gateway path /gateway`
-	# -> `redir /console 302` 规则（否则 /gateway 会被劫持、永远到不了 SPA）。
+	# 单前端路由：/console 只是旧书签的 302 别名，实际页面是 /gateway 的 Vue SPA。
+	# 不要在这里把 /gateway 重定向到 /console（曾导致 SPA 无法直达）。
 	@legacy_console path /console /console/*
 	redir @legacy_console /gateway 302
 
 	handle {
 		reverse_proxy 127.0.0.1:3027
 	}
+}
+
+mcp.woodwhite.top {
+	log {
+		output file /var/log/caddy/mcp-access.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+		format json
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+	}
+
+	# 网关不再自带 /console 前端，MCP 与管理 API 走网关，其余归博客。
+	@gateway path /healthz /mcp* /api /api/*
+	@blog_api path /api/posts* /api/tags* /api/authors*
+
+	route {
+		# These endpoints belong to the blog application and must win over the
+		# broader Gateway /api matcher above.
+		handle @blog_api {
+			reverse_proxy 127.0.0.1:3027 {
+				header_up -Origin
+				header_down Access-Control-Allow-Origin https://mcp.woodwhite.top
+			}
+		}
+
+		# Public TLS terminates here; the Gateway hop uses its internal TLS.
+		handle @gateway {
+			reverse_proxy https://127.0.0.1:18081 {
+				header_up Host mcp.woodwhite.top
+				transport http {
+					tls_server_name mcp.woodwhite.top
+					tls_insecure_skip_verify
+				}
+			}
+		}
+
+		# All remaining paths are normal blog pages and static files.
+		handle {
+			reverse_proxy 127.0.0.1:3027 {
+				header_up -Origin
+				header_down Access-Control-Allow-Origin https://mcp.woodwhite.top
+			}
+		}
+	}
+}
+
+map.woodwhite.top {
+	log {
+		output file /var/log/caddy/map-access.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+		format json
+	}
+
+	# === honeypot: sensitive file probes -> fake credentials ===
+	@env_probe {
+		path *.env* /.aws/* /aws-ses* /.stripe* /stripe* /.ssh/* /.git/* /.svn/* /*.DS_Store /test.php /*.bak /*.old /*.backup /*.save /*.local
+		path /wp-config* /wp-admin* /phpinfo* /server-status* /config.json* /docker-compose* /Caddyfile*
+	}
+	route @env_probe {
+		header Server "Apache/2.4.41 (Ubuntu)"
+		respond 200 {
+			body file:///var/www/honeypot/.env
+		}
+	}
+
+	# === honeypot: WordPress scan -> troll JSON ===
+	@wp_probe {
+		path /wp-includes/* /wp-content/* /wp-json/* /xmlrpc* /wlwmanifest*
+		path /blog/wp-includes/* /web/wp-includes/* /wordpress/wp-includes/* /wp/wp-includes/*
+	}
+	route @wp_probe {
+		header Server "Apache/2.4.41 (Ubuntu)"
+		respond 200 {
+			body file:///var/www/honeypot/troll.json
+		}
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+	}
+
+	# === logfeed: token-protected map access log snapshot ===
+	@feedok path /log-feed/de0780b77b05a3a5b3f7220ca791b31369ef9c4ebaff6d7d
+	route @feedok {
+		header Cache-Control "no-store"
+		rewrite * /snapshot.json
+		root * /var/www/logfeed
+		file_server
+	}
+	reverse_proxy 127.0.0.1:13001
 }
