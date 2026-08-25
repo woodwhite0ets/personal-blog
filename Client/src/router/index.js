@@ -127,6 +127,11 @@ const routes = [
         name: 'AdminLogs',
         component: () => import('../components/Admin/LogViewer.vue'),
       },
+      {
+        path: 'gateway',
+        name: 'AdminGateway',
+        component: () => import('../components/Admin/GatewayManager.vue'),
+      },
     ],
   },
   // catch-all：未知路径重定向到首页

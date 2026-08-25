@@ -62,7 +62,7 @@
             <span class="panel-title">gateway.session</span>
           </div>
           <div class="panel-body">
-            <div class="info-line"><span class="info-key">用户</span><span class="info-val">{{ user.display_name }}</span></div>
+            <div class="info-line"><span class="info-key">用户</span><span class="info-val">{{ user.display_name }}<template v-if="user.username"> @{{ user.username }}</template></span></div>
             <div class="info-line"><span class="info-key">角色</span><span class="info-val terminal-green">{{ user.role }}</span></div>
             <div class="info-line"><span class="info-key">协议</span><span class="info-val">MCP / SSH</span></div>
           </div>
@@ -181,6 +181,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteFooter from '../common/SiteFooter.vue'
+import { getToken } from '../../stores/auth.js'
 
 const router = useRouter()
 const user = ref(null)
@@ -235,7 +236,15 @@ async function login() {
   catch (cause) { error.value = cause.message }
   finally { busy.value = false }
 }
-async function restoreSession() { try { user.value = await api('/api/me'); await selectView('overview') } catch {} }
+async function restoreSession() {
+  try { user.value = await api('/api/me'); await selectView('overview'); return } catch {}
+  // SSO（账号打通）：博客已登录则用博客 JWT 自动登录网关；失败提示改用下方 Token 登录。
+  const blogJwt = getToken()
+  if (blogJwt) {
+    try { user.value = await api('/api/auth/login', { method: 'POST', body: JSON.stringify({ token: blogJwt }) }); await selectView('overview') }
+    catch (cause) { error.value = '博客账号未开通网关权限或登录已过期，可改用下方 Token 登录' }
+  }
+}
 async function logout() { await api('/api/auth/logout', { method: 'POST' }).catch(() => {}); user.value = null; router.push('/HomePage') }
 async function selectView(next) {
   view.value = next; setStatus(''); newToken.value = ''

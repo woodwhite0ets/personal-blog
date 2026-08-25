@@ -148,6 +148,7 @@ app.use('/api/posts',  require('./routes/posts'));
 app.use('/api/users',  require('./routes/users'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/admin',  require('./routes/admin'));
+app.use('/api/admin/gateway', require('./routes/gatewayAdmin'));
 
 // ====== SEO 路由（feed.xml / sitemap.xml，需在 SPA fallback 之前） ======
 app.use(require('./routes/seo'));

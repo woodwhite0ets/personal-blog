@@ -1,19 +1,27 @@
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 const pool = require('../config/db');
 require('dotenv').config();
 
-// JWT_SECRET 必须显式配置，缺失时直接抛错（防止静默使用弱默认值伪造 token）
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET || JWT_SECRET.length < 32) {
-  throw new Error('JWT_SECRET must be set in .env (at least 32 chars)');
+// ====== RS256 密钥对（博客私钥签名，网关公钥验签） ======
+// 优先环境变量内联 PEM，否则读取 Server/keys/*.pem。
+// 注意：JWT_SECRET 仍保留在 .env 中仅作 HS256 回滚用，不再作为默认签名密钥。
+const KEY_DIR = path.resolve(__dirname, '../keys');
+const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY
+  || (fs.existsSync(path.join(KEY_DIR, 'jwt_private.pem')) ? fs.readFileSync(path.join(KEY_DIR, 'jwt_private.pem'), 'utf8') : null);
+const JWT_PUBLIC_KEY = process.env.JWT_PUBLIC_KEY
+  || (fs.existsSync(path.join(KEY_DIR, 'jwt_public.pem')) ? fs.readFileSync(path.join(KEY_DIR, 'jwt_public.pem'), 'utf8') : null);
+if (!JWT_PRIVATE_KEY || !JWT_PUBLIC_KEY) {
+  throw new Error('JWT RSA key pair required (JWT_PRIVATE_KEY/JWT_PUBLIC_KEY env, or Server/keys/jwt_private.pem + jwt_public.pem)');
 }
 
 // ====== 生成 JWT ======
 function signToken(user) {
   return jwt.sign(
     { id: user.id, username: user.username, role: user.role },
-    JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    JWT_PRIVATE_KEY,
+    { algorithm: 'RS256', expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
 }
 
@@ -36,7 +44,7 @@ async function authRequired(req, res, next) {
   }
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
+    const payload = jwt.verify(token, JWT_PUBLIC_KEY, { algorithms: ['RS256'] });
     const user = await refreshUser(payload);
     if (!user) {
       return res.status(401).json({ message: 'account no longer exists' });
@@ -58,7 +66,7 @@ async function authOptional(req, res, next) {
 
   if (token) {
     try {
-      const payload = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
+      const payload = jwt.verify(token, JWT_PUBLIC_KEY, { algorithms: ['RS256'] });
       const user = await refreshUser(payload);
       if (user) req.user = user; // 账号已删除则不设置
     } catch { /* token 无效也放行 */ }

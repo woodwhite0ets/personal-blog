@@ -3,6 +3,9 @@
 .env.bak
 .env.*.bak
 
+# RSA 密钥对（JWT 私钥绝不能进 git）
+keys/
+
 # 上传文件（运行时数据）
 uploads/
 
