@@ -7,7 +7,7 @@ require('dotenv').config();
 // ====== RS256 密钥对（博客私钥签名，网关公钥验签） ======
 // 优先环境变量内联 PEM，否则读取 Server/keys/*.pem。
 // 注意：JWT_SECRET 仍保留在 .env 中仅作 HS256 回滚用，不再作为默认签名密钥。
-const KEY_DIR = path.resolve(__dirname, '../keys');
+const KEY_DIR = path.resolve(__dirname, '../../keys');
 const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY
   || (fs.existsSync(path.join(KEY_DIR, 'jwt_private.pem')) ? fs.readFileSync(path.join(KEY_DIR, 'jwt_private.pem'), 'utf8') : null);
 const JWT_PUBLIC_KEY = process.env.JWT_PUBLIC_KEY
