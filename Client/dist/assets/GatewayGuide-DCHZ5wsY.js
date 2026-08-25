@@ -75,7 +75,7 @@ known_hosts 示例：
 192.0.2.10 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleHostKey gateway-server
 ~~~
 
-ssh-ed25519 和 ecdsa-sha2-nistp256 是不同的主机密钥算法标识，不是需要手动选择的登录协议。保存后可以测试连接，测试只执行受控的 uname -a。
+ssh-ed25519 和 ecdsa-sha2-nistp256 是不同的主机密钥算法标识，不是需要手动选择的登录协议。保存后可以测试连接，测试只执行一次跨平台的 echo 连通性探针（不运行 uname 等 Linux 命令），Windows/WSL2 目标同样适用。
 
 ## 5. MCP 客户端与 Harness
 
