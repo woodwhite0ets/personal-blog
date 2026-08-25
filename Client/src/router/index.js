@@ -59,6 +59,16 @@ const routes = [
     component: () => import('../components/Homepage/AboutPage.vue'),
   },
   {
+    path: '/gateway',
+    name: 'GatewayConsole',
+    component: () => import('../components/Gateway/GatewayConsole.vue'),
+  },
+  {
+    path: '/gateway/docs',
+    name: 'GatewayGuide',
+    component: () => import('../components/Gateway/GatewayGuide.vue'),
+  },
+  {
     path: '/user/:username',
     name: 'UserPage',
     component: () => import('../components/User/UserPage.vue'),

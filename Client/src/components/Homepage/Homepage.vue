@@ -25,6 +25,9 @@
           <router-link to="/about">
             <span class="nav-num">04</span> 关于
           </router-link>
+          <router-link to="/gateway">
+            <span class="nav-num">05</span> Gateway
+          </router-link>
         </nav>
         <div class="nav-actions">
           <ThemeSwitcher />

@@ -159,6 +159,22 @@ app.use((req, res, next) => {
   if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) {
     return res.status(404).json({ message: 'endpoint not found' });
   }
+  // Gateway control-plane paths must never be swallowed by the SPA fallback.
+  // The blog Caddy proxies /mcp and /console to the knowledge-base gateway; if a
+  // request still reaches Express here it is misrouted and should 404, not return
+  // HTML that an MCP client would misread as a successful response.
+  if (req.path === '/mcp' || req.path.startsWith('/mcp/') ||
+      req.path === '/console' || req.path.startsWith('/console/')) {
+    return res.status(404).json({ message: 'endpoint not found' });
+  }
+  // Missing hashed assets under /assets (e.g. an old entry point referencing a
+  // removed chunk) → 404 instead of a misleading 200 text/html.
+  if (req.path.startsWith('/assets/')) {
+    return res.status(404).json({ message: 'not found' });
+  }
+  // The SPA entry references hashed assets. Never let browsers keep an old
+  // entry point after a deployment, otherwise they can request removed chunks.
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.sendFile(path.join(__dirname, '../../Client/dist/index.html'));
 });
 
