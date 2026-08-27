@@ -49,6 +49,7 @@
 
           <!-- 未登录 -->
           <template v-if="!isLoggedIn">
+            <router-link to="/login" class="btn-login-nav">登录</router-link>
             <router-link to="/login" class="btn-write">
               <span class="btn-write-icon">+</span> 发帖
             </router-link>
@@ -536,6 +537,13 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   to { width: 200px; opacity: 1; }
 }
 
+.btn-login-nav {
+  padding: 7px 18px; font-size: 13px; font-weight: 600;
+  color: var(--accent); background: var(--accent-a8);
+  border: 1px solid var(--accent-a20); border-radius: 6px;
+  text-decoration: none; transition: all 0.2s;
+}
+.btn-login-nav:hover { background: var(--accent-a15); border-color: var(--accent-a30); }
 .btn-write {
   display: flex; align-items: center; gap: 6px;
   padding: 6px 16px;

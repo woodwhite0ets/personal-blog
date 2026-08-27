@@ -52,6 +52,7 @@
 
           <!-- 未登录 -->
           <template v-if="!isLoggedIn">
+            <router-link to="/login" class="btn-login-nav">登录</router-link>
             <router-link to="/login" class="btn-write">
               <span class="btn-write-icon">+</span> 新文章
             </router-link>
