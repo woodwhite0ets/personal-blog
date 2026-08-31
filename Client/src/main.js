@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import router from './router/index.js'
+import { initEnhance } from './utils/enhance.js'
 
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -90,3 +91,4 @@ app.directive('count', count)
 app.use(router)
 if (typeof window !== 'undefined') attachRipple()
 app.mount('#app')
+if (typeof window !== 'undefined') initEnhance()

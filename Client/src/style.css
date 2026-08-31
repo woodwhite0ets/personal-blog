@@ -975,3 +975,80 @@ button:active, .btn:active, .btn-write:active, .btn-login:active, .post-link:act
 
 /* 弹入工具类 */
 .pop-in { animation: popIn .4s cubic-bezier(.22,1,.36,1) both; }
+
+/* ============================================================
+   动效增强 · 第四波（2026-08-31）— 知识库骨架 / 文章微交互 / 页脚进度
+   ============================================================ */
+
+/* 骨架屏宽度工具类 */
+.skel-w30 { width: 30%; }
+.skel-w40 { width: 40%; }
+.skel-w50 { width: 50%; }
+.skel-w60 { width: 60%; }
+.skel-w65 { width: 65%; }
+.skel-w70 { width: 70%; }
+.skel-w80 { width: 80%; }
+.skel-w85 { width: 85%; }
+.skel-w90 { width: 90%; }
+.skel-w100 { width: 100%; }
+
+/* 正文图片 hover 放大 + 柔和描边 */
+.markdown-body img { transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease, border-color .4s ease; }
+.markdown-body img:hover { transform: scale(1.02) translateY(-2px); box-shadow: 0 10px 32px var(--shadow), 0 0 0 1px var(--accent-a15); border-color: var(--accent-a30); }
+
+/* 引用块左侧流光分隔 */
+.markdown-body blockquote { position: relative; overflow: hidden; transition: background .3s ease; }
+.markdown-body blockquote::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(180deg,var(--accent),var(--purple)); transform:scaleY(0); transform-origin:top; transition:transform .4s ease; }
+.markdown-body blockquote:hover::before { transform:scaleY(1); }
+
+/* 表格行 hover 高亮 */
+.markdown-body table tbody tr { transition: background .25s ease; }
+.markdown-body table tbody tr:hover { background: var(--overlay-a5); }
+
+/* 代码块 hover 微光 + 圆角微动 */
+.markdown-body pre { position: relative; transition: box-shadow .35s ease, border-color .35s ease; }
+.markdown-body pre:hover { border-color: var(--accent-a30); box-shadow: 0 8px 28px var(--shadow), 0 0 0 1px var(--accent-a12); }
+
+/* 标题锚点 hover 装饰 */
+.markdown-body h2::before,
+.markdown-body h3::before {
+  content:'#'; margin-left:-18px; padding-right:6px;
+  color:var(--accent); opacity:0; transform:translateX(-6px);
+  transition:opacity .25s ease, transform .25s ease;
+}
+.markdown-body h2:hover::before,
+.markdown-body h3:hover::before { opacity:.75; transform:translateX(0); }
+
+/* 排序/标签按钮激活扫光 */
+.sort-btn.active { position: relative; overflow: hidden; }
+.sort-btn.active::after { content:''; position:absolute; top:0; left:0; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent); transform:translateX(-130%) skewX(-20deg); animation:shine .9s ease; }
+
+/* 知识库内容淡入 + 空态/错误态/登录提示弹入 */
+.kb-article.anim-fade { animation: fadeIn .5s ease both; }
+.kb-empty, .kb-error, .kb-login-hint { animation: fadeInUp .4s ease both; }
+.kb-project.active { animation: popIn .35s cubic-bezier(.22,1,.36,1) both; }
+
+/* 代码块复制按钮 */
+.code-actions { position: absolute; top: 8px; right: 8px; z-index: 2; }
+.code-copy-btn {
+  font: inherit; font-size: 11px; padding: 4px 9px; cursor: pointer;
+  color: var(--text-dim); background: var(--bg-float);
+  border: 1px solid var(--border-strong); border-radius: 6px;
+  opacity: 0; transform: translateY(-4px);
+  transition: opacity .25s ease, transform .25s ease, border-color .2s, color .2s, background .2s;
+}
+.markdown-body pre:hover .code-copy-btn, .code-copy-btn:focus-visible { opacity: 1; transform: translateY(0); }
+.code-copy-btn:hover { color: var(--accent); border-color: var(--accent-a30); background: var(--accent-a8); }
+.code-copy-btn.copied { color: var(--ok); border-color: var(--ok-a30); background: var(--ok-a8); }
+
+/* 图片点击灯箱 */
+.img-zoomable { cursor: zoom-in; }
+.img-lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease; }
+.img-lightbox.open { opacity: 1; visibility: visible; }
+.img-lightbox-backdrop { position: absolute; inset: 0; background: var(--modal-overlay, rgba(0,0,0,.72)); backdrop-filter: blur(6px); }
+.img-lightbox-figure { position: relative; max-width: 90vw; max-height: 90vh; padding: 14px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 24px 64px var(--shadow); transform: scale(.92); transition: transform .3s cubic-bezier(.22,1,.36,1); }
+.img-lightbox.open .img-lightbox-figure { transform: scale(1); }
+.img-lightbox-img { display: block; max-width: 82vw; max-height: 74vh; border-radius: 8px; }
+.img-lightbox-cap { margin-top: 10px; font-size: 12px; color: var(--text-dim); text-align: center; }
+.img-lightbox-close { position: absolute; top: -12px; right: -12px; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text); background: var(--bg-float); border: 1px solid var(--border-strong); cursor: pointer; }
+.img-lightbox-close:hover { color: var(--accent); border-color: var(--accent); }

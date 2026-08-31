@@ -21,6 +21,7 @@
           <span class="footer-sep">·</span>
           <span>{{ typedLen }}/{{ fullCmd.length }} 字符</span>
         </div>
+        <div class="footer-progress"><span :style="{ width: progressPct + '%' }"></span></div>
       </div>
     </div>
 
@@ -50,6 +51,7 @@ const props = defineProps({ command: { type: String, required: true } })
 const fullCmd = computed(() => props.command || '')
 const displayed = ref('')
 const typedLen = ref(0)
+const progressPct = computed(() => { const total = fullCmd.value.length || 1; return Math.min(100, Math.round((typedLen.value / total) * 100)) })
 let timer = null
 onMounted(() => {
   const text = fullCmd.value
@@ -93,4 +95,10 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
 .beian-sep { margin: 0 8px; color: var(--text-faint); font-size: 11px; }
 .beian-ga { color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px; }
 .beian-ga-icon { width: 16px; height: 16px; vertical-align: middle; flex-shrink: 0; }
+.footer-progress { height: 4px; border-radius: 999px; background: var(--overlay-a10); overflow: hidden; }
+.footer-progress span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--purple)); border-radius: inherit; transition: width .3s ease; box-shadow: 0 0 8px var(--accent-a40); }
+.footer-terminal { transition: translate .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease, border-color .35s ease; }
+.footer-terminal:hover { translate: 0 -4px; box-shadow: 0 18px 48px var(--shadow), 0 0 0 1px var(--accent-a15); border-color: var(--accent-a30); }
+.footer-status { position: relative; }
+.footer-status .status-dot { position: relative; }
 </style>

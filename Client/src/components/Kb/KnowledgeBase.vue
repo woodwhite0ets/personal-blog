@@ -7,7 +7,12 @@
           <span class="kb-sidebar-title">知识库</span>
         </div>
 
-        <div v-if="loading" class="kb-state">加载中…</div>
+        <div v-if="loading" class="kb-state kb-skel">
+          <div class="skel-line skel-w40"></div>
+          <div class="skel-line skel-w80"></div>
+          <div class="skel-line skel-w60"></div>
+          <div class="skel-line skel-w70"></div>
+        </div>
 
         <div v-else-if="!authed" class="kb-login-hint">
           <p class="kb-login-text">登录后即可浏览知识库文档。</p>
@@ -49,7 +54,14 @@
           <span class="kb-head-title">~/knowledge/{{ projectId || (authed ? "kb" : "-") }}/{{ documentPath || "index" }}</span>
           <span class="kb-head-sep"></span>
         </div>
-        <div v-if="error" class="kb-error">{{ error }}</div>
+        <div v-if="loading" class="kb-skel-body">
+          <div class="skel-line skel-w70"></div>
+          <div class="skel-line skel-w90"></div>
+          <div class="skel-line skel-w50"></div>
+          <div class="skel-line skel-w85"></div>
+          <div class="skel-line skel-w65"></div>
+        </div>
+        <div v-else-if="error" class="kb-error">{{ error }}</div>
         <article v-else-if="document" :key="documentPath" class="kb-article markdown-body anim-fade" v-html="rendered"></article>
         <div v-else-if="authed && projectId" class="kb-empty"><p>选择左侧文档查看内容。</p></div>
         <div v-else-if="!authed" class="kb-empty"><p>知识库面向已登录用户开放。</p></div>
@@ -169,6 +181,10 @@ onMounted(async () => {
 }
 .kb-doc:hover { color: var(--text); }
 .kb-doc.active { color: var(--accent); font-weight: 600; }
+.kb-skel { display: flex; flex-direction: column; gap: 10px; padding: 8px 4px; }
+.kb-skel-body { display: flex; flex-direction: column; gap: 14px; padding: 22px 0; }
+.kb-skel-body .skel-line { height: 15px; }
+
 .kb-content {
   background: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 12px; padding: 28px 34px; min-height: 60vh;
