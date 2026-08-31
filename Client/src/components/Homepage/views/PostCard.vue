@@ -58,12 +58,30 @@ defineProps({
 
 <style scoped>
 .post-card {
+  position: relative;
   display: flex;
   gap: 20px;
   padding: 24px 0;
   border-bottom: 1px solid var(--divider);
   animation: fadeUp 0.5s ease both;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
+.post-card::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-a50), transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.post-card:hover {
+  transform: translateY(-3px);
+  background: var(--overlay-a2);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px var(--shadow);
+}
+.post-card:hover::after { opacity: 1; }
 
 @keyframes fadeUp {
   from {
@@ -146,8 +164,16 @@ defineProps({
   transition: color 0.2s;
 }
 
+.post-title a {
+  background-image: linear-gradient(90deg, var(--accent), var(--purple));
+  background-repeat: no-repeat;
+  background-size: 0% 1.5px;
+  background-position: 0 100%;
+  transition: background-size 0.35s cubic-bezier(0.22,1,0.36,1), color 0.2s;
+}
 .post-title a:hover {
   color: var(--accent);
+  background-size: 100% 1.5px;
 }
 
 .post-excerpt {

@@ -35,9 +35,9 @@ const root = ref(null)
 // 每主题的预览色块（映射到各自 accent）
 const swatchColor = (id) => ({
   terminal: 'var(--accent)',
-  paper: '#0a7f9e',
-  midnight: '#58a6ff',
-  solar: '#ffb454',
+  paper: '#2e7d8f',
+  midnight: '#93c5fd',
+  solar: '#e8b57c',
 })[id]
 
 function pick(id) {
