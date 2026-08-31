@@ -65,9 +65,16 @@ marked.use({
 
 // 渲染 markdown → 已消毒的 HTML（XSS 安全）
 // DOMPurify 配置：禁止 style/id/name 属性，只允许 http(s)/ftp/相对路径
+// 剥离 YAML frontmatter（知识库文档由网关返回原始文件内容，避免元数据被渲染成正文）
+function stripFrontmatter(src) {
+  if (typeof src !== 'string') return src
+  // 去掉 BOM 与开头的 --- ... --- 块
+  return src.replace(/^\uFEFF/, '').replace(/^---\s*\n[\s\S]*?\n(?:---|\.\.\.)\s*\n?/, '')
+}
+
 export function renderMarkdown(content) {
   if (!content || typeof content !== 'string') return ''
-  const raw = marked(content)
+  const raw = marked(stripFrontmatter(content))
   const clean = DOMPurify.sanitize(raw, {
     FORBID_ATTR: ['style', 'id', 'name'],
     ALLOWED_URI_REGEXP: /^(?:(?:https?|ftp):\/\/|\/)/i,

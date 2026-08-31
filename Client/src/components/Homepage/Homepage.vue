@@ -28,7 +28,7 @@
 </SiteNav>
 
     <!-- ====== Hero：置顶文章 ====== -->
-    <section v-if="pinnedPost" class="hero">
+    <section v-if="pinnedPost" class="hero anim-fade-up">
       <div class="hero-inner">
         <div class="hero-badge">
           <span class="badge-dot"></span>
@@ -524,10 +524,16 @@ function doSearch() {
 /* ====== 侧边栏 ====== */
 .sidebar { display: flex; flex-direction: column; gap: 20px; }
 
+/* 侧边栏面板入场动效（错峰） */
 .sidebar-panel {
   background: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; overflow: hidden;
+  animation: fadeInUp 0.5s ease both;
 }
+.sidebar .sidebar-panel:nth-child(1) { animation-delay: 100ms; }
+.sidebar .sidebar-panel:nth-child(2) { animation-delay: 180ms; }
+.sidebar .sidebar-panel:nth-child(3) { animation-delay: 260ms; }
+.sidebar .sidebar-panel:nth-child(4) { animation-delay: 340ms; }
 
 .panel-bar {
   display: flex; align-items: center; gap: 6px;

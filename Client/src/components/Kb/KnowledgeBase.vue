@@ -27,10 +27,11 @@
 
           <div v-if="projectId" class="kb-docs">
             <button
-              v-for="d in documents"
+              v-for="(d, idx) in documents"
               :key="d.path"
-              class="kb-doc"
+              class="kb-doc anim-fade-up"
               :class="{ active: d.path === documentPath }"
+              :style="{ animationDelay: `${idx * 40}ms` }"
               @click="openDocument(d.path)"
             >{{ docTitle(d.path) }}</button>
           </div>
@@ -39,7 +40,7 @@
 
       <section class="kb-content">
         <div v-if="error" class="kb-error">{{ error }}</div>
-        <article v-else-if="document" class="kb-article markdown-body" v-html="rendered"></article>
+        <article v-else-if="document" :key="documentPath" class="kb-article markdown-body anim-fade" v-html="rendered"></article>
         <div v-else-if="authed && projectId" class="kb-empty"><p>选择左侧文档查看内容。</p></div>
         <div v-else-if="!authed" class="kb-empty"><p>知识库面向已登录用户开放。</p></div>
         <div v-else class="kb-empty"><p>暂无文档。</p></div>

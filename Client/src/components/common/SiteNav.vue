@@ -106,16 +106,23 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   max-width: 1060px; margin: 0 auto; padding: 0 24px;
   height: 56px; display: flex; align-items: center; gap: 36px;
 }
-.brand { display: flex; align-items: baseline; gap: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
+.brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; text-decoration: none; font-size: 14px; font-weight: 600; }
 .brand-bracket { color: var(--text-muted); }
 .brand-text { color: var(--accent); }
 .brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
 .nav-links { display: flex; gap: 28px; flex: 1; }
-.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 12px; font-weight: 500; color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px; }
+.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 12px; font-weight: 500; color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px; position: relative; white-space: nowrap; }
 .nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; }
 .nav-links a:hover, .nav-links a.router-link-active { color: var(--text); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
-.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; bottom: -2px;
+  width: 100%; height: 2px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.nav-links a:hover::after, .nav-links a.router-link-active::after { transform: scaleX(1); }
+.nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 .btn-login { padding: 6px 14px; font: inherit; font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); border-radius: 6px; transition: all 0.2s; }
 .btn-login:hover { background: var(--accent); color: var(--on-accent); }
 .btn-write { display: flex; align-items: center; gap: 6px; padding: 6px 16px; font: inherit; font-size: 12px; font-weight: 600; color: var(--on-accent); background: var(--accent); border-radius: 6px; text-decoration: none; transition: all 0.2s; }
@@ -138,6 +145,12 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+@media (max-width: 1000px) {
+  .navbar-inner { gap: 18px; }
+  .nav-links { gap: 16px; }
+  .brand-path { display: none; }
+}
+
 @media (max-width: 800px) {
   .navbar-inner { padding: 0 16px; gap: 16px; }
   .brand-path { display: none; }
