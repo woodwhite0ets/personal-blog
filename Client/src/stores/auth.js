@@ -146,7 +146,7 @@ export function useAuth() {
     try {
       const ctrl = new AbortController()
       const timer = setTimeout(() => ctrl.abort(), 2500)
-      await fetch('/api/gateway/api/auth/logout', {
+      await fetch('/api/gateway/auth/logout', {
         method: 'POST',
         credentials: 'include',
         headers: { 'content-type': 'application/json' },
