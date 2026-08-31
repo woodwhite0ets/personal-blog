@@ -15,7 +15,9 @@ POST /api/auth/login
 Content-Type: application/json
 ```
 
-登录成功后返回 JWT。JWT 使用 HS256，默认有效期为 7 天。Token 载荷包含用户 id、username 和 role。服务端每次认证都会查询数据库刷新实时角色：用户被降权、删除后，旧 Token 不会继续拥有原权限。
+登录成功后返回 JWT。JWT 使用 **RS256**（私钥签名、公钥验签），默认有效期为 7 天（`JWT_EXPIRES_IN`）。Token 载荷包含用户 id、username 和 role。服务端每次认证都会查询数据库刷新实时角色（`refreshUser`）：用户被降权、删除后，旧 Token 不会继续拥有原权限。
+
+> 2026-08-25 起从 HS256 迁移到 RS256（为与网关账号打通/SSO）。私钥 `Server/keys/jwt_private.pem`（gitignore），公钥供网关验签；`JWT_SECRET` 保留在 .env 仅作回滚。迁移后所有用户需重新登录一次。
 
 密码使用 bcryptjs，cost factor 为 12。密码至少 8 位，必须同时包含字母和数字，最长 128 位。
 

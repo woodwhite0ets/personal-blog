@@ -21,6 +21,7 @@ keywords: [博客, 论坛, 知识库, RAG, woodwhite@blog]
 | `07-security-controls.md` | 安全防护与审计结论 | 如何防 XSS、SQL 注入、IDOR、WebShell |
 | `08-operations-and-logs.md` | 部署、日志与攻击分析 | Caddy 日志在哪里、如何分析攻击 |
 | `09-troubleshooting.md` | 常见问题排查 | 登录页、429、发帖失败、邮件失败 |
+| `10-knowledge-base-and-mcp.md` | 知识库/MCP 网关统一系统 | /kb 是什么、网关如何打通、多服务器拓扑、如何更新知识库 |
 
 ## 统一事实
 
@@ -32,3 +33,8 @@ keywords: [博客, 论坛, 知识库, RAG, woodwhite@blog]
 - 数据库：MySQL，仅本机监听
 - 公开阅读不要求登录；评论、点赞、发帖、上传和后台操作需要相应权限
 - 不应在回答中泄露 `.env`、JWT 密钥、SMTP 密码、数据库密码或其他真实凭据
+
+- 统一入口：`https://blog.woodwhite.top`，博客与知识库在网页上视觉上是一个系统
+- 知识库网页：`/kb`，网关/控制面：`/gateway`
+- 后端物理分布在多台服务器，由博客域名统一入口 + 反向 SSH 隧道 + 博客 JWT SSO 打通
+- 详细说明见 `10-knowledge-base-and-mcp.md`

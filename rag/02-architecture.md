@@ -74,6 +74,11 @@ Server/src/
 └── routes/                  auth、posts、users、upload、admin、seo
 ```
 
+
+## 与知识库 / 网关的联通
+
+知识库与 MCP 网关物理部署在另一台主机（Docker Compose），通过反向 SSH 隧道暴露到博客机 `127.0.0.1:18081`。前端把网关调用统一改写为 `/api/gateway/*`，博客机 Caddy 将其转发到隧道，并把 `Host` 改为 `mcp.woodwhite.top`。博客登录态通过 RS256 JWT SSO 打通网关。详见 `10-knowledge-base-and-mcp.md`。
+
 ## 关键生产配置
 
 - 站点地址：`https://blog.woodwhite.top`
