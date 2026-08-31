@@ -468,9 +468,9 @@ function doSearch() {
   position: relative; z-index: 1;
   border-bottom: 1px solid var(--border);
   background:
-    radial-gradient(ellipse at 20% 0%, var(--purple) 0%, transparent 45%),
-    radial-gradient(ellipse at 80% 0%, var(--accent-a8) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 0%, var(--accent-a6) 0%, transparent 60%);
+    radial-gradient(ellipse at 20% 0%, var(--aurora-1) 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 0%, var(--aurora-2) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, var(--aurora-3) 0%, transparent 60%);
   background-size: 200% 200%, 200% 200%, 200% 200%;
   animation: heroDrift 12s ease-in-out infinite;
 }

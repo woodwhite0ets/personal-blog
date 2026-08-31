@@ -54,7 +54,7 @@
   --accent-hover: #9fccff;
   --on-accent: #0b0e14;
   --accent-a2: rgba(130, 183, 255, 0.02);
-  --accent-a3: rgba(130, 183, 255, 0.03);
+  --accent-a3: rgba(96, 200, 255, 0.035);
   --accent-a4: rgba(130, 183, 255, 0.04);
   --accent-a5: rgba(130, 183, 255, 0.05);
   --accent-a6: rgba(130, 183, 255, 0.06);
@@ -113,7 +113,11 @@
   --text-secondary-a20: rgba(154, 165, 186, 0.2);
 
   --navbar-bg: rgba(11,14,20,0.86);
-  --scanline: rgba(0,0,0,0.04);
+
+  --aurora-1: rgba(96, 200, 255, 0.20);
+  --aurora-2: rgba(80, 220, 190, 0.12);
+  --aurora-3: rgba(60, 160, 230, 0.12);
+  --scanline: rgba(96, 200, 255, 0.035);
   --shadow: rgba(0,0,0,0.55);
   --shadow-deep: rgba(0,0,0,0.75);
   --modal-overlay: rgba(0,0,0,0.60);
@@ -148,7 +152,7 @@
   --accent-a6: rgba(46, 125, 143, 0.06);
   --accent-a8: rgba(46, 125, 143, 0.08);
   --accent-a10: rgba(46, 125, 143, 0.1);
-  --accent-a12: rgba(46, 125, 143, 0.12);
+  --accent-a12: rgba(46, 125, 143, 0.16);
   --accent-a15: rgba(46, 125, 143, 0.15);
   --accent-a20: rgba(46, 125, 143, 0.2);
   --accent-a25: rgba(46, 125, 143, 0.25);
@@ -201,7 +205,11 @@
   --text-secondary-a20: rgba(132, 138, 150, 0.2);
 
   --navbar-bg: rgba(247,246,242,0.88);
-  --scanline: rgba(0,0,0,0.02);
+
+  --aurora-1: rgba(46, 125, 143, 0.16);
+  --aurora-2: rgba(214, 160, 70, 0.15);
+  --aurora-3: rgba(224, 150, 140, 0.13);
+  --scanline: rgba(120, 112, 96, 0.04);
   --shadow: rgba(0,0,0,0.10);
   --shadow-deep: rgba(0,0,0,0.16);
   --modal-overlay: rgba(0,0,0,0.40);
@@ -246,7 +254,7 @@
   --ok: #6fd39b;
   --ok-hover: #8bdeae;
   --ok-a6: rgba(111, 211, 155, 0.06);
-  --ok-a8: rgba(111, 211, 155, 0.08);
+  --ok-a8: rgba(220, 110, 200, 0.13);
   --ok-a10: rgba(111, 211, 155, 0.1);
   --ok-a12: rgba(111, 211, 155, 0.12);
   --ok-a20: rgba(111, 211, 155, 0.2);
@@ -289,7 +297,11 @@
   --text-secondary-a20: rgba(155, 168, 192, 0.2);
 
   --navbar-bg: rgba(10,14,26,0.86);
-  --scanline: rgba(0,0,0,0.04);
+
+  --aurora-1: rgba(70, 130, 240, 0.24);
+  --aurora-2: rgba(160, 120, 255, 0.18);
+  --aurora-3: rgba(220, 110, 200, 0.13);
+  --scanline: rgba(130, 120, 250, 0.04);
   --shadow: rgba(0,0,0,0.55);
   --shadow-deep: rgba(0,0,0,0.75);
   --modal-overlay: rgba(0,0,0,0.60);
@@ -377,7 +389,11 @@
   --text-secondary-a20: rgba(168, 154, 136, 0.2);
 
   --navbar-bg: rgba(20,17,13,0.88);
-  --scanline: rgba(0,0,0,0.03);
+
+  --aurora-1: rgba(240, 175, 90, 0.20);
+  --aurora-2: rgba(235, 120, 80, 0.15);
+  --aurora-3: rgba(180, 200, 120, 0.12);
+  --scanline: rgba(232, 181, 124, 0.04);
   --shadow: rgba(0,0,0,0.55);
   --shadow-deep: rgba(0,0,0,0.75);
   --modal-overlay: rgba(0,0,0,0.60);
@@ -414,13 +430,7 @@
 
 body {
   margin: 0;
-  background:
-    radial-gradient(1200px 700px at 85% -15%, var(--accent-a8), transparent 60%),
-    radial-gradient(900px 560px at -10% 30%, var(--accent-a5), transparent 55%),
-    radial-gradient(760px 760px at 50% 120%, var(--bg-float), transparent 62%),
-    repeating-linear-gradient(0deg, transparent 0 2px, var(--scanline) 2px 3px),
-    var(--bg);
-  background-attachment: fixed;
+  background: transparent;
   color: var(--text);
   font-family: var(--font-mono);
   font-size: var(--fs-base);
@@ -428,6 +438,22 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1150px 700px at 82% -14%, var(--aurora-1), transparent 58%),
+    radial-gradient(900px 600px at -8% 30%, var(--aurora-2), transparent 55%),
+    radial-gradient(820px 820px at 28% 118%, var(--aurora-3), transparent 62%),
+    radial-gradient(620px 430px at 74% 46%, var(--aurora-1), transparent 56%),
+    repeating-linear-gradient(0deg, transparent 0 2px, var(--scanline) 2px 3px);
+  animation: auroraDrift 26s ease-in-out infinite alternate;
+}
+
 
 #app {
   min-height: 100vh;
@@ -501,8 +527,8 @@ button {
   to { transform: rotate(360deg); }
 }
 @keyframes auroraDrift {
-  0%, 100% { background-position: 0% 0%, 100% 0%, 50% 100%; }
-  50%      { background-position: 40% 0%, 60% 25%, 40% 100%; }
+  0%, 100% { background-position: 0% 0%, 100% 0%, 50% 100%, 50% 50%, 0 0; }
+  50%      { background-position: 42% 0%, 58% 28%, 38% 100%, 68% 66%, 0 0; }
 }
 @keyframes gridFade {
   0%, 100% { opacity: 0.4; }
@@ -592,7 +618,7 @@ button {
 }
 
 /* 滚动条宽度微调 */
-html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top: 84px; }
 
 /* 选中文本高亮 */
 ::selection { background: var(--accent-a25); color: var(--text-bright); }

@@ -556,7 +556,10 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .hero {
   position: relative; z-index: 1;
   border-bottom: 1px solid var(--border);
-  background: radial-gradient(ellipse at 50% 0%, var(--accent-a3) 0%, transparent 60%);
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--aurora-1) 0%, transparent 65%),
+    radial-gradient(ellipse at 15% 10%, var(--aurora-2) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 10%, var(--aurora-3) 0%, transparent 50%);
 }
 
 .hero-inner {
