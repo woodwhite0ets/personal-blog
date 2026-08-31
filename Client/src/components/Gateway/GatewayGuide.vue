@@ -32,7 +32,7 @@
             @click="scrollToSection"
           >{{ item.label }}</a>
         </nav>
-        <router-link to="/gateway" class="btn-secondary guide-back">返回 Gateway</router-link>
+        <router-link to="/gateway" class="btn btn-secondary guide-back">返回 Gateway</router-link>
       </aside>
 
       <article class="terminal-panel guide-panel">

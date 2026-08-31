@@ -29,7 +29,7 @@
             邮箱验证成功！<br/>
             欢迎 <strong>@{{ username }}</strong>
           </p>
-          <router-link to="/HomePage" class="btn-home">
+          <router-link to="/HomePage" class="btn btn-primary btn-glow">
             <span class="btn-arrow">❯</span> enter blog
           </router-link>
         </div>
@@ -195,17 +195,15 @@ onMounted(async () => {
 
 .verify-text strong { color: var(--accent); font-weight: 600; }
 
-.btn-home {
-  display: inline-flex; align-items: center; gap: 8px;
+.btn-glow {
   padding: 12px 36px;
-  font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 1px;
-  color: var(--bg-deeper);
+  font-size: 14px;
+  letter-spacing: 1px;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-  border-radius: 6px; text-decoration: none;
-  transition: all 0.2s;
 }
 
-.btn-home:hover {
+.btn-glow:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
   box-shadow: 0 0 30px var(--accent-a30);
   transform: translateY(-1px);
 }

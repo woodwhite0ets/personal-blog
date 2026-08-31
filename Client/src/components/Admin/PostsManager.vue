@@ -73,8 +73,8 @@
               </td>
               <td class="muted">{{ p.date }}</td>
               <td class="td-actions">
-                <router-link :to="`/editor/${p.slug}`" class="btn-sm btn-edit">编辑</router-link>
-                <button class="btn-sm btn-del" @click="confirmDelete(p)">删除</button>
+                <router-link :to="`/editor/${p.slug}`" class="btn btn-secondary btn-sm">编辑</router-link>
+                <button class="btn btn-danger btn-sm" @click="confirmDelete(p)">删除</button>
               </td>
             </tr>
           </tbody>
@@ -83,7 +83,7 @@
 
       <!-- 分页 -->
       <div v-if="hasMore" class="load-more">
-        <button class="btn-load-more" :disabled="loadingMore" @click="loadMore">
+        <button class="btn btn-secondary" :disabled="loadingMore" @click="loadMore">
           <span class="btn-prompt">❯</span>
           {{ loadingMore ? '加载中...' : '更多文章' }}
         </button>
@@ -316,28 +316,10 @@ onMounted(() => fetchPosts())
 
 .muted { font-size: 11px; color: var(--text-muted); }
 
-.btn-sm {
-  padding: 4px 12px; font-family: inherit; font-size: 11px; font-weight: 600;
-  border-radius: 4px; text-decoration: none; cursor: pointer;
-  transition: all 0.2s; border: 1px solid transparent;
-  margin-left: 6px; display: inline-block;
-}
-.btn-edit { color: var(--accent); background: var(--accent-a6); border-color: var(--accent-a20); }
-.btn-edit:hover { background: var(--accent-a12); }
-.btn-del { color: var(--err); background: var(--err-a6); border-color: var(--err-a20); }
-.btn-del:hover { background: var(--err-a12); border-color: var(--err); }
+.td-actions .btn-sm { margin-left: 6px; }
 
 /* 加载更多 */
 .load-more { text-align: center; padding: 28px 0 12px; }
 
-.btn-load-more {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 28px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
-  color: var(--text-dim); background: none; border: 1px solid var(--border-strong);
-  border-radius: 6px; cursor: pointer; transition: all 0.2s;
-}
-.btn-load-more:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-.btn-load-more:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn-prompt { color: var(--accent); }
 </style>

@@ -49,7 +49,7 @@
             </span>
           </div>
 
-          <button type="submit" class="btn-send" :disabled="loading">
+          <button type="submit" class="btn btn-primary btn-block" :disabled="loading">
             <span v-if="loading" class="spinner"></span>
             <span v-else class="btn-arrow">❯</span>
             {{ loading ? 'Sending...' : 'Send Reset Link' }}
@@ -120,7 +120,7 @@ async function handleSend() {
 }
 .terminal-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg-deeper); border-bottom: 1px solid var(--border); }
 .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
-.dot-red { background: #ff5f56; } .dot-yellow { background: #ffbd2e; } .dot-green { background: #27c93f; }
+.dot-red { background: var(--dot-red); } .dot-yellow { background: var(--dot-yellow); } .dot-green { background: var(--dot-green); }
 .terminal-title { margin-left: auto; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
 
 .card-body { padding: 28px; }
@@ -148,17 +148,8 @@ async function handleSend() {
 .field-error { display: block; margin-top: 6px; font-size: 12px; color: var(--err); }
 .err-prefix { font-weight: 700; }
 
-.btn-send {
-  width: 100%; padding: 12px;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  background: var(--accent); color: var(--on-accent);
-  border: none; border-radius: 6px; font-weight: 700; cursor: pointer;
-  font-family: inherit; transition: opacity 0.2s;
-}
-.btn-send:hover { opacity: 0.85; }
-.btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-arrow { font-weight: 700; }
-.spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+.spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: var(--white); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .success-box { text-align: center; padding: 12px 0; }

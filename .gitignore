@@ -33,3 +33,10 @@ Desktop.ini
 .claude/skills/
 skills-lock.json
 verify-themes.mjs
+
+# 备份与临时目录（不入库）
+.backups/
+.deploy-backups/
+Server/.deploy-backups/
+Client/dist.backup-*/
+Client/dist.previous-*/

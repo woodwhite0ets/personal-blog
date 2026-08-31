@@ -4,36 +4,7 @@
     <div class="bg-scanline"></div>
 
     <!-- ====== 导航栏 ====== -->
-    <header class="navbar">
-      <div class="navbar-inner">
-        <router-link to="/HomePage" class="brand">
-          <span class="brand-bracket">[</span>
-          <span class="brand-text">woodwhite@blog</span>
-          <span class="brand-bracket">]</span>
-          <span class="brand-path">~/user</span>
-        </router-link>
-        <nav class="nav-links">
-          <router-link to="/HomePage">
-            <span class="nav-num">01</span> 首页
-          </router-link>
-          <router-link to="/forum">
-            <span class="nav-num">02</span> 论坛
-          </router-link>
-          <router-link to="/archive">
-            <span class="nav-num">03</span> 归档
-          </router-link>
-          <router-link to="/about">
-            <span class="nav-num">04</span> 关于
-          </router-link>
-        </nav>
-        <div class="nav-actions">
-          <ThemeSwitcher />
-          <router-link v-if="isLoggedIn" to="/editor" class="btn-write">
-            <span class="btn-write-icon">+</span> 新文章
-          </router-link>
-        </div>
-      </div>
-    </header>
+    <SiteNav />
 
     <!-- ====== 用户不存在 ====== -->
     <div v-if="notFound" class="user-notfound">
@@ -126,8 +97,8 @@
             <span class="panel-title">account</span>
           </div>
           <div class="panel-body">
-            <button class="btn-change-pwd" @click="openProfileModal">编辑资料</button>
-            <button class="btn-change-pwd" @click="toggleDrafts">
+            <button class="btn btn-secondary btn-block btn-change-pwd" @click="openProfileModal">编辑资料</button>
+            <button class="btn btn-secondary btn-block btn-change-pwd" @click="toggleDrafts">
               我的草稿
               <span v-if="draftCount > 0" class="draft-count">{{ draftCount }}</span>
             </button>
@@ -158,7 +129,7 @@
             <span class="panel-title">security.pwd</span>
           </div>
           <div class="panel-body">
-            <button class="btn-change-pwd" @click="openPwdModal">修改密码</button>
+            <button class="btn btn-secondary btn-block btn-change-pwd" @click="openPwdModal">修改密码</button>
           </div>
         </div>
 
@@ -224,7 +195,7 @@
                 <input v-model="pwdForm.confirm" type="password" placeholder="再次输入" />
               </div>
               <span v-if="pwdError" class="pwd-err">{{ pwdError }}</span>
-              <button class="pwd-submit" @click="handleChangePwd" :disabled="pwdSaving">
+              <button class="btn btn-primary btn-block pwd-submit" @click="handleChangePwd" :disabled="pwdSaving">
                 {{ pwdSaving ? '保存中...' : '更新密码' }}
               </button>
             </template>
@@ -265,7 +236,7 @@
                 <span class="pwd-hint">// 修改邮箱需要重新验证</span>
               </div>
               <span v-if="profileError" class="pwd-err">{{ profileError }}</span>
-              <button class="pwd-submit" @click="handleSaveProfile" :disabled="profileSaving">
+              <button class="btn btn-primary btn-block pwd-submit" @click="handleSaveProfile" :disabled="profileSaving">
                 {{ profileSaving ? '保存中...' : '保存资料' }}
               </button>
             </template>
@@ -281,10 +252,12 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import PostList from '../Homepage/PostList.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import SiteNav from '../common/SiteNav.vue'
 import UserAvatar from '../common/UserAvatar.vue'
 import { useAuth, getToken } from '../../stores/auth.js'
 
 const route = useRoute()
+const navOpen = ref(false)
 const { currentUser, isLoggedIn, fetchMe } = useAuth()
 
 const API_BASE = '/api'
@@ -645,6 +618,11 @@ watch(username, () => {
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
+.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 .btn-search {
   width: 34px; height: 34px;
@@ -712,7 +690,7 @@ watch(username, () => {
 .avatar-edit-overlay {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.4);
+  background: var(--shadow);
   border-radius: 12px;
   color: var(--white);
   font-size: 22px; font-weight: 700;
@@ -838,16 +816,16 @@ watch(username, () => {
 .footer-cmd { color: var(--text-muted); }
 
 .btn-change-pwd {
-  display: block; width: 100%;
+  background: var(--ok-a6);
+  border-color: var(--ok-a20);
+  color: var(--ok);
+  border-radius: 4px;
   padding: 8px 0;
-  font-family: inherit; font-size: 11px; font-weight: 600;
-  color: var(--ok); background: var(--ok-a6);
-  border: 1px solid var(--ok-a20);
-  border-radius: 4px; cursor: pointer; transition: all 0.2s;
-  text-align: center;
+  font-size: 11px;
 }
 .btn-change-pwd:hover {
-  background: var(--ok-a12); border-color: var(--ok);
+  background: var(--ok-a12);
+  border-color: var(--ok);
 }
 .btn-change-pwd + .btn-change-pwd { margin-top: 6px; }
 .draft-count {
@@ -918,13 +896,14 @@ watch(username, () => {
 }
 .pwd-err::before { content: 'ERR!'; font-weight: 700; letter-spacing: 1px; }
 .pwd-submit {
-  width: 100%; padding: 10px 0;
-  font-family: inherit; font-size: 12px; font-weight: 600;
-  color: var(--on-accent); background: var(--ok); border: none;
-  border-radius: 4px; cursor: pointer; transition: all 0.2s;
+  background: var(--ok);
+  border-color: transparent;
+  border-radius: 4px;
+  padding: 10px 0;
+  font-size: 12px;
 }
 .pwd-submit:hover { background: var(--ok-hover); }
-.pwd-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.pwd-submit:disabled { opacity: 0.4; }
 .pwd-done {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   padding: 24px 0; font-size: 14px; color: var(--ok); font-weight: 600;
@@ -943,6 +922,13 @@ watch(username, () => {
 @media (max-width: 800px) {
   .main-layout { grid-template-columns: 1fr; gap: 48px; }
   .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-actions { gap: 8px; }
+  .user-name { display: none; }
+  .user-caret { display: none; }
+  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
+  .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
+  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
   .user-hero-inner { flex-direction: column; text-align: center; padding: 40px 20px 32px; }
   .user-stats { justify-content: center; }
   .user-avatar-lg { width: 64px; height: 64px; font-size: 28px; }

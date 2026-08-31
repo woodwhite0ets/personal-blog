@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-400.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-700.woff2" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>woodwhite@blog — 技术博客 | 全栈开发 | 开源分享</title>
 
@@ -34,6 +36,16 @@
 
     <!-- 自动检测暗色主题偏好 -->
     <meta name="color-scheme" content="light dark" />
+    <!-- 防主题闪烁：先于 CSS 渲染读本地主题，避免先亮默认色再跳变 -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('blog-theme');
+          var ok = ['terminal', 'paper', 'midnight', 'solar'].indexOf(t) >= 0;
+          if (ok) document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>

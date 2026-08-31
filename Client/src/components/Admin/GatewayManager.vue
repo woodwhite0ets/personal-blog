@@ -20,7 +20,7 @@
     <template v-else>
       <div class="toolbar">
         <p class="muted">一次性 token 只显示一次，请立即复制保存。</p>
-        <button class="btn-primary" @click="openGrant">开通网关权限</button>
+        <button class="btn btn-primary" @click="openGrant">开通网关权限</button>
       </div>
 
       <div v-if="tokenNotice" class="token-notice">
@@ -56,9 +56,9 @@
               <td>{{ u.allowed_projects?.length || 0 }}</td>
               <td>{{ u.allowed_targets?.length || 0 }}</td>
               <td class="td-actions">
-                <button class="btn-sm" @click="openEdit(u)">权限</button>
-                <button class="btn-sm" @click="rotate(u)">轮换Token</button>
-                <button class="btn-sm btn-del" @click="confirmDelete(u)">移除</button>
+                <button class="btn btn-secondary btn-sm" @click="openEdit(u)">权限</button>
+                <button class="btn btn-secondary btn-sm" @click="rotate(u)">轮换Token</button>
+                <button class="btn btn-danger btn-sm" @click="confirmDelete(u)">移除</button>
               </td>
             </tr>
             <tr v-if="!users.length">
@@ -101,8 +101,8 @@
           <span v-if="!targets.length" class="muted">暂无服务器</span>
         </div>
         <div class="actions">
-          <button class="btn-secondary" @click="grantVisible = false">取消</button>
-          <button class="btn-primary" :disabled="!grantDraft.blogUserId" @click="submitGrant">开通并签发 Token</button>
+          <button class="btn btn-secondary" @click="grantVisible = false">取消</button>
+          <button class="btn btn-primary" :disabled="!grantDraft.blogUserId" @click="submitGrant">开通并签发 Token</button>
         </div>
       </div>
     </div>
@@ -133,8 +133,8 @@
           <span v-if="!targets.length" class="muted">暂无服务器</span>
         </div>
         <div class="actions">
-          <button class="btn-secondary" @click="editVisible = false">取消</button>
-          <button class="btn-primary" @click="submitEdit">保存权限</button>
+          <button class="btn btn-secondary" @click="editVisible = false">取消</button>
+          <button class="btn btn-primary" @click="submitEdit">保存权限</button>
         </div>
       </div>
     </div>
@@ -318,12 +318,6 @@ onMounted(load)
 .token-notice code { color: var(--text-bright); overflow-wrap: anywhere; white-space: pre-wrap; }
 .btn-close { position: absolute; top: 6px; right: 10px; background: none; border: 0; color: var(--text-dim); font-size: 16px; cursor: pointer; }
 
-.btn-primary, .btn-secondary { font: inherit; cursor: pointer; border-radius: 6px; transition: all .2s; }
-.btn-primary { padding: 9px 14px; color: var(--on-accent); background: var(--accent); border: 1px solid var(--accent); font-weight: 700; }
-.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
-.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
-.btn-secondary { padding: 9px 13px; color: var(--text-secondary); background: var(--overlay-a4); border: 1px solid var(--border-strong); }
-.btn-secondary:hover { color: var(--text); border-color: var(--accent); }
 
 .state-box { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 40px 20px; font-size: 13px; color: var(--text-muted); }
 .state-box.error { color: var(--err); flex-direction: column; gap: 8px; }
@@ -348,12 +342,8 @@ onMounted(load)
 .role-badge.admin { color: var(--accent); background: var(--accent-a8); border: 1px solid var(--accent-a20); }
 .role-badge.operator { color: var(--ok); background: var(--ok-a8); border: 1px solid var(--ok-a20); }
 
-.btn-sm { padding: 4px 10px; font-family: inherit; font-size: 11px; font-weight: 600; border-radius: 4px; cursor: pointer; transition: all 0.2s; border: 1px solid var(--border-strong); color: var(--text-secondary); background: var(--overlay-a4); }
-.btn-sm:hover { border-color: var(--accent); color: var(--text); }
-.btn-del { color: var(--err); background: var(--err-a6); border-color: var(--err-a20); }
-.btn-del:hover { background: var(--err-a12); border-color: var(--err); }
 
-.modal-mask { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,.55); }
+.modal-mask { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; background: var(--modal-overlay); }
 .modal-card { width: min(560px, 100%); max-height: 86vh; overflow-y: auto; padding: 22px; background: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 10px; }
 .modal-card h3 { margin: 0 0 6px; color: var(--text-bright); font-size: 16px; }
 .modal-card label { display: block; margin: 14px 0 6px; color: var(--text-secondary); font-size: 12px; }

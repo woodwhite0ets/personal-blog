@@ -2,7 +2,7 @@
 // 集中配置，供文章详情、编辑器预览等处复用
 import { marked } from 'marked'
 import { markedHighlight } from 'marked-highlight'
-import hljs from 'highlight.js'
+import hljs from 'highlight.js/lib/core'
 import DOMPurify from 'dompurify'
 
 // 仅注册常用语言，减小打包体积（避免引入全部 ~190 种语言）
@@ -52,13 +52,26 @@ marked.use(markedHighlight({
   },
 }))
 
+// 正文图片延迟加载（loading=lazy，减少首屏流量）
+marked.use({
+  renderer: {
+    image({ href, title, text }) {
+      const esc = (v) => String(v ?? "").replace(/"/g, "&quot;");
+      const t = title ? ` title="${esc(title)}"` : "";
+      return `<img src="${esc(href)}" alt="${esc(text)}" loading="lazy" decoding="async"${t}>`;
+    },
+  },
+});
+
 // 渲染 markdown → 已消毒的 HTML（XSS 安全）
 // DOMPurify 配置：禁止 style/id/name 属性，只允许 http(s)/ftp/相对路径
 export function renderMarkdown(content) {
   if (!content || typeof content !== 'string') return ''
   const raw = marked(content)
-  return DOMPurify.sanitize(raw, {
+  const clean = DOMPurify.sanitize(raw, {
     FORBID_ATTR: ['style', 'id', 'name'],
     ALLOWED_URI_REGEXP: /^(?:(?:https?|ftp):\/\/|\/)/i,
   })
+  // 已消毒 HTML，直接给所有不带 loading 的 img 补懒加载（覆盖 raw HTML 与 markdown 图）
+  return clean.replace(/<img(?![^>]*\bloading=)/gi, '<img loading="lazy"')
 }

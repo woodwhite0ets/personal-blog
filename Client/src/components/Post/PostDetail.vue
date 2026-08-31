@@ -4,36 +4,7 @@
     <div class="bg-scanline"></div>
 
     <!-- ====== 导航栏 ====== -->
-    <header class="navbar">
-      <div class="navbar-inner">
-        <router-link to="/HomePage" class="brand">
-          <span class="brand-bracket">[</span>
-          <span class="brand-text">woodwhite@blog</span>
-          <span class="brand-bracket">]</span>
-          <span class="brand-path">~/post</span>
-        </router-link>
-        <nav class="nav-links">
-          <router-link to="/HomePage">
-            <span class="nav-num">01</span> 首页
-          </router-link>
-          <router-link to="/forum">
-            <span class="nav-num">02</span> 论坛
-          </router-link>
-          <router-link to="/archive">
-            <span class="nav-num">03</span> 归档
-          </router-link>
-          <router-link to="/about">
-            <span class="nav-num">04</span> 关于
-          </router-link>
-        </nav>
-        <div class="nav-actions">
-          <ThemeSwitcher />
-          <router-link v-if="isLoggedIn" to="/editor" class="btn-write">
-            <span class="btn-write-icon">+</span> 新文章
-          </router-link>
-        </div>
-      </div>
-    </header>
+    <SiteNav />
 
     <!-- ====== 加载状态 ====== -->
     <div v-if="loading" class="state-box">
@@ -52,7 +23,7 @@
     <template v-else-if="post">
       <!-- 封面图 -->
       <div v-if="post.cover_image" class="cover-wrap">
-        <img :src="post.cover_image" :alt="post.title" class="cover-img" />
+        <img :src="post.cover_image" :alt="post.title" class="cover-img" loading="lazy" />
       </div>
 
       <article class="post-article">
@@ -91,21 +62,21 @@
         <!-- 底部操作 -->
         <div class="post-actions">
           <!-- 点赞按钮 -->
-          <button class="btn-like" :class="{ liked: post.user_liked }" @click="onLikeClick" :disabled="liking">
-            <span class="btn-icon">{{ post.user_liked ? '♥' : '♡' }}</span>
+          <button class="btn btn-secondary btn-like" :class="{ liked: post.user_liked }" @click="onLikeClick" :disabled="liking">
+            <span class="post-icon">{{ post.user_liked ? '♥' : '♡' }}</span>
             <span>{{ post.like_count || 0 }} {{ post.user_liked ? '已赞' : '点赞' }}</span>
           </button>
           <span class="comment-count-badge">
-            <span class="btn-icon">💬</span> {{ post.comment_count || 0 }} 条评论
+            <span class="post-icon">💬</span> {{ post.comment_count || 0 }} 条评论
           </span>
-          <router-link v-if="canEdit" :to="`/editor/${post.slug || post.id}`" class="btn-edit">
-            <span class="btn-icon">✎</span> 编辑文章
+          <router-link v-if="canEdit" :to="`/editor/${post.slug || post.id}`" class="btn btn-primary btn-edit">
+            <span class="post-icon">✎</span> 编辑文章
           </router-link>
-          <button v-if="canDelete" class="btn-delete" @click="confirmDeletePost">
-            <span class="btn-icon">🗑</span> 删除文章
+          <button v-if="canDelete" class="btn btn-danger btn-delete" @click="confirmDeletePost">
+            <span class="post-icon">🗑</span> 删除文章
           </button>
-          <router-link to="/HomePage" class="btn-back">
-            <span class="btn-icon">←</span> 返回首页
+          <router-link to="/HomePage" class="btn btn-ghost btn-back">
+            <span class="post-icon">←</span> 返回首页
           </router-link>
         </div>
       </article>
@@ -125,11 +96,12 @@
             class="comment-textarea"
             placeholder="写评论..."
             rows="3"
+            maxlength="2000"
             :disabled="commenting"
           ></textarea>
           <div class="comment-form-actions">
             <span class="comment-char-count">{{ commentText.length }}/2000</span>
-            <button class="btn-comment-submit" @click="submitComment()" :disabled="commenting || !commentText.trim()">
+            <button class="btn btn-primary btn-sm btn-comment-submit" @click="submitComment()" :disabled="commenting || !commentText.trim()">
               {{ commenting ? '发布中...' : '发表评论' }}
             </button>
           </div>
@@ -150,13 +122,13 @@
               </div>
               <p class="comment-content">{{ c.content }}</p>
               <div class="comment-actions">
-                <button v-if="isLoggedIn" class="btn-reply" @click="startReply(c.id)">
+                <button v-if="isLoggedIn" class="btn btn-ghost btn-sm btn-reply" @click="startReply(c.id)">
                   {{ replyingTo === c.id ? '取消' : '回复' }}
                 </button>
                 <span v-if="c.replies && c.replies.length" class="reply-count">{{ c.replies.length }} 条回复</span>
                 <button
                   v-if="canDeleteComment(c)"
-                  class="btn-comment-delete"
+                  class="btn btn-ghost btn-sm btn-comment-delete"
                   @click="deleteComment(c.id)"
                   :disabled="deletingComment === c.id"
                 >{{ deletingComment === c.id ? '...' : '删除' }}</button>
@@ -172,7 +144,7 @@
                   :disabled="commenting"
                 ></textarea>
                 <div class="comment-form-actions">
-                  <button class="btn-comment-submit" @click="submitComment(c.id)" :disabled="commenting || !replyText.trim()">
+                  <button class="btn btn-primary btn-sm btn-comment-submit" @click="submitComment(c.id)" :disabled="commenting || !replyText.trim()">
                     {{ commenting ? '发布中...' : '回复' }}
                   </button>
                 </div>
@@ -190,7 +162,7 @@
                     <p class="comment-content">{{ r.content }}</p>
                     <button
                       v-if="canDeleteComment(r)"
-                      class="btn-comment-delete"
+                      class="btn btn-ghost btn-sm btn-comment-delete"
                       @click="deleteComment(r.id)"
                       :disabled="deletingComment === r.id"
                     >{{ deletingComment === r.id ? '...' : '删除' }}</button>
@@ -245,10 +217,13 @@ import { useAuth, getToken } from '../../stores/auth.js'
 import { isGuest } from '../../stores/auth.js'
 import ConfirmModal from '../Admin/ConfirmModal.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 import UserAvatar from '../common/UserAvatar.vue'
+import { useComments } from '../../composables/useComments.js'
 
 const route = useRoute()
+const navOpen = ref(false)
 const router = useRouter()
 const { currentUser, isLoggedIn, isAdmin } = useAuth()
 
@@ -268,15 +243,12 @@ const deleting = ref(false)
 // 点赞
 const liking = ref(false)
 
-// 评论
-const commentList = ref([])
-const commentLoading = ref(false)
-const commentText = ref('')
-const commentError = ref('')
-const commenting = ref(false)
-const replyingTo = ref(null)
-const replyText = ref('')
-const deletingComment = ref(null)
+// ====== 评论（数据层 composable） ======
+const {
+  commentList, commentLoading, commentText, commentError, commenting,
+  replyingTo, replyText, deletingComment,
+  fetchComments, submitComment, startReply, deleteComment, canDeleteComment, formatDate,
+} = useComments({ post, slug })
 
 function confirmDeletePost() {
   showDeleteModal.value = true
@@ -304,7 +276,7 @@ async function handleDelete() {
 function onLikeClick() {
   if (!isLoggedIn.value) {
     // 未登录 → 跳转登录页（HR 等访客看到提示后自行登录）
-    router.push('/login')
+    router.push({ path: '/login', query: { redirect: route.fullPath } })
     return
   }
   toggleLike()
@@ -326,103 +298,6 @@ async function toggleLike() {
     }
   } catch { /* ignore */ }
   finally { liking.value = false }
-}
-
-// ====== 评论 ======
-async function fetchComments() {
-  commentLoading.value = true
-  try {
-    const res = await fetch(`${API_BASE}/posts/${slug.value}/comments`)
-    if (res.ok) {
-      const data = await res.json()
-      commentList.value = data.comments || []
-    }
-  } catch { /* ignore */ }
-  finally { commentLoading.value = false }
-}
-
-async function submitComment(parentId = null) {
-  const text = parentId ? replyText.value : commentText.value
-  if (!text.trim()) return
-
-  commenting.value = true
-  commentError.value = ''
-  try {
-    const body = { content: text.trim() }
-    if (parentId) body.parent_id = parentId
-
-    const res = await fetch(`${API_BASE}/posts/${slug.value}/comments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getToken()}`,
-      },
-      body: JSON.stringify(body),
-    })
-    if (!res.ok) {
-      const data = await res.json()
-      throw new Error(data.message || '评论失败')
-    }
-    const data = await res.json()
-
-    if (parentId) {
-      // 追加到父评论的 replies
-      const parent = commentList.value.find(c => c.id === parentId)
-      if (parent) {
-        if (!parent.replies) parent.replies = []
-        parent.replies.push(data.comment)
-      }
-      replyText.value = ''
-      replyingTo.value = null
-    } else {
-      commentList.value.push(data.comment)
-      commentText.value = ''
-    }
-    // 更新评论计数
-    if (post.value) post.value.comment_count = (post.value.comment_count || 0) + 1
-  } catch (e) {
-    commentError.value = e.message
-  } finally {
-    commenting.value = false
-  }
-}
-
-function startReply(id) {
-  replyingTo.value = replyingTo.value === id ? null : id
-  replyText.value = ''
-}
-
-async function deleteComment(id) {
-  deletingComment.value = id
-  try {
-    const res = await fetch(`${API_BASE}/posts/${slug.value}/comments/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${getToken()}` },
-    })
-    if (res.ok) {
-      // 先从顶层移除
-      commentList.value = commentList.value.filter(c => c.id !== id)
-      // 从回复中移除
-      commentList.value.forEach(c => {
-        if (c.replies) c.replies = c.replies.filter(r => r.id !== id)
-      })
-      // 更新评论计数
-      if (post.value) post.value.comment_count = Math.max(0, (post.value.comment_count || 1) - 1)
-    }
-  } catch { /* ignore */ }
-  finally { deletingComment.value = null }
-}
-
-function canDeleteComment(comment) {
-  if (!currentUser.value) return false
-  return isAdmin.value || (comment.author && comment.author.username === currentUser.value.username)
-}
-
-function formatDate(ts) {
-  if (!ts) return ''
-  const d = new Date(ts)
-  if (isNaN(d.getTime())) return ts
-  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
 // ====== 当前用户是否为作者 ======
@@ -604,6 +479,11 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
+.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 .btn-search {
   width: 34px; height: 34px;
@@ -728,81 +608,12 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .meta-sep { width: 1px; height: 12px; background: var(--border); }
 .meta-item { font-size: 11px; color: var(--text-muted); }
 
-/* ====== Markdown 正文 ====== */
+/* ====== Markdown 正文（排版统一走全局 .markdown-body） ====== */
 .post-content {
-  font-size: 15px; line-height: 1.85; color: var(--text);
-}
-
-/* markdown 元素样式 — 终端主题定制 */
-.post-content :deep(h1),
-.post-content :deep(h2),
-.post-content :deep(h3) {
-  color: var(--text-bright); font-weight: 700; margin: 32px 0 12px;
-}
-
-.post-content :deep(h1) { font-size: 26px; }
-.post-content :deep(h2) { font-size: 20px; }
-.post-content :deep(h3) { font-size: 16px; }
-
-.post-content :deep(p) { margin: 0 0 16px; }
-
-.post-content :deep(a) {
-  color: var(--accent); text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.post-content :deep(a:hover) { color: var(--accent-hover); }
-
-.post-content :deep(code) {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
-  font-size: 13px; padding: 2px 6px;
-  background: var(--overlay-a5); border: 1px solid var(--border);
-  border-radius: 4px; color: var(--accent);
-}
-
-.post-content :deep(pre) {
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: 8px; padding: 16px 20px;
-  overflow-x: auto; margin: 20px 0;
-}
-
-.post-content :deep(pre code) {
-  background: none; border: none; padding: 0; color: var(--text);
-}
-
-.post-content :deep(blockquote) {
-  border-left: 2px solid var(--accent); margin: 16px 0;
-  padding: 8px 16px; color: var(--text-dim); font-style: italic;
-}
-
-.post-content :deep(img) {
-  max-width: 100%; border-radius: 8px;
-  border: 1px solid var(--border); margin: 16px 0;
-}
-
-.post-content :deep(ul),
-.post-content :deep(ol) {
-  padding-left: 24px; margin: 12px 0;
-}
-
-.post-content :deep(li) { margin: 6px 0; }
-
-.post-content :deep(hr) {
-  border: none; border-top: 1px solid var(--border); margin: 32px 0;
-}
-
-.post-content :deep(table) {
-  width: 100%; border-collapse: collapse;
-  font-size: 13px; margin: 16px 0;
-}
-
-.post-content :deep(th),
-.post-content :deep(td) {
-  border: 1px solid var(--border); padding: 8px 12px; text-align: left;
-}
-
-.post-content :deep(th) {
-  background: var(--bg-elevated); color: var(--text-secondary); font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--text);
 }
 
 /* ====== 文章底部操作 ====== */
@@ -814,12 +625,8 @@ onBeforeUnmount(() => { resetSeoMeta() })
 }
 
 .btn-like {
-  display: flex; align-items: center; gap: 6px;
   padding: 8px 18px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
-  color: var(--text-dim); background: var(--overlay-a3);
-  border: 1px solid var(--border-strong); border-radius: 6px;
-  cursor: pointer; transition: all 0.2s;
+  font-size: 12px;
 }
 
 .btn-like:hover:not(:disabled) { border-color: var(--err); color: var(--err); }
@@ -827,7 +634,6 @@ onBeforeUnmount(() => { resetSeoMeta() })
   color: var(--err); background: var(--err-a6);
   border-color: var(--err-a20);
 }
-.btn-like:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .comment-count-badge {
   display: flex; align-items: center; gap: 4px;
@@ -835,37 +641,26 @@ onBeforeUnmount(() => { resetSeoMeta() })
 }
 
 .btn-edit {
-  display: flex; align-items: center; gap: 6px;
   padding: 8px 20px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
-  color: var(--on-accent); background: var(--accent); border-radius: 6px;
-  text-decoration: none; transition: all 0.2s;
+  font-size: 12px;
 }
 
 .btn-edit:hover {
-  background: var(--accent-hover);
   box-shadow: 0 0 20px var(--accent-a25);
 }
 
 .btn-delete {
-  display: flex; align-items: center; gap: 6px;
   padding: 8px 20px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
-  color: var(--err); background: var(--err-a6);
-  border: 1px solid var(--err-a20); border-radius: 6px;
-  cursor: pointer; transition: all 0.2s;
+  font-size: 12px;
 }
-.btn-delete:hover { background: var(--err-a12); border-color: var(--err); }
 
 .btn-back {
-  display: flex; align-items: center; gap: 6px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
-  color: var(--text-dim); text-decoration: none; transition: color 0.2s;
+  font-size: 12px;
 }
 
 .btn-back:hover { color: var(--accent); }
 
-.btn-icon { font-size: 14px; }
+.post-icon { font-size: 14px; }
 
 /* ====== 作者卡片 ====== */
 .author-card {
@@ -938,15 +733,10 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .comment-char-count { font-size: 10px; color: var(--text-muted); }
 .btn-comment-submit {
   padding: 6px 16px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
-  color: var(--on-accent); background: var(--accent); border: none;
-  border-radius: 6px; cursor: pointer; transition: all 0.2s;
 }
 .btn-comment-submit:hover:not(:disabled) {
-  background: var(--accent-hover);
   box-shadow: 0 0 16px var(--accent-a25);
 }
-.btn-comment-submit:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .comment-err {
   display: block; margin-top: 6px;
@@ -991,16 +781,12 @@ onBeforeUnmount(() => { resetSeoMeta() })
   display: flex; align-items: center; gap: 12px; margin-top: 8px;
 }
 .btn-reply {
-  font-family: inherit; font-size: 11px; font-weight: 600;
-  color: var(--text-muted); background: none; border: none;
-  cursor: pointer; transition: color 0.2s;
+  font-size: 11px;
 }
 .btn-reply:hover { color: var(--accent); }
 .reply-count { font-size: 11px; color: var(--text-faint); }
 .btn-comment-delete {
-  font-family: inherit; font-size: 10px; font-weight: 600;
-  color: var(--text-muted); background: none; border: none;
-  cursor: pointer; transition: color 0.2s;
+  font-size: 10px;
 }
 .btn-comment-delete:hover { color: var(--err); }
 
@@ -1019,6 +805,11 @@ onBeforeUnmount(() => { resetSeoMeta() })
 /* ====== 响应式 ====== */
 @media (max-width: 800px) {
   .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-actions { gap: 8px; }
+  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
+  .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
+  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
   .post-title { font-size: 24px; }
   .post-article { padding: 40px 20px 24px; }
 }

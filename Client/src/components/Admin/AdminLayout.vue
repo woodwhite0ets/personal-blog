@@ -16,7 +16,7 @@
           <ThemeSwitcher />
           <span class="admin-badge">sudo 模式</span>
           <router-link to="/HomePage" class="nav-link">← 博客</router-link>
-          <button class="btn-user" @click="showMenu = !showMenu">
+          <button class="btn btn-secondary btn-user" @click="showMenu = !showMenu">
             <UserAvatar :src="currentUser?.avatar" :alt="(currentUser?.nickname || currentUser?.username || '?')" size="sm" />
             <span class="user-name">@{{ currentUser?.username }}</span>
           </button>
@@ -162,12 +162,9 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .nav-link:hover { color: var(--accent); }
 
 .btn-user {
-  display: flex; align-items: center; gap: 8px;
   padding: 4px 10px 4px 4px;
-  font-family: inherit; font-size: 12px;
-  color: var(--text); background: var(--overlay-a4);
-  border: 1px solid var(--border-strong); border-radius: 8px;
-  cursor: pointer; transition: all 0.2s;
+  border-radius: 8px;
+  gap: 8px;
 }
 .btn-user:hover { border-color: var(--accent); background: var(--accent-a6); }
 

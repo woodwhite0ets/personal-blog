@@ -1,7 +1,7 @@
 ---
 title: woodwhite@blog 认证、注册与游客身份
 type: authentication
-keywords: [JWT, bcrypt, 注册, 登录, 游客, 验证码, 邮箱验证]
+keywords: [JWT, RS256, bcrypt, 注册, 登录, 游客, 验证码, 邮箱验证, SSO, 账号打通]
 ---
 
 # 认证、注册与游客身份
@@ -17,11 +17,17 @@ Content-Type: application/json
 
 登录成功后返回 JWT。JWT 使用 **RS256**（私钥签名、公钥验签），默认有效期为 7 天（`JWT_EXPIRES_IN`）。Token 载荷包含用户 id、username 和 role。服务端每次认证都会查询数据库刷新实时角色（`refreshUser`）：用户被降权、删除后，旧 Token 不会继续拥有原权限。
 
-> 2026-08-25 起从 HS256 迁移到 RS256（为与网关账号打通/SSO）。私钥 `Server/keys/jwt_private.pem`（gitignore），公钥供网关验签；`JWT_SECRET` 保留在 .env 仅作回滚。迁移后所有用户需重新登录一次。
+> 2026-08-25 起从 HS256 迁移到 RS256（为与网关账号打通）。私钥 `Server/keys/jwt_private.pem`（gitignore），公钥供网关验签。`JWT_SECRET` 保留在 .env 仅作回滚。**迁移后所有用户需重新登录一次。**
 
 密码使用 bcryptjs，cost factor 为 12。密码至少 8 位，必须同时包含字母和数字，最长 128 位。
 
 未验证邮箱的用户不能正常登录。用户名或密码错误统一返回模糊错误，避免枚举。
+
+## 账号打通（博客账号 = 网关账号）
+
+- 博客账号是唯一身份，网关权限挂到博客用户上（详见 knowledge-base 项目 `account-unification.md`）。
+- `/gateway` 网关控制台用博客登录态 SSO 进入：登录博客后打开 `/gateway`，自动用博客 JWT 登录网关；无权限则提示改用 mcp_ token。
+- 博客 `/admin` 后台有"网关权限"面板（`/admin/gateway`），可给博客用户开通/管理网关权限并签发 mcp_ token。
 
 ## 注册
 
@@ -69,13 +75,13 @@ GET /api/auth/captcha
 
 ## 游客
 
-游客登录接口仍然存在，前端登录页提供“以游客身份浏览”按钮。游客 Token 使用 sessionStorage，关闭浏览器后失效。公开阅读不要求游客 Token；评论、点赞和发帖必须切换为真实账号登录。
+游客登录接口仍然存在，前端登录页提供"以游客身份浏览"按钮。游客 Token 使用 sessionStorage，关闭浏览器后失效。公开阅读不要求游客 Token；评论、点赞和发帖必须切换为真实账号登录。
 
 游客接口有独立限流，当前约为每 IP 每分钟 30 次，防止正常访客因刷新页面轻易触发 429。
 
 ## 权限中间件
 
-- `authRequired`：要求有效 JWT
+- `authRequired`：要求有效 JWT（RS256 验签）
 - `authOptional`：有 Token 则解析，无 Token 也允许继续
 - `authNoGuest`：排除游客身份
 - `authAdmin`：要求数据库实时角色为 admin

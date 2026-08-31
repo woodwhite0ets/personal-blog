@@ -2,10 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
 require('./config/logger'); // 激活内存日志捕获（尽早加载）
 const { ensureDatabase } = require('./config/db');
 const pool = require('./config/db');
+const { renderSeoHtml } = require('./injectSeo');
 const { globalLimiter } = require('./config/rateLimit');
 
 const app = express();
@@ -21,7 +23,7 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
+      scriptSrc: ["'self'", "'sha256-HgvWo75qIGVqwbBsj/URF7IoqQkEbaakiv01vogJ6VA='"],  // 主题防闪烁内联脚本(Client/index.html)
       styleSrc: ["'self'", "'unsafe-inline'"],   // 组件内联 style
       imgSrc: ["'self'", 'data:', 'blob:',
         'https://img.shields.io',           // 技术徽章
@@ -95,9 +97,11 @@ app.use((req, res, next) => {
 });
 
 // 静态文件 — 上传目录
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'), { maxAge: '7d', immutable: true }));
 
 // 静态文件 — 前端打包产物（生产环境）
+// 带 hash 的 /assets 资源可长期缓存；index.html 由 SPA 兜底设为不缓存
+app.use('/assets', express.static(path.join(__dirname, '../../Client/dist/assets'), { maxAge: '365d', immutable: true }));
 app.use(express.static(path.join(__dirname, '../../Client/dist')));
 
 // ====== API 路由 ======
@@ -155,7 +159,7 @@ app.use(require('./routes/seo'));
 
 // ====== SPA 兜底 + API 404（必须在 API 路由之后） ======
 // 非 API 的请求全部返回 index.html，由前端路由处理
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   // API 或静态文件请求 → 404
   if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) {
     return res.status(404).json({ message: 'endpoint not found' });
@@ -176,7 +180,14 @@ app.use((req, res, next) => {
   // The SPA entry references hashed assets. Never let browsers keep an old
   // entry point after a deployment, otherwise they can request removed chunks.
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
-  res.sendFile(path.join(__dirname, '../../Client/dist/index.html'));
+  const indexPath = path.join(__dirname, '../../Client/dist/index.html');
+  if (req.path.startsWith('/post/')) {
+    try {
+      const html = await renderSeoHtml(req, fs.readFileSync(indexPath, 'utf8'));
+      return res.send(html);
+    } catch (e) { /* fall back to static index.html */ }
+  }
+  return res.sendFile(indexPath);
 });
 
 // ====== 全局错误处理（不泄露堆栈） ======

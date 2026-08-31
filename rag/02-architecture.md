@@ -31,6 +31,8 @@ Node 后端只监听 `127.0.0.1:3027`，MySQL 只监听本机地址，不直接�
 - marked 解析 Markdown
 - highlight.js 代码高亮
 - DOMPurify 清理 Markdown 生成的 HTML
+- 页面级 CSS 设计令牌（`--font-*`/`--fs-*`/`--sp-*`/`--radius-*`），自托管 JetBrains Mono，正文与代码分层字体
+- 数据层抽为 composable：`usePosts`（首页取数/分页/筛选/搜索）、`useComments`（文章评论）
 
 前端主要目录：
 
@@ -43,6 +45,7 @@ Client/src/
 ├── components/User/        用户主页和资料
 ├── components/Admin/       管理后台
 ├── router/                 路由和权限守卫
+├── composables/            usePosts / useComments 数据层
 ├── stores/                 auth 状态管理
 └── utils/                  Markdown 和通用工具
 ```

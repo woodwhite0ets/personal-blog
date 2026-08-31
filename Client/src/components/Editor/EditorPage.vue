@@ -26,12 +26,12 @@
             <span class="indicator-dot"></span>
             {{ form.status === 'published' ? '已发布' : '草稿' }}
           </span>
-          <button class="btn-action btn-draft" @click="saveDraft" :disabled="saving || !saveReady">
-            <span class="btn-icon">💾</span> 存草稿
+          <button class="btn btn-secondary" @click="saveDraft" :disabled="saving || !saveReady">
+            <span class="action-icon">💾</span> 存草稿
             <span class="btn-shortcut">Ctrl+S</span>
           </button>
-          <button class="btn-action btn-publish" @click="publish" :disabled="saving || !saveReady">
-            <span class="btn-icon">🚀</span> 发布
+          <button class="btn btn-primary btn-publish" @click="publish" :disabled="saving || !saveReady">
+            <span class="action-icon">🚀</span> 发布
             <span class="btn-shortcut">Ctrl+Shift+P</span>
           </button>
         </div>
@@ -98,7 +98,7 @@
               @change="handleCoverFile"
             />
           </div>
-          <button v-if="coverPreview" class="btn-remove-cover" @click="removeCover">移除封面</button>
+          <button v-if="coverPreview" class="btn btn-danger btn-sm btn-remove-cover" @click="removeCover">移除封面</button>
         </div>
 
         <!-- 摘要 -->
@@ -861,36 +861,12 @@ watch(
   background: currentColor;
 }
 
-.btn-action {
-  display: flex; align-items: center; gap: 6px;
-  padding: 7px 18px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
-  border-radius: 6px; cursor: pointer; transition: all 0.2s;
-  border: 1px solid transparent;
-}
-
-.btn-action:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.btn-draft {
-  color: var(--text-secondary); background: var(--overlay-a4);
-  border-color: var(--border-strong);
-}
-
-.btn-draft:hover:not(:disabled) {
-  border-color: var(--text-dim); color: var(--text);
-}
-
-.btn-publish {
-  color: var(--on-accent); background: var(--accent);
-}
-
 .btn-publish:hover:not(:disabled) {
-  background: var(--accent-hover);
   box-shadow: 0 0 20px var(--accent-a25);
   transform: translateY(-1px);
 }
 
-.btn-icon { font-size: 12px; }
+.action-icon { font-size: 12px; }
 
 .btn-shortcut {
   font-size: 9px; opacity: 0.45; letter-spacing: 0.5px;
@@ -1001,14 +977,7 @@ watch(
 
 .file-hidden { display: none; }
 
-.btn-remove-cover {
-  align-self: flex-start;
-  font-family: inherit; font-size: 11px; font-weight: 600;
-  color: var(--err); background: none; border: none;
-  cursor: pointer; transition: color 0.2s;
-}
-
-.btn-remove-cover:hover { color: var(--err-hover); }
+.btn-remove-cover { align-self: flex-start; }
 
 /* 摘要 */
 .input-excerpt {
@@ -1139,6 +1108,11 @@ watch(
 
 .preview-body :deep(pre code) {
   background: none; border: none; padding: 0; color: var(--text);
+}
+
+.preview-body :deep(table) {
+  display: block; overflow-x: auto; width: 100%;
+  border-collapse: collapse; font-size: 13px; margin: 16px 0;
 }
 
 .preview-body :deep(blockquote) {

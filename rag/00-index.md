@@ -22,6 +22,7 @@ keywords: [博客, 论坛, 知识库, RAG, woodwhite@blog]
 | `08-operations-and-logs.md` | 部署、日志与攻击分析 | Caddy 日志在哪里、如何分析攻击 |
 | `09-troubleshooting.md` | 常见问题排查 | 登录页、429、发帖失败、邮件失败 |
 | `10-knowledge-base-and-mcp.md` | 知识库/MCP 网关统一系统 | /kb 是什么、网关如何打通、多服务器拓扑、如何更新知识库 |
+| `11-frontend-ui-optimization.md` | 前端 UI 优化与工程化 | 字体/设计令牌/共享 markdown 排版、composable 与懒加载、如何统一博客与知识库视觉 |
 
 ## 统一事实
 
@@ -38,3 +39,4 @@ keywords: [博客, 论坛, 知识库, RAG, woodwhite@blog]
 - 知识库网页：`/kb`，网关/控制面：`/gateway`
 - 后端物理分布在多台服务器，由博客域名统一入口 + 反向 SSH 隧道 + 博客 JWT SSO 打通
 - 详细说明见 `10-knowledge-base-and-mcp.md`
+- 前端自托管 JetBrains Mono，`style.css` 有跨主题设计令牌（`--font-*`/`--fs-*`/`--sp-*`/`--radius-*`），文章与知识库共用 `.markdown-body`；详见 `11-frontend-ui-optimization.md`

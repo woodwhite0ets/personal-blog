@@ -5,7 +5,7 @@
       <span class="section-arrow">❯</span>
       <span class="section-title">ls -la ./posts</span>
       <span class="section-count">— {{ posts.length }} 篇文章</span>
-      <button v-if="emptyText" class="btn-refresh" @click="$emit('refresh')" title="刷新">
+      <button v-if="emptyText" class="btn btn-secondary btn-sm btn-refresh" @click="$emit('refresh')" title="刷新">
         ↻
       </button>
     </div>
@@ -41,7 +41,7 @@
       <div v-if="hasMore" class="load-more-wrap">
         <button
           @click="$emit('load-more')"
-          class="btn-load-more"
+          class="btn btn-secondary btn-load-more"
           :disabled="loadingMore"
         >
           <span class="btn-prompt">❯</span>
@@ -119,15 +119,10 @@ defineEmits(['load-more', 'refresh'])
 }
 
 .btn-refresh {
-  font-family: inherit;
-  font-size: 14px;
-  color: var(--text-muted);
   background: none;
-  border: 1px solid var(--border-strong);
+  font-size: 14px;
   border-radius: 4px;
-  cursor: pointer;
   padding: 2px 8px;
-  transition: all 0.2s;
 }
 
 .btn-refresh:hover {
@@ -198,29 +193,15 @@ defineEmits(['load-more', 'refresh'])
 }
 
 .btn-load-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  background: none;
   padding: 10px 28px;
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
   font-size: 12px;
-  font-weight: 600;
-  color: var(--text-dim);
-  background: none;
-  border: 1px solid var(--border-strong);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
 }
 
 .btn-load-more:hover:not(:disabled) {
   border-color: var(--accent);
   color: var(--accent);
-}
-
-.btn-load-more:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
 }
 
 .btn-prompt {

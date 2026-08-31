@@ -4,27 +4,7 @@
     <div class="bg-scanline"></div>
     <div class="bg-glow"></div>
 
-    <header class="navbar">
-      <div class="navbar-inner">
-        <router-link to="/HomePage" class="brand">
-          <span class="brand-bracket">[</span>
-          <span class="brand-text">woodwhite@blog</span>
-          <span class="brand-bracket">]</span>
-          <span class="brand-path">~/about</span>
-        </router-link>
-        <nav class="nav-links">
-          <router-link to="/HomePage"><span class="nav-num">01</span> 首页</router-link>
-          <router-link to="/forum">
-            <span class="nav-num">02</span> 论坛
-          </router-link>
-          <router-link to="/archive"><span class="nav-num">03</span> 归档</router-link>
-          <router-link to="/about"><span class="nav-num">04</span> 关于</router-link>
-        </nav>
-        <div class="nav-actions">
-          <ThemeSwitcher />
-        </div>
-      </div>
-    </header>
+    <SiteNav />
 
     <div class="about-main">
       <!-- 个人简介 -->
@@ -155,11 +135,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import SiteNav from '../common/SiteNav.vue'
 import UserAvatar from '../common/UserAvatar.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 
 // 从后端动态获取头像，与用户主页头像保持同步
 const profile = ref(null)
+const navOpen = ref(false)
 
 onMounted(async () => {
   try {
@@ -226,6 +208,11 @@ onMounted(async () => {
 .nav-links a:hover, .nav-links a.router-link-active { color: var(--text); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 .nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
+.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 /* About */
 .about-main { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 48px 24px; display: flex; flex-direction: column; gap: 24px; animation: fadeInUp 0.5s ease; }
@@ -295,5 +282,10 @@ a.contact-val:hover { color: var(--accent); }
 @media (max-width: 560px) {
   .about-hero { flex-direction: column; text-align: center; }
   .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-actions { gap: 8px; }
+  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
+  .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
+  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
 }
 </style>

@@ -184,7 +184,7 @@ Registerview · VUE
               <span class="err-prefix">ERR!</span> {{ serverError }}
             </p>
  
-            <button type="submit" class="btn-submit" :disabled="loading">
+            <button type="submit" class="btn btn-primary btn-glow" :disabled="loading">
               <span v-if="loading" class="spinner"></span>
               <span v-if="!loading" class="btn-arrow">❯</span>
               {{ loading ? '注册中...' : '注册' }}
@@ -674,31 +674,37 @@ async function handleResend() {
 .err-prefix { font-weight: 700; letter-spacing: 1px; }
  
 /* 提交按钮 */
-.btn-submit {
-  width: 100%; padding: 13px 0;
-  font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 1px;
-  color: var(--bg-deeper);
+.btn-glow {
+  width: 100%;
+  padding: 13px 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  gap: 8px;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-  border: none; border-radius: 6px; cursor: pointer;
-  transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  position: relative; overflow: hidden;
+  position: relative;
+  overflow: hidden;
   margin-top: 4px;
 }
- 
-.btn-submit::before {
-  content: ''; position: absolute; inset: 0;
+
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: linear-gradient(135deg, transparent 0%, var(--overlay-a10) 100%);
-  opacity: 0; transition: opacity 0.2s;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
- 
-.btn-submit:hover:not(:disabled)::before { opacity: 1; }
-.btn-submit:hover:not(:disabled) {
+
+.btn-glow:hover:not(:disabled)::before { opacity: 1; }
+
+.btn-glow:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
   box-shadow: 0 0 30px var(--accent-a30), 0 0 60px var(--accent-a10);
   transform: translateY(-1px);
 }
-.btn-submit:active:not(:disabled) { transform: translateY(0) scale(0.99); }
-.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-glow:active:not(:disabled) { transform: translateY(0) scale(0.99); }
+
 .btn-arrow { font-size: 16px; }
  
 .server-error {

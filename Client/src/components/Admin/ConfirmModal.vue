@@ -12,10 +12,10 @@
         <div class="modal-body">
           <p class="modal-message">{{ message }}</p>
           <div class="modal-actions">
-            <button class="btn-cancel" @click="$emit('cancel')" :disabled="loading">取消</button>
+            <button class="btn btn-secondary" @click="$emit('cancel')" :disabled="loading">取消</button>
             <button
-              class="btn-confirm"
-              :class="{ danger }"
+              class="btn"
+              :class="danger ? 'btn-danger' : 'btn-primary'"
               @click="$emit('confirm')"
               :disabled="loading"
             >
@@ -83,31 +83,6 @@ defineEmits(['confirm', 'cancel'])
 .modal-actions {
   display: flex; gap: 12px; justify-content: center;
 }
-
-.btn-cancel, .btn-confirm {
-  padding: 8px 24px;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
-  font-size: 12px; font-weight: 600; border-radius: 6px;
-  cursor: pointer; transition: all 0.2s; border: 1px solid var(--border-strong);
-}
-
-.btn-cancel {
-  color: var(--text-dim); background: none;
-}
-.btn-cancel:hover { border-color: var(--text-dim); color: var(--text); }
-
-.btn-confirm {
-  color: var(--on-accent); background: var(--accent); border-color: var(--accent);
-  display: flex; align-items: center; gap: 6px;
-}
-.btn-confirm:hover { background: var(--accent-hover); }
-
-.btn-confirm.danger {
-  color: var(--white); background: var(--err-a15); border-color: var(--err-a30);
-}
-.btn-confirm.danger:hover { background: var(--err-a25); border-color: var(--err); }
-
-.btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .spinner {
   width: 14px; height: 14px;

@@ -38,6 +38,7 @@ woodwhite.top {
 		file_server
 	}
 
+	encode zstd gzip
 	header {
 		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 		Permissions-Policy "camera=(), microphone=(), geolocation=()"
@@ -55,6 +56,7 @@ blog.woodwhite.top {
 		format json
 	}
 
+	encode zstd gzip
 	header {
 		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 		Permissions-Policy "camera=(), microphone=(), geolocation=()"
@@ -95,6 +97,7 @@ blog.woodwhite.top {
 			header_up Host mcp.woodwhite.top
 			transport http {
 				tls_server_name mcp.woodwhite.top
+				# 环回反向 SSH 隧道内部信任可接受；若未来迁移跨主机，需钉证书（改用 tls_server_name/CA 校验）。
 				tls_insecure_skip_verify
 			}
 		}
@@ -106,6 +109,7 @@ blog.woodwhite.top {
 			header_up Host mcp.woodwhite.top
 			transport http {
 				tls_server_name mcp.woodwhite.top
+				# 环回反向 SSH 隧道内部信任可接受；若未来迁移跨主机，需钉证书（改用 tls_server_name/CA 校验）。
 				tls_insecure_skip_verify
 			}
 		}
@@ -117,6 +121,7 @@ blog.woodwhite.top {
 			header_up Host mcp.woodwhite.top
 			transport http {
 				tls_server_name mcp.woodwhite.top
+				# 环回反向 SSH 隧道内部信任可接受；若未来迁移跨主机，需钉证书（改用 tls_server_name/CA 校验）。
 				tls_insecure_skip_verify
 			}
 		}
@@ -141,6 +146,7 @@ mcp.woodwhite.top {
 		format json
 	}
 
+	encode zstd gzip
 	header {
 		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 		Permissions-Policy "camera=(), microphone=(), geolocation=()"
@@ -166,6 +172,7 @@ mcp.woodwhite.top {
 				header_up Host mcp.woodwhite.top
 				transport http {
 					tls_server_name mcp.woodwhite.top
+					# 环回反向 SSH 隧道内部信任可接受；若未来迁移跨主机，需钉证书（改用 tls_server_name/CA 校验）。
 					tls_insecure_skip_verify
 				}
 			}
@@ -214,6 +221,7 @@ map.woodwhite.top {
 		}
 	}
 
+	encode zstd gzip
 	header {
 		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 		Permissions-Policy "camera=(), microphone=(), geolocation=()"

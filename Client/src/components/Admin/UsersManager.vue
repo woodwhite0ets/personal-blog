@@ -82,7 +82,7 @@
               <td class="td-actions">
                 <button
                   v-if="u.id !== currentUser?.id"
-                  class="btn-sm btn-del"
+                  class="btn btn-danger btn-sm"
                   @click="confirmDelete(u)"
                 >删除</button>
               </td>
@@ -92,7 +92,7 @@
       </div>
 
       <div v-if="hasMore" class="load-more">
-        <button class="btn-load-more" :disabled="loadingMore" @click="loadMore">
+        <button class="btn btn-secondary" :disabled="loadingMore" @click="loadMore">
           <span class="btn-prompt">❯</span>
           {{ loadingMore ? '加载中...' : '更多用户' }}
         </button>
@@ -359,23 +359,7 @@ onMounted(() => fetchUsers())
 
 .muted { font-size: 11px; color: var(--text-muted); }
 
-.btn-sm {
-  padding: 4px 12px; font-family: inherit; font-size: 11px; font-weight: 600;
-  border-radius: 4px; cursor: pointer; transition: all 0.2s;
-  border: 1px solid transparent; display: inline-block;
-}
-.btn-del { color: var(--err); background: var(--err-a6); border-color: var(--err-a20); }
-.btn-del:hover { background: var(--err-a12); border-color: var(--err); }
 
 .load-more { text-align: center; padding: 28px 0 12px; }
-.btn-load-more {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 28px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
-  color: var(--text-dim); background: none; border: 1px solid var(--border-strong);
-  border-radius: 6px; cursor: pointer; transition: all 0.2s;
-}
-.btn-load-more:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-.btn-load-more:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn-prompt { color: var(--accent); }
 </style>

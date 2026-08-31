@@ -4,86 +4,28 @@
     <div class="bg-scanline"></div>
 
     <!-- ====== 导航栏 ====== -->
-    <header class="navbar">
-      <div class="navbar-inner">
-        <router-link to="/HomePage" class="brand">
-          <span class="brand-bracket">[</span>
-          <span class="brand-text">woodwhite@blog</span>
-          <span class="brand-bracket">]</span>
-          <span class="brand-path">~/main</span>
-        </router-link>
-        <nav class="nav-links">
-          <router-link to="/HomePage">
-            <span class="nav-num">01</span> 首页
-          </router-link>
-          <router-link to="/forum">
-            <span class="nav-num">02</span> 论坛
-          </router-link>
-          <router-link to="/archive">
-            <span class="nav-num">03</span> 归档
-          </router-link>
-          <router-link to="/about">
-            <span class="nav-num">04</span> 关于
-          </router-link>
-          <router-link to="/gateway">
-            <span class="nav-num">05</span> Gateway
-          </router-link>
-        </nav>
-        <div class="nav-actions">
-          <ThemeSwitcher />
-          <div class="search-wrap" :class="{ active: searchActive }">
-            <button class="btn-search" @click="toggleSearch" title="搜索">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-            </button>
-            <input
-              v-if="searchActive"
-              ref="searchInput"
-              v-model="searchQuery"
-              type="text"
-              class="search-input"
-              placeholder="搜索文章..."
-              @keydown.escape="closeSearch"
-              @keydown.enter="doSearch"
-            />
-          </div>
-
-          <!-- 未登录 -->
-          <template v-if="!isLoggedIn">
-            <router-link to="/login" class="btn-write">
-              <span class="btn-write-icon">+</span> 新文章
-            </router-link>
-          </template>
-
-          <!-- 已登录 -->
-          <template v-else>
-            <router-link to="/editor" class="btn-write">
-              <span class="btn-write-icon">+</span> 新文章
-            </router-link>
-            <div class="user-menu-wrap" ref="userMenuRef">
-              <button class="btn-user" @click="showUserMenu = !showUserMenu">
-                <UserAvatar :src="currentUser?.avatar" :alt="(currentUser?.nickname || currentUser?.username || '?')" size="sm" />
-                <span class="user-name">@{{ currentUser?.username }}</span>
-                <span class="user-caret" :class="{ open: showUserMenu }">▾</span>
-              </button>
-              <div v-if="showUserMenu" class="user-dropdown">
-                <router-link v-if="isAdmin" to="/admin/dashboard" class="dropdown-item admin-link" @click="showUserMenu = false">
-                  <span class="dropdown-icon">⚙</span> 管理面板
-                </router-link>
-                <router-link :to="`/user/${currentUser?.username}`" class="dropdown-item" @click="showUserMenu = false">
-                  <span class="dropdown-icon">🏠</span> 我的页面
-                </router-link>
-                <button class="dropdown-item logout" @click="handleLogout">
-                  <span class="dropdown-icon">⏻</span> 退出登录
-                </button>
-              </div>
-            </div>
-          </template>
-        </div>
-      </div>
-    </header>
+    <SiteNav>
+  <template #search>
+    <div class="search-wrap" :class="{ active: searchActive }">
+      <button class="btn btn-icon btn-search" @click="toggleSearch" title="搜索">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <input
+        v-if="searchActive"
+        ref="searchInput"
+        v-model="searchQuery"
+        type="text"
+        class="search-input"
+        placeholder="搜索文章..."
+        @keydown.escape="closeSearch"
+        @keydown.enter="doSearch"
+      />
+    </div>
+  </template>
+</SiteNav>
 
     <!-- ====== Hero：置顶文章 ====== -->
     <section v-if="pinnedPost" class="hero">
@@ -250,17 +192,29 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PostList from './PostList.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 import UserAvatar from '../common/UserAvatar.vue'
 import { useAuth } from '../../stores/auth.js'
+import { usePosts } from '../../composables/usePosts.js'
 
 const route = useRoute()
+const navOpen = ref(false)
 const router = useRouter()
 const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
+
+// ====== 文章数据层（取数/分页/筛选/搜索/标签/作者统计） ======
+const {
+  posts, loading, loadingMore, error, currentPage, totalPages,
+  tags, contributors, totalPublished, sortMode,
+  pinnedPost, hasMore, activeTag, activeSearch,
+  clearTagLink, clearSearchLink,
+  switchSort, loadMore, fetchPosts,
+} = usePosts()
 
 // ====== 用户菜单 ======
 const showUserMenu = ref(false)
@@ -284,137 +238,6 @@ function handleClickOutside(e) {
 
 onMounted(() => document.addEventListener('click', handleClickOutside))
 onUnmounted(() => document.removeEventListener('click', handleClickOutside))
-
-// ====== 数据 ======
-const posts = ref([])
-const loading = ref(false)
-const loadingMore = ref(false)
-const error = ref('')
-const currentPage = ref(1)
-const totalPages = ref(1)
-
-// ====== 从 API 获取全站标签 ======
-const tags = ref([])
-
-async function fetchTags() {
-  try {
-    const res = await fetch('/api/tags')
-    if (res.ok) {
-      const data = await res.json()
-      tags.value = (data.tags || []).map(t => ({
-        name: t.name,
-        size: t.post_count >= 5 ? 'lg' : t.post_count >= 3 ? 'md' : t.post_count >= 2 ? 'sm' : 'xs',
-      }))
-    }
-  } catch { /* ignore */ }
-}
-
-// ====== 从 API 获取全站作者统计 + 已发布总数（真实值，非当前分页） ======
-const contributors = ref([])
-const totalPublished = ref(0)
-
-async function fetchContributors() {
-  try {
-    const res = await fetch('/api/authors')
-    if (res.ok) {
-      const data = await res.json()
-      contributors.value = (data.authors || []).map(a => ({
-        username: a.username,
-        avatar: a.avatar || '',
-        count: a.post_count,
-      }))
-      totalPublished.value = data.total_published || 0
-    }
-  } catch { /* ignore */ }
-}
-
-// ====== 计算属性 ======
-const pinnedPost = computed(() => posts.value.find(p => p.is_pinned) || null)
-const hasMore = computed(() => currentPage.value < totalPages.value)
-const activeTag = computed(() => route.query.tag || '')
-const activeSearch = computed(() => route.query.search || '')
-
-const clearTagLink = computed(() => {
-  const query = { ...route.query }
-  delete query.tag
-  return { path: '/HomePage', query }
-})
-
-const clearSearchLink = computed(() => {
-  const query = { ...route.query }
-  delete query.search
-  return { path: '/HomePage', query }
-})
-
-// ====== 从 posts 聚合作者发文数 ======
-const sortMode = ref('latest')
-
-function switchSort(mode) {
-  if (sortMode.value === mode) return
-  sortMode.value = mode
-  fetchPosts(1)
-}
-
-// ====== 请求序号守卫（防止快速切换筛选时乱序响应覆盖） ======
-let fetchSeq = 0
-
-// ====== 获取文章 ======
-async function fetchPosts(page = 1) {
-  const mySeq = ++fetchSeq
-  if (page === 1) loading.value = true
-  error.value = ''
-
-  try {
-    const tagFilter = route.query.tag || ''
-    const searchFilter = route.query.search || ''
-    let url = `/api/posts?page=${page}&status=published&sort=${sortMode.value}&type=owner`
-    if (tagFilter) url += `&tag=${encodeURIComponent(tagFilter)}`
-    if (searchFilter) url += `&search=${encodeURIComponent(searchFilter)}`
-
-    const res = await fetch(url)
-    const data = await res.json()
-
-    if (!res.ok) throw new Error(data.message || '请求失败')
-
-    // 丢弃过期响应（已有更新的请求发出）
-    if (mySeq !== fetchSeq) return
-
-    if (page === 1) {
-      posts.value = data.posts
-    } else {
-      // loadMore 期间若筛选已变化，丢弃旧筛选的追加
-      if (mySeq !== fetchSeq) return
-      posts.value.push(...data.posts)
-    }
-
-    currentPage.value = data.page
-    totalPages.value = data.totalPages
-  } catch (e) {
-    if (mySeq !== fetchSeq) return
-    error.value = e.message || '获取文章失败'
-  } finally {
-    if (mySeq === fetchSeq) {
-      loading.value = false
-      loadingMore.value = false
-    }
-  }
-}
-
-// ====== 监听 query.tag 变化重新获取 ======
-watch(() => route.query.tag, () => {
-  fetchPosts(1)
-})
-
-// ====== 监听 query.search 变化重新获取 ======
-watch(() => route.query.search, () => {
-  fetchPosts(1)
-})
-
-// ====== 加载更多 ======
-async function loadMore() {
-  loadingMore.value = true
-  await fetchPosts(currentPage.value + 1)
-}
 
 // ====== 搜索 ======
 function toggleSearch() {
@@ -441,8 +264,6 @@ function doSearch() {
   searchActive.value = false
 }
 
-// ====== 生命周期 ======
-onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 </script>
 
 <!-- ====== 样式：只保留 home-page 独有的，PostList 的样式已随组件带走 ====== -->
@@ -522,12 +343,15 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
+.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 .btn-search {
-  width: 34px; height: 34px;
-  display: flex; align-items: center; justify-content: center;
-  background: none; border: 1px solid var(--border-strong); border-radius: 6px;
-  color: var(--text-dim); cursor: pointer; transition: all 0.2s;
+  border-color: var(--border-strong);
+  color: var(--text-dim);
 }
 
 .btn-search:hover { border-color: var(--accent); color: var(--accent); }
@@ -841,6 +665,14 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 @media (max-width: 800px) {
   .main-layout { grid-template-columns: 1fr; gap: 48px; }
   .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-actions { gap: 8px; }
+  .search-input { width: 130px; }
+  .user-name { display: none; }
+  .user-caret { display: none; }
+  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
+  .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
+  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
   .hero-inner { padding: 48px 20px 40px; }
   .hero-title { font-size: 24px; }
 }

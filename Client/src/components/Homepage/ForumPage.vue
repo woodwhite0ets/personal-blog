@@ -4,32 +4,10 @@
     <div class="bg-scanline"></div>
 
     <!-- ====== 导航栏 ====== -->
-    <header class="navbar">
-      <div class="navbar-inner">
-        <router-link to="/HomePage" class="brand">
-          <span class="brand-bracket">[</span>
-          <span class="brand-text">woodwhite@blog</span>
-          <span class="brand-bracket">]</span>
-          <span class="brand-path">~/forum</span>
-        </router-link>
-        <nav class="nav-links">
-          <router-link to="/HomePage">
-            <span class="nav-num">01</span> 首页
-          </router-link>
-          <router-link to="/forum">
-            <span class="nav-num">02</span> 论坛
-          </router-link>
-          <router-link to="/archive">
-            <span class="nav-num">03</span> 归档
-          </router-link>
-          <router-link to="/about">
-            <span class="nav-num">04</span> 关于
-          </router-link>
-        </nav>
-        <div class="nav-actions">
-          <ThemeSwitcher />
-          <div class="search-wrap" :class="{ active: searchActive }">
-            <button class="btn-search" @click="toggleSearch" title="搜索">
+    <SiteNav>
+  <template #search>
+<div class="search-wrap" :class="{ active: searchActive }">
+            <button class="btn btn-icon btn-search" @click="toggleSearch" title="搜索">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -46,41 +24,8 @@
               @keydown.enter="doSearch"
             />
           </div>
-
-          <!-- 未登录 -->
-          <template v-if="!isLoggedIn">
-            <router-link to="/login" class="btn-write">
-              <span class="btn-write-icon">+</span> 发帖
-            </router-link>
-          </template>
-
-          <!-- 已登录 -->
-          <template v-else>
-            <router-link to="/editor?type=forum" class="btn-write">
-              <span class="btn-write-icon">+</span> 发帖
-            </router-link>
-            <div class="user-menu-wrap" ref="userMenuRef">
-              <button class="btn-user" @click="showUserMenu = !showUserMenu">
-                <UserAvatar :src="currentUser?.avatar" :alt="(currentUser?.nickname || currentUser?.username || '?')" size="sm" />
-                <span class="user-name">@{{ currentUser?.username }}</span>
-                <span class="user-caret" :class="{ open: showUserMenu }">▾</span>
-              </button>
-              <div v-if="showUserMenu" class="user-dropdown">
-                <router-link v-if="isAdmin" to="/admin/dashboard" class="dropdown-item admin-link" @click="showUserMenu = false">
-                  <span class="dropdown-icon">⚙</span> 管理面板
-                </router-link>
-                <router-link :to="`/user/${currentUser?.username}`" class="dropdown-item" @click="showUserMenu = false">
-                  <span class="dropdown-icon">🏠</span> 我的页面
-                </router-link>
-                <button class="dropdown-item logout" @click="handleLogout">
-                  <span class="dropdown-icon">⏻</span> 退出登录
-                </button>
-              </div>
-            </div>
-          </template>
-        </div>
-      </div>
-    </header>
+  </template>
+</SiteNav>
 
     <!-- ====== Hero：论坛介绍 ====== -->
     <section class="hero">
@@ -94,10 +39,10 @@
           欢迎来到 woodwhite@blog 的社区论坛。在这里可以自由发帖讨论技术话题、分享经验、提问求助。
         </p>
         <div class="hero-actions">
-          <router-link v-if="isLoggedIn" to="/editor?type=forum" class="btn-hero-write">
+          <router-link v-if="isLoggedIn" to="/editor?type=forum" class="btn btn-primary btn-hero-write">
             <span>+</span> 发布新帖
           </router-link>
-          <router-link v-else to="/login" class="btn-hero-write">
+          <router-link v-else to="/login" class="btn btn-primary btn-hero-write">
             <span>→</span> 登录后发帖
           </router-link>
         </div>
@@ -241,11 +186,13 @@ import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PostList from './PostList.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
+import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 import UserAvatar from '../common/UserAvatar.vue'
 import { useAuth } from '../../stores/auth.js'
 
 const route = useRoute()
+const navOpen = ref(false)
 const router = useRouter()
 const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
 
@@ -494,12 +441,15 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
+.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 .btn-search {
-  width: 34px; height: 34px;
-  display: flex; align-items: center; justify-content: center;
-  background: none; border: 1px solid var(--border-strong); border-radius: 6px;
-  color: var(--text-dim); cursor: pointer; transition: all 0.2s;
+  border-color: var(--border-strong);
+  color: var(--text-dim);
 }
 
 .btn-search:hover { border-color: var(--accent); color: var(--accent); }
@@ -642,15 +592,11 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 }
 
 .btn-hero-write {
-  display: inline-flex; align-items: center; gap: 6px;
   padding: 10px 24px;
-  font-family: inherit; font-size: 13px; font-weight: 600;
-  color: var(--on-accent); background: var(--accent); border-radius: 6px;
-  text-decoration: none; transition: all 0.2s;
+  transition: transform 0.2s;
 }
 
 .btn-hero-write:hover {
-  background: var(--accent-hover);
   box-shadow: 0 0 24px var(--accent-a25);
   transform: translateY(-1px);
 }
@@ -801,6 +747,14 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 @media (max-width: 800px) {
   .main-layout { grid-template-columns: 1fr; gap: 48px; }
   .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-actions { gap: 8px; }
+  .search-input { width: 130px; }
+  .user-name { display: none; }
+  .user-caret { display: none; }
+  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
+  .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
+  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
   .hero-inner { padding: 40px 20px 36px; }
   .hero-title { font-size: 22px; }
 }

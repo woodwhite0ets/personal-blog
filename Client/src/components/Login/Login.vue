@@ -79,7 +79,7 @@
             <span class="err-prefix">ERR!</span> {{ serverError }}
           </p>
  
-          <button type="submit" class="btn-login" :disabled="loading">
+          <button type="submit" class="btn btn-primary btn-glow" :disabled="loading">
             <span v-if="loading" class="spinner"></span>
             <span v-if="!loading" class="btn-arrow">❯</span>
             {{ loading ? '登录中...' : '进入' }}
@@ -93,7 +93,7 @@
             <span class="divider-text">-- 或 --</span>
             <span class="divider-line"></span>
           </div>
-          <button class="btn-guest" @click="handleGuestLogin" :disabled="guestLoading">
+          <button class="btn btn-ghost btn-guest" @click="handleGuestLogin" :disabled="guestLoading">
             <span v-if="guestLoading" class="spinner-guest"></span>
             <span v-else class="guest-icon">👤</span>
             {{ guestLoading ? '进入中...' : '以游客身份浏览' }}
@@ -415,28 +415,18 @@ async function handleGuestLogin() {
 }
  
 /* ---- 按钮 ---- */
-.btn-login {
+.btn-glow {
   width: 100%;
   padding: 13px 0;
-  font-family: inherit;
   font-size: 14px;
-  font-weight: 600;
   letter-spacing: 1px;
-  color: var(--bg-deeper);
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 8px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
   position: relative;
   overflow: hidden;
 }
- 
-.btn-login::before {
+
+.btn-glow::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -444,25 +434,17 @@ async function handleGuestLogin() {
   opacity: 0;
   transition: opacity 0.2s;
 }
- 
-.btn-login:hover:not(:disabled)::before {
-  opacity: 1;
-}
- 
-.btn-login:hover:not(:disabled) {
+
+.btn-glow:hover:not(:disabled)::before { opacity: 1; }
+
+.btn-glow:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
   box-shadow: 0 0 30px var(--accent-a30), 0 0 60px var(--accent-a10);
   transform: translateY(-1px);
 }
- 
-.btn-login:active:not(:disabled) {
-  transform: translateY(0) scale(0.99);
-}
- 
-.btn-login:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
- 
+
+.btn-glow:active:not(:disabled) { transform: translateY(0) scale(0.99); }
+
 .btn-arrow {
   font-size: 16px;
 }
@@ -512,37 +494,23 @@ async function handleGuestLogin() {
 .btn-guest {
   width: 100%;
   padding: 13px 0;
-  font-family: inherit;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 1px;
   color: var(--accent);
-  background: transparent;
   border: 2px dashed var(--border-strong);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 10px;
 }
 
 .btn-guest:hover:not(:disabled) {
+  color: var(--accent);
   border-color: var(--accent);
   background: var(--accent-a4);
   box-shadow: 0 0 24px var(--accent-a12);
   transform: translateY(-1px);
 }
 
-.btn-guest:active:not(:disabled) {
-  transform: translateY(0) scale(0.99);
-}
-
-.btn-guest:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+.btn-guest:active:not(:disabled) { transform: translateY(0) scale(0.99); }
 
 .guest-icon {
   font-size: 18px;
