@@ -39,6 +39,21 @@ keywords: [知识库, MCP, 网关, gateway, SSO, 多服务器, /kb, 隧道, mcp]
 
 前端 `ensureGatewaySession()` 先探测 `/api/gateway/me`；若失败且已有博客 JWT，则用 `/api/gateway/auth/login` 自动换取网关会话，因此博客登录态可直达知识库。
 
+## 登出同步注销网关会话（安全）
+
+博客登出只清本地 token 不够：网关用内存 **服务端 Session + `mcp_console_session` httpOnly Cookie**（8h），由 `/api/gateway/*` 请求携带。若博客登出不调用网关登出，浏览器里的 `mcp_console_session` 仍有效，`/kb` 与 `/gateway` 在博客登出后仍可访问，甚至仍可登录网关控制台。
+
+博客 `Client/src/stores/auth.js` 的 `logout()` 现在会在清本地 token 后调用网关登出端点：
+
+```js
+await fetch('/api/gateway/auth/logout', { method: 'POST', credentials: 'include' })
+```
+
+该端点对应网关 `src/admin.js` 的 `/api/auth/logout`（网关侧挂载路径）——读取 `mcp_console_session` → 从内存 `sessions` Map 删除 → 返回 `Set-Cookie: mcp_console_session=; Max-Age=0`。于是博客登出会一并注销当前浏览器持有的网关/知识库会话，登出后再访问 `/kb` 应显示「登录后即可浏览知识库文档」，访问 `/gateway` 应回到登录页。
+
+> **路径坑**：前缀改写后的正确形式是 `/api/gateway/auth/logout`（单 `/api`）。若误写成 `/api/gateway/api/auth/logout`（双 `/api`），网关实际收到 `/api/api/auth/logout`，不会命中 `admin.js` 的 `/api/auth/logout`，导致登出静默失效。`gatewayPath()` 输出即为单 `/api` 形式；网关自身路径 `/api/me` → `/api/gateway/me` 同理。
+
+
 ## 多服务器拓扑
 
 ```text
