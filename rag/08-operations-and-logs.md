@@ -60,3 +60,15 @@ Server/deploy/check_xss_deep.js
 ## 蜜罐
 
 Caddy 对 `.env`、`.git`、`.aws`、Caddyfile、docker-compose 和 WordPress 探测路径提供蜜罐响应。蜜罐返回假内容，不包含真实生产凭据。fail2ban/UFW 的部署和封禁操作应谨慎执行，避免误伤合法用户。
+
+## Caddy 配置模板化（2026-08-31 重构）
+
+- 生产与仓库真源一致：`/etc/caddy/Caddyfile` == `Server/deploy/Caddyfile`（仓库为准）。
+- 已用 Caddy 片段（snippet）去重，避免 4 个站点块重复写安全头/日志/上游/蜜罐：
+  - `(access_log)`：接收日志文件名参数的访问日志块。
+  - `(security)`：`encode zstd gzip` + HSTS + Permissions-Policy。
+  - `(gw_upstream)`：经反向 SSH 隧道 `127.0.0.1:18081` 到网关，`header_up Host mcp.woodwhite.top`，内部 `tls_insecure_skip_verify`。
+  - `(env_probe)` / `(wp_probe)`：敏感文件与 WordPress 扫描的复用匹配器。
+- 站点块：`woodwhite.top`、`blog.woodwhite.top`、`mcp.woodwhite.top`（内部 Host，仅经隧道匹配，公网 NXDOMAIN）、`map.woodwhite.top` 各自 `import` 上述片段。
+- 蜜罐仍按站点保留原有行为：`woodwhite.top`/`blog.woodwhite.top` 用 `file_server` 返回假 `.env`/`troll.json`；`map.woodwhite.top` 用 `respond` 返回文件内容。
+- 改配置流程：改仓库 `Server/deploy/Caddyfile` → `sudo cp` 到 `/etc/caddy/Caddyfile` → `sudo systemctl reload caddy`（内部 `caddy reload --force`）。改动前用 `caddy fmt` 与 `caddy validate`（可对比 `caddy adapt` JSON 确认行为等价）再上线。

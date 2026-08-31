@@ -47,3 +47,9 @@ keywords: [JetBrains Mono, 设计令牌, token, markdown-body, composable, usePo
 ## 统一视觉
 
 博客与知识库共用 `SiteNav`、`SiteFooter`、`ThemeSwitcher` 与主题变量，因此用户在 `https://blog.woodwhite.top` 看到的博客与知识库是同一个站、同一套字体与配色。
+
+## 懒加载、主题持久化与字体现状（已落地）
+
+- **图片懒加载**：`Client/src/utils/markdown.js` 的 `image` renderer 输出 `<img ... loading="lazy" decoding="async">`；`renderMarkdown` 在 DOMPurify 消毒后，再对任何不带 `loading` 的 `<img>` 补 `loading="lazy"`，覆盖 markdown 图片与内嵌 HTML。
+- **暗色主题持久化**：`Client/src/stores/theme.js` 用 `blog-theme` localStorage 记住用户选择的主题（terminal/paper/midnight/solar）；`Client/index.html` 的 head 内联脚本在 CSS 渲染前读 `blog-theme` 并设 `data-theme`，避免先亮色再跳变（防 FOUC）。
+- **字体现状**：字体已是最小化的自托管 woff2（400/700 各约 21KB，Google Fonts latin 子集），配合 `font-display: swap` + `<link rel="preload" as="font">` + Caddy `zstd/gzip`，无需再越级子集化（过细子集会缺失代码中出现的少数符号字形，收益极小）。

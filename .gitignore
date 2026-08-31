@@ -40,3 +40,6 @@ verify-themes.mjs
 Server/.deploy-backups/
 Client/dist.backup-*/
 Client/dist.previous-*/
+
+# Caddy 配置备份
+Server/deploy/Caddyfile.bak*
