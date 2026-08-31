@@ -3,7 +3,7 @@
     <div class="navbar-inner">
       <router-link to="/HomePage" class="brand">
         <span class="brand-bracket">[</span>
-        <span class="brand-text">woodwhite@blog</span>
+        <span class="brand-text">woodwhite@blog</span><span class="brand-caret anim-caret">▌</span>
         <span class="brand-bracket">]</span>
         <span class="brand-path">~/{{ section }}</span>
       </router-link>
@@ -109,6 +109,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 .brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; text-decoration: none; font-size: 14px; font-weight: 600; }
 .brand-bracket { color: var(--text-muted); }
 .brand-text { color: var(--accent); }
+.brand-caret { color: var(--accent); font-size: 12px; margin-left: 1px; }
 .brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
 .nav-links { display: flex; gap: 28px; flex: 1; }
 .nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 12px; font-weight: 500; color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px; position: relative; white-space: nowrap; }

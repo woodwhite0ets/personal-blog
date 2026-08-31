@@ -11,9 +11,13 @@
     </div>
 
     <!-- 加载状态 -->
-    <div v-if="loading" class="state-box">
-      <span class="spinner"></span>
-      <span class="state-text">正在加载文章...</span>
+    <div v-if="loading" class="skeleton-wrap">
+      <div class="skeleton-card" v-for="n in 3" :key="n">
+        <div class="skel-line skel-tag"></div>
+        <div class="skel-line skel-title"></div>
+        <div class="skel-line skel-excerpt"></div>
+        <div class="skel-line skel-meta"></div>
+      </div>
     </div>
 
     <!-- 错误状态 -->
@@ -30,12 +34,14 @@
 
     <!-- 文章列表 -->
     <template v-else>
-      <PostCard
-        v-for="(post, i) in posts"
-        :key="post.id"
-        :post="post"
-        :index="i"
-      />
+      <div
+          v-for="(post, i) in posts"
+          :key="post.id"
+          v-reveal
+          :style="{ transitionDelay: (i % 5) * 70 + 'ms' }"
+        >
+          <PostCard :post="post" :index="i" />
+        </div>
 
       <!-- 加载更多 -->
       <div v-if="hasMore" class="load-more-wrap">
@@ -207,4 +213,13 @@ defineEmits(['load-more', 'refresh'])
 .btn-prompt {
   color: var(--accent);
 }
+
+/* ====== 骨架屏 ====== */
+.skeleton-wrap { display: flex; flex-direction: column; gap: 0; }
+.skeleton-card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 10px; padding: 22px; margin-bottom: 22px; }
+.skel-line { height: 12px; border-radius: 4px; background: linear-gradient(90deg, var(--bg-float) 25%, var(--bg-elevated) 50%, var(--bg-float) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; margin-bottom: 12px; }
+.skel-tag { width: 60px; height: 10px; }
+.skel-title { width: 70%; height: 16px; }
+.skel-excerpt { width: 90%; }
+.skel-meta { width: 40%; margin-bottom: 0; }
 </style>

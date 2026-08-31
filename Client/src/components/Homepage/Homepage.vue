@@ -34,6 +34,11 @@
           <span class="badge-dot"></span>
           置顶
         </div>
+        <div class="hero-terminal anim-fade-up">
+          <span class="hero-prompt">❯</span>
+          <span class="hero-cmd anim-gradient-move">cat ./welcome.md</span>
+          <span class="hero-caret anim-caret">▌</span>
+        </div>
         <h1 class="hero-title">
           <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`">
             {{ pinnedPost.title }}
@@ -57,6 +62,11 @@
           </span>
         </div>
       </div>
+      <button class="hero-scroll-hint" @click="scrollToPosts" aria-label="向下滚动查看文章">
+        <span class="hint-dot"></span>
+        <span class="hint-label">scroll</span>
+        <span class="hint-caret anim-caret">▾</span>
+      </button>
     </section>
 
     <!-- ====== 主体 ====== -->
@@ -122,8 +132,12 @@
               <span class="info-val terminal-green">在线</span>
             </div>
             <div class="info-line">
+              <span class="info-key">当前时间</span>
+              <span class="info-val terminal-green">{{ now }}</span>
+            </div>
+            <div class="info-line">
               <span class="info-key">文章</span>
-              <span class="info-val">{{ totalPublished }} 已发布</span>
+              <span class="info-val"><span class="anim-count" v-count="totalPublished" data-suffix=" 已发布"></span></span>
             </div>
           </div>
         </div>
@@ -143,7 +157,7 @@
             >
               <UserAvatar :src="c.avatar" :alt="c.username" size="xs" />
               <span class="contributor-name">@{{ c.username }}</span>
-              <span class="contributor-count">({{ c.count }})</span>
+              <span class="contributor-count">(<span class="anim-count" v-count="c.count"></span>)</span>
             </router-link>
           </div>
         </div>
@@ -236,6 +250,10 @@ function handleClickOutside(e) {
   }
 }
 
+function scrollToPosts() {
+  document.querySelector('.main-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
 onMounted(() => document.addEventListener('click', handleClickOutside))
 onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 
@@ -264,6 +282,18 @@ function doSearch() {
   searchActive.value = false
 }
 
+
+// ====== 实时时钟 ======
+const now = ref('')
+let clockTimer = null
+function tickClock() {
+  const d = new Date()
+  const p = (n) => String(n).padStart(2, '0')
+  now.value = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`
+}
+tickClock()
+clockTimer = setInterval(tickClock, 1000)
+onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 </script>
 
 <!-- ====== 样式：只保留 home-page 独有的，PostList 的样式已随组件带走 ====== -->
@@ -496,6 +526,16 @@ function doSearch() {
   animation: pulseGlow 2.2s ease-in-out infinite;
 }
 
+.hero-terminal {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px;
+  color: var(--text-dim); margin: -6px 0 22px;
+  padding: 6px 14px; border-radius: 6px;
+  background: var(--overlay-a2); border: 1px solid var(--border);
+}
+.hero-prompt { color: var(--accent); }
+.hero-caret { color: var(--accent); animation: caretBlink 1s step-end infinite; }
+
 .hero-title {
   font-size: 34px; font-weight: 800; line-height: 1.3;
   margin: 0 0 16px; max-width: 680px; letter-spacing: -0.5px;
@@ -692,4 +732,17 @@ function doSearch() {
   .hero-inner { padding: 48px 20px 40px; }
   .hero-title { font-size: 24px; }
 }
+
+/* ====== Hero 滚动提示 ====== */
+.hero-scroll-hint {
+  display: flex; width: fit-content; align-items: center; gap: 8px;
+  margin: 8px auto 0; padding: 4px 10px;
+  background: none; border: 1px solid var(--border); border-radius: 999px;
+  color: var(--text-muted); font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; transition: color .2s, border-color .2s, transform .2s;
+}
+.hero-scroll-hint:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+.hint-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: ledBlink 1.6s ease-in-out infinite; }
+.hint-label { font-family: var(--font-mono); }
+.hint-caret { color: var(--accent); animation: floatCaret 2s ease-in-out infinite; }
 </style>

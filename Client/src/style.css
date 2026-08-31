@@ -836,3 +836,142 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
 .markdown-body td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; }
 .markdown-body th { background: var(--bg-elevated); color: var(--text-secondary); font-weight: 600; }
 .markdown-body strong { color: var(--text-bright); }
+
+/* ============================================================
+   新增：动效增强（2026-08-31）
+   ============================================================ */
+@keyframes caretBlink { 0%, 45% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes shine { 0% { transform: translateX(-120%) skewX(-20deg); } 60%, 100% { transform: translateX(260%) skewX(-20deg); } }
+@keyframes gradientShift { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes bounceIn { 0% { opacity: 0; transform: scale(0.82); } 60% { opacity: 1; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+@keyframes pulseRing { 0% { box-shadow: 0 0 0 0 var(--accent-a50); } 70% { box-shadow: 0 0 0 9px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+@keyframes lineGrow { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+@keyframes fillBar { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+
+.anim-caret { animation: caretBlink 1s step-end infinite; }
+.anim-shine { position: relative; overflow: hidden; }
+.anim-shine::after { content: ''; position: absolute; top: 0; left: 0; width: 45%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent); transform: translateX(-120%) skewX(-20deg); pointer-events: none; }
+.anim-shine:hover::after { animation: shine 0.9s ease; }
+.anim-gradient-move { background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent)); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: gradientShift 4s linear infinite; }
+.anim-bounce-in { animation: bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.anim-spin-slow { animation: spinSlow 14s linear infinite; }
+.anim-pulse-ring { animation: pulseRing 2s ease-out infinite; }
+.anim-line-grow { transform-origin: left; animation: lineGrow 0.45s ease both; }
+.anim-marquee { overflow: hidden; white-space: nowrap; }
+.anim-marquee .marquee-track { display: inline-flex; gap: 28px; white-space: nowrap; animation: marquee 22s linear infinite; }
+
+/* 顶部滚动进度条 */
+.scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, var(--accent), var(--purple)); z-index: 999; box-shadow: 0 0 10px var(--accent-a50); transition: width 0.06s linear; }
+
+/* 回到顶部按钮 */
+.back-to-top { position: fixed; right: 24px; bottom: 24px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 17px; color: var(--text-secondary); background: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 10px; cursor: pointer; z-index: 900; box-shadow: 0 6px 26px var(--shadow); opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.2s, color 0.2s; }
+.back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.back-to-top:hover { border-color: var(--accent); color: var(--accent); }
+.btt-arrow { display: inline-block; transition: transform 0.2s ease; }
+.back-to-top:hover .btt-arrow { transform: translateY(-3px); }
+
+/* 状态点雷达脉冲 */
+.status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); animation: pulseRing 2s ease-out infinite; }
+
+/* ============================================================
+   动效增强 · 第二波（2026-08-31）— 滚动揭示 & 微交互
+   ============================================================ */
+@keyframes blinkStep { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+@keyframes modalPop { 0% { opacity: 0; transform: scale(.94) translateY(10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes toastIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes ripple { to { transform: scale(4); opacity: 0; } }
+@keyframes floatCaret { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+@keyframes ledBlink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+
+/* 滚动揭示（配合 v-reveal 指令使用） */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1); will-change: opacity, transform; }
+.reveal[data-reveal-dir='left'] { transform: translateX(-26px); }
+.reveal[data-reveal-dir='right'] { transform: translateX(26px); }
+.reveal[data-reveal-dir='none'] { transform: none; }
+.reveal.reveal-in { opacity: 1; transform: none; }
+
+/* ===== 通用微交互工具类 ===== */
+.blink { animation: blinkStep 1s step-end infinite; }
+.led { animation: ledBlink 1.6s ease-in-out infinite; }
+.modal-pop { animation: modalPop .32s cubic-bezier(.22,1,.36,1) both; }
+.toast-in { animation: toastIn .36s cubic-bezier(.22,1,.36,1) both; }
+.anim-float-caret { animation: floatCaret 2.4s ease-in-out infinite; }
+
+/* 按钮悬停扫光 */
+.btn-shine { position: relative; overflow: hidden; }
+.btn-shine::after { content:''; position:absolute; top:0; left:0; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent); transform:translateX(-130%) skewX(-20deg); pointer-events:none; }
+.btn-shine:hover::after { animation: shine .85s ease; }
+
+/* 悬停描边流光 */
+.hover-glow { transition: box-shadow .35s ease, border-color .35s ease, transform .35s cubic-bezier(.22,1,.36,1); }
+.hover-glow:hover { border-color: var(--accent-a40); box-shadow: 0 0 0 1px var(--accent-a12), 0 12px 34px var(--shadow), 0 0 24px var(--accent-a8); }
+
+/* 骨架屏 · 文章卡片 */
+.skeleton-card { background: var(--bg-elevated); border:1px solid var(--border); border-radius:10px; padding:22px; margin-bottom:22px; }
+.skel-line { height:12px; border-radius:4px; background: linear-gradient(90deg, var(--bg-float) 25%, var(--bg-elevated) 50%, var(--bg-float) 75%); background-size:200% 100%; animation: shimmer 1.5s infinite; }
+
+/* 终端 LED 状态 */ 
+.led-green { background: var(--ok); box-shadow: 0 0 8px var(--ok-a40); }
+.led-red { background: var(--err); box-shadow: 0 0 8px var(--err-a30); }
+
+/* ============================================================
+   动效增强 · 第三波（2026-08-31）— 主题过渡 / 涟漪 / 微反馈
+   ============================================================ */
+@keyframes ping { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(2.6); opacity: 0; } }
+@keyframes shimText { 0%,100% { background-position: -200% 0; } 50% { background-position: 200% 0; } }
+@keyframes popIn { 0% { opacity: 0; transform: scale(.86); } 70% { opacity: 1; transform: scale(1.04); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes ripple { from { transform: scale(0); opacity: .5; } to { transform: scale(4); opacity: 0; } }
+
+/* 主题切换平滑过渡（theme.js 在切换时给 <html> 加 .theme-switching） */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: background-color .45s ease, color .45s ease, border-color .45s ease,
+              fill .45s ease, stroke .45s ease, box-shadow .45s ease !important;
+}
+
+/* 按钮涟漪（配合 main.js 全局委托） */
+.ripple-ink {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-a25) 0%, transparent 70%);
+  transform: scale(0); opacity: .5;
+  animation: ripple .65s ease-out forwards;
+  pointer-events: none; z-index: 1;
+}
+button, .btn-write, .btn-login, .post-link, .tag, .post-tag, .theme-btn {
+  position: relative; overflow: hidden;
+}
+
+/* 按压反馈 */
+button:active, .btn:active, .btn-write:active, .btn-login:active, .post-link:active, .tag:active, .post-tag:active {
+  transform: scale(.97);
+}
+
+/* 键盘焦点可见 */
+:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
+}
+
+/* 数字等宽对齐（v-count） */
+.anim-count { font-variant-numeric: tabular-nums; }
+
+/* 状态点双 ping */
+.status-dot.ping { position: relative; }
+.status-dot.ping::after {
+  content: ''; position: absolute; inset: -4px; border-radius: 50%;
+  border: 2px solid var(--ok-a40); animation: ping 1.6s ease-out infinite;
+}
+
+/* Hero 标题微光（仅支持 background-clip:text 的环境） */
+@supports (-webkit-background-clip: text) {
+  .hero-title a {
+    background-image: linear-gradient(90deg, var(--text-bright), var(--accent), var(--text-bright));
+    background-size: 200% auto; -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; animation: shimText 7s linear infinite;
+  }
+}
+
+/* 弹入工具类 */
+.pop-in { animation: popIn .4s cubic-bezier(.22,1,.36,1) both; }

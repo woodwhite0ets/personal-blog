@@ -42,6 +42,13 @@
       </aside>
 
       <section class="kb-content">
+        <div class="kb-content-head">
+          <span class="kb-head-dot dot-red"></span>
+          <span class="kb-head-dot dot-yellow"></span>
+          <span class="kb-head-dot dot-green"></span>
+          <span class="kb-head-title">~/knowledge/{{ projectId || (authed ? "kb" : "-") }}/{{ documentPath || "index" }}</span>
+          <span class="kb-head-sep"></span>
+        </div>
         <div v-if="error" class="kb-error">{{ error }}</div>
         <article v-else-if="document" :key="documentPath" class="kb-article markdown-body anim-fade" v-html="rendered"></article>
         <div v-else-if="authed && projectId" class="kb-empty"><p>选择左侧文档查看内容。</p></div>
@@ -172,4 +179,22 @@ onMounted(async () => {
   .kb-main { grid-template-columns: 1fr; }
   .kb-sidebar { position: static; max-height: none; }
 }
+
+/* ====== 内容头（终端窗口） ====== */
+.kb-content-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; margin: -28px -34px 18px;
+  background: var(--overlay-a15); border-bottom: 1px solid var(--border);
+  border-radius: 12px 12px 0 0;
+}
+.kb-head-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.kb-head-dot.dot-red { background: var(--dot-red); }
+.kb-head-dot.dot-yellow { background: var(--dot-yellow); }
+.kb-head-dot.dot-green { background: var(--dot-green); }
+.kb-head-title {
+  margin-left: 8px; font-size: 11px; color: var(--text-muted);
+  font-family: var(--font-mono); letter-spacing: 0.5px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.kb-head-sep { flex: 1; }
 </style>

@@ -1,8 +1,9 @@
 <template>
-  <article class="post-card" :style="{ animationDelay: `${index * 60}ms` }">
+  <article class="post-card">
     <div class="post-index">{{ String(index + 1).padStart(2, '0') }}</div>
     <div class="post-body">
       <div class="post-meta-row">
+        <span class="post-file-chip">.md</span>
         <span class="post-tags">
           <router-link
             v-for="tag in (post.tags && post.tags.length ? post.tags : [{ name: post.tag || '未分类' }])"
@@ -13,9 +14,7 @@
         </span>
         <span class="post-date">{{ post.date }}</span>
         <span class="post-author" v-if="post.author">
-          <router-link :to="`/user/${post.author.username}`">
-            @{{ post.author.username }}
-          </router-link>
+          <router-link :to="`/user/${post.author.username}`">@{{ post.author.username }}</router-link>
         </span>
       </div>
       <h2 class="post-title">
@@ -45,14 +44,8 @@
 
 <script setup>
 defineProps({
-  post: {
-    type: Object,
-    required: true,
-  },
-  index: {
-    type: Number,
-    default: 0,
-  },
+  post: { type: Object, required: true },
+  index: { type: Number, default: 0 },
 })
 </script>
 
@@ -61,10 +54,21 @@ defineProps({
   position: relative;
   display: flex;
   gap: 20px;
-  padding: 24px 0;
+  padding: 24px 0 24px 16px;
   border-bottom: 1px solid var(--divider);
-  animation: fadeUp 0.5s ease both;
   transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+.post-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 30px; bottom: 30px;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--purple));
+  transform: scaleY(0);
+  transform-origin: top;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease;
 }
 .post-card::after {
   content: '';
@@ -81,18 +85,8 @@ defineProps({
   border-radius: 10px;
   box-shadow: 0 10px 30px var(--shadow);
 }
+.post-card:hover::before { transform: scaleY(1); opacity: 1; }
 .post-card:hover::after { opacity: 1; }
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 .post-index {
   font-size: 12px;
@@ -101,142 +95,75 @@ defineProps({
   min-width: 28px;
   padding-top: 2px;
 }
-
-.post-body {
-  flex: 1;
-  min-width: 0;
+.post-body { flex: 1; min-width: 0; }
+.post-meta-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.post-file-chip {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+  color: var(--text-muted);
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--overlay-a3);
+  flex-shrink: 0;
 }
-
-.post-meta-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 6px;
-}
-
-.post-tags {
-  display: flex; flex-wrap: wrap; gap: 4px;
-}
-
+.post-tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .post-tag {
   font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
   text-transform: uppercase; color: var(--accent);
-  text-decoration: none;
-  padding: 1px 4px;
-  border-radius: 2px;
-  transition: background 0.2s;
+  text-decoration: none; padding: 1px 4px; border-radius: 2px;
+  transition: background 0.2s, color 0.2s;
 }
+.post-tag:hover { background: var(--accent-a10); color: var(--accent-hover); }
+.post-date { font-size: 11px; color: var(--text-muted); }
+.post-author { font-size: 11px; margin-left: auto; }
+.post-author a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+.post-author a:hover { color: var(--accent); }
 
-.post-tag:hover {
-  background: var(--accent-a10);
-}
-
-.post-date {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.post-author {
-  font-size: 11px;
-  margin-left: auto;
-}
-
-.post-author a {
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.post-author a:hover {
-  color: var(--accent);
-}
-
-.post-title {
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1.5;
-  margin: 0 0 8px;
-}
-
+.post-title { font-size: 17px; font-weight: 700; line-height: 1.5; margin: 0 0 8px; }
 .post-title a {
   color: var(--text);
   text-decoration: none;
-  transition: color 0.2s;
-}
-
-.post-title a {
   background-image: linear-gradient(90deg, var(--accent), var(--purple));
   background-repeat: no-repeat;
   background-size: 0% 1.5px;
   background-position: 0 100%;
   transition: background-size 0.35s cubic-bezier(0.22,1,0.36,1), color 0.2s;
 }
-.post-title a:hover {
-  color: var(--accent);
-  background-size: 100% 1.5px;
-}
-
-.post-excerpt {
-  font-size: 13px;
-  color: var(--text-dim);
-  line-height: 1.65;
-  margin: 0 0 12px;
-}
-
-.post-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.footer-label {
-  color: var(--text-muted);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.post-read-time {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
+.post-title a:hover { color: var(--accent); background-size: 100% 1.5px; }
+.post-excerpt { font-size: 13px; color: var(--text-dim); line-height: 1.65; margin: 0 0 12px; }
+.post-footer { display: flex; align-items: center; justify-content: space-between; }
+.footer-label { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.post-read-time { font-size: 11px; color: var(--text-muted); }
 .post-link {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--accent);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.post-link:hover { color: var(--accent-hover); }
-
-.post-stats {
-  display: flex; align-items: center; gap: 12px;
-}
-
-.post-like-count, .post-comment-count, .post-view-count {
-  font-size: 11px; color: var(--text-muted);
-  display: flex; align-items: center; gap: 3px;
+  font-size: 11px; font-weight: 600; color: var(--accent);
+  text-decoration: none; transition: color 0.2s, transform 0.2s;
   white-space: nowrap;
 }
+.post-link:hover { color: var(--accent-hover); }
 
-.post-like-count.liked {
-  color: var(--err);
+.post-stats { display: flex; align-items: center; gap: 8px; }
+.post-like-count, .post-comment-count, .post-view-count {
+  font-size: 11px; color: var(--text-muted);
+  display: inline-flex; align-items: center; gap: 3px;
+  white-space: nowrap;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
 }
-
+.post-like-count:hover, .post-comment-count:hover, .post-view-count:hover {
+  background: var(--overlay-a4);
+  transform: translateY(-1px);
+}
+.post-like-count.liked { color: var(--err); }
 .like-icon { font-size: 13px; }
 .comment-icon { font-size: 12px; }
 .view-icon { font-size: 12px; }
 
-/* ====== 响应式 ====== */
 @media (max-width: 800px) {
-  .post-card {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .post-index {
-    min-width: auto;
-  }
+  .post-card { flex-direction: column; gap: 10px; padding-left: 0; }
+  .post-card::before { display: none; }
+  .post-index { min-width: auto; }
+  .post-meta-row { flex-wrap: wrap; gap: 8px; }
+  .post-author { margin-left: 0; }
 }
 </style>

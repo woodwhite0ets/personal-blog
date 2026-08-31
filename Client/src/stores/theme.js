@@ -12,9 +12,15 @@ const THEMES = [
 const saved = typeof localStorage !== 'undefined' ? localStorage.getItem(THEME_KEY) : null
 const current = ref(THEMES.some(t => t.id === saved) ? saved : 'terminal')
 
-function applyTheme(id) {
-  document.documentElement.setAttribute('data-theme', id)
+// 主题切换平滑过渡：给 <html> 打上短暂 class，让 CSS 变量驱动颜色平滑过渡
+let switchTimer = null
+function applyTheme(id, init = false) {
+  const el = document.documentElement
+  if (!init) el.classList.add('theme-switching')
+  el.setAttribute('data-theme', id)
   localStorage.setItem(THEME_KEY, id)
+  clearTimeout(switchTimer)
+  switchTimer = setTimeout(() => el.classList.remove('theme-switching'), 480)
 }
 
 function setTheme(id) {
@@ -23,8 +29,9 @@ function setTheme(id) {
   applyTheme(id)
 }
 
-// 初始化：跟随当前值应用一次
-watchEffect(() => applyTheme(current.value))
+// 初始化：跟随当前值应用一次（首次不触发过渡）
+let first = true
+watchEffect(() => { applyTheme(current.value, first); first = false })
 
 export function useTheme() {
   return { current, themes: THEMES, setTheme }
