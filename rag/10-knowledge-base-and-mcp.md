@@ -17,6 +17,9 @@ keywords: [知识库, MCP, 网关, gateway, SSO, 多服务器, /kb, 隧道, mcp]
 - 复用 `SiteNav` / `SiteFooter` / `renderMarkdown`。
 - 未登录显示「登录后即可浏览知识库文档」，带 `/login?redirect=/kb` 链接。
 - 请求统一经 `Client/src/utils/http.js` 的 `gatewayApi()` / `ensureGatewaySession()` 发起，`credentials:'include'` 携带 Cookie。
+- `/api/gateway/projects` 返回**对象数组**（`{ id, owner_id, manageable, documents, chunk_count }`），前端以 `p.id` 渲染项目，并直接用内嵌的 `documents`，避免把项目对象当字符串拼进 URL（旧版误发 `.../%5Bobject%20Object%5D/documents` 导致 `Invalid project` / `Internal server error`）。
+- 文档列表按路径**目录分组**：侧栏显示目录标题（如 `learnings`、`rag`）与去掉 `.md` 后转空格的短文件名，避免一长串 md 路径/内容糊满侧栏。
+- 点击文档用 `openDocument(d.path)` 拉 `/api/gateway/projects/:id/documents/:path` 渲染正文。
 
 ## 网关 API 前缀
 
