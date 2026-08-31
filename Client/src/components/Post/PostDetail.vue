@@ -6,6 +6,30 @@
     <!-- ====== 导航栏 ====== -->
     <SiteNav />
 
+    <!-- ====== 文章目录（TOC） ====== -->
+    <div v-if="post && toc.length" class="toc-panel" :class="{ open: tocOpen }">
+      <button class="toc-toggle" @click="tocOpen = !tocOpen" :aria-expanded="tocOpen" title="文章目录">
+        <span class="toc-toggle-ico">{{ tocOpen ? '✕' : '☰' }}</span>
+        <span class="toc-toggle-label">目录</span>
+      </button>
+      <nav class="toc-nav" aria-label="文章目录">
+        <div class="toc-head">
+          <span class="toc-prompt">❯</span>
+          <span class="toc-title">目录</span>
+          <span class="toc-count">{{ toc.length }}</span>
+        </div>
+        <ul class="toc-list">
+          <li
+            v-for="item in toc"
+            :key="item.id"
+            :class="[`lv-${item.level}`, { active: activeHeading === item.id }]"
+          >
+            <a :href="'#' + item.id" @click.prevent="scrollToHeading(item.id)">{{ item.text }}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
     <!-- ====== 加载状态 ====== -->
     <div v-if="loading" class="state-box">
       <span class="spinner"></span>
@@ -210,7 +234,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, computed, nextTick, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { renderMarkdown } from '../../utils/markdown.js'
 import { useAuth, getToken } from '../../stores/auth.js'
@@ -312,6 +336,49 @@ const canDelete = computed(() => isAuthor.value || isAdmin.value)
 const renderedContent = computed(() => {
   return renderMarkdown(post.value?.content)
 })
+
+// ====== 文章目录（TOC） ======
+const toc = ref([])
+const tocOpen = ref(false)
+const activeHeading = ref('')
+let tocObserver = null
+
+function refreshToc() {
+  const content = document.querySelector('.post-content')
+  if (!content) { toc.value = []; return }
+  const hs = content.querySelectorAll('h2, h3, h4')
+  const items = []
+  hs.forEach((h, i) => {
+    if (!h.id) h.id = 'sec-' + (i + 1)
+    const level = Number(h.tagName[1])
+    const text = (h.textContent || '').trim()
+    if (text) items.push({ id: h.id, text, level })
+  })
+  toc.value = items
+  observeHeadings(items.map((x) => x.id))
+}
+
+function observeHeadings(ids) {
+  if (tocObserver) { tocObserver.disconnect(); tocObserver = null }
+  if (!ids.length) return
+  tocObserver = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) activeHeading.value = e.target.id
+  }, { rootMargin: '-88px 0px -70% 0px', threshold: 0 })
+  ids.forEach((id) => {
+    const el = document.getElementById(id)
+    if (el) tocObserver.observe(el)
+  })
+}
+
+function scrollToHeading(id) {
+  const el = document.getElementById(id)
+  if (!el) return
+  const top = el.getBoundingClientRect().top + window.scrollY - 84
+  window.scrollTo({ top, behavior: 'smooth' })
+  activeHeading.value = id
+}
+
+watch(renderedContent, async () => { await nextTick(); refreshToc() })
 
 // ====== 标签归一化（兼容新旧格式） ======
 const normalizedTags = computed(() => {
@@ -737,6 +804,30 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .btn-comment-submit:hover:not(:disabled) {
   box-shadow: 0 0 16px var(--accent-a25);
 }
+/* 评论头像 hover 弹跳 */
+.comment-item .user-avatar {
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.comment-item:hover .user-avatar {
+  transform: translateY(-2px) scale(1.06);
+  border-color: var(--accent);
+  box-shadow: 0 6px 14px var(--accent-a20);
+}
+/* 评论提交按钮扫光 */
+.btn-comment-submit { position: relative; overflow: hidden; }
+.btn-comment-submit::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 60%; height: 100%;
+  background: linear-gradient(120deg, transparent, var(--accent-a25), transparent);
+  transform: skewX(-20deg);
+  animation: btnSweep 3.5s ease-in-out infinite;
+}
+@keyframes btnSweep {
+  0% { left: -120%; }
+  55%, 100% { left: 150%; }
+}
 
 .comment-err {
   display: block; margin-top: 6px;
@@ -803,6 +894,129 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .empty-icon { font-size: 24px; opacity: 0.3; }
 
 /* ====== 响应式 ====== */
+/* ====== 文章目录 TOC ====== */
+.toc-panel {
+  position: fixed;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.toc-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--bg-float);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px var(--shadow);
+  backdrop-filter: blur(10px);
+  transition: color 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.toc-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--shadow), 0 0 0 1px var(--accent-a20);
+}
+.toc-toggle-ico { font-size: 14px; transition: transform 0.3s ease; }
+
+.toc-nav {
+  max-height: min(64vh, 520px);
+  overflow-y: auto;
+  width: 240px;
+  padding: 14px 14px 16px;
+  background: color-mix(in srgb, var(--bg-float) 78%, transparent);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px var(--shadow-deep);
+  opacity: 0;
+  transform: translateX(12px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.toc-panel.open .toc-nav {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+}
+.toc-panel.open .toc-toggle-ico { transform: rotate(180deg); }
+
+.toc-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.toc-prompt { color: var(--accent); animation: caretBlink 1s step-end infinite; }
+.toc-title { font-weight: 600; color: var(--text); letter-spacing: 1px; }
+.toc-count {
+  margin-left: auto;
+  padding: 1px 7px;
+  background: var(--accent-a15);
+  color: var(--accent);
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.toc-list li a {
+  position: relative;
+  display: block;
+  color: var(--text-muted);
+  font-size: 12.5px;
+  text-decoration: none;
+  line-height: 1.5;
+  padding: 5px 8px 5px 12px;
+  border-left: 2px solid transparent;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s, border-color 0.2s, padding-left 0.2s;
+}
+.toc-list li a::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%;
+  width: 0; height: 2px;
+  transform: translateY(-50%);
+  background: var(--accent);
+  transition: width 0.2s ease;
+}
+.toc-list li.lv-3 a { padding-left: 26px; font-size: 12px; }
+.toc-list li.lv-4 a { padding-left: 40px; font-size: 11.5px; color: var(--text-faint); }
+.toc-list li a:hover { color: var(--text); padding-left: 16px; }
+.toc-list li.active a {
+  color: var(--accent);
+  background: var(--accent-a10);
+  border-left-color: var(--accent);
+}
+.toc-list li.active a::before { width: 12px; }
+
+@media (max-width: 800px) {
+  .toc-panel { top: auto; bottom: 16px; right: 12px; }
+  .toc-nav { width: min(72vw, 260px); max-height: 48vh; }
+}
+
 @media (max-width: 800px) {
   .nav-links { display: none; }
   .nav-toggle { display: flex; }

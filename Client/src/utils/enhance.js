@@ -79,17 +79,19 @@ export function initEnhance() {
   enhanceAll()
   // 监听 MD 内容动态插入（路由切换、文档加载等）
   if (!document.body) return
+  const MO_SEL = '.markdown-body, .post-content, .kb-article, .guide-content'
   const mo = new MutationObserver((muts) => {
+    let hit = false
     for (const m of muts) {
       if (m.type !== 'childList') continue
       for (const node of m.addedNodes) {
-        if (node.nodeType !== 1) continue
-        if (node.matches && (node.matches('.markdown-body, .post-content, .kb-article') || node.querySelector('.markdown-body'))) {
-          enhanceAll()
-          return
-        }
+        if (node.nodeType !== 1 || !node.matches) continue
+        if (node.matches(MO_SEL) || node.querySelector(MO_SEL)) { hit = true; break }
       }
+      if (hit) break
+      if (m.target && m.target.nodeType === 1 && m.target.closest && m.target.closest(MO_SEL)) { hit = true; break }
     }
+    if (hit) enhanceAll()
   })
   mo.observe(document.body, { childList: true, subtree: true })
 }

@@ -36,7 +36,7 @@
             <span class="comment-icon">💬</span> {{ post.comment_count || 0 }}
           </span>
         </div>
-        <router-link :to="`/post/${post.slug || post.id}`" class="post-link">阅读 →</router-link>
+        <router-link :to="`/post/${post.slug || post.id}`" class="post-link">阅读 <span class="post-link-arrow">→</span></router-link>
       </div>
     </div>
   </article>
@@ -140,6 +140,11 @@ defineProps({
   white-space: nowrap;
 }
 .post-link:hover { color: var(--accent-hover); }
+.post-link { display: inline-flex; align-items: center; gap: 3px; }
+.post-link-arrow { transition: transform 0.25s ease; }
+.post-link:hover .post-link-arrow { transform: translateX(4px); }
+.post-index { transition: color 0.25s ease, transform 0.25s ease; }
+.post-card:hover .post-index { color: var(--accent); transform: translateX(3px); }
 
 .post-stats { display: flex; align-items: center; gap: 8px; }
 .post-like-count, .post-comment-count, .post-view-count {
