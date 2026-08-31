@@ -18,22 +18,25 @@
           <div class="kb-projects">
             <button
               v-for="p in projects"
-              :key="p"
+              :key="p.id"
               class="kb-project"
-              :class="{ active: p === projectId }"
+              :class="{ active: p.id === projectId }"
               @click="openProject(p)"
-            >{{ p }}</button>
+            >{{ p.id }}</button>
           </div>
 
           <div v-if="projectId" class="kb-docs">
-            <button
-              v-for="(d, idx) in documents"
-              :key="d.path"
-              class="kb-doc anim-fade-up"
-              :class="{ active: d.path === documentPath }"
-              :style="{ animationDelay: `${idx * 40}ms` }"
-              @click="openDocument(d.path)"
-            >{{ docTitle(d.path) }}</button>
+            <div v-for="group in docGroups" :key="group.dir || '__root__'" class="kb-doc-group">
+              <div v-if="group.dir" class="kb-doc-group-title">{{ group.dir }}</div>
+              <button
+                v-for="(d, idx) in group.docs"
+                :key="d.path"
+                class="kb-doc anim-fade-up"
+                :class="{ active: d.path === documentPath }"
+                :style="{ animationDelay: `${idx * 40}ms` }"
+                @click="openDocument(d.path)"
+              >{{ docTitle(d.path) }}</button>
+            </div>
           </div>
         </template>
       </aside>
@@ -68,17 +71,34 @@ const error = ref('')
 
 const rendered = computed(() => (document.value ? renderMarkdown(document.value.content) : ''))
 
+const docGroups = computed(() => {
+  const groups = new Map()
+  for (const doc of documents.value) {
+    const parts = String(doc.path || '').split('/')
+    const dir = parts.length > 1 ? parts.slice(0, -1).join('/') : ''
+    if (!groups.has(dir)) groups.set(dir, [])
+    groups.get(dir).push(doc)
+  }
+  return [...groups.entries()].map(([dir, docs]) => ({ dir, docs }))
+})
+
 function docTitle(path) {
   const name = String(path || '').split('/').pop()
   return name.replace(/\.md$/i, '').replace(/[-_]+/g, ' ').trim() || path
 }
 
-async function openProject(id) {
+async function openProject(projectOrId) {
+  const id = typeof projectOrId === 'string' ? projectOrId : projectOrId?.id
+  if (!id) return
   projectId.value = id
   documentPath.value = ''
   document.value = null
   documents.value = []
   error.value = ''
+  if (Array.isArray(projectOrId?.documents)) {
+    documents.value = projectOrId.documents
+    return
+  }
   try {
     documents.value = await gatewayApi(`/api/projects/${encodeURIComponent(id)}/documents`)
   } catch (e) { error.value = e.message }
@@ -132,7 +152,9 @@ onMounted(async () => {
 }
 .kb-project:hover { color: var(--text); background: var(--surface-2, rgba(127,127,127,.06)); }
 .kb-project.active { color: var(--accent); background: var(--surface-2, rgba(127,127,127,.08)); border-color: var(--border); }
-.kb-docs { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 2px; }
+.kb-docs { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 2px; }.kb-doc-group { margin-top: 8px; }
+.kb-doc-group:first-child { margin-top: 0; }
+.kb-doc-group-title { font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: .5px; padding: 6px 10px 4px 18px; }
 .kb-doc {
   text-align: left; padding: 7px 10px 7px 18px; font-size: 12.5px; color: var(--text-dim);
   background: transparent; border: none; border-radius: 6px; cursor: pointer; white-space: nowrap;
