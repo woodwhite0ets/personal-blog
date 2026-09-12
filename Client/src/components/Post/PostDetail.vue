@@ -499,7 +499,7 @@ function updateSeoMeta(p) {
   const title = `${p.title} — woodwhite@blog`
   const desc = (p.excerpt || p.content || '').replace(/<[^>]*>/g, '').slice(0, 150)
   const url = `${SITE_URL}/post/${p.slug}`
-  const image = p.cover_image ? `${SITE_URL}${p.cover_image}` : `${SITE_URL}/favicon.svg`
+  const image = p.cover_image ? `${SITE_URL}${p.cover_image}` : `${SITE_URL}/favicon.png`
 
   document.title = title
   setMeta('meta[name="description"]', 'content', desc)
