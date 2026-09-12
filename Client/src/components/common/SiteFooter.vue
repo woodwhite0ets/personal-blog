@@ -28,8 +28,6 @@
     <div class="footer-links">
       <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
       <span class="footer-link-sep">·</span>
-      <router-link to="/kb">知识库</router-link>
-      <span class="footer-link-sep">·</span>
       <router-link to="/gateway">Gateway</router-link>
       <span class="footer-link-sep">·</span>
       <router-link to="/about">关于</router-link>
@@ -86,7 +84,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
 .footer-status { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; color: var(--text-muted); }
 .footer-sep { opacity: 0.5; }
 .footer-links { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
-.footer-links a { font-size: 12px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a { font-size: 12px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; }
 .footer-links a:hover { color: var(--accent); }
 .footer-link-sep { color: var(--text-faint); }
 .footer-beian { margin-bottom: 4px; }

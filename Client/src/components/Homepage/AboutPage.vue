@@ -68,6 +68,17 @@
 
           <div class="project-item">
             <div class="project-head">
+              <span class="project-name">mcp-gateway</span>
+              <span class="project-status">进行中</span>
+            </div>
+            <p class="project-desc">面向个人知识库和服务器管理的 MCP 网关，将知识检索、文档读取和基础运维能力统一提供给 AI 客户端，支持 PostgreSQL + pgvector、embedding、TEI rerank、权限控制和审计日志。</p>
+            <div class="project-tags">
+              <span class="ptag">MCP</span><span class="ptag">Node.js</span><span class="ptag">pgvector</span><span class="ptag">TEI rerank</span><span class="ptag">Docker</span>
+            </div>
+          </div>
+
+          <div class="project-item">
+            <div class="project-head">
               <span class="project-name">智能电力监控平台</span>
               <span class="project-status dim-status">多协议工业数据采集</span>
             </div>

@@ -69,11 +69,6 @@ const routes = [
     component: () => import('../components/Gateway/GatewayGuide.vue'),
   },
   {
-    path: '/kb',
-    name: 'KnowledgeBase',
-    component: () => import('../components/Kb/KnowledgeBase.vue'),
-  },
-  {
     path: '/user/:username',
     name: 'UserPage',
     component: () => import('../components/User/UserPage.vue'),

@@ -21,7 +21,7 @@ keywords: [博客, 论坛, 知识库, RAG, woodwhite@blog]
 | `07-security-controls.md` | 安全防护与审计结论 | 如何防 XSS、SQL 注入、IDOR、WebShell |
 | `08-operations-and-logs.md` | 部署、日志与攻击分析 | Caddy 日志在哪里、如何分析攻击 |
 | `09-troubleshooting.md` | 常见问题排查 | 登录页、429、发帖失败、邮件失败 |
-| `10-knowledge-base-and-mcp.md` | 知识库/MCP 网关统一系统 | /kb 是什么、网关如何打通、多服务器拓扑、如何更新知识库 |
+| `10-knowledge-base-and-mcp.md` | 知识库/MCP 网关统一系统 | /kb 是什么、网关如何打通、多服务器拓扑、如何更新知识库、如何搜索/校验/导入 skill（search_skills/validate_skill_source/import_skill） |
 | `11-frontend-ui-optimization.md` | 前端 UI 优化与工程化 | 字体/设计令牌/共享 markdown 排版、composable 与懒加载、如何统一博客与知识库视觉 |
 
 ## 统一事实

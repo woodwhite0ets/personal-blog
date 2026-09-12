@@ -105,6 +105,23 @@ await fetch('/api/gateway/auth/logout', { method: 'POST', credentials: 'include'
 3. 在网关管理面「知识库」页点击「重建全部索引」，或调用重建接口让 `embeddings` 重新向量化，RAG 才能检索到新内容。
 4. 若改了路由/Caddy，需要 reload caddy 并重启对应服务。
 
+## MCP Skill 工具（搜索 / 校验 / 导入）
+
+网关的 MCP 端点（`/mcp`，经 `mcp.woodwhite.top`）提供一组 skill 发现与导入工具，供 AI 在复杂任务中先搜到合适的 skill、校验其可用性、再导入网关后调用：
+
+- `search_skills`（只读）：`{ query, limit?, project? }`。用 GitHub 仓库搜索（`api.github.com/search/repositories`）返回候选仓库元数据（id、description、stars、url、default_branch、trust）。适用于「这个任务能不能用现成 skill」的初步检索。无需 GitHub token（未配置 token 时约 60 次/小时，超限返回明确错误）。
+- `validate_skill_source`（只读）：`{ url, path? }`。拉取目标 GitHub 仓库中 `SKILL.md`（优先 `README.md`/`SKILL.md` HEAD 探测默认分支；内容走 `raw.githubusercontent.com`，无需 token），做安全扫描与 frontmatter 校验，返回 `{ valid, id, name, description, source, trust, frontmatter, blockers, warnings, issues, files }`。
+- `import_skill`（写，需 admin + 项目权限）：`{ project, url, path?, allowCommunityRisk? }`。仅当 `valid=true`（无 `blockers` 且 name/description 齐全）才导入；非可信源（`trust=community`）且存在风险 `warnings` 时，必须显式 `allowCommunityRisk=true`。导入会写一条单一 `SKILL.md` 到 `knowledge/skills/<project>/<id>/`，并记录 `skill.meta.json`（`source`/`imported_at`）。
+- 已有 `list_skills` / `get_skill`：列出/读取网关内已导入的 skill，供后续调用。
+
+安全约束（`src/skillsearch.js`）：
+- 可信组织白名单 `TRUSTED_ORGS`：anthropics、openai、vercel-labs、MiniMax-AI、bytedance、QwenLM、samber、woodwhite → `trust=trusted`；其它 → `trust=community`。
+- `blockers`（拒绝导入）：`rm -rf /`、`curl|wget|fetch|Invoke-WebRequest … | sh|bash|zsh`、私钥头（`BEGIN RSA/OPENSSH/EC PRIVATE KEY`）、`eval(…process.env…)`、`DownloadString|Invoke-Expression … http`。
+- `warnings`（提示，非可信源需放行才导入）：`rm -rf`、`sudo`、`process.env`、`api_key|secret|password=xxx`、http URL、`chmod 777`、`curl`、`sh -c`。
+- 内容大小上限 2MB，单次 fetch 超时 12s。
+
+> 注意：`GITHUB_TOKEN` 未配置时，GitHub 核心 API（`/repos/*`、`/contents`、code search）会 403/限流；但仓库搜索与 `raw.githubusercontent.com` 可用，因此本模块刻意只用这两类端点。
+
 ## 相关真相
 
 - 统一入口：`https://blog.woodwhite.top`

@@ -1,8 +1,5 @@
 <template>
   <div class="gateway-page gateway-guide-page">
-    <div class="bg-grid"></div>
-    <div class="bg-scanline"></div>
-
     <header class="navbar">
       <div class="navbar-inner">
         <router-link to="/gateway" class="brand">
@@ -13,7 +10,6 @@
         </router-link>
         <div class="nav-actions">
           <ThemeSwitcher />
-          <span class="gateway-badge">MCP DOCUMENTATION</span>
           <a href="/HomePage" class="nav-link">返回博客</a>
         </div>
       </div>

@@ -31,6 +31,7 @@
             <span class="btn-shortcut">Ctrl+S</span>
           </button>
           <button class="btn btn-primary btn-publish" @click="publish" :disabled="saving || !saveReady">
+
             <span class="action-icon">🚀</span> 发布
             <span class="btn-shortcut">Ctrl+Shift+P</span>
           </button>

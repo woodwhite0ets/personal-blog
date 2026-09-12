@@ -145,8 +145,9 @@ headers:
   Authorization: Bearer ${MCP_GATEWAY_TOKEN}
 ```
 
-连接成功后工具列表应包含：`list_projects`、`list_targets`、`get_constraints`、`search_knowledge`、`read_document`、`inspect_server`、`read_logs`、`run_command`、`list_pending_approvals`、`decide_approval`。建议先调 `list_projects` 和 `list_targets` 确认权限范围。
+连接成功后工具列表包含：`list_projects`、`list_targets`、`get_constraints`、`search_knowledge`、`read_document`、`inspect_server`、`read_logs`、`summarize_logs`（日志拉取+本地模型总结）、`run_command`、`list_pending_approvals`、`decide_approval`、`run_model`、`ask_knowledge`（RAG 问答）、`curate_knowledge`、`list_skills`（技能发现）、`get_skill`（技能读取）、`get_bootstrap`（另有资源工具 `read_knowledge_projects`，共 18 工具 + 3 prompts）。建议连接后先调 `get_bootstrap` 获取完整操作上下文（Fleet、项目、硬约束、规范）并存入持久记忆。
 
+**新能力速览**：initialize 自动下发 instructions（Fleet/项目/约束/规范）；`get_bootstrap` 返回完整结构化上下文，连接后先调一次；资源模板 `knowledge://<project>/<path>`；内置 prompts `inspect_server`/`summarize_knowledge`；`search_knowledge` 返回 `{returned, results}`；`run_model` 限并发 2/每分钟 30（RATE_LIMITED 可重试）；错误 `{error:{code,message,retryable}}`（retryable:true 可重试）；SSH 长输出截断带 `truncated:true`。
 ### 5.3 使用例子
 
 **查询项目知识**：

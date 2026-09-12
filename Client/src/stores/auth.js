@@ -142,7 +142,7 @@ export function useAuth() {
   async function logout() {
     clearToken()
     // 统一退出：博客 token 已清，但仍需注销网关/知识库 httpOnly 会话
-    // （mcp_console_session cookie + 服务端内存 session），否则登出后 /kb 与 /gateway 仍残留登录态。
+    // （mcp_console_session cookie + 服务端内存 session），否则登出后 /gateway 仍残留登录态。
     try {
       const ctrl = new AbortController()
       const timer = setTimeout(() => ctrl.abort(), 2500)
