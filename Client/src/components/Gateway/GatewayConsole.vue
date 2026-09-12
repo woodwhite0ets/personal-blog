@@ -55,58 +55,50 @@
               <div v-if="retrieval.result" class="retrieval-results"><article v-for="(r, i) in retrieval.result.results" :key="r.id || i" class="retrieval-result"><span class="result-rank">{{ i + 1 }}</span><div><strong>{{ r.title || r.path }}</strong><small>{{ r.path }} · chunk {{ r.metadata?.chunk_index ?? '-' }}</small><p>{{ r.content }}</p></div></article></div>
             </div>
           </div>
-          <div class="metric-grid">
-            <div class="terminal-panel metric-card"><span class="metric-label">可用知识库</span><strong>{{ projects.length }}</strong><span class="metric-code">projects.visible</span></div>
-            <div class="terminal-panel metric-card"><span class="metric-label">可用 SSH 服务器</span><strong>{{ targets.length }}</strong><span class="metric-code">targets.visible</span></div>
-            <div class="terminal-panel metric-card"><span class="metric-label">当前角色</span><strong class="role-value">{{ user.role }}</strong><span class="metric-code">session.authorized</span></div><div class="terminal-panel metric-card"><span class="metric-label">技能</span><strong>{{ skills.length }}</strong><span class="metric-code">skills.visible</span></div>
-            <div class="terminal-panel metric-card stat-card"><span class="metric-label">工具调用总数</span><strong class="stat-num">{{ fmtNum(stats?.totalCalls) }}</strong><span class="stat-tag"><span class="dot"></span>mcp.tool.calls · 全时段</span></div>
-            <div class="terminal-panel metric-card stat-card"><span class="metric-label">今日调用</span><strong class="stat-num">{{ fmtNum(stats?.today) }}</strong><span class="stat-tag"><span class="dot"></span>mcp.tool.today · 今日</span></div>
-            <div class="terminal-panel metric-card stat-card"><span class="metric-label">调用成功率</span><strong class="stat-num">{{ stats ? stats.successRate + '%' : '—' }}</strong><span class="stat-tag"><span class="dot"></span>mcp.tool.success · 全部请求</span></div>
-            <div class="terminal-panel metric-card stat-card"><span class="metric-label">文档总数</span><strong class="stat-num">{{ fmtNum(sumDocs(projects)) }}</strong><span class="stat-tag"><span class="dot"></span>knowledge.documents</span></div>
-            <div class="terminal-panel metric-card stat-card"><span class="metric-label">索引片段</span><strong class="stat-num">{{ fmtNum(sumChunks(projects)) }}</strong><span class="stat-tag"><span class="dot"></span>knowledge.chunks</span></div>
-            <div class="terminal-panel metric-card stat-card"><span class="metric-label">审计事件</span><strong class="stat-num">{{ fmtNum(stats?.auditTotal) }}</strong><span class="stat-tag"><span class="dot"></span>audit.events</span></div>
+          <div class="overview-groups">
+            <div class="ov-group">
+              <h3 class="ov-group-title"><span class="ov-num">01</span>资源状态</h3>
+              <div class="metric-grid cols-4">
+                <div class="terminal-panel metric-card"><span class="metric-label">可用知识库</span><strong>{{ projects.length }}</strong><span class="metric-code">projects.visible</span></div>
+                <div class="terminal-panel metric-card"><span class="metric-label">可用 SSH 服务器</span><strong>{{ targets.length }}</strong><span class="metric-code">targets.visible</span></div>
+                <div class="terminal-panel metric-card"><span class="metric-label">当前角色</span><strong class="role-value">{{ user.role }}</strong><span class="metric-code">session.authorized</span></div>
+                <div class="terminal-panel metric-card"><span class="metric-label">技能</span><strong>{{ skills.length }}</strong><span class="metric-code">skills.visible</span></div>
+              </div>
+            </div>
+            <div class="ov-group">
+              <h3 class="ov-group-title"><span class="ov-num">02</span>调用统计</h3>
+              <div class="metric-grid cols-3">
+                <div class="terminal-panel metric-card stat-card"><span class="metric-label">工具调用总数</span><strong class="stat-num">{{ fmtNum(stats?.totalCalls) }}</strong><span class="stat-tag"><span class="dot"></span>mcp.tool.calls · 全时段</span></div>
+                <div class="terminal-panel metric-card stat-card"><span class="metric-label">今日调用</span><strong class="stat-num">{{ fmtNum(stats?.today) }}</strong><span class="stat-tag"><span class="dot"></span>mcp.tool.today · 今日</span></div>
+                <div class="terminal-panel metric-card stat-card"><span class="metric-label">调用成功率</span><strong class="stat-num">{{ stats ? stats.successRate + '%' : '—' }}</strong><span class="stat-tag"><span class="dot"></span>mcp.tool.success · 全部请求</span></div>
+              </div>
+            </div>
+            <div class="ov-group">
+              <h3 class="ov-group-title"><span class="ov-num">03</span>知识库数据</h3>
+              <div class="metric-grid cols-3">
+                <div class="terminal-panel metric-card stat-card"><span class="metric-label">文档总数</span><strong class="stat-num">{{ fmtNum(sumDocs(projects)) }}</strong><span class="stat-tag"><span class="dot"></span>knowledge.documents</span></div>
+                <div class="terminal-panel metric-card stat-card"><span class="metric-label">索引片段</span><strong class="stat-num">{{ fmtNum(sumChunks(projects)) }}</strong><span class="stat-tag"><span class="dot"></span>knowledge.chunks</span></div>
+                <div class="terminal-panel metric-card stat-card"><span class="metric-label">审计事件</span><strong class="stat-num">{{ fmtNum(stats?.auditTotal) }}</strong><span class="stat-tag"><span class="dot"></span>audit.events</span></div>
+              </div>
+            </div>
           </div>
           <div class="terminal-panel" v-if="stats">
             <div class="panel-bar"><span class="panel-dot dot-cyan"></span><span class="panel-dot dot-cyan dim"></span><span class="panel-title">mcp.tool.stats</span><span class="badge">近 24h <b>{{ fmtNum(stats.last24h) }}</b> 次</span></div>
             <div class="panel-content stats-body">
               <div class="stats-grid">
                 <div class="stats-main">
-                  <h3>工具调用 TOP</h3>
-                  <div v-for="(row, i) in stats.byTool" :key="row[0]" class="tool-row">
-                    <span class="tool-rank">{{ i + 1 }}</span>
-                    <span class="tool-icon">{{ toolIcon(row[0]) }}</span>
-                    <span class="tool-name" :title="row[0]">{{ toolLabel(row[0]) }}</span>
-                    <span class="tool-bar"><span class="tool-bar-fill" :style="{ width: statPct(row[1], stats.byTool) + '%', background: toolGrad(i) }"></span></span>
-                    <span class="tool-count">{{ fmtNum(row[1]) }}</span>
-                    <span class="tool-share">{{ statPct(row[1], stats.byTool) }}%</span>
-                  </div>
-                </div>
-                <div class="stats-side">
-                  <div>
-                    <h3>近 7 天调用趋势</h3>
-                    <svg class="trend-svg" :viewBox="'0 0 292 86'" v-if="stats.daily.length">
-                      <defs><linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="currentColor" stop-opacity="0.35"/><stop offset="100%" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>
-                      <path class="trend-area" :d="trendPath(stats.daily).area"></path>
-                      <path class="trend-line" :d="trendPath(stats.daily).line"></path>
-                      <g class="trend-dots"><circle v-for="(p, i) in trendPath(stats.daily).pts" :key="i" :cx="p[0]" :cy="p[1]" r="3"/></g>
-                    </svg>
-                    <div class="trend-labels"><span v-for="d in stats.daily.map(r => r[0])" :key="d">{{ d }}</span></div>
-                  </div>
-                  <div class="ring-row">
-                    <div class="ring-wrap">
-                      <svg class="ring" viewBox="0 0 80 80">
-                        <circle class="ring-bg" cx="40" cy="40" r="34"/>
-                        <circle class="ring-fg" cx="40" cy="40" r="34" :style="ringStyle(stats.successRate)"/>
-                        <text x="40" y="44" text-anchor="middle" class="ring-text">{{ stats.successRate }}%</text>
-                      </svg>
-                    </div>
-                    <div class="ring-stats">
-                      <p>总调用 <b>{{ fmtNum(stats.totalCalls) }}</b></p>
-                      <p>今日 <b>{{ fmtNum(stats.today) }}</b></p>
-                      <p>近 24h <b>{{ fmtNum(stats.last24h) }}</b></p>
+                  <div class="stat-block">
+                    <h3>工具调用 TOP</h3>
+                    <div v-for="(row, i) in stats.byTool" :key="row[0]" class="tool-row">
+                      <span class="tool-rank">{{ i + 1 }}</span>
+                      <span class="tool-icon">{{ toolIcon(row[0]) }}</span>
+                      <span class="tool-name" :title="row[0]">{{ toolLabel(row[0]) }}</span>
+                      <span class="tool-bar"><span class="tool-bar-fill" :style="{ width: statPct(row[1], stats.byTool) + '%', background: toolGrad(i) }"></span></span>
+                      <span class="tool-count">{{ fmtNum(row[1]) }}</span>
+                      <span class="tool-share">{{ statPct(row[1], stats.byTool) }}%</span>
                     </div>
                   </div>
-                  <div v-if="stats.byProject.length">
+                  <div v-if="stats.byProject.length" class="stat-block">
                     <h3>按项目调用</h3>
                     <div v-for="(row, i) in stats.byProject" :key="row[0]" class="tool-row">
                       <span class="tool-icon">📁</span>
@@ -116,22 +108,49 @@
                       <span class="tool-share">{{ statPct(row[1], stats.byProject) }}%</span>
                     </div>
                   </div>
-                  <div v-if="stats.recentFailures.length">
-                    <h3>最近失败调用</h3>
-                    <div v-for="(f, i) in stats.recentFailures" :key="i" class="fail-row">
-                      <span class="tool-icon">⚠️</span>
-                      <span class="tool-name" :title="f.action">{{ toolLabel(f.action) }}</span>
-                      <span class="fail-msg" :title="f.error">{{ f.error }}</span>
-                      <span class="tool-share">{{ f.ts }}</span>
-                    </div>
-                  </div>
-                  <div v-if="stats.byUser.length && user.role === 'admin'">
+                  <div v-if="stats.byUser.length && user.role === 'admin'" class="stat-block">
                     <h3>按用户分布</h3>
                     <div v-for="(row, i) in stats.byUser" :key="row[0]" class="tool-row">
                       <span class="tool-icon">👤</span>
                       <span class="tool-name" :title="row[0]">{{ row[0] }}</span>
                       <span class="tool-bar"><span class="tool-bar-fill" :style="{ width: statPct(row[1], stats.byUser) + '%', background: toolGrad(i + 2) }"></span></span>
                       <span class="tool-count">{{ fmtNum(row[1]) }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="stats-side">
+                  <div class="stat-block">
+                    <h3>近 7 天调用趋势</h3>
+                    <svg class="trend-svg" :viewBox="'0 0 292 92'" v-if="stats.daily.length">
+                      <defs><linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="currentColor" stop-opacity="0.35"/><stop offset="100%" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>
+                      <path class="trend-area" :d="trendPath(stats.daily).area"></path>
+                      <path class="trend-line" :d="trendPath(stats.daily).line"></path>
+                      <g class="trend-dots"><circle v-for="(p, i) in trendPath(stats.daily).pts" :key="i" :cx="p[0]" :cy="p[1]" r="3"/></g>
+                    </svg>
+                    <div class="trend-labels"><span v-for="d in stats.daily.map(r => r[0])" :key="d">{{ d }}</span></div>
+                  </div>
+                  <div class="ring-block">
+                    <div class="ring-wrap">
+                      <svg class="ring" viewBox="0 0 80 80">
+                        <circle class="ring-bg" cx="40" cy="40" r="34"/>
+                        <circle class="ring-fg" cx="40" cy="40" r="34" :style="ringStyle(stats.successRate)"/>
+                        <text x="40" y="44" text-anchor="middle" class="ring-text">{{ stats.successRate }}%</text>
+                      </svg>
+                    </div>
+                    <div class="ring-stats">
+                      <p class="ring-key">调用成功率</p>
+                      <p>总调用 <b>{{ fmtNum(stats.totalCalls) }}</b></p>
+                      <p>今日 <b>{{ fmtNum(stats.today) }}</b></p>
+                      <p>近 24h <b>{{ fmtNum(stats.last24h) }}</b></p>
+                    </div>
+                  </div>
+                  <div v-if="stats.recentFailures.length" class="stat-block">
+                    <h3>最近失败调用</h3>
+                    <div v-for="(f, i) in stats.recentFailures" :key="i" class="fail-row">
+                      <span class="tool-icon">⚠️</span>
+                      <span class="tool-name" :title="f.action">{{ toolLabel(f.action) }}</span>
+                      <span class="fail-msg" :title="f.error">{{ f.error }}</span>
+                      <span class="tool-share">{{ f.ts }}</span>
                     </div>
                   </div>
                 </div>
@@ -803,10 +822,10 @@ onMounted(restoreSession)
 .sidebar { display: flex; flex-direction: column; gap: 16px; }.sidebar-panel, .terminal-panel { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }.panel-bar { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--overlay-a15); border-bottom: 1px solid var(--border); }.panel-dot { width: 8px; height: 8px; border-radius: 50%; }.dot-cyan { background: var(--accent); }.dot-green { background: var(--ok); }.dim { opacity: .3; }.panel-title { flex: 1; font-size: 10px; font-weight: 600; color: var(--text-muted); text-align: center; letter-spacing: 1.5px; text-transform: lowercase; }.panel-body { padding: 8px 0; }.panel-content { padding: 24px; }.nav-body { padding: 4px 0; }
 .nav-item { display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 16px; font: inherit; font-size: 12px; font-weight: 500; color: var(--text-dim); text-align: left; background: none; border: 0; border-left: 2px solid transparent; cursor: pointer; }.nav-item:hover { color: var(--text); background: var(--overlay-a2); }.nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-a4); }.nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; min-width: 18px; }.nav-item.active .nav-num { color: var(--accent); }
 .info-line { display: flex; justify-content: space-between; gap: 12px; padding: 5px 12px; font-size: 11px; }.info-key { color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }.info-val { color: var(--text-secondary); overflow-wrap: anywhere; }.terminal-green, .status-ok { color: var(--ok); }.logout-button { padding: 10px 12px; font: inherit; font-size: 12px; color: var(--text-dim); background: none; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; }.logout-button:hover { color: var(--err); border-color: var(--err); }
-.content { min-width: 0; }.content-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 28px; }.content-heading h1, .login-panel h1 { margin: 0; color: var(--text-bright); font-size: clamp(24px, 4vw, 34px); }.eyebrow { margin: 0 0 8px; color: var(--accent); font-size: 10px; letter-spacing: 1.5px; }.muted { color: var(--text-dim); }.error, .status-error { color: var(--err); }.status { min-height: 18px; font-size: 12px; color: var(--ok); text-align: right; }.view-stack { display: grid; gap: 16px; }.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }.metric-card { display: flex; flex-direction: column; gap: 10px; padding: 18px; }.metric-label { color: var(--text-dim); font-size: 11px; }.metric-card strong { color: var(--accent); font-size: 30px; line-height: 1; }.metric-card .role-value { font-size: 18px; text-transform: uppercase; }.metric-code { color: var(--text-muted); font-size: 10px; }.status-line { margin-top: 18px; color: var(--ok); font-size: 12px; }.status-dot { width: 7px; height: 7px; display: inline-block; margin-right: 6px; background: var(--ok); border-radius: 50%; box-shadow: 0 0 10px var(--ok); }
+.content { min-width: 0; }.content-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 28px; }.content-heading h1, .login-panel h1 { margin: 0; color: var(--text-bright); font-size: clamp(24px, 4vw, 34px); }.eyebrow { margin: 0 0 8px; color: var(--accent); font-size: 10px; letter-spacing: 1.5px; }.muted { color: var(--text-dim); }.error, .status-error { color: var(--err); }.status { min-height: 18px; font-size: 12px; color: var(--ok); text-align: right; }.view-stack { display: grid; gap: 16px; }.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }.metric-card { display: flex; flex-direction: column; gap: 10px; padding: 18px; }.metric-label { color: var(--text-dim); font-size: 11px; }.metric-card strong { color: var(--accent); font-size: 30px; line-height: 1; }.metric-card .role-value { font-size: 18px; text-transform: uppercase; }.metric-code { color: var(--text-muted); font-size: 10px; }.overview-groups { display: grid; gap: 24px; }.ov-group { display: grid; gap: 10px; }.ov-group-title { display: flex; align-items: center; gap: 8px; margin: 0; padding: 0 2px; font-family: var(--font-mono, monospace); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); }.ov-group-title::after { content: ''; flex: 1; height: 1px; margin-left: 2px; background: linear-gradient(90deg, var(--border-strong), transparent); opacity: .6; }.ov-num { color: var(--accent); font-size: 10px; font-weight: 700; }.metric-grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }.metric-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }.metric-card { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }.metric-card:hover { transform: translateY(-2px); border-color: var(--accent-a50); box-shadow: 0 8px 20px var(--accent-a10); }.metric-card strong { font-size: 26px; }.metric-card .stat-num { font-size: 26px; }.status-line { margin-top: 18px; color: var(--ok); font-size: 12px; }.status-dot { width: 7px; height: 7px; display: inline-block; margin-right: 6px; background: var(--ok); border-radius: 50%; box-shadow: 0 0 10px var(--ok); }
 .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }.toolbar p { margin: 0; font-size: 12px; }.toolbar-actions { display: flex; gap: 8px; }.pager-info { align-self: center; font-size: 12px; color: var(--text-dim); } .pager-select { padding: 5px 8px; font: inherit; font-size: 12px; color: var(--text); background: var(--bg-code); border: 1px solid var(--border-strong); border-radius: 5px; }.import-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; } .ai-search { padding: 8px 10px; font: inherit; font-size: 12px; color: var(--text); background: var(--bg-code); border: 1px solid var(--border-strong); border-radius: 6px; min-width: 240px; }.conv-summary { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .junk-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; font-size: 12px; color: var(--text-secondary); }.btn-sm { margin-right: 6px; }.full-width { margin-top: 18px; }.table-panel { overflow: hidden; }.table-wrap { overflow-x: auto; }.table-wrap table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: 12px; }.table-wrap th, .table-wrap td { padding: 12px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }.table-wrap th { color: var(--text-muted); background: var(--overlay-a15); font-weight: 600; }.table-wrap tr:last-child td { border-bottom: 0; }.empty { padding: 24px !important; color: var(--text-dim); text-align: center !important; }.tag { display: inline-block; margin-top: 4px; padding: 3px 7px; color: var(--text-dim); border: 1px solid var(--border-strong); border-radius: 4px; font-size: 10px; }.form-panel label, .login-panel label { display: block; margin: 14px 0 6px; color: var(--text-secondary); font-size: 12px; }.form-panel input, .form-panel textarea, .login-panel input { width: 100%; box-sizing: border-box; padding: 10px 12px; color: var(--text); font: inherit; font-size: 12px; background: var(--bg-code); border: 1px solid var(--border-strong); border-radius: 6px; outline: none; }.form-panel input:focus, .form-panel textarea:focus, .login-panel input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-a8); }.form-panel textarea { min-height: 150px; resize: vertical; }.form-panel select { width: 100%; box-sizing: border-box; padding: 10px 12px; color: var(--text); font: inherit; font-size: 12px; background: var(--bg-code); border: 1px solid var(--border-strong); border-radius: 6px; }.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }.actions { display: flex; gap: 8px; margin-top: 18px; }.token-notice { display: grid; gap: 10px; padding: 16px; color: var(--warn); background: var(--warn-a8); border: 1px solid var(--warn-a20); border-radius: 6px; font-size: 12px; }.token-notice code { color: var(--text-bright); overflow-wrap: anywhere; white-space: pre-wrap; }
 @media (max-width: 1100px) { .nav-num { display: none; }.brand-path { display: none; }.gateway-header-inner { gap: 6px; } }
-@media (max-width: 800px) { .main-layout { grid-template-columns: 1fr; gap: 24px; padding: 28px 16px; }.sidebar { flex-direction: row; flex-wrap: wrap; }.sidebar-panel { flex: 1; min-width: 220px; }.logout-button { width: 100%; }.metric-grid, .form-grid { grid-template-columns: 1fr; }.content-heading { align-items: start; flex-direction: column; }.status { text-align: left; }.gateway-header-inner { padding: 0 16px; }.brand-path { display: none; }.login-layout { padding: 24px 16px; } }
+@media (max-width: 800px) { .main-layout { grid-template-columns: 1fr; gap: 24px; padding: 28px 16px; }.sidebar { flex-direction: row; flex-wrap: wrap; }.sidebar-panel { flex: 1; min-width: 220px; }.logout-button { width: 100%; }.metric-grid, .form-grid { grid-template-columns: 1fr; }.metric-grid.cols-4, .metric-grid.cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }.content-heading { align-items: start; flex-direction: column; }.status { text-align: left; }.gateway-header-inner { padding: 0 16px; }.brand-path { display: none; }.login-layout { padding: 24px 16px; } }
  .access-section { margin-top: 20px; }.access-section h3 { margin: 0 0 10px; color: var(--text-bright); font-size: 13px; }.access-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }.check-option { display: flex !important; align-items: center; gap: 8px; margin: 0 !important; padding: 9px 10px; color: var(--text-secondary); background: var(--overlay-a4); border: 1px solid var(--border); border-radius: 5px; cursor: pointer; }.check-option input { width: auto !important; accent-color: var(--accent); }.content-heading.compact { margin-bottom: 8px; align-items: center; }.user-permission-panel select { width: 100%; box-sizing: border-box; padding: 10px 12px; color: var(--text); font: inherit; font-size: 12px; background: var(--bg-code); border: 1px solid var(--border-strong); border-radius: 6px; }
 .form-panel select { width: 100%; box-sizing: border-box; padding: 10px 12px; color: var(--text); font: inherit; font-size: 12px; background: var(--bg-code); border: 1px solid var(--border-strong); border-radius: 6px; outline: none; }.form-panel select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-a8); }.model-status-value { font-size: 22px !important; }.endpoint-value { font-size: 12px !important; overflow-wrap: anywhere; }.model-answer { margin-top: 18px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }.model-answer .panel-bar { background: var(--overlay-a15); }.model-usage { font-size: 10px; margin-right: 10px; }.model-output { margin: 0; padding: 16px; font: inherit; font-size: 12px; line-height: 1.7; color: var(--text); background: var(--bg-code); white-space: pre-wrap; overflow-wrap: anywhere; }.curate-summary { margin-top: 18px; display: grid; gap: 12px; }.curate-summary .table-wrap table { min-width: 560px; }.curate-summary code { color: var(--accent); }
 
@@ -1031,7 +1050,7 @@ onMounted(restoreSession)
 .tool-bar-fill { display: block; height: 100%; border-radius: 6px; transition: width .6s ease; }
 .tool-count { width: 46px; flex: none; text-align: right; font-family: var(--font-mono); color: var(--text-bright); font-weight: 700; }
 .tool-share { width: 40px; flex: none; text-align: right; color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); }
-.stats-side { display: flex; flex-direction: column; gap: 18px; }
+.stats-main, .stats-side { display: flex; flex-direction: column; gap: 22px; }.stat-block { display: grid; gap: 2px; }.ring-block { display: flex; align-items: center; gap: 20px; padding: 16px 18px; background: var(--overlay-a4); border: 1px solid var(--border); border-radius: var(--radius-md, 8px); }.ring-key { font-size: 11px !important; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim) !important; margin-bottom: 4px !important; }
 .trend-svg { width: 100%; height: auto; display: block; color: var(--accent); }
 .trend-area { fill: url(#trendGrad); }
 .trend-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
@@ -1052,3 +1071,4 @@ onMounted(restoreSession)
 .fail-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 12px; }
 .fail-msg { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--err); font-size: 11px; }
 </style>
+@media (max-width: 520px) { .metric-grid.cols-4, .metric-grid.cols-3 { grid-template-columns: 1fr; }.ov-group-title::after { display: none; } }
