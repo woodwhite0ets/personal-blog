@@ -510,13 +510,13 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 }
 
 .hero-inner {
-  max-width: 1060px; margin: 0 auto; padding: 72px 24px 64px;
+  max-width: 1060px; margin: 0 auto; padding: 104px 24px 84px;
 }
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 10px; font-weight: 700; letter-spacing: 2px;
-  color: var(--text-dim); margin-bottom: 20px; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 26px; text-transform: uppercase;
 }
 
 .badge-dot {
@@ -529,16 +529,16 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .hero-terminal {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--font-mono); font-size: 12px;
-  color: var(--text-dim); margin: -6px 0 22px;
-  padding: 6px 14px; border-radius: 6px;
+  color: var(--text-dim); margin: -6px 0 30px;
+  padding: 7px 15px; border-radius: 999px;
   background: var(--overlay-a2); border: 1px solid var(--border);
 }
 .hero-prompt { color: var(--accent); }
 .hero-caret { color: var(--accent); animation: caretBlink 1s step-end infinite; }
 
 .hero-title {
-  font-size: 34px; font-weight: 800; line-height: 1.3;
-  margin: 0 0 16px; max-width: 680px; letter-spacing: -0.5px;
+  font-size: clamp(34px, 4.6vw, 54px); font-weight: 800; line-height: 1.14;
+  margin: 0 0 22px; max-width: 780px; letter-spacing: -0.03em;
 }
 
 .hero-title a {
@@ -548,8 +548,8 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .hero-title a:hover { color: var(--accent); }
 
 .hero-excerpt {
-  font-size: 15px; color: var(--text-dim); line-height: 1.7;
-  margin: 0 0 24px; max-width: 560px;
+  font-size: 17px; color: var(--text-dim); line-height: 1.75;
+  margin: 0 0 30px; max-width: 660px;
 }
 
 .hero-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
@@ -729,8 +729,8 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
   .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
   .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
   .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
-  .hero-inner { padding: 48px 20px 40px; }
-  .hero-title { font-size: 24px; }
+  .hero-inner { padding: 64px 20px 52px; }
+  .hero-title { font-size: 30px; }
 }
 
 /* ====== Hero 滚动提示 ====== */

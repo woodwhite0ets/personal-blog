@@ -101,8 +101,8 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   border-bottom: 1px solid var(--border);
 }
 .navbar-inner {
-  max-width: 1060px; margin: 0 auto; padding: 0 24px;
-  height: 56px; display: flex; align-items: center; gap: 36px;
+  max-width: 1060px; margin: 0 auto; padding: 0 26px;
+  height: 62px; display: flex; align-items: center; gap: 34px;
 }
 .brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; text-decoration: none; font-size: 14px; font-weight: 600; }
 .brand-bracket { color: var(--text-muted); }
@@ -122,13 +122,13 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 }
 .nav-links a:hover::after, .nav-links a.router-link-active::after { transform: scaleX(1); }
 .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.btn-login { padding: 6px 14px; font: inherit; font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); border-radius: 6px; transition: all 0.2s; }
+.btn-login { padding: 8px 18px; font: inherit; font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); border-radius: 999px; transition: all 0.2s; }
 .btn-login:hover { background: var(--accent); color: var(--on-accent); }
-.btn-write { display: flex; align-items: center; gap: 6px; padding: 6px 16px; font: inherit; font-size: 12px; font-weight: 600; color: var(--on-accent); background: var(--accent); border-radius: 6px; text-decoration: none; transition: all 0.2s; }
+.btn-write { display: flex; align-items: center; gap: 6px; padding: 8px 18px; font: inherit; font-size: 12px; font-weight: 600; color: var(--on-accent); background: var(--accent); border-radius: 999px; text-decoration: none; transition: all 0.2s; }
 .btn-write:hover { background: var(--accent-hover); box-shadow: 0 0 20px var(--accent-a25); transform: translateY(-1px); }
 .btn-write-icon { font-size: 15px; font-weight: 700; }
 .user-menu-wrap { position: relative; }
-.btn-user { display: flex; align-items: center; gap: 8px; padding: 4px 10px 4px 4px; font: inherit; font-size: 12px; color: var(--text); background: var(--overlay-a4); border: 1px solid var(--border-strong); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+.btn-user { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; font: inherit; font-size: 12px; color: var(--text); background: var(--overlay-a4); border: 1px solid var(--border-strong); border-radius: 999px; cursor: pointer; transition: all 0.2s; }
 .btn-user:hover { border-color: var(--accent); background: var(--accent-a6); }
 .user-name { font-weight: 500; color: var(--text-secondary); }
 .user-caret { font-size: 10px; color: var(--text-muted); transition: transform 0.2s; }
