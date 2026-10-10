@@ -46,9 +46,9 @@ app.use(helmet({
   originAgentCluster: false,
 }));
 
-// CORS — 允许已知前端域名
-const allowedOrigins = [
-  process.env.SITE_URL || 'http://localhost:5173',
+// CORS — 允许已知前端域名（生产只放行正式域名；localhost/127.0.0.1 仅非生产环境）
+const prodOrigins = [
+  process.env.SITE_URL,
   'https://woodwhite.top',
   'http://woodwhite.top',
   'https://blog.woodwhite.top',
@@ -57,6 +57,8 @@ const allowedOrigins = [
   'http://woodwhite.top:3027',
   'http://woodwhite.top:30827',
   'http://blog.woodwhite.top:30827',
+].filter(Boolean);
+const devOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:3027',
@@ -65,6 +67,9 @@ const allowedOrigins = [
   'http://127.0.0.1:3027',
   'http://127.0.0.1:30827',
 ];
+const allowedOrigins = process.env.NODE_ENV === 'production'
+  ? prodOrigins
+  : [...prodOrigins, ...devOrigins];
 app.use(cors({
   origin: (origin, cb) => {
     // 同源或无 origin（服务器间请求）允许
@@ -175,6 +180,15 @@ app.use(async (req, res, next) => {
   // Missing hashed assets under /assets (e.g. an old entry point referencing a
   // removed chunk) → 404 instead of a misleading 200 text/html.
   if (req.path.startsWith('/assets/')) {
+    return res.status(404).json({ message: 'not found' });
+  }
+  // 扫描器探测路径（dotfile、常见漏洞/备份文件）→ 404，而不是返回 SPA HTML 200
+  // （避免对 /.env、/.git/config、/functions.php、/wp-login.php 等报 200）
+  const p = req.path;
+  const isDotPath = /(^|\/)\.(?!well-known(\/|$))/.test(p);
+  const isProbeExt = /\.(php\d?|env|ini|log|sql|bak|old|orig|save|swp|pem|key|crt|sh|py|rb|pl|asp|aspx|jsp|cgi|ya?ml|toml|lock)$/i.test(p);
+  const isProbeName = /\/(wp-admin|wp-login|wp-content|wp-includes|xmlrpc|phpmyadmin|sftp-config|\.amplifyrc|\.boto|\.vscode\/sftp)/i.test(p);
+  if (isDotPath || isProbeExt || isProbeName) {
     return res.status(404).json({ message: 'not found' });
   }
   // The SPA entry references hashed assets. Never let browsers keep an old

@@ -31,7 +31,7 @@ mkdir Server/uploads
 cd Server && npm run dev
 ```
 
-生产环境访问 `http://localhost:3027`，后端直接提供前端 dist/ 静态文件。
+生产环境访问 `http://localhost:3027`，后端直接提供前端 `dist/` 静态文件。
 
 ## 服务器部署
 
@@ -39,15 +39,15 @@ cd Server && npm run dev
 # 拉取最新代码
 git pull
 
-# 安装新依赖（如有）
+# 安装依赖
 cd Server && npm install
-cd ../Client && npm install
+cd ../Client && npm install && npm run build   # 前端需构建（dist/ 不入库）
 
-# 重启服务
-cd Server && npm run dev
+# 重启服务（pm2，NODE_ENV=production）
+cd ../Server && pm2 restart blog
 ```
 
-每次 `git pull` 后无需重新构建前端（dist/ 已包含在仓库中）。
+> 注意：`Client/dist/` 已不再提交到仓库（改为部署时构建），因此每次前端有改动后**必须**执行 `Client && npm run build` 再重启。
 
 
 ## 环境变量参考

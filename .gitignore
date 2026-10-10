@@ -43,3 +43,12 @@ Client/dist.previous-*/
 
 # Caddy 配置备份
 Server/deploy/Caddyfile.bak*
+
+# 前端构建产物（改为部署时构建，不入库）
+Client/dist/
+
+# 备份/临时文件（统一忽略）
+*.bak
+*.bak2
+*.bak.*
+*.previous*
