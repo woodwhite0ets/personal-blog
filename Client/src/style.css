@@ -458,6 +458,8 @@
   --font-sans: "Manrope Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
   --font-display: var(--font-sans);
+  /* 古典衬线：西文 EB Garamond + 中文思源宋体 */
+  --font-serif: "EB Garamond Variable", "Noto Serif SC", Georgia, "Songti SC", "SimSun", "Source Han Serif SC", serif;
 
   /* 缓动：弹簧质感（非默认 linear/ease-in-out）*/
   --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
@@ -1161,3 +1163,15 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   font-family: var(--font-sans);
   letter-spacing: -0.02em;
 }
+
+/* ============================================================
+   欧美古典风格（2026-10-11）：正文+标题用古典衬线（EB Garamond + 思源宋体）
+   ============================================================ */
+.markdown-body {
+  font-family: var(--font-serif);
+}
+h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
+  font-family: var(--font-serif);
+  letter-spacing: 0;
+}
+.hero-title { letter-spacing: -0.01em; }
