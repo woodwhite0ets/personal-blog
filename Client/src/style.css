@@ -1099,3 +1099,11 @@ body::after {
 .post-link:active { transform: translateY(1px) scale(.995); }
 .card-hover:hover,
 .card-lift:hover { transform: translateY(-3px); }
+
+/* ============================================================
+   标题层去"方"（2026-10-11）：等宽字体放大后显方，标题改用清爽无衬线
+   ============================================================ */
+h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
+  font-family: var(--font-sans);
+  letter-spacing: -0.02em;
+}
