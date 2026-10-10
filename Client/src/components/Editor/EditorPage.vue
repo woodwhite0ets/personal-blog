@@ -780,7 +780,7 @@ watch(
 .editor-page {
   min-height: 100vh;
   background: var(--bg);
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: var(--font-sans);
   color: var(--text);
   position: relative;
 }
@@ -995,7 +995,7 @@ watch(
 /* 正文编辑 */
 .input-content {
   flex: 1; min-height: 300px; width: 100%;
-  padding: 14px; font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  padding: 14px; font-family: var(--font-mono);
   font-size: 14px; line-height: 1.75; color: var(--text);
   background: var(--bg-elevated); border: 1px solid var(--border-strong);
   border-radius: 8px; outline: none; resize: vertical;
@@ -1096,7 +1096,7 @@ watch(
 }
 
 .preview-body :deep(code) {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: var(--font-mono);
   font-size: 13px; padding: 2px 6px;
   background: var(--overlay-a5); border: 1px solid var(--border);
   border-radius: 4px; color: var(--accent);

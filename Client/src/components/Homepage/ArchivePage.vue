@@ -100,7 +100,7 @@ onMounted(async () => {
 .archive-page {
   min-height: 100vh;
   background: var(--bg);
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: var(--font-sans);
   color: var(--text);
   position: relative;
   overflow-x: hidden;
@@ -164,7 +164,7 @@ onMounted(async () => {
 .year-posts { display: flex; flex-direction: column; }
 .archive-item { display: flex; align-items: center; gap: 16px; padding: 8px 0; text-decoration: none; border-bottom: 1px solid var(--overlay-a2); transition: background 0.15s; }
 .archive-item:hover { background: var(--accent-a2); }
-.arch-date { font-size: 11px; color: var(--text-muted); font-weight: 600; min-width: 85px; font-family: 'JetBrains Mono', monospace; }
+.arch-date { font-size: 11px; color: var(--text-muted); font-weight: 600; min-width: 85px; font-family: var(--font-sans); }
 .arch-title { flex: 1; font-size: 14px; color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .arch-tag { font-size: 10px; color: var(--text-faint); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 

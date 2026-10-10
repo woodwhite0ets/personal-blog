@@ -75,7 +75,7 @@ defineEmits(['confirm', 'cancel'])
 .modal-body { padding: 24px 20px; }
 
 .modal-message {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: var(--font-sans);
   font-size: 13px; color: var(--text-secondary); line-height: 1.7;
   margin: 0 0 24px; text-align: center;
 }

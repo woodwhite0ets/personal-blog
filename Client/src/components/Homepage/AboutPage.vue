@@ -169,7 +169,7 @@ onMounted(async () => {
 .about-page {
   min-height: 100vh;
   background: var(--bg);
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: var(--font-sans);
   color: var(--text);
   position: relative;
   overflow-x: hidden;

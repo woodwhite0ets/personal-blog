@@ -268,7 +268,7 @@ onUnmounted(() => {
   background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px;
   max-height: calc(100vh - 280px); min-height: 400px;
   overflow-y: auto; padding: 16px;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: var(--font-mono);
   font-size: 12px; line-height: 1.8;
 }
 .log-terminal:has(.caddy-line) { padding: 0; border-radius: 0 0 8px 8px; }
@@ -306,7 +306,7 @@ onUnmounted(() => {
 .caddy-line {
   display: grid; grid-template-columns: 150px 130px 60px 1fr 60px 60px;
   gap: 10px; padding: 5px 16px; align-items: baseline;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: var(--font-mono);
   font-size: 12px; line-height: 1.6;
   background: var(--bg-code); border-bottom: 1px solid var(--border-a30);
 }

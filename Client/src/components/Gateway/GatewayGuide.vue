@@ -161,8 +161,8 @@ onBeforeUnmount(() => {
 .guide-panel { min-width: 0; overflow: hidden; }
 .guide-content { padding: 28px 32px 42px; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 .guide-content :deep(h1), .guide-content :deep(h2), .guide-content :deep(h3) { color: var(--text-bright); line-height: 1.3; scroll-margin-top: 84px; }
-.guide-content :deep(h1) { margin: 0 0 16px; font-family: 'JetBrains Mono', Consolas, monospace; font-size: clamp(24px, 4vw, 34px); }
-.guide-content :deep(h2) { margin: 34px 0 12px; padding-top: 8px; border-top: 1px solid var(--border); font-family: 'JetBrains Mono', Consolas, monospace; font-size: 20px; }
+.guide-content :deep(h1) { margin: 0 0 16px; font-family: var(--font-sans); font-size: clamp(24px, 4vw, 34px); }
+.guide-content :deep(h2) { margin: 34px 0 12px; padding-top: 8px; border-top: 1px solid var(--border); font-family: var(--font-sans); font-size: 20px; }
 .guide-content :deep(h3) { margin: 24px 0 10px; font-size: 15px; }
 .guide-content :deep(p), .guide-content :deep(li) { color: var(--text-secondary); font-size: 14px; line-height: 1.8; }
 .guide-content :deep(ul), .guide-content :deep(ol) { padding-left: 22px; }
@@ -171,7 +171,7 @@ onBeforeUnmount(() => {
 .guide-content :deep(th), .guide-content :deep(td) { padding: 10px 12px; text-align: left; border: 1px solid var(--border); }
 .guide-content :deep(th) { color: var(--text-bright); background: var(--overlay-a15); }
 .guide-content :deep(td) { color: var(--text-secondary); }
-.guide-content :deep(code) { padding: 2px 5px; color: var(--accent); background: var(--bg-code); border-radius: 3px; font-family: 'JetBrains Mono', Consolas, monospace; font-size: .9em; overflow-wrap: anywhere; }
+.guide-content :deep(code) { padding: 2px 5px; color: var(--accent); background: var(--bg-code); border-radius: 3px; font-family: var(--font-mono); font-size: .9em; overflow-wrap: anywhere; }
 .guide-content :deep(pre) { margin: 14px 0 20px; padding: 16px; overflow-x: auto; color: var(--text-secondary); background: var(--bg-code); border: 1px solid var(--border); border-radius: 6px; }
 .guide-content :deep(pre code) { padding: 0; color: inherit; background: transparent; }
 .guide-content :deep(a) { color: var(--accent); }

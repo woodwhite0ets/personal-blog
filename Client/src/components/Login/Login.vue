@@ -194,7 +194,7 @@ async function handleGuestLogin() {
   align-items: center;
   justify-content: center;
   background: var(--bg-deeper);
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: var(--font-sans);
   color: var(--text);
   position: relative;
   overflow: hidden;

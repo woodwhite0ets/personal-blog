@@ -201,7 +201,7 @@ defineEmits(['load-more', 'refresh'])
 .btn-load-more {
   background: none;
   padding: 10px 28px;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: var(--font-sans);
   font-size: 12px;
 }
 

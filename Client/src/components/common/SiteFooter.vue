@@ -77,7 +77,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
 .dot-green { background: var(--dot-green); }
 .terminal-title { margin-left: 8px; font-size: 10px; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
 .terminal-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
-.footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace; min-height: 20px; }
+.footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-family: var(--font-sans); min-height: 20px; }
 .footer-prompt { color: var(--accent); }
 .footer-cmd { color: var(--text-secondary); white-space: nowrap; overflow: hidden; }
 .footer-caret { color: var(--accent); font-size: 12px; }
@@ -88,7 +88,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
 .footer-links a:hover { color: var(--accent); }
 .footer-link-sep { color: var(--text-faint); }
 .footer-beian { margin-bottom: 4px; }
-.beian-link { font-size: 12px; color: var(--text-muted); text-decoration: none; font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace; transition: color 0.2s; }
+.beian-link { font-size: 12px; color: var(--text-muted); text-decoration: none; font-family: var(--font-sans); transition: color 0.2s; }
 .beian-link:hover { color: var(--accent); }
 .beian-sep { margin: 0 8px; color: var(--text-faint); font-size: 11px; }
 .beian-ga { color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px; }

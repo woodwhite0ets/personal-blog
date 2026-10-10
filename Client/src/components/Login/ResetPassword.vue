@@ -147,7 +147,7 @@ async function handleReset() {
 .terminal-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg-deeper); border-bottom: 1px solid var(--border); }
 .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
 .dot-red { background: var(--dot-red); } .dot-yellow { background: var(--dot-yellow); } .dot-green { background: var(--dot-green); }
-.terminal-title { margin-left: auto; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+.terminal-title { margin-left: auto; font-size: 11px; color: var(--text-muted); font-family: var(--font-sans); }
 
 .card-body { padding: 28px; }
 .header { margin-bottom: 24px; }
