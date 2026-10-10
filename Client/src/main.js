@@ -3,6 +3,7 @@ import './style.css'
 import App from './App.vue'
 import router from './router/index.js'
 import { initEnhance } from './utils/enhance.js'
+import { initHighlighter } from './utils/highlighter.js'
 
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -85,10 +86,41 @@ function attachRipple() {
   })
 }
 
+// ===== 代码块“复制”按钮（事件委托，符合 CSP 无内联脚本） =====
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea')
+  ta.value = text
+  ta.style.position = 'fixed'
+  ta.style.opacity = '0'
+  document.body.appendChild(ta)
+  ta.select()
+  try { document.execCommand('copy'); done() } catch (_e) { /* 忽略 */ }
+  ta.remove()
+}
+function attachCodeCopy() {
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.code-copy')
+    if (!btn) return
+    const code = btn.closest('.code-block')?.querySelector('pre code')
+    if (!code) return
+    const text = code.textContent || ''
+    const done = () => {
+      btn.textContent = '已复制'
+      btn.classList.add('copied')
+      setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied') }, 1500)
+    }
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done))
+    else fallbackCopy(text, done)
+  })
+}
+
 const app = createApp(App)
 app.directive('reveal', reveal)
 app.directive('count', count)
 app.use(router)
-if (typeof window !== 'undefined') attachRipple()
-app.mount('#app')
-if (typeof window !== 'undefined') initEnhance()
+if (typeof window !== 'undefined') { attachRipple(); attachCodeCopy() }
+// 先预热代码高亮（Shiki）再挂载，保证首屏代码块即高亮；失败也会 finally 挂载
+initHighlighter().finally(() => {
+  app.mount('#app')
+  if (typeof window !== 'undefined') initEnhance()
+})
