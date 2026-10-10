@@ -679,7 +679,6 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .post-content {
   font-family: var(--font-sans);
   font-size: 16px;
-  line-height: 1.9;
   color: var(--text);
 }
 

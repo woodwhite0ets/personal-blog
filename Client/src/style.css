@@ -632,7 +632,7 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--bg-elevated);
+  background: var(--bg-code);
 }
 .code-head {
   display: flex; align-items: center; justify-content: space-between;
@@ -657,13 +657,12 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
 .markdown-body .code-block pre {
   margin: 0; border: none; border-radius: 0;
   padding: 16px 18px; overflow-x: auto; line-height: 1.6;
+  background: transparent;
 }
 
 /* 明/暗主题取不同 token 颜色（Shiki 双主题 CSS 变量，无需重渲染）*/
-.code-block .shiki { background: var(--shiki-dark-bg); }
 .code-block .shiki span { color: var(--shiki-dark); }
 .code-block code { font-family: var(--font-mono); }
-[data-theme='paper'] .code-block .shiki { background: var(--shiki-light-bg); }
 [data-theme='paper'] .code-block .shiki span { color: var(--shiki-light); }
 
 /* 无障碍：键盘焦点可见（全站通用，组件里的 outline:none 不再导致失焦不可见） */
