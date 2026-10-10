@@ -567,7 +567,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 /* ====== 主体布局 ====== */
 .main-layout {
   position: relative; z-index: 1;
-  max-width: 1060px; margin: 0 auto; padding: 56px 24px;
+  max-width: 1060px; margin: 0 auto; padding: 72px 24px;
   display: grid; grid-template-columns: 1fr 280px; gap: 56px;
 }
 
