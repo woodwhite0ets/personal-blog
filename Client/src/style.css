@@ -1175,3 +1175,9 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   letter-spacing: 0;
 }
 .hero-title { letter-spacing: -0.01em; }
+
+/* 古典衬线：提高优先级覆盖 .markdown-body h1..h6 的无衬线 */
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+  font-family: var(--font-serif);
+  letter-spacing: 0;
+}

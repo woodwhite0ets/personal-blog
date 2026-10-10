@@ -677,7 +677,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 /* ====== Markdown 正文（排版统一走全局 .markdown-body） ====== */
 .post-content {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-size: 17px;
   color: var(--text);
 }
