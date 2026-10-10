@@ -622,7 +622,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 /* ====== 文章容器 ====== */
 .post-article {
   position: relative; z-index: 1;
-  max-width: 720px; margin: 0 auto; padding: 56px 24px 32px;
+  max-width: 660px; margin: 0 auto; padding: 56px 24px 32px;
 }
 
 .post-meta-top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
