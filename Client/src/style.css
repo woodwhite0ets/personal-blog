@@ -1229,3 +1229,11 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 }
 .field-label { font-size: 14px; color: var(--text-dim); }
 .tag { border-radius: 3px; }
+
+/* 信笺统一：侧栏面板（去彩点/去终端标题/去编号）*/
+.panel-dot, .nav-num { display: none !important; }
+.panel-bar { border-bottom: 1px solid var(--border) !important; background: transparent !important; }
+.panel-title { font-family: var(--font-hand) !important; font-size: 17px !important; letter-spacing: 0 !important; text-transform: none !important; font-weight: 400 !important; color: var(--text-bright) !important; }
+.sidebar-panel { background: transparent !important; box-shadow: none !important; }
+.terminal-green { color: var(--text-secondary) !important; }
+.info-line .info-key { color: var(--text-dim) !important; }
