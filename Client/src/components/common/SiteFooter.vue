@@ -78,4 +78,11 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
 .footer-terminal:hover { translate: 0 -4px; box-shadow: 0 18px 48px var(--shadow), 0 0 0 1px var(--accent-a15); border-color: var(--accent-a30); }
 .footer-status { position: relative; }
 .footer-status .status-dot { position: relative; }
+
+.footer-brand { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.footer-wordmark { font-family: var(--font-hand); font-size: 28px; color: var(--text-bright); }
+.footer-tagline { font-size: 14px; color: var(--text-dim); letter-spacing: .02em; }
+.footer-links { font-size: 15px; gap: 16px; }
+.footer-links a { color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 1px; transition: color .2s, border-color .2s; }
+.footer-links a:hover { color: var(--text-bright); border-color: var(--text-bright); }
 </style>

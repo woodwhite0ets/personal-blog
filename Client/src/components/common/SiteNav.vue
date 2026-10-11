@@ -96,31 +96,31 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   border-bottom: 1px solid var(--border);
 }
 .navbar-inner {
-  max-width: 1060px; margin: 0 auto; padding: 0 26px;
-  height: 62px; display: flex; align-items: center; gap: 34px;
+  max-width: 1120px; margin: 0 auto; padding: 0 28px;
+  height: 74px; display: flex; align-items: center; gap: 38px;
 }
 .brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; text-decoration: none; font-size: 14px; font-weight: 600; }
 .brand-bracket { color: var(--text-muted); }
-.brand-text { font-family: var(--font-hand); font-size: 16px; color: var(--accent); }
+.brand-text { font-family: var(--font-hand); font-size: 21px; color: var(--text-bright); }
 .brand-caret { color: var(--accent); font-size: 12px; margin-left: 1px; }
 .brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
 .nav-links { display: flex; gap: 28px; flex: 1; }
-.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 12px; font-weight: 500; color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px; position: relative; white-space: nowrap; }
+.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 15px; font-weight: 400; color: var(--text-secondary); transition: color .25s var(--ease-spring); position: relative; white-space: nowrap; }
 .nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; }
-.nav-links a:hover, .nav-links a.router-link-active { color: var(--text); }
+.nav-links a:hover, .nav-links a.router-link-active { color: var(--text-bright); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 .nav-links a::after {
-  content: ''; position: absolute; left: 0; bottom: -2px;
-  width: 100%; height: 2px; background: var(--accent);
+  content: ''; position: absolute; left: 0; bottom: -4px;
+  width: 100%; height: 1px; background: var(--text-bright);
   transform: scaleX(0); transform-origin: left;
-  transition: transform 0.25s ease;
+  transition: transform .3s var(--ease-spring);
 }
 .nav-links a:hover::after, .nav-links a.router-link-active::after { transform: scaleX(1); }
 .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.btn-login { padding: 8px 18px; font: inherit; font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); border-radius: 999px; transition: all 0.2s; }
-.btn-login:hover { background: var(--accent); color: var(--on-accent); }
-.btn-write { display: flex; align-items: center; gap: 6px; padding: 8px 18px; font: inherit; font-size: 12px; font-weight: 600; color: var(--on-accent); background: var(--accent); border-radius: 999px; text-decoration: none; transition: all 0.2s; }
-.btn-write:hover { background: var(--accent-hover); box-shadow: 0 0 20px var(--accent-a25); transform: translateY(-1px); }
+.btn-login { padding: 8px 18px; font: inherit; font-size: 14px; font-weight: 400; color: var(--text-bright); text-decoration: none; border: 1px solid var(--border-strong); border-radius: 4px; transition: all .25s var(--ease-spring); }
+.btn-login:hover { background: var(--text-bright); color: var(--bg); border-color: var(--text-bright); }
+.btn-write { display: flex; align-items: center; gap: 6px; padding: 9px 18px; font: inherit; font-size: 14px; font-weight: 400; color: var(--bg); background: var(--text-bright); border-radius: 4px; text-decoration: none; transition: all .25s var(--ease-spring); }
+.btn-write:hover { background: var(--accent); color: var(--on-accent); }
 .btn-write-icon { font-size: 15px; font-weight: 700; }
 .user-menu-wrap { position: relative; }
 .btn-user { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; font: inherit; font-size: 12px; color: var(--text); background: var(--overlay-a4); border: 1px solid var(--border-strong); border-radius: 999px; cursor: pointer; transition: all 0.2s; }
