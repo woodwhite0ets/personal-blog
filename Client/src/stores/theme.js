@@ -10,6 +10,7 @@ const THEMES = [
 
 // 恢复上次主题（默认 paper 信纸）
 const saved = typeof localStorage !== 'undefined' ? localStorage.getItem(THEME_KEY) : null
+const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
 const current = ref(THEMES.some(t => t.id === saved) ? saved : (prefersDark ? 'midnight' : 'paper'))
 
 // 主题切换平滑过渡：给 <html> 打上短暂 class，让 CSS 变量驱动颜色平滑过渡
