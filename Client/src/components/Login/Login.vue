@@ -1,29 +1,11 @@
 
 <template>
   <div class="login-page">
-    <!-- 背景装饰 -->
-    <div class="bg-grid"></div>
-    <div class="bg-glow"></div>
- 
     <div class="login-card">
-      <!-- 终端装饰条 -->
-      <div class="terminal-bar">
-        <span class="terminal-dot dot-red"></span>
-        <span class="terminal-dot dot-yellow"></span>
-        <span class="terminal-dot dot-green"></span>
-        <span class="terminal-title">auth --login</span>
-      </div>
- 
       <div class="card-body">
-        <!-- 标题区 -->
         <div class="header">
-          <div class="prompt-line">
-            <span class="prompt-arrow">❯</span>
-            <span class="prompt-cmd">ssh woodwhite@blog</span>
-          </div>
-          <p class="subtitle">
-            <span class="comment">// 请输入凭据以继续</span>
-          </p>
+          <h1 class="login-title">woodwhite@blog</h1>
+          <p class="subtitle">登录以继续</p>
         </div>
  
         <!-- 表单 -->
@@ -81,7 +63,7 @@
  
           <button type="submit" class="btn btn-primary btn-glow" :disabled="loading">
             <span v-if="loading" class="spinner"></span>
-            <span v-if="!loading" class="btn-arrow">❯</span>
+            
             {{ loading ? '登录中...' : '进入' }}
           </button>
         </form>
@@ -614,5 +596,11 @@ async function handleGuestLogin() {
     font-size: 15px;
   }
 }
+
+/* 信笺风登录页（2026-10-11） */
+.login-title { font-family: var(--font-hand); font-size: 34px; font-weight: 400; color: var(--text-bright); margin: 0 0 6px; }
+.login-card { border-radius: 4px; box-shadow: 0 18px 50px var(--shadow-soft); }
+.card-body { padding: 40px 36px; }
+.subtitle { font-size: 15px; color: var(--text-dim); }
 </style>
  

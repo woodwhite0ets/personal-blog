@@ -1202,3 +1202,9 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .status-dot, .badge-dot { box-shadow: none !important; }
 /* 去掉发光型阴影（浅色纸面不需要） */
 .btn-write:hover, .hero-scroll-hint:hover { box-shadow: none !important; }
+
+/* 信笺统一：隐藏终端装饰（登录/后台等页面的残留）*/
+.bg-grid, .bg-glow, .bg-scanline,
+.terminal-bar, .terminal-title, .prompt-line,
+.section-arrow, .brand-bracket, .brand-caret, .brand-path,
+.hero-prompt, .hero-caret, .footer-prompt, .footer-caret { display: none !important; }
