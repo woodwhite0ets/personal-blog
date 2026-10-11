@@ -58,7 +58,6 @@
       <button class="hero-scroll-hint" @click="scrollToPosts" aria-label="向下滚动查看文章">
         <span class="hint-dot"></span>
         <span class="hint-label">scroll</span>
-        <span class="hint-caret anim-caret">▾</span>
       </button>
     </section>
 

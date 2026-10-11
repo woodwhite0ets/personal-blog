@@ -84,8 +84,6 @@
       <aside class="sidebar">
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-cyan"></span>
-            <span class="panel-dot dot-cyan dim"></span>
             <span class="panel-title">概况</span>
           </div>
           <div class="panel-body">
@@ -99,15 +97,13 @@
             </div>
             <div class="info-line">
               <span class="info-key">状态</span>
-              <span class="info-val terminal-green">开放中</span>
+              <span class="info-val">开放中</span>
             </div>
           </div>
         </div>
 
         <div v-if="contributors.length" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-green"></span>
-            <span class="panel-dot dot-green dim"></span>
             <span class="panel-title">活跃用户</span>
           </div>
           <div class="panel-body">
@@ -126,8 +122,6 @@
 
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-yellow"></span>
-            <span class="panel-dot dot-yellow dim"></span>
             <span class="panel-title">标签</span>
           </div>
           <div class="panel-body">
@@ -147,8 +141,6 @@
 
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-purple"></span>
-            <span class="panel-dot dot-purple dim"></span>
             <span class="panel-title">链接</span>
           </div>
           <div class="panel-body">

@@ -67,8 +67,6 @@
       <aside class="sidebar">
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-cyan"></span>
-            <span class="panel-dot dot-cyan dim"></span>
             <span class="panel-title">概况</span>
           </div>
           <div class="panel-body">
@@ -82,7 +80,7 @@
             </div>
             <div class="info-line">
               <span class="info-key">status</span>
-              <span class="info-val terminal-green">正常</span>
+              <span class="info-val">正常</span>
             </div>
           </div>
         </div>
@@ -90,8 +88,6 @@
         <!-- 编辑资料 + 草稿（仅本人可见） -->
         <div v-if="isOwnPage" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-cyan"></span>
-            <span class="panel-dot dot-cyan dim"></span>
             <span class="panel-title">account</span>
           </div>
           <div class="panel-body">
@@ -106,8 +102,6 @@
         <!-- 草稿列表 -->
         <div v-if="isOwnPage && showDrafts" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-yellow"></span>
-            <span class="panel-dot dot-yellow dim"></span>
             <span class="panel-title">drafts ({{ draftCount }})</span>
           </div>
           <div class="panel-body">
@@ -122,8 +116,6 @@
         <!-- 修改密码（仅本人可见） -->
         <div v-if="isOwnPage" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-green"></span>
-            <span class="panel-dot dot-green dim"></span>
             <span class="panel-title">security.pwd</span>
           </div>
           <div class="panel-body">
@@ -133,8 +125,6 @@
 
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-yellow"></span>
-            <span class="panel-dot dot-yellow dim"></span>
             <span class="panel-title">tags.used</span>
           </div>
           <div class="panel-body">
@@ -167,8 +157,6 @@
       <div v-if="showPwdModal" class="modal-overlay" @click.self="showPwdModal = false">
         <div class="pwd-modal">
           <div class="pwd-modal-bar">
-            <span class="panel-dot dot-green"></span>
-            <span class="panel-dot dot-green dim"></span>
             <span class="panel-title">passwd</span>
             <button class="pwd-modal-close" @click="showPwdModal = false">×</button>
           </div>
@@ -207,8 +195,6 @@
       <div v-if="showProfileModal" class="modal-overlay" @click.self="showProfileModal = false">
         <div class="pwd-modal">
           <div class="pwd-modal-bar">
-            <span class="panel-dot dot-cyan"></span>
-            <span class="panel-dot dot-cyan dim"></span>
             <span class="panel-title">edit profile</span>
             <button class="pwd-modal-close" @click="showProfileModal = false">×</button>
           </div>

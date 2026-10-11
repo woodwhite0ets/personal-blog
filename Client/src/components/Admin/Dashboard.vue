@@ -62,8 +62,6 @@
       <div class="data-grid">
         <div class="data-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-cyan"></span>
-            <span class="panel-dot dot-cyan dim"></span>
             <span class="panel-title">tail -5 /var/log/users.log</span>
           </div>
           <div class="panel-body">
@@ -86,8 +84,6 @@
 
         <div class="data-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-green"></span>
-            <span class="panel-dot dot-green dim"></span>
             <span class="panel-title">tail -5 /var/log/posts.log</span>
           </div>
           <div class="panel-body">

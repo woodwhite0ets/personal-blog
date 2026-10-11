@@ -962,7 +962,7 @@ html.theme-switching *,
 html.theme-switching *::before,
 html.theme-switching *::after {
   transition: background-color .45s ease, color .45s ease, border-color .45s ease,
-              fill .45s ease, stroke .45s ease, box-shadow .45s ease !important;
+              fill .45s ease, stroke .45s ease, box-shadow .45s ease;
 }
 
 /* 按钮涟漪（配合 main.js 全局委托） */
@@ -1196,18 +1196,18 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* ============================================================
    信笺风清理（2026-10-11）：移除终端装饰（光标闪烁/彩点/网格/扫描线/发光）
    ============================================================ */
-.bg-grid, .bg-scanline { display: none !important; }
-.anim-caret { animation: none !important; opacity: .45; }
-.panel-dot { background: var(--text-faint) !important; box-shadow: none !important; }
-.status-dot, .badge-dot { box-shadow: none !important; }
+
+
+
+.status-dot, .badge-dot { box-shadow: none; }
 /* 去掉发光型阴影（浅色纸面不需要） */
-.btn-write:hover, .hero-scroll-hint:hover { box-shadow: none !important; }
+.btn-write:hover, .hero-scroll-hint:hover { box-shadow: none; }
 
 /* 信笺统一：隐藏终端装饰（登录/后台等页面的残留）*/
 .bg-grid, .bg-glow, .bg-scanline,
 .terminal-bar, .terminal-title, .prompt-line,
 .section-arrow, .brand-bracket, .brand-caret, .brand-path,
-.hero-prompt, .hero-caret, .footer-prompt, .footer-caret { display: none !important; }
+
 
 /* 信笺风：登录/验证页标题 */
 .auth-title { font-family: var(--font-hand); font-size: 30px; font-weight: 400; color: var(--text-bright); margin: 0 0 8px; text-align: center; }
@@ -1231,12 +1231,12 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .tag { border-radius: 3px; }
 
 /* 信笺统一：侧栏面板（去彩点/去终端标题/去编号）*/
-.panel-dot, .nav-num { display: none !important; }
-.panel-bar { border-bottom: 1px solid var(--border) !important; background: transparent !important; }
-.panel-title { font-family: var(--font-hand) !important; font-size: 17px !important; letter-spacing: 0 !important; text-transform: none !important; font-weight: 400 !important; color: var(--text-bright) !important; }
-.sidebar-panel { background: transparent !important; box-shadow: none !important; }
-.terminal-green { color: var(--text-secondary) !important; }
-.info-line .info-key { color: var(--text-dim) !important; }
+
+.panel-bar { border-bottom: 1px solid var(--border); background: transparent; }
+.panel-title { font-family: var(--font-hand); font-size: 17px; letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--text-bright); }
+.sidebar-panel { background: transparent; box-shadow: none; }
+
+.info-line .info-key { color: var(--text-dim); }
 
 /* 无障碍：跳转主内容 */
 .skip-link { position: absolute; left: -9999px; top: 0; z-index: 300; padding: 10px 16px; background: var(--text-bright); color: var(--bg); text-decoration: none; border-radius: 0 0 4px 0; font-size: 15px; }
@@ -1249,18 +1249,18 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* ============================================================
    呼吸感：有边框容器的内边距加大（2026-10-11）
    ============================================================ */
-.sidebar-panel { padding: 6px !important; }
-.panel-bar { padding: 14px 18px 12px !important; }
-.panel-body { padding: 14px 18px 18px !important; }
-.code-head { padding: 10px 16px !important; }
-.markdown-body .code-block pre { padding: 18px 20px !important; }
-.markdown-body table th, .markdown-body table td { padding: 10px 14px !important; }
-.markdown-body blockquote { padding: 12px 20px !important; }
-.author-card-inner { padding: 28px !important; }
-.hero-scroll-hint { padding: 8px 16px !important; }
-.sort-btn { padding: 6px 14px !important; }
-.sort-bar { padding: 12px 18px !important; }
-.markdown-body code { padding: 3px 7px !important; }
+.sidebar-panel { padding: 6px; }
+.panel-bar { padding: 14px 18px 12px; }
+.panel-body { padding: 14px 18px 18px; }
+.code-head { padding: 10px 16px; }
+.markdown-body .code-block pre { padding: 18px 20px; }
+.markdown-body table th, .markdown-body table td { padding: 10px 14px; }
+.markdown-body blockquote { padding: 12px 20px; }
+.author-card-inner { padding: 28px; }
+.hero-scroll-hint { padding: 8px 16px; }
+.sort-btn { padding: 6px 14px; }
+.sort-bar { padding: 12px 18px; }
+.markdown-body code { padding: 3px 7px; }
 
 /* 归档页标题（信笺风）*/
 .archive-title { font-family: var(--font-hand); font-size: 40px; font-weight: 400; color: var(--text-bright); margin: 0 0 6px; }

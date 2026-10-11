@@ -32,30 +32,22 @@
       <aside class="sidebar">
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-cyan"></span>
-            <span class="panel-dot dot-cyan dim"></span>
             <span class="panel-title">管理</span>
           </div>
           <div class="panel-body nav-body">
-            <router-link to="/admin/dashboard" class="nav-item" active-class="active">
-              <span class="nav-num">01</span> 仪表盘
+            <router-link to="/admin/dashboard" class="nav-item" active-class="active"> 仪表盘
             </router-link>
-            <router-link to="/admin/posts" class="nav-item" active-class="active">
-              <span class="nav-num">02</span> 文章
+            <router-link to="/admin/posts" class="nav-item" active-class="active"> 文章
             </router-link>
-            <router-link to="/admin/users" class="nav-item" active-class="active">
-              <span class="nav-num">03</span> 用户
+            <router-link to="/admin/users" class="nav-item" active-class="active"> 用户
             </router-link>
-            <router-link to="/admin/logs" class="nav-item" active-class="active">
-              <span class="nav-num">04</span> 日志
+            <router-link to="/admin/logs" class="nav-item" active-class="active"> 日志
             </router-link>
           </div>
         </div>
 
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-green"></span>
-            <span class="panel-dot dot-green dim"></span>
             <span class="panel-title">系统信息</span>
           </div>
           <div class="panel-body">
@@ -65,7 +57,7 @@
             </div>
             <div class="info-line">
               <span class="info-key">角色</span>
-              <span class="info-val terminal-green">管理员</span>
+              <span class="info-val">管理员</span>
             </div>
           </div>
         </div>
