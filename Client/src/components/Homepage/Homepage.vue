@@ -25,77 +25,97 @@
   </template>
 </SiteNav>
 
-    <!-- ====== Bento 网格 ====== -->
-    <section class="bento">
-      <router-link v-if="pinnedPost" :to="`/post/${pinnedPost.slug || pinnedPost.id}`" class="tile tile-hero">
-        <span class="tile-label">置顶</span>
-        <h1 class="tile-hero-title">{{ pinnedPost.title }}</h1>
-        <p class="tile-hero-excerpt">{{ pinnedPost.excerpt }}</p>
-        <span class="tile-meta">{{ pinnedPost.date }} · {{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次阅读</span>
-      </router-link>
-
-      <div class="tile tile-about">
-        <span class="tile-label">关于</span>
-        <div class="about-flex">
-          <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
-          <div class="about-txt">
-            <p class="about-name">WoodWhite</p>
-            <p class="about-role">应届毕业生 · Web 全栈开发</p>
-            <p class="about-bio">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。</p>
-          </div>
+    <!-- ====== 首屏 Hero 带（主体先行）====== -->
+    <section class="hero-band">
+      <div class="hero-in">
+        <h1 class="hero-name">WoodWhite</h1>
+        <p class="hero-role">应届毕业生 · Web 全栈开发</p>
+        <p class="hero-statement">写代码、做系统、记录踩过的坑。这里是我关于全栈开发、系统架构与开源实践的手记。</p>
+        <div class="hero-actions">
+          <router-link to="/forum" class="btn btn-solid">阅读文章</router-link>
+          <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
         </div>
-      </div>
-
-      <div class="tile tile-now">
-        <span class="tile-label">现在</span>
-        <p class="tile-text">学习分布式系统与 AI 工程化，同时在打磨这个博客和 mcp-gateway。</p>
-      </div>
-
-      <div class="tile tile-stats">
-        <span class="tile-label">统计</span>
-        <div class="stats-row">
-          <span><b>{{ totalPublished }}</b>文章</span>
-          <span><b>{{ stats.views }}</b>阅读</span>
-          <span><b>{{ stats.comments }}</b>评论</span>
-          <span><b>{{ tags.length }}</b>分类</span>
-        </div>
-      </div>
-
-      <div class="tile tile-links">
-        <span class="tile-label">友链</span>
-        <div class="link-row"><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></div>
-        <div class="link-row"><a href="/feed.xml">RSS 订阅</a></div>
-        <div class="link-row"><router-link to="/about">关于我</router-link></div>
-      </div>
-
-      <router-link to="/about" class="tile tile-proj">
-        <span class="tile-label">项目</span>
-        <h3 class="tile-h3">mcp-gateway</h3>
-        <p class="tile-text">面向知识库与服务器管理的 MCP 网关。</p>
-      </router-link>
-
-      <router-link to="/about" class="tile tile-proj">
-        <span class="tile-label">项目</span>
-        <h3 class="tile-h3">乐清市充电桩分布图</h3>
-        <p class="tile-text">SQLite → Docker + PostGIS 架构升级。</p>
-      </router-link>
-
-      <div class="tile tile-list">
-        <span class="tile-label">最近更新</span>
-        <router-link v-for="p in posts.slice(0, 3)" :key="p.id" :to="`/post/${p.slug || p.id}`" class="list-row">
-          <span class="list-title">{{ p.title }}</span>
-          <span class="list-date">{{ p.date?.slice(5) }}</span>
-        </router-link>
-      </div>
-
-      <div class="tile tile-list">
-        <span class="tile-label">热门</span>
-        <router-link v-for="p in popular" :key="p.id" :to="`/post/${p.slug || p.id}`" class="list-row">
-          <span class="list-title">{{ p.title }}</span>
-          <span class="list-date">{{ p.views }}</span>
-        </router-link>
       </div>
     </section>
+
+    <div class="hm">
+      <!-- 置顶文章 -->
+      <section class="hm-sec" v-if="pinnedPost">
+        <h2 class="hm-h">置顶</h2>
+        <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`" class="hm-feature">
+          <h3 class="hm-feature-title">{{ pinnedPost.title }}</h3>
+          <p class="hm-feature-excerpt">{{ pinnedPost.excerpt }}</p>
+          <p class="hm-meta">{{ pinnedPost.date }} · {{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次阅读</p>
+        </router-link>
+      </section>
+
+      <!-- 关于 / 现在 / 统计 -->
+      <section class="hm-sec">
+        <div class="hm-3up">
+          <div>
+            <h2 class="hm-h">关于</h2>
+            <div class="hm-about">
+              <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
+              <p class="hm-text">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。</p>
+            </div>
+          </div>
+          <div>
+            <h2 class="hm-h">现在</h2>
+            <p class="hm-text">学习分布式系统与 AI 工程化，同时在打磨这个博客和 mcp-gateway。</p>
+          </div>
+          <div>
+            <h2 class="hm-h">数据</h2>
+            <dl class="hm-stats">
+              <div><dt>文章</dt><dd>{{ totalPublished }}</dd></div>
+              <div><dt>阅读</dt><dd>{{ stats.views }}</dd></div>
+              <div><dt>评论</dt><dd>{{ stats.comments }}</dd></div>
+              <div><dt>分类</dt><dd>{{ tags.length }}</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- 项目 -->
+      <section class="hm-sec">
+        <h2 class="hm-h">项目</h2>
+        <div class="hm-2up">
+          <router-link to="/about" class="hm-proj">
+            <h3 class="hm-proj-title">mcp-gateway</h3>
+            <p class="hm-text">面向知识库与服务器管理的 MCP 网关，把检索与运维能力统一提供给 AI 客户端。</p>
+          </router-link>
+          <router-link to="/about" class="hm-proj">
+            <h3 class="hm-proj-title">乐清市充电桩分布图</h3>
+            <p class="hm-text">充电桩空间分布可视化，从 SQLite 升级到 Docker + PostGIS 架构。</p>
+          </router-link>
+        </div>
+      </section>
+
+      <!-- 最近 / 热门 -->
+      <section class="hm-sec hm-sec-last">
+        <div class="hm-2up">
+          <div>
+            <h2 class="hm-h">最近更新</h2>
+            <ul class="hm-list">
+              <li v-for="p in posts.slice(0, 4)" :key="p.id">
+                <router-link :to="`/post/${p.slug || p.id}`">
+                  <span class="hm-li-t">{{ p.title }}</span><span class="hm-li-d">{{ p.date?.slice(5) }}</span>
+                </router-link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="hm-h">热门</h2>
+            <ul class="hm-list">
+              <li v-for="p in popular" :key="p.id">
+                <router-link :to="`/post/${p.slug || p.id}`">
+                  <span class="hm-li-t">{{ p.title }}</span><span class="hm-li-d">{{ p.views }}</span>
+                </router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
     <SiteFooter command='echo "© 2026 woodwhite@blog — 技术论坛"' />
   </div>
 </template>
