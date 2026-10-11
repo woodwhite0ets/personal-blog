@@ -1,7 +1,5 @@
 <template>
   <div class="archive-page">
-    <div class="bg-grid"></div>
-    <div class="bg-scanline"></div>
 
     <SiteNav />
 

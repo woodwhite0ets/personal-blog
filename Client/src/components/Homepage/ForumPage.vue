@@ -1,7 +1,5 @@
 <template>
   <div class="forum-page">
-    <div class="bg-grid"></div>
-    <div class="bg-scanline"></div>
 
     <!-- ====== 导航栏 ====== -->
     <SiteNav>

@@ -1,6 +1,5 @@
 <template>
   <div class="editor-page">
-    <div class="bg-grid"></div>
 
     <!-- ====== Toast 提示 ====== -->
     <Transition name="toast">

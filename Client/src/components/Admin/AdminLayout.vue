@@ -1,7 +1,5 @@
 <template>
   <div class="admin-layout">
-    <div class="bg-grid"></div>
-    <div class="bg-scanline"></div>
 
     <!-- 导航栏 -->
     <header class="navbar">
