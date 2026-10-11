@@ -7,7 +7,7 @@
       <!-- 个人简介 -->
       <div class="about-hero">
         <div class="avatar-box">
-          <UserAvatar :src="profile?.avatar" :alt="'WoodWhite'" size="xl" />
+          <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" :alt="'WoodWhite'" size="xl" />
         </div>
         <div class="hero-info">
           <h1 class="hero-name">WoodWhite</h1>

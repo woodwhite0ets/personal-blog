@@ -55,15 +55,11 @@
           </span>
         </div>
       </div>
-      <button class="hero-scroll-hint" @click="scrollToPosts" aria-label="向下滚动查看文章">
-        <span class="hint-dot"></span>
-        <span class="hint-label">scroll</span>
-      </button>
     </section>
 
     <!-- ====== 个人介绍 ====== -->
     <section class="intro-strip anim-fade-up">
-      <div class="intro-avatar"><UserAvatar alt="WoodWhite" size="xl" /></div>
+      <div class="intro-avatar"><UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="xl" /></div>
       <div class="intro-body">
         <h2 class="intro-name">WoodWhite</h2>
         <p class="intro-role">应届毕业生 · Web 全栈开发</p>
@@ -633,18 +629,6 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 }
 
 /* ====== Hero 滚动提示 ====== */
-.hero-scroll-hint {
-  display: flex; width: fit-content; align-items: center; gap: 8px;
-  margin: 8px auto 0; padding: 4px 10px;
-  background: none; border: 1px solid var(--border); border-radius: 999px;
-  color: var(--text-muted); font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-  cursor: pointer; transition: color .2s, border-color .2s, transform .2s;
-}
-.hero-scroll-hint:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
-.hint-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: ledBlink 1.6s ease-in-out infinite; }
-.hint-label { font-family: var(--font-hand); font-size: 15px; letter-spacing: 0; }
-.hint-caret { color: var(--accent); animation: floatCaret 2s ease-in-out infinite; }
-
 /* ===== 信笺风覆盖（2026-10-11）===== */
 .hero-inner { max-width: 820px; padding: 112px 24px 92px; }
 .hero-excerpt { font-family: var(--font-sans); font-size: 18px; line-height: 1.85; color: var(--text-secondary); max-width: 660px; margin-bottom: 30px; }
