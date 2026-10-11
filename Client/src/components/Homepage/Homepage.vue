@@ -62,6 +62,17 @@
       </button>
     </section>
 
+    <!-- ====== 简介 ====== -->
+    <section class="intro-strip anim-fade-up">
+      <p class="intro-lead">你好，我是 WoodWhite。</p>
+      <p class="intro-text">全栈开发，专注 Web 工程实践与系统架构。这里记录做过的项目、踩过的坑，以及一些关于工程与设计的思考。</p>
+      <div class="intro-links">
+        <router-link to="/about" class="intro-link">关于我</router-link>
+        <router-link to="/archive" class="intro-link">归档</router-link>
+        <router-link to="/forum" class="intro-link">论坛</router-link>
+      </div>
+    </section>
+
     <!-- ====== 主体 ====== -->
     <div class="main-layout">
       <!-- 标签过滤提示 -->
@@ -109,19 +120,6 @@
 
       <!-- 侧边栏 — 保持不变 -->
       <aside class="sidebar">
-        <div class="sidebar-panel author-panel">
-          <div class="panel-bar">
-            <span class="panel-title">关于</span>
-          </div>
-          <div class="panel-body">
-            <p class="author-name">WoodWhite</p>
-            <p class="author-bio">全栈开发，记录工程实践、架构与开源的点滴。</p>
-            <div class="author-links">
-              <router-link to="/about" class="author-link">关于我</router-link>
-              <router-link to="/archive" class="author-link">全部文章</router-link>
-            </div>
-          </div>
-        </div>
 
         <div v-if="contributors.length" class="sidebar-panel">
           <div class="panel-bar">
@@ -750,4 +748,12 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .author-links { display: flex; gap: 16px; }
 .author-link { font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 1px; transition: border-color .2s; }
 .author-link:hover { border-color: var(--accent); }
+
+/* 首页简介区（信笺风）*/
+.intro-strip { max-width: 820px; margin: 0 auto; padding: 6px 24px 56px; text-align: center; }
+.intro-lead { font-family: var(--font-hand); font-size: 30px; color: var(--text-bright); margin: 0 0 12px; }
+.intro-text { font-size: 17px; line-height: 1.9; color: var(--text-secondary); max-width: 620px; margin: 0 auto 20px; }
+.intro-links { display: flex; justify-content: center; gap: 24px; }
+.intro-link { font-size: 15px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .2s; }
+.intro-link:hover { border-color: var(--accent); }
 </style>
