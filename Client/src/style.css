@@ -1192,3 +1192,13 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   font-weight: 400;
   letter-spacing: 0;
 }
+
+/* ============================================================
+   信笺风清理（2026-10-11）：移除终端装饰（光标闪烁/彩点/网格/扫描线/发光）
+   ============================================================ */
+.bg-grid, .bg-scanline { display: none !important; }
+.anim-caret { animation: none !important; opacity: .45; }
+.panel-dot { background: var(--text-faint) !important; box-shadow: none !important; }
+.status-dot, .badge-dot { box-shadow: none !important; }
+/* 去掉发光型阴影（浅色纸面不需要） */
+.btn-write:hover, .hero-scroll-hint:hover { box-shadow: none !important; }

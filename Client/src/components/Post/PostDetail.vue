@@ -1025,4 +1025,14 @@ onBeforeUnmount(() => { resetSeoMeta() })
   .post-title { font-size: 24px; }
   .post-article { padding: 40px 20px 24px; }
 }
+
+/* ===== 信笺风覆盖（2026-10-11）===== */
+.post-article { max-width: 700px; padding: 96px 24px 40px; }
+.post-title { margin-bottom: 22px; }
+.post-meta-line, .post-meta-top { font-size: 14px; color: var(--text-dim); gap: 14px; }
+.post-tag { border-radius: 3px; padding: 2px 9px; font-size: 13px; }
+.comment-list, .comment-item { border-color: var(--border); }
+.comment-item { border-radius: 4px; }
+.author-card { border-radius: 4px; box-shadow: none; }
+.toc-panel, .toc { border-radius: 4px; }
 </style>
