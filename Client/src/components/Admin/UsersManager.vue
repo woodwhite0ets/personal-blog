@@ -1,7 +1,6 @@
 <template>
   <div class="users-manager">
     <div class="section-head">
-      <span class="section-arrow"></span>
       <h1 class="section-title">用户管理</h1>
       <span class="section-count">— 共 {{ total }} 名用户</span>
     </div>
@@ -18,12 +17,11 @@
         >{{ r.label }}</button>
       </div>
       <div class="search-wrap">
-        <span class="search-icon">🔍</span>
         <input
           v-model="searchQuery"
           type="text"
           class="search-input"
-          placeholder="grep 用户名或邮箱..."
+          placeholder="搜索用户名或邮箱..."
           @input="onSearchInput"
         />
       </div>
@@ -31,7 +29,7 @@
 
     <!-- 状态 -->
     <div v-if="loading" class="state-box" role="status" aria-live="polite"><span class="spinner" role="status" aria-label="加载中"></span><span>正在加载...</span></div>
-    <div v-else-if="error" class="state-box error" role="alert"><span class="err-prefix">ERR!</span><span>{{ error }}</span></div>
+    <div v-else-if="error" class="state-box error" role="alert"><span>{{ error }}</span></div>
     <div v-else-if="users.length === 0" class="state-box"><span>未找到用户</span></div>
 
     <template v-else>
@@ -93,7 +91,6 @@
 
       <div v-if="hasMore" class="load-more">
         <button class="btn btn-secondary" :disabled="loadingMore" @click="loadMore">
-          <span class="btn-prompt"></span>
           {{ loadingMore ? '加载中...' : '更多用户' }}
         </button>
       </div>
@@ -102,7 +99,7 @@
     <!-- 确认弹窗 -->
     <ConfirmModal
       :visible="showDeleteModal"
-      :title="`userdel ${deleteTarget?.username}`"
+      :title="'删除用户'"
       :message="deleteTarget ? `删除用户 @${deleteTarget.username} 及其所有文章？此操作不可撤销。` : ''"
       confirm-text="删除"
       :danger="true"
@@ -257,31 +254,30 @@ onMounted(() => fetchUsers())
   margin-bottom: 20px; padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
-.section-arrow { color: var(--accent); font-weight: 700; }
-.section-title { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: 0.5px; }
+.section-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
 .section-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
 
 .filters {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
   margin-bottom: 20px; flex-wrap: wrap;
 }
-.status-tabs { display: flex; gap: 2px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.status-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); }
 .tab {
-  padding: 6px 16px; font-family: inherit; font-size: 11px; font-weight: 600;
-  color: var(--text-dim); background: none; border: none; cursor: pointer;
-  transition: all 0.2s; letter-spacing: 0.5px;
+  padding: 6px 14px; font-family: inherit; font-size: 11px; font-weight: 600;
+  color: var(--text-dim); background: none; border: none;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  cursor: pointer; transition: color 0.2s; letter-spacing: 0.5px;
 }
 .tab:hover { color: var(--text); }
-.tab.active { color: var(--accent); background: var(--accent-a6); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
 .search-wrap {
   display: flex; align-items: center; gap: 8px;
-  padding: 6px 12px; background: var(--bg-elevated);
-  border: 1px solid var(--border-strong); border-radius: 6px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
   transition: border-color 0.2s;
 }
-.search-wrap:focus-within { border-color: var(--accent); }
-.search-icon { font-size: 12px; }
+.search-wrap:focus-within { border-bottom-color: var(--accent); }
 .search-input {
   font-family: inherit; font-size: 12px; color: var(--text);
   background: none; border: none; outline: none;
@@ -294,7 +290,6 @@ onMounted(() => fetchUsers())
   gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted);
 }
 .state-box.error { color: var(--err); flex-direction: column; gap: 8px; }
-.err-prefix { font-weight: 700; letter-spacing: 1px; }
 
 .spinner {
   width: 16px; height: 16px;
@@ -305,15 +300,15 @@ onMounted(() => fetchUsers())
 
 .table-wrap { overflow-x: auto; }
 
-.user-table { width: 100%; border-collapse: collapse; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.user-table { width: 100%; border-collapse: collapse; }
 .user-table th {
   font-size: 10px; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px;
-  text-align: left; padding: 10px 14px;
-  background: var(--overlay-a15); border-bottom: 1px solid var(--border);
+  text-align: left; padding: 10px 14px 10px 0;
+  border-bottom: 1px solid var(--border);
 }
 .user-table td {
-  padding: 10px 14px; font-size: 12px; color: var(--text-secondary);
+  padding: 10px 14px 10px 0; font-size: 12px; color: var(--text-secondary);
   border-bottom: 1px solid var(--border-a50);
 }
 .user-table tbody tr:hover { background: var(--overlay-a15); }
@@ -361,5 +356,4 @@ onMounted(() => fetchUsers())
 
 
 .load-more { text-align: center; padding: 28px 0 12px; }
-.btn-prompt { color: var(--accent); }
 </style>

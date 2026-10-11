@@ -30,7 +30,7 @@
       <aside class="sidebar">
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">管理</span>
+            <span class="panel-title deco-rule">管理</span>
           </div>
           <div class="panel-body nav-body">
             <router-link to="/admin/dashboard" class="nav-item" active-class="active"> 仪表盘
@@ -46,7 +46,7 @@
 
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">系统信息</span>
+            <span class="panel-title deco-rule">系统信息</span>
           </div>
           <div class="panel-body">
             <div class="info-line">
@@ -101,21 +101,6 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   color: var(--text); position: relative; overflow-x: hidden;
 }
 
-.bg-grid {
-  position: fixed; inset: 0;
-  background-image:
-    linear-gradient(var(--overlay-a15) 1px, transparent 1px),
-    linear-gradient(90deg, var(--overlay-a15) 1px, transparent 1px);
-  background-size: 64px 64px; pointer-events: none; z-index: 0;
-}
-
-.bg-scanline {
-  position: fixed; inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scanline) 2px, var(--scanline) 4px);
-  pointer-events: none; z-index: 0; animation: scan 8s linear infinite;
-}
-@keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(4px); } }
-
 .navbar {
   position: sticky; top: 0; z-index: 100;
   background: var(--navbar-bg); backdrop-filter: blur(16px);
@@ -128,9 +113,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 }
 
 .brand { display: flex; align-items: baseline; gap: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
-.brand-bracket { color: var(--text-muted); }
 .brand-text { color: var(--accent); }
-.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; position: relative; }
 
@@ -151,19 +134,12 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 }
 .btn-user:hover { border-color: var(--accent); background: var(--accent-a6); }
 
-.user-avatar {
-  width: 26px; height: 26px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--accent); color: var(--on-accent);
-  font-weight: 700; font-size: 12px; border-radius: 6px; text-transform: uppercase;
-}
 .user-name { font-weight: 500; color: var(--text-secondary); }
 
 .user-dropdown {
   position: absolute; top: calc(100% + 8px); right: 0;
-  min-width: 160px; background: var(--bg-float); border: 1px solid var(--border-strong);
-  border-radius: 8px; overflow: hidden;
-  box-shadow: 0 12px 40px var(--shadow); z-index: 200;
+  min-width: 160px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 0; box-shadow: none; z-index: 200;
 }
 
 .dropdown-item {
@@ -193,10 +169,6 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   padding: 8px 12px; background: var(--overlay-a15);
   border-bottom: 1px solid var(--border);
 }
-.panel-dot { width: 8px; height: 8px; border-radius: 50%; }
-.dot-cyan { background: var(--accent); }
-.dot-green { background: var(--ok); }
-.dim { opacity: 0.3; }
 .panel-title {
   flex: 1; font-size: 10px; font-weight: 600;
   color: var(--text-muted); text-align: center; letter-spacing: 1.5px; text-transform: lowercase;
@@ -214,13 +186,10 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 }
 .nav-item:hover { color: var(--text); background: var(--overlay-a2); }
 .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-a4); }
-.nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; min-width: 18px; }
-.nav-item.active .nav-num { color: var(--accent); }
 
 .info-line { display: flex; justify-content: space-between; padding: 5px 12px; font-size: 11px; }
 .info-key { color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
 .info-val { color: var(--text-secondary); }
-.terminal-green { color: var(--ok); }
 
 .content { min-height: 500px; }
 
@@ -231,11 +200,12 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   .admin-badge { display: none; }
 }
 
-/* 信笺统一（组件内，替代原全局 !important）*/
-.sidebar-panel { background: transparent; border: 1px solid var(--border); border-radius: 4px; box-shadow: none; padding: 6px; }
-.panel-bar { border-bottom: 1px solid var(--border); background: transparent; padding: 14px 18px 12px; }
-.panel-body { padding: 14px 18px 18px; }
+/* 信笺统一（组件内，发丝线分区）*/
+.sidebar-panel { background: transparent; border: none; border-radius: 0; box-shadow: none; padding: 0; }
+.panel-bar { border-bottom: none; background: transparent; padding: 0 0 12px; }
+.panel-body { padding: 0; }
 .panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
+.info-line { padding: 5px 0; }
 .info-key { color: var(--text-dim); }
 
 /* 统一：后台头部与主站一致 */

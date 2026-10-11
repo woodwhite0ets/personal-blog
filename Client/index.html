@@ -5,6 +5,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-400.woff2" crossorigin />
 <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-700.woff2" crossorigin />
+    <!-- 首屏必现字体预加载（只 preload 少量 latin 片，避免过多分片）：
+         EB Garamond=正文/标题 latin；Caveat=hero 名字 WoodWhite 的手写体。
+         这些文件由 @fontsource 打包进 /assets 并带内容哈希；升级字体包时需同步更新。 -->
+    <link rel="preload" as="font" type="font/woff2" href="/assets/eb-garamond-latin-wght-normal-CRpggXlh.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/assets/caveat-latin-wght-normal-C1hSzPvX.woff2" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>woodwhite@blog — 技术博客 | 全栈开发 | 开源分享</title>
 

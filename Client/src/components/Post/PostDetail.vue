@@ -569,31 +569,6 @@ onBeforeUnmount(() => { resetSeoMeta() })
   overflow-x: hidden;
 }
 
-/* 背景 */
-.bg-grid {
-  position: fixed; inset: 0;
-  background-image:
-    linear-gradient(var(--overlay-a15) 1px, transparent 1px),
-    linear-gradient(90deg, var(--overlay-a15) 1px, transparent 1px);
-  background-size: 64px 64px;
-  pointer-events: none; z-index: 0;
-}
-
-.bg-scanline {
-  position: fixed; inset: 0;
-  background: repeating-linear-gradient(
-    0deg, transparent, transparent 2px,
-    var(--scanline) 2px, var(--scanline) 4px
-  );
-  pointer-events: none; z-index: 0;
-  animation: scan 8s linear infinite;
-}
-
-@keyframes scan {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(4px); }
-}
-
 /* ====== Navbar ====== */
 .navbar {
   position: sticky; top: 0; z-index: 100;
@@ -897,21 +872,6 @@ onBeforeUnmount(() => { resetSeoMeta() })
   transform: translateY(-2px) scale(1.06);
   border-color: var(--accent);
   box-shadow: 0 6px 14px var(--accent-a20);
-}
-/* 评论提交按钮扫光 */
-.btn-comment-submit { position: relative; overflow: hidden; }
-.btn-comment-submit::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -120%;
-  width: 60%; height: 100%;
-  background: linear-gradient(120deg, transparent, var(--accent-a25), transparent);
-  transform: skewX(-20deg);
-  animation: btnSweep 3.5s ease-in-out infinite;
-}
-@keyframes btnSweep {
-  0% { left: -120%; }
-  55%, 100% { left: 150%; }
 }
 
 .comment-err {

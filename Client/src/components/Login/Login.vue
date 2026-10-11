@@ -179,35 +179,6 @@ async function handleGuestLogin() {
   overflow: hidden;
 }
  
-/* ---- 背景网格 ---- */
-.bg-grid {
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--overlay-a2) 1px, transparent 1px),
-    linear-gradient(90deg, var(--overlay-a2) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-}
- 
-/* ---- 背景光晕 ---- */
-.bg-glow {
-  position: fixed;
-  top: -20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, var(--accent-a6) 0%, transparent 70%);
-  pointer-events: none;
-  animation: glowPulse 6s ease-in-out infinite;
-}
- 
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
-  50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
-}
- 
 /* ==============================
    Card
    ============================== */
@@ -222,34 +193,6 @@ async function handleGuestLogin() {
   overflow: hidden;
 }
  
-/* ---- 终端装饰条 ---- */
-.terminal-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  background: var(--border);
-  border-bottom: 1px solid var(--border-strong);
-}
- 
-.terminal-dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-}
- 
-.dot-red    { background: var(--err); }
-.dot-yellow { background: var(--warn); }
-.dot-green  { background: var(--ok); }
- 
-.terminal-title {
-  flex: 1;
-  text-align: center;
-  font-size: 11px;
-  color: var(--text-hint);
-  letter-spacing: 1px;
-}
- 
 /* ---- 卡片主体 ---- */
 .card-body {
   padding: 36px 32px 28px;
@@ -260,35 +203,11 @@ async function handleGuestLogin() {
   margin-bottom: 36px;
 }
  
-.prompt-line {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 17px;
-  margin-bottom: 8px;
-}
- 
-.prompt-arrow {
-  color: var(--accent);
-  font-weight: 700;
-}
- 
-.prompt-cmd {
-  color: var(--text-bright);
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
- 
 .subtitle {
   margin: 0;
   font-size: 12px;
   color: var(--text-muted);
   padding-left: 2px;
-}
- 
-.comment {
-  color: var(--text-muted);
-  font-style: italic;
 }
  
 /* ==============================
@@ -315,11 +234,6 @@ async function handleGuestLogin() {
   display: flex;
   align-items: center;
   gap: 6px;
-}
- 
-.label-icon {
-  color: var(--accent);
-  font-weight: 700;
 }
  
 .input-wrap {
@@ -364,11 +278,6 @@ async function handleGuestLogin() {
   gap: 6px;
 }
  
-.err-prefix {
-  font-weight: 700;
-  letter-spacing: 1px;
-}
- 
 /* ---- 复选框 ---- */
 .field-row {
   display: flex;
@@ -393,40 +302,6 @@ async function handleGuestLogin() {
   color: var(--text-dim);
 }
  
-/* ---- 按钮 ---- */
-.btn-glow {
-  width: 100%;
-  padding: 13px 0;
-  font-size: 14px;
-  letter-spacing: 1px;
-  gap: 8px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-glow::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent 0%, var(--overlay-a10) 100%);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.btn-glow:hover:not(:disabled)::before { opacity: 1; }
-
-.btn-glow:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-  box-shadow: 0 0 30px var(--accent-a30), 0 0 60px var(--accent-a10);
-  transform: translateY(-1px);
-}
-
-.btn-glow:active:not(:disabled) { transform: translateY(0) scale(0.99); }
-
-.btn-arrow {
-  font-size: 16px;
-}
  
 /* ---- 错误 ---- */
 .server-error {
@@ -500,12 +375,6 @@ async function handleGuestLogin() {
   margin: 0;
 }
 
-.guest-hint .comment {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-style: italic;
-}
-
 .spinner-guest {
   width: 18px;
   height: 18px;
@@ -541,30 +410,6 @@ async function handleGuestLogin() {
   color: var(--warn) !important;
 }
 
-/* ---- 底部状态条 ---- */
-.terminal-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  background: var(--bg-elevated);
-  border-top: 1px solid var(--border-strong);
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 1.5px;
-}
- 
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--ok);
-  box-shadow: 0 0 6px var(--ok-a40);
-}
- 
-.status-sep {
-  color: var(--border-strong);
-}
  
 /* ==============================
    Spinner

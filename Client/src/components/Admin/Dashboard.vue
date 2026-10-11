@@ -1,7 +1,6 @@
 <template>
   <div class="dashboard">
     <div class="section-head">
-      <span class="section-arrow"></span>
       <h1 class="section-title">仪表盘</h1>
     </div>
 
@@ -11,50 +10,23 @@
     </div>
 
     <template v-else-if="stats">
-      <!-- 统计卡片 -->
+      <!-- 统计：发丝线分区 -->
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-card-bar">
-            <span class="stat-dot dot-green"></span>
-            <span class="stat-label">用户</span>
-          </div>
-          <div class="stat-card-body">
-            <span class="stat-number">{{ stats.users || 0 }}</span>
-            <span class="stat-sub">注册用户</span>
-          </div>
+        <div class="stat-cell">
+          <span class="stat-number">{{ stats.users || 0 }}</span>
+          <span class="stat-sub">注册用户</span>
         </div>
-
-        <div class="stat-card">
-          <div class="stat-card-bar">
-            <span class="stat-dot dot-cyan"></span>
-            <span class="stat-label">文章</span>
-          </div>
-          <div class="stat-card-body">
-            <span class="stat-number">{{ stats.posts.total }}</span>
-            <span class="stat-sub">文章总数</span>
-          </div>
+        <div class="stat-cell">
+          <span class="stat-number">{{ stats.posts.total }}</span>
+          <span class="stat-sub">文章总数</span>
         </div>
-
-        <div class="stat-card">
-          <div class="stat-card-bar">
-            <span class="stat-dot" style="background:var(--ok)"></span>
-            <span class="stat-label">已发布</span>
-          </div>
-          <div class="stat-card-body">
-            <span class="stat-number" style="color:var(--ok)">{{ stats.posts.published }}</span>
-            <span class="stat-sub">已上线文章</span>
-          </div>
+        <div class="stat-cell">
+          <span class="stat-number" style="color:var(--ok)">{{ stats.posts.published }}</span>
+          <span class="stat-sub">已上线文章</span>
         </div>
-
-        <div class="stat-card">
-          <div class="stat-card-bar">
-            <span class="stat-dot dot-yellow"></span>
-            <span class="stat-label">草稿</span>
-          </div>
-          <div class="stat-card-body">
-            <span class="stat-number" style="color:var(--warn)">{{ stats.posts.draft }}</span>
-            <span class="stat-sub">未发布草稿</span>
-          </div>
+        <div class="stat-cell">
+          <span class="stat-number" style="color:var(--warn)">{{ stats.posts.draft }}</span>
+          <span class="stat-sub">未发布草稿</span>
         </div>
       </div>
 
@@ -62,7 +34,7 @@
       <div class="data-grid">
         <div class="data-panel">
           <div class="panel-bar">
-            <span class="panel-title">最近用户动态</span>
+            <span class="panel-title deco-rule">最近用户动态</span>
           </div>
           <div class="panel-body">
             <table class="data-table">
@@ -84,7 +56,7 @@
 
         <div class="data-panel">
           <div class="panel-bar">
-            <span class="panel-title">最近文章动态</span>
+            <span class="panel-title deco-rule">最近文章动态</span>
           </div>
           <div class="panel-body">
             <table class="data-table">
@@ -107,7 +79,6 @@
     </template>
 
     <div v-else-if="error" class="state-box error" role="alert">
-      <span class="err-prefix">ERR!</span>
       <span>{{ error }}</span>
     </div>
   </div>
@@ -156,15 +127,13 @@ onMounted(fetchStats)
   margin-bottom: 28px; padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
-.section-arrow { color: var(--accent); font-weight: 700; }
-.section-title { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: 0.5px; }
+.section-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
 
 .state-box {
   display: flex; align-items: center; justify-content: center;
   gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted);
 }
 .state-box.error { color: var(--err); flex-direction: column; gap: 8px; }
-.err-prefix { font-weight: 700; letter-spacing: 1px; }
 
 .spinner {
   width: 16px; height: 16px;
@@ -175,58 +144,36 @@ onMounted(fetchStats)
 
 /* 卡片网格 */
 .stats-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
   margin-bottom: 32px;
 }
 
-.stat-card {
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: 8px; overflow: hidden;
-  transition: border-color 0.2s;
+.stat-cell {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 20px 18px; border-left: 1px solid var(--border);
 }
-.stat-card:hover { border-color: var(--border-strong); }
-
-.stat-card-bar {
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 12px; background: var(--overlay-a15);
-  border-bottom: 1px solid var(--border);
-}
-.stat-dot { width: 7px; height: 7px; border-radius: 50%; }
-.dot-cyan { background: var(--accent); }
-.dot-green { background: var(--ok); }
-.dot-yellow { background: var(--warn); }
-.stat-label {
-  font-size: 10px; font-weight: 600; color: var(--text-muted);
-  letter-spacing: 1.5px; text-transform: lowercase;
-}
-
-.stat-card-body {
-  padding: 16px; display: flex; flex-direction: column; gap: 4px;
-}
+.stat-cell:first-child { border-left: none; }
 
 .stat-number { font-size: 32px; font-weight: 800; color: var(--text-bright); line-height: 1; }
 .stat-sub { font-size: 11px; color: var(--text-muted); }
 
 /* 数据面板 */
 .data-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
 }
 
 .data-panel {
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: 8px; overflow: hidden;
+  background: transparent; border: none; border-radius: 0; box-shadow: none;
 }
 
 .panel-bar {
   display: flex; align-items: center; gap: 6px;
-  padding: 8px 12px; background: var(--overlay-a15);
-  border-bottom: 1px solid var(--border);
+  border-bottom: none; background: transparent; padding: 0 0 12px;
 }
-.panel-dot { width: 8px; height: 8px; border-radius: 50%; }
-.dim { opacity: 0.3; }
 .panel-title {
-  flex: 1; font-size: 10px; font-weight: 600;
-  color: var(--text-muted); text-align: center; letter-spacing: 1px;
+  flex: 1; font-family: var(--font-hand); font-size: 17px; font-weight: 400;
+  color: var(--text-bright); text-align: left; letter-spacing: 0;
 }
 
 .panel-body { padding: 0; }
@@ -236,12 +183,11 @@ onMounted(fetchStats)
 .data-table th {
   font-size: 10px; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px;
-  text-align: left; padding: 10px 14px;
-  background: var(--overlay-a1);
+  text-align: left; padding: 10px 14px 10px 0;
   border-bottom: 1px solid var(--border);
 }
 .data-table td {
-  padding: 9px 14px; font-size: 12px; color: var(--text-secondary);
+  padding: 9px 14px 9px 0; font-size: 12px; color: var(--text-secondary);
   border-bottom: 1px solid var(--border-a50);
 }
 .data-table tbody tr:hover { background: var(--overlay-a15); }
@@ -266,10 +212,14 @@ onMounted(fetchStats)
 
 @media (max-width: 900px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-cell:nth-child(3) { border-left: none; }
+  .stat-cell:nth-child(n+3) { border-top: 1px solid var(--border); }
   .data-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 500px) {
   .stats-grid { grid-template-columns: 1fr; }
+  .stat-cell { border-left: none; border-top: 1px solid var(--border); }
+  .stat-cell:first-child { border-top: none; }
 }
 </style>

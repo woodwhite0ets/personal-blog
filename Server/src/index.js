@@ -207,6 +207,15 @@ app.use(async (req, res, next) => {
   if (isDotPath || isProbeExt || isProbeName) {
     return res.status(404).json({ message: 'not found' });
   }
+  // 带文件扩展名的路径（/xxx.png /xxx.xml /xxx.txt 等，含已删除的 og-default.png）→ 404，
+  // 避免把软 404 当成功（爬虫/客户端会误读 200 的 HTML）。无扩展名的前端路由
+  // （/forum /archive /tags /about /login 等）仍返回 index.html 由前端处理。
+  // /sitemap.xml、/feed.xml 已在更早的 seo 路由命中，不会走到这里。
+  // 只对「看起来是静态资源」的扩展名 404；不能笼统用 path.extname()——否则
+  // /post/v1.0-发布、/user/john.doe 这类含点的前端路由会被误杀成 404。
+  if (/\.(png|jpe?g|gif|svg|webp|avif|ico|bmp|css|js|mjs|map|woff2?|ttf|otf|eot|xml|txt|webmanifest|mp4|webm|pdf|zip)$/i.test(p)) {
+    return res.status(404).json({ message: 'not found' });
+  }
   // The SPA entry references hashed assets. Never let browsers keep an old
   // entry point after a deployment, otherwise they can request removed chunks.
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');

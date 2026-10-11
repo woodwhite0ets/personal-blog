@@ -51,7 +51,6 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import SiteNav from '../common/SiteNav.vue'
@@ -133,10 +132,8 @@ onMounted(async () => {
 
 .year-group { padding: 16px 0 8px; }
 .year-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-.section-block { width: 7px; height: 7px; background: var(--accent); flex-shrink: 0; }
 .year-num { font-size: 15px; font-weight: 700; color: var(--text-bright); }
 .year-count { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
-.year-rule { flex: 1; height: 1px; background: var(--border); }
 
 .year-posts { display: flex; flex-direction: column; margin-top: 8px; }
 .archive-item { display: flex; align-items: baseline; gap: 24px; padding: 11px 0; text-decoration: none; border-bottom: 1px solid var(--border); }

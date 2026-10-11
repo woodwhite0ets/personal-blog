@@ -2,7 +2,6 @@
   <div class="log-viewer">
     <div class="section-head">
       <h1 class="section-title">日志</h1>
-      <span class="section-arrow"></span>
       <!-- 日志来源切换 -->
       <div class="source-tabs">
         <button class="source-tab" :class="{ active: logSource === 'backend' }" @click="switchSource('backend')">
@@ -15,29 +14,16 @@
       <span class="section-count">— 共 {{ total }} 行</span>
       <div class="head-actions">
         <template v-if="logSource === 'backend'">
-          <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'error' }" @click="toggleFilter('error')">
-            <span class="filter-dot dot-red" :class="{ dim: filterLevel !== 'error' }"></span>
-            错误
-          </button>
-          <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'warn' }" @click="toggleFilter('warn')">
-            <span class="filter-dot dot-yellow" :class="{ dim: filterLevel !== 'warn' }"></span>
-            警告
-          </button>
-          <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'info' }" @click="toggleFilter('info')">
-            <span class="filter-dot dot-cyan" :class="{ dim: filterLevel !== 'info' }"></span>
-            信息
-          </button>
-          <button class="btn-sm btn-filter" @click="clearLogs">
-            <span class="filter-icon">🗑</span> 清空
-          </button>
+          <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'error' }" @click="toggleFilter('error')">错误</button>
+          <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'warn' }" @click="toggleFilter('warn')">警告</button>
+          <button class="btn-sm btn-filter" :class="{ active: filterLevel === 'info' }" @click="toggleFilter('info')">信息</button>
+          <button class="btn-sm" @click="clearLogs">清空</button>
         </template>
         <label v-if="logSource === 'caddy'" class="toggle-admin">
           <input v-model="showAdmin" type="checkbox" @change="fetchLogs" />
           <span>显示管理员日志</span>
         </label>
-        <button class="btn-sm btn-refresh" @click="fetchLogs">
-          <span class="filter-icon">↻</span> 刷新
-        </button>
+        <button class="btn-sm" @click="fetchLogs">刷新</button>
       </div>
     </div>
 
@@ -59,18 +45,17 @@
 
     <!-- 错误 -->
     <div v-else-if="error" class="state-box error" role="alert">
-      <span class="err-prefix">ERR!</span>
       <span>{{ error }}</span>
     </div>
 
-    <!-- 日志终端 -->
+    <!-- 日志列表 -->
     <template v-else>
-      <div class="log-terminal" ref="logContainer">
+      <div class="log-panel" ref="logContainer">
         <div v-if="logs.length === 0" class="state-box">
           <span class="state-text">暂无日志记录</span>
         </div>
 
-        <!-- 后端日志：终端行 -->
+        <!-- 后端日志：日志行 -->
         <div
           v-if="logSource === 'backend'"
           v-for="(line, i) in logs"
@@ -202,57 +187,43 @@ onUnmounted(() => {
   border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
 }
-.section-arrow { color: var(--accent); font-weight: 700; }
+.section-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
 .section-count { font-size: 11px; color: var(--text-muted); }
 
-/* 日志来源切换 */
-.source-tabs {
-  display: flex; gap: 4px;
-  background: var(--bg-code); border: 1px solid var(--border);
-  border-radius: 6px; padding: 3px;
-}
+/* 日志来源切换：发丝线 tab */
+.source-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); }
 .source-tab {
   padding: 5px 14px; font-family: inherit; font-size: 11px; font-weight: 600;
-  color: var(--text-muted); background: none; border: none; border-radius: 4px;
-  cursor: pointer; transition: all 0.2s;
+  color: var(--text-muted); background: none; border: none;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  cursor: pointer; transition: color 0.2s;
 }
 .source-tab:hover { color: var(--text); }
-.source-tab.active {
-  color: var(--accent); background: var(--accent-a8);
-  box-shadow: 0 0 10px var(--accent-a15);
-}
+.source-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
 .head-actions { display: flex; gap: 6px; margin-left: auto; }
 
 .btn-sm {
-  display: flex; align-items: center; gap: 4px;
+  display: inline-flex; align-items: center; gap: 4px;
   padding: 4px 10px; font-family: inherit; font-size: 11px; font-weight: 600;
-  border-radius: 4px; cursor: pointer;
-  transition: all 0.2s; border: 1px solid var(--border);
-  background: none; color: var(--text-dim);
+  border-radius: 3px; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+  border: 1px solid var(--border); background: none; color: var(--text-dim);
 }
 .btn-sm:hover { border-color: var(--text-muted); color: var(--text); }
 .btn-sm.active { border-color: var(--accent); color: var(--accent); background: var(--accent-a6); }
 
-.btn-filter { gap: 6px; min-width: 70px; }
+.btn-filter { min-width: 52px; }
 
 /* 显示管理员日志开关 */
 .toggle-admin {
   display: flex; align-items: center; gap: 5px;
   font-size: 11px; font-weight: 600; color: var(--text-muted);
   cursor: pointer; padding: 4px 8px;
-  border: 1px dashed var(--border); border-radius: 4px;
-  transition: all 0.2s;
+  border-bottom: 1px solid var(--border);
 }
-.toggle-admin:hover { color: var(--text); border-color: var(--text-muted); }
+.toggle-admin:hover { color: var(--text); }
 .toggle-admin input { accent-color: var(--accent); cursor: pointer; }
-
-.filter-dot { width: 6px; height: 6px; border-radius: 50%; }
-.dot-red { background: var(--err); }
-.dot-yellow { background: var(--warn); }
-.dot-cyan { background: var(--accent); }
-.dim { opacity: 0.3; }
-.filter-icon { font-size: 12px; }
 
 /* Caddy 日志列头 */
 .caddy-cols {
@@ -260,19 +231,18 @@ onUnmounted(() => {
   gap: 10px; padding: 7px 16px;
   font-size: 10px; font-weight: 700; letter-spacing: 1px;
   color: var(--text-muted); text-transform: uppercase;
-  background: var(--overlay-a10); border: 1px solid var(--border);
-  border-bottom: none; border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid var(--border);
 }
 
-/* 终端日志区 */
-.log-terminal {
-  background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px;
+/* 日志区：发丝线分区，无终端框 */
+.log-panel {
+  border-top: 1px solid var(--border);
   max-height: calc(100dvh - 280px); min-height: 400px;
-  overflow-y: auto; padding: 16px;
+  overflow-y: auto; padding: 16px 0;
   font-family: var(--font-mono);
   font-size: 12px; line-height: 1.8;
 }
-.log-terminal:has(.caddy-line) { padding: 0; border-radius: 0 0 8px 8px; }
+.log-panel:has(.caddy-line) { padding: 0; }
 
 .log-line {
   display: flex; gap: 10px; align-items: baseline;
@@ -309,9 +279,9 @@ onUnmounted(() => {
   gap: 10px; padding: 5px 16px; align-items: baseline;
   font-family: var(--font-mono);
   font-size: 12px; line-height: 1.6;
-  background: var(--bg-code); border-bottom: 1px solid var(--border-a30);
+  border-bottom: 1px solid var(--border-a30);
 }
-.caddy-line:last-child { border-radius: 0 0 8px 8px; border-bottom: none; }
+.caddy-line:last-child { border-bottom: none; }
 .caddy-ts { color: var(--text-muted); font-size: 11px; }
 .caddy-ip { color: var(--accent); font-weight: 600; }
 .caddy-method { color: var(--text-secondary); }
@@ -328,7 +298,6 @@ onUnmounted(() => {
   gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted);
 }
 .state-box.error { color: var(--err); flex-direction: column; gap: 8px; }
-.err-prefix { font-weight: 700; letter-spacing: 1px; }
 .state-text { color: inherit; }
 
 .spinner {

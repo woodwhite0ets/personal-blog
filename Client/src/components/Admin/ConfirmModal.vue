@@ -2,11 +2,8 @@
   <Teleport to="body">
     <div v-if="visible" class="modal-overlay" @click.self="$emit('cancel')">
       <div class="modal-card">
-        <div class="terminal-bar">
-          <span class="terminal-dot dot-red"></span>
-          <span class="terminal-dot dot-yellow"></span>
-          <span class="terminal-dot dot-green"></span>
-          <span class="terminal-title">{{ title }}</span>
+        <div class="modal-head">
+          <span class="modal-title">{{ title }}</span>
         </div>
 
         <div class="modal-body">
@@ -51,25 +48,19 @@ defineEmits(['confirm', 'cancel'])
 
 .modal-card {
   width: 400px; max-width: 92vw;
-  background: var(--bg-float); border: 1px solid var(--border-strong);
-  border-radius: 10px; overflow: hidden;
-  box-shadow: 0 0 60px var(--shadow);
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 0; box-shadow: none;
 }
 
-.terminal-bar {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 14px;
-  background: var(--border); border-bottom: 1px solid var(--border-strong);
+.modal-head {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
 }
 
-.terminal-dot { width: 11px; height: 11px; border-radius: 50%; }
-.dot-red    { background: var(--err); }
-.dot-yellow { background: var(--warn); }
-.dot-green  { background: var(--ok); }
-
-.terminal-title {
-  flex: 1; text-align: center;
-  font-size: 11px; color: var(--text-hint); letter-spacing: 1px;
+.modal-title {
+  font-family: var(--font-hand); font-size: 20px; font-weight: 400;
+  color: var(--text-bright); letter-spacing: 0;
 }
 
 .modal-body { padding: 24px 20px; }
@@ -77,7 +68,7 @@ defineEmits(['confirm', 'cancel'])
 .modal-message {
   font-family: var(--font-sans);
   font-size: 13px; color: var(--text-secondary); line-height: 1.7;
-  margin: 0 0 24px; text-align: center;
+  margin: 0 0 24px; text-align: left;
 }
 
 .modal-actions {
