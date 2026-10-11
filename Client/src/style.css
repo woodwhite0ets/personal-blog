@@ -1381,6 +1381,10 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .ed-more-btn:hover { border-color: var(--text-bright); }
 
 /* ===== 首页：官网高级感 ===== */
+/* 首屏墨底：底色用 --text-bright、文字必须用 var(--bg) 派生。
+   ⚠️ 坑：4 个主题里 terminal/midnight/solar 是深色，--text-bright 是【浅色】，
+   若在此处硬编码纸色文字（如 rgba(250,249,245)），深色主题下会变成浅字压浅底 → 文字不可见。
+   一律用 color-mix(in srgb, var(--bg) X%, transparent)。 */
 .hero-band { background: var(--text-bright); color: var(--bg); }
 .hero-in { max-width: 1000px; margin: 0 auto; padding: 104px 24px 96px; }
 .hero-name { font-family: var(--font-hand); font-size: clamp(52px, 7.4vw, 92px); line-height: 1; font-weight: 400; letter-spacing: .07em; margin: 0; color: var(--bg); }
