@@ -1211,3 +1211,21 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 
 /* 信笺风：登录/验证页标题 */
 .auth-title { font-family: var(--font-hand); font-size: 30px; font-weight: 400; color: var(--text-bright); margin: 0 0 8px; text-align: center; }
+
+/* ============================================================
+   信笺统一：按钮 / 输入 / 标签（2026-10-11）
+   ============================================================ */
+.btn { border-radius: 4px; font-size: 15px; padding: 9px 18px; transition: background .25s var(--ease-spring), border-color .25s var(--ease-spring), color .25s var(--ease-spring); }
+.btn-primary { background: var(--text-bright); border-color: var(--text-bright); color: var(--bg); font-weight: 400; }
+.btn-primary:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn-secondary { background: transparent; border-color: var(--border-strong); color: var(--text-secondary); }
+.btn-secondary:hover:not(:disabled) { color: var(--text-bright); border-color: var(--text-bright); background: transparent; }
+.btn-ghost:hover:not(:disabled) { color: var(--text-bright); background: var(--overlay-a4); }
+.field-input, .field-select, .field-textarea {
+  border-radius: 4px; background: var(--bg-elevated); border-color: var(--border); font-size: 15px;
+}
+.field-input:focus, .field-select:focus, .field-textarea:focus {
+  border-color: var(--text-bright); box-shadow: none; outline: none;
+}
+.field-label { font-size: 14px; color: var(--text-dim); }
+.tag { border-radius: 3px; }
