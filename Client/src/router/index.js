@@ -54,6 +54,11 @@ const routes = [
     component: () => import('../components/Homepage/ArchivePage.vue'),
   },
   {
+    path: '/tags',
+    name: 'Tags',
+    component: () => import('../components/Homepage/TagsPage.vue'),
+  },
+  {
     path: '/about',
     name: 'About',
     component: () => import('../components/Homepage/AboutPage.vue'),

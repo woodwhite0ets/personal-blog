@@ -10,6 +10,8 @@
         <router-link :to="`/user/${post.author.username}`">@{{ post.author.username }}</router-link>
       </span>
       <span class="post-read" v-if="post.read_time">{{ post.read_time }}</span>
+      <span class="post-meta-stat" v-if="post.views">{{ post.views }} 次阅读</span>
+      <span class="post-meta-stat" v-if="post.comment_count">{{ post.comment_count }} 条评论</span>
       <span class="post-tags">
         <router-link
           v-for="tag in (post.tags && post.tags.length ? post.tags : [{ name: post.tag || '未分类' }])"
@@ -69,6 +71,7 @@ defineProps({
   color: var(--text-dim);
 }
 .post-date { font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+.post-meta-stat { font-variant-numeric: tabular-nums; }
 .post-author a { color: var(--text-dim); text-decoration: none; transition: color .2s; }
 .post-author a:hover { color: var(--accent); }
 .post-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-left: auto; }

@@ -93,7 +93,20 @@
           <div class="project-tags"><span>Docker</span><span>PostGIS</span><span>地理可视化</span></div>
         </li>
       </ul>
+
       <router-link to="/about" class="view-all">查看全部项目</router-link>
+    </section>
+
+    <!-- ====== 最近更新 ====== -->
+    <section class="home-recent anim-fade-up">
+      <h2 class="home-recent-title">最近更新</h2>
+      <ul class="recent-list">
+        <li v-for="p in posts.slice(0, 3)" :key="p.id">
+          <router-link :to="`/post/${p.slug || p.id}`" class="recent-link">{{ p.title }}</router-link>
+          <time class="recent-date">{{ p.date }}</time>
+        </li>
+      </ul>
+      <p class="home-stats">{{ totalPublished }} 篇文章 · {{ tags.length }} 个分类 · <router-link to="/forum" class="stats-link">全部文章</router-link></p>
     </section>
 
     <SiteFooter command='echo "© 2026 woodwhite@blog — 技术论坛"' />
@@ -688,4 +701,16 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 
 .sort-bar { padding: 12px 18px; }
 .sort-btn { padding: 6px 14px; }
+
+/* 首页最近更新（信笺风）*/
+.home-recent { max-width: 860px; margin: 0 auto; padding: 0 24px 96px; }
+.home-recent-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0 0 8px; }
+.recent-list { list-style: none; margin: 0 0 20px; padding: 0; }
+.recent-list li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.recent-link { font-size: 17px; color: var(--text); text-decoration: none; transition: color .2s; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recent-link:hover { color: var(--accent); }
+.recent-date { font-size: 13px; color: var(--text-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.home-stats { font-size: 14px; color: var(--text-dim); margin: 0; }
+.stats-link { color: var(--accent); text-decoration: none; }
+.stats-link:hover { text-decoration: underline; }
 </style>
