@@ -1268,3 +1268,9 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* 归档/页脚补充（信笺风）*/
 .archive-tags-link { color: var(--accent); text-decoration: none; }
 .archive-tags-link:hover { text-decoration: underline; }
+
+/* 图标按钮更精致（主题/搜索）*/
+.btn-icon { border-color: transparent; background: transparent; color: var(--text-secondary); }
+.btn-icon:hover { background: var(--overlay-a4); color: var(--text-bright); border-color: transparent; }
+.theme-btn { border: 1px solid transparent; background: transparent; border-radius: 4px; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; transition: background .2s, color .2s; }
+.theme-btn:hover { background: var(--overlay-a4); color: var(--text-bright); }

@@ -1,9 +1,9 @@
 <template>
   <div class="theme-switcher" ref="root">
     <button class="theme-btn" @click="open = !open" title="switch theme">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+      <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <circle cx="9" cy="9" r="6.6" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M9 2.4a6.6 6.6 0 0 1 0 13.2z" fill="currentColor" opacity="0.9"/>
       </svg>
     </button>
     <div v-if="open" class="theme-dropdown">

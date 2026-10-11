@@ -6,9 +6,9 @@
   <template #search>
     <div class="search-wrap" :class="{ active: searchActive }">
       <button class="btn btn-icon btn-search" @click="toggleSearch" title="搜索">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <circle cx="7.8" cy="7.8" r="5.2" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M11.7 11.7 15.4 15.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
         </svg>
       </button>
       <input
