@@ -1349,7 +1349,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .ed-hero-meta { font-size: 14px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
 .ed-cols { max-width: 1000px; margin: 0 auto; padding: 52px 24px 96px; display: grid; grid-template-columns: 1fr 288px; gap: 56px; align-items: start; }
 .ed-entry { display: grid; grid-template-columns: 52px 1fr; gap: 18px; padding: 26px 0; border-bottom: 1px solid var(--border); }
-.ed-num { font-family: var(--font-hand); font-size: 26px; color: var(--text-faint); line-height: 1; }
+.ed-num { font-family: var(--font-hand); font-size: 26px; color: var(--text-dim); line-height: 1; }
 .ed-entry-title { font-size: 23px; line-height: 1.4; margin: 0 0 8px; }
 .ed-entry-title a { color: var(--text-bright); text-decoration: none; transition: color .2s; }
 .ed-entry-title a:hover { color: var(--accent); }
@@ -1433,11 +1433,11 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .act-col { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }
 .act-bar { width: 100%; max-width: 30px; background: var(--accent); opacity: .82; border-radius: 2px 2px 0 0; }
 .act-col:hover .act-bar { opacity: 1; }
-.act-lbl { font-size: 11.5px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.act-lbl { font-size: 11.5px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
 .band-tint { background: var(--bg-deeper); }
 .band-tint .hm-sec { padding: 64px 0; }
 .hm-text-lead { font-size: 16.5px; line-height: 1.9; max-width: 640px; }
-.hm-tag { display: inline-block; margin-top: 12px; font-size: 12.5px; letter-spacing: .04em; color: var(--text-faint); }
+.hm-tag { display: inline-block; margin-top: 12px; font-size: 12.5px; letter-spacing: .04em; color: var(--text-dim); }
 .hm-proj .hm-text { margin-bottom: 0; }
 @media (max-width: 860px) {
   .hero-in { grid-template-columns: 1fr; gap: 36px; align-items: start; }
@@ -1481,7 +1481,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .band-tint .hm-proj { position: relative; counter-increment: proj; padding-left: 54px; }
 .band-tint .hm-proj::before {
   content: counter(proj, decimal-leading-zero); position: absolute; left: 0; top: 2px;
-  font-family: var(--font-hand); font-size: 30px; line-height: 1; color: var(--text-faint);
+  font-family: var(--font-hand); font-size: 30px; line-height: 1; color: var(--text-dim);
 }
 .band-tint .hm-proj:hover::before { color: var(--accent); }
 
@@ -1508,7 +1508,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .edge-label {
   position: fixed; left: 16px; top: 50%; z-index: 40;
   writing-mode: vertical-rl; transform: translateY(-50%) rotate(180deg);
-  font-size: 11px; letter-spacing: .3em; color: var(--text-faint);
+  font-size: 11px; letter-spacing: .3em; color: var(--text-muted);
   padding-left: 10px; border-left: 1px solid var(--border);
   pointer-events: none; user-select: none;
 }
@@ -1536,7 +1536,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hm-list li { counter-increment: li; position: relative; }
 .hm-list li::before {
   content: counter(li, decimal-leading-zero); position: absolute; left: 0; top: 12px;
-  font-family: var(--font-hand); font-size: 15px; line-height: 1; color: var(--text-faint);
+  font-family: var(--font-hand); font-size: 15px; line-height: 1; color: var(--text-dim);
 }
 
 /* 关于：装饰引号 */
@@ -1596,7 +1596,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 }
 
 /* 3. 序列序号 */
-.deco-idx { font-family: var(--font-hand); font-size: 22px; line-height: 1; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.deco-idx { font-family: var(--font-hand); font-size: 22px; line-height: 1; color: var(--text-dim); font-variant-numeric: tabular-nums; }
 
 /* 4. 页尾装饰终止符（发丝线 + 菱形）*/
 .deco-end { display: block; height: 8px; position: relative; margin-top: 8px; }

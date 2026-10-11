@@ -238,7 +238,7 @@ onMounted(async () => {
 .project-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .project-name { font-size: 14px; font-weight: 600; color: var(--text-bright); }
 .project-status { font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums; }
-.dim-status { color: var(--text-faint); }
+.dim-status { color: var(--text-dim); }
 .project-desc { font-size: 12px; line-height: 1.7; color: var(--text-secondary); margin: 0 0 10px; }
 .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .ptag { font-size: 12px; color: var(--text-dim); }
@@ -250,7 +250,7 @@ onMounted(async () => {
 .contact-label { font-size: 13px; color: var(--text-muted); width: 56px; flex-shrink: 0; }
 .contact-val { font-size: 13px; color: var(--text); text-decoration: none; transition: color 0.2s; }
 a.contact-val:hover { color: var(--accent); }
-.dim-val { color: var(--text-faint); }
+.dim-val { color: var(--text-dim); }
 
 @media (max-width: 560px) {
   .about-hero { flex-direction: column; align-items: flex-start; }
