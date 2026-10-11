@@ -162,4 +162,8 @@ onMounted(async () => {
 .arch-title { flex: 1; font-size: 14px; color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .arch-tag { font-size: 10px; color: var(--text-faint); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
+
+/* 统一：内容页容器 860 / 上边距 88 */
+.archive-main { max-width: 860px; padding: 88px 24px 72px; }
+.archive-title { font-family: var(--font-hand); font-size: 40px; font-weight: 400; }
 </style>

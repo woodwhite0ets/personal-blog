@@ -602,5 +602,8 @@ async function handleGuestLogin() {
 .login-card { border-radius: 4px; box-shadow: 0 18px 50px var(--shadow-soft); }
 .card-body { padding: 40px 36px; }
 .subtitle { font-size: 15px; color: var(--text-dim); }
+
+/* 统一：auth 卡片宽度 420 */
+.login-card, .register-card, .verify-card, .card { max-width: 420px; margin: 0 auto; }
 </style>
  

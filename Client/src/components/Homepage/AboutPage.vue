@@ -296,4 +296,8 @@ a.contact-val:hover { color: var(--accent); }
 .panel-body { padding: 14px 18px 18px; }
 .panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
 .info-key { color: var(--text-dim); }
+
+/* 统一：内容页容器 860 / 上边距 88 / 标题手写 */
+.about-main { max-width: 860px; padding: 88px 24px 72px; }
+.hero-name { font-family: var(--font-hand); font-size: 40px; font-weight: 400; }
 </style>

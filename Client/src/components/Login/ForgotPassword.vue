@@ -153,4 +153,7 @@ async function handleSend() {
 .back-link { margin-top: 20px; text-align: center; }
 .back-link a { color: var(--text-muted); text-decoration: none; font-size: 13px; }
 .back-link a:hover { color: var(--accent); }
+
+/* 统一：auth 卡片宽度 420 */
+.login-card, .register-card, .verify-card, .card { max-width: 420px; margin: 0 auto; }
 </style>

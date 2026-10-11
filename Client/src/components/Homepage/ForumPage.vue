@@ -741,4 +741,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .panel-body { padding: 14px 18px 18px; }
 .panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
 .info-key { color: var(--text-dim); }
+
+/* 统一：列表页容器 1060 / 上边距 88 */
+.main-layout { max-width: 1060px; }
 </style>

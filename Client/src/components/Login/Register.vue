@@ -811,5 +811,8 @@ async function handleResend() {
 @media (max-width: 480px) {
   .card-body { padding: 24px 20px 18px; }
 }
+
+/* 统一：auth 卡片宽度 420 */
+.login-card, .register-card, .verify-card, .card { max-width: 420px; margin: 0 auto; }
 </style>
  

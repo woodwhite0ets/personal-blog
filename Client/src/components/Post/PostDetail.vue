@@ -1153,4 +1153,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   .toc-panel .toc-nav, .toc-panel.open .toc-nav { opacity: 1; transform: none; pointer-events: auto; }
   .toc-toggle { display: none; }
 }
+
+/* 统一：文章页上边距 88，正文保持阅读宽度 */
+.post-article { padding-top: 88px; }
 </style>

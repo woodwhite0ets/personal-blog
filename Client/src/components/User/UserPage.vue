@@ -927,4 +927,7 @@ watch(username, () => {
 .panel-body { padding: 14px 18px 18px; }
 .panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
 .info-key { color: var(--text-dim); }
+
+/* 统一：用户页容器 1060 / 上边距 88 */
+.user-main, .user-page > .main { max-width: 1060px; }
 </style>
