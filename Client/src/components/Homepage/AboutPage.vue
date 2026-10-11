@@ -22,16 +22,14 @@
       <!-- 关于本站 -->
       <div class="about-panel">
         <div class="panel-bar">
-          <span class="panel-dot dot-cyan"></span>
-          <span class="panel-dot dot-cyan dim"></span>
           <span class="panel-title">关于本站</span>
         </div>
         <div class="panel-body markdown-body">
-          <p>欢迎来到 <strong>woodwhite@blog</strong> —— 一个以终端 / HUD 美学为主题的技术博客。</p>
+          <p>这里是 <strong>woodwhite@blog</strong> —— 一个记录全栈开发与工程实践的技术博客。</p>
           <ul>
             <li>用 <strong>Markdown</strong> 分享技术知识</li>
-            <li>自由注册、发布、评论，构建技术社区</li>
-            <li>极简、快速、无干扰的阅读体验</li>
+            <li>用 <strong>Markdown</strong> 记录项目、踩坑与思考</li>
+            <li>纸面般的阅读体验，安静、无干扰</li>
             <li>游客模式：无需注册即可浏览</li>
             <li>完全开源，可自由部署</li>
           </ul>
@@ -47,8 +45,6 @@
       <!-- 项目 / 经历 -->
       <div class="about-panel">
         <div class="panel-bar">
-          <span class="panel-dot dot-yellow"></span>
-          <span class="panel-dot dot-yellow dim"></span>
           <span class="panel-title">项目经历</span>
         </div>
         <div class="panel-body">
@@ -112,8 +108,6 @@
       <!-- 联系方式 -->
       <div class="about-panel">
         <div class="panel-bar">
-          <span class="panel-dot dot-green"></span>
-          <span class="panel-dot dot-green dim"></span>
           <span class="panel-title">联系方式</span>
         </div>
         <div class="panel-body">
