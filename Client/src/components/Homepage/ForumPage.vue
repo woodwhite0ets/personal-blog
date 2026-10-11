@@ -30,20 +30,16 @@
     <!-- ====== Hero：论坛介绍 ====== -->
     <section class="hero">
       <div class="hero-inner">
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          社区论坛
-        </div>
-        <h1 class="hero-title">技术交流 · 自由讨论</h1>
+        <h1 class="hero-title">文章</h1>
         <p class="hero-excerpt">
-          欢迎来到 woodwhite@blog 的社区论坛。在这里可以自由发帖讨论技术话题、分享经验、提问求助。
+          全栈开发 · 系统架构 · 开源实践。这里是我写下的全部文章。
         </p>
         <div class="hero-actions">
           <router-link v-if="isLoggedIn" to="/editor?type=forum" class="btn btn-primary btn-hero-write">
-            <span>+</span> 发布新帖
+            写文章
           </router-link>
           <router-link v-else to="/login" class="btn btn-primary btn-hero-write">
-            <span>→</span> 登录后发帖
+            登录后写文章
           </router-link>
         </div>
       </div>

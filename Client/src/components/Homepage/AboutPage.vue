@@ -1,8 +1,5 @@
 <template>
   <div class="about-page">
-    <div class="bg-grid"></div>
-    <div class="bg-scanline"></div>
-    <div class="bg-glow"></div>
 
     <SiteNav />
 
@@ -27,7 +24,7 @@
         <div class="panel-bar">
           <span class="panel-dot dot-cyan"></span>
           <span class="panel-dot dot-cyan dim"></span>
-          <span class="panel-title">关于本站 · readme.md</span>
+          <span class="panel-title">关于本站</span>
         </div>
         <div class="panel-body markdown-body">
           <p>欢迎来到 <strong>woodwhite@blog</strong> —— 一个以终端 / HUD 美学为主题的技术博客。</p>
@@ -52,7 +49,7 @@
         <div class="panel-bar">
           <span class="panel-dot dot-yellow"></span>
           <span class="panel-dot dot-yellow dim"></span>
-          <span class="panel-title">项目经历 · experience</span>
+          <span class="panel-title">项目经历</span>
         </div>
         <div class="panel-body">
           <div class="project-item">
