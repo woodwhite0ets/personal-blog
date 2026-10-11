@@ -96,7 +96,7 @@
           <div class="panel-bar">
             <span class="panel-dot dot-cyan"></span>
             <span class="panel-dot dot-cyan dim"></span>
-            <span class="panel-title">论坛.信息</span>
+            <span class="panel-title">概况</span>
           </div>
           <div class="panel-body">
             <div class="info-line">
@@ -138,7 +138,7 @@
           <div class="panel-bar">
             <span class="panel-dot dot-yellow"></span>
             <span class="panel-dot dot-yellow dim"></span>
-            <span class="panel-title">标签.索引</span>
+            <span class="panel-title">标签</span>
           </div>
           <div class="panel-body">
             <div class="tag-cloud">
@@ -159,7 +159,7 @@
           <div class="panel-bar">
             <span class="panel-dot dot-purple"></span>
             <span class="panel-dot dot-purple dim"></span>
-            <span class="panel-title">链接.符号链接</span>
+            <span class="panel-title">链接</span>
           </div>
           <div class="panel-body">
             <router-link to="/HomePage" class="link-item">

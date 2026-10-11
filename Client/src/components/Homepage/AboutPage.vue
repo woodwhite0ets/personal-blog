@@ -114,7 +114,7 @@
         <div class="panel-bar">
           <span class="panel-dot dot-green"></span>
           <span class="panel-dot dot-green dim"></span>
-          <span class="panel-title">联系方式 · contact</span>
+          <span class="panel-title">联系方式</span>
         </div>
         <div class="panel-body">
           <div class="contact-line">
