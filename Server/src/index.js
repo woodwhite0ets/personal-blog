@@ -23,7 +23,7 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'sha256-HgvWo75qIGVqwbBsj/URF7IoqQkEbaakiv01vogJ6VA='"],  // 主题防闪烁内联脚本(Client/index.html)
+      scriptSrc: ["'self'", "'sha256-RfqUO396B2r1srlatKcfrkhHM7EiQXCrisl+8BGupRE='"],  // 主题防闪烁内联脚本(Client/index.html)
       styleSrc: ["'self'", "'unsafe-inline'"],   // 组件内联 style
       imgSrc: ["'self'", 'data:', 'blob:',
         'https://img.shields.io',           // 技术徽章

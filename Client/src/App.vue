@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useAuth } from './stores/auth.js'
+import { useTheme } from './stores/theme.js'
 
 const { fetchMe } = useAuth()
+useTheme() // 实例化主题 store，确保 data-theme 被应用（默认 paper）
 
 const progress = ref(0)
 const showTop = ref(false)
