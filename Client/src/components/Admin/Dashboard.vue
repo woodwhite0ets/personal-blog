@@ -5,8 +5,8 @@
       <span class="section-title">仪表盘</span>
     </div>
 
-    <div v-if="loading" class="state-box">
-      <span class="spinner"></span>
+    <div v-if="loading" class="state-box" role="status" aria-live="polite">
+      <span class="spinner" role="status" aria-label="加载中"></span>
       <span class="state-text">正在加载统计...</span>
     </div>
 
@@ -106,7 +106,7 @@
       </div>
     </template>
 
-    <div v-else-if="error" class="state-box error">
+    <div v-else-if="error" class="state-box error" role="alert">
       <span class="err-prefix">ERR!</span>
       <span>{{ error }}</span>
     </div>

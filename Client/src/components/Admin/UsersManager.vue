@@ -30,8 +30,8 @@
     </div>
 
     <!-- 状态 -->
-    <div v-if="loading" class="state-box"><span class="spinner"></span><span>正在加载...</span></div>
-    <div v-else-if="error" class="state-box error"><span class="err-prefix">ERR!</span><span>{{ error }}</span></div>
+    <div v-if="loading" class="state-box" role="status" aria-live="polite"><span class="spinner" role="status" aria-label="加载中"></span><span>正在加载...</span></div>
+    <div v-else-if="error" class="state-box error" role="alert"><span class="err-prefix">ERR!</span><span>{{ error }}</span></div>
     <div v-else-if="users.length === 0" class="state-box"><span>未找到用户</span></div>
 
     <template v-else>

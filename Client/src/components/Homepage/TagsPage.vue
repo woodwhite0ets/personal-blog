@@ -6,7 +6,7 @@
         <h1 class="tags-title">分类</h1>
         <p class="tags-sub">共 {{ tags.length }} 个标签 · {{ total }} 篇文章</p>
       </div>
-      <div v-if="loading" class="state-box">正在加载…</div>
+      <div v-if="loading" class="state-box" role="status" aria-live="polite">正在加载…</div>
       <div v-else-if="!tags.length" class="state-box">暂无标签。</div>
       <ul v-else class="tag-grid">
         <li v-for="t in tags" :key="t.name">

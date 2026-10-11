@@ -20,7 +20,7 @@
     </div>
 
     <!-- 错误状态 -->
-    <div v-else-if="error" class="state-box error">
+    <div v-else-if="error" class="state-box error" role="alert">
       <span class="err-prefix">错误!</span>
       <span class="state-text">{{ error }}</span>
       <button class="link-btn" @click="$emit('refresh')">重试</button>

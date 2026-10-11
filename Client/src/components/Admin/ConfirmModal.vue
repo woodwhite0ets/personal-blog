@@ -19,7 +19,7 @@
               @click="$emit('confirm')"
               :disabled="loading"
             >
-              <span v-if="loading" class="spinner"></span>
+              <span v-if="loading" class="spinner" role="status" aria-label="提交中"></span>
               {{ loading ? '...' : confirmText }}
             </button>
           </div>

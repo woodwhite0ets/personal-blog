@@ -5,7 +5,7 @@
       <div class="card-body">
         <!-- 加载中 -->
         <div v-if="loading" class="state">
-          <span class="spinner"></span>
+          <span class="spinner" role="status" aria-label="加载中"></span>
           <span class="state-text">verifying...</span>
         </div>
 

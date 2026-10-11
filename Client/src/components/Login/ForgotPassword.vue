@@ -38,7 +38,7 @@
           </div>
 
           <button type="submit" class="btn btn-primary btn-block" :disabled="loading">
-            <span v-if="loading" class="spinner"></span>
+            <span v-if="loading" class="spinner" role="status" aria-label="提交中"></span>
             
             {{ loading ? 'Sending...' : 'Send Reset Link' }}
           </button>

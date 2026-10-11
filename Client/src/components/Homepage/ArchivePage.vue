@@ -9,16 +9,16 @@
         <p class="archive-sub">共收录 {{ posts.length }} 篇文章 · <router-link to="/tags" class="archive-tags-link">按分类浏览</router-link></p>
       </div>
 
-      <div v-if="loading" class="state-box">
-        <span class="spinner"></span>
+      <div v-if="loading" class="state-box" role="status" aria-live="polite">
+        <span class="spinner" role="status" aria-label="加载中"></span>
         <span>正在加载归档...</span>
       </div>
 
-      <div v-else-if="error" class="state-box error">
+      <div v-else-if="error" class="state-box error" role="alert">
         {{ error }}
       </div>
 
-      <div v-else-if="!posts.length" class="state-box">
+      <div v-else-if="!posts.length" class="state-box" aria-live="polite">
         暂无文章。
       </div>
 

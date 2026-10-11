@@ -176,7 +176,7 @@ Registerview · VUE
             </p>
  
             <button type="submit" class="btn btn-primary btn-glow" :disabled="loading">
-              <span v-if="loading" class="spinner"></span>
+              <span v-if="loading" class="spinner" role="status" aria-label="提交中"></span>
               
               {{ loading ? '注册中...' : '注册' }}
             </button>

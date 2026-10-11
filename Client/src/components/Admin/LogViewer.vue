@@ -51,13 +51,13 @@
     </div>
 
     <!-- 加载 -->
-    <div v-if="loading" class="state-box">
-      <span class="spinner"></span>
+    <div v-if="loading" class="state-box" role="status" aria-live="polite">
+      <span class="spinner" role="status" aria-label="加载中"></span>
       <span>正在加载日志...</span>
     </div>
 
     <!-- 错误 -->
-    <div v-else-if="error" class="state-box error">
+    <div v-else-if="error" class="state-box error" role="alert">
       <span class="err-prefix">ERR!</span>
       <span>{{ error }}</span>
     </div>
