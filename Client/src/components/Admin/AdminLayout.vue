@@ -5,10 +5,8 @@
     <header class="navbar">
       <div class="navbar-inner">
         <router-link to="/HomePage" class="brand">
-          <span class="brand-bracket">[</span>
           <span class="brand-text">woodwhite@blog</span>
-          <span class="brand-bracket">]</span>
-          <span class="brand-path">~/admin</span>
+          <span class="brand-suffix">管理</span>
         </router-link>
         <div class="nav-actions">
           <span class="admin-badge">管理员</span>
@@ -239,4 +237,14 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .panel-body { padding: 14px 18px 18px; }
 .panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
 .info-key { color: var(--text-dim); }
+
+/* 统一：后台头部与主站一致 */
+.navbar { background: var(--bg); border-bottom: 1px solid var(--border); }
+.navbar-inner { max-width: 1120px; margin: 0 auto; padding: 0 28px; height: 74px; display: flex; align-items: center; gap: 24px; }
+.brand-text { font-family: var(--font-hand); font-size: 21px; color: var(--text-bright); }
+.brand-suffix { font-size: 13px; color: var(--text-dim); margin-left: 8px; }
+.admin-badge { font-size: 13px; color: var(--text-dim); border: 1px solid var(--border); border-radius: 3px; padding: 2px 8px; }
+.nav-link { font-size: 15px; color: var(--text-secondary); text-decoration: none; }
+.nav-link:hover { color: var(--text-bright); }
+.btn-user { border-radius: 4px; }
 </style>
