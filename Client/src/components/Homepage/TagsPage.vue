@@ -36,7 +36,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.tags-page { min-height: 100vh; }
+.tags-page { min-height: 100dvh; }
 .tags-main { max-width: 860px; margin: 0 auto; padding: 96px 24px 80px; }
 .tags-header { margin: 0 0 32px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
 .tags-title { font-family: var(--font-hand); font-size: 40px; font-weight: 400; color: var(--text-bright); margin: 0 0 6px; }

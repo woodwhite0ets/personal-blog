@@ -775,7 +775,7 @@ watch(
 
 <style scoped>
 .editor-page {
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg);
   font-family: var(--font-sans);
   color: var(--text);
@@ -875,7 +875,7 @@ watch(
 .editor-main {
   position: relative; z-index: 1;
   display: grid; grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 56px - 57px);
+  min-height: calc(100dvh - 56px - 57px);
 }
 
 /* ====== 编辑面板 ====== */

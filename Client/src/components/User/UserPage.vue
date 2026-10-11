@@ -531,7 +531,7 @@ watch(username, () => {
 
 <style scoped>
 .user-page {
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg);
   font-family: var(--font-sans);
   color: var(--text);

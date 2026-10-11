@@ -515,7 +515,7 @@ body::before {
 
 
 #app {
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 a {
@@ -1278,3 +1278,8 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* 图标尺寸修复（SVG 曾被 flex 压成 0 宽）*/
 .btn-icon svg, .theme-btn svg { width: 17px; height: 17px; flex-shrink: 0; display: block; }
 .nav-toggle svg { flex-shrink: 0; }
+
+/* 按 ui-ux-pro-max 规则：触控间距≥8px、文本不裁切 */
+.nav-actions { gap: 10px; }
+.footer-links { gap: 16px; }
+.post-excerpt, .recent-link, .popular-title { overflow-wrap: anywhere; }

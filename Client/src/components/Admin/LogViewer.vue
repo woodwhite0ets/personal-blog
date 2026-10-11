@@ -266,7 +266,7 @@ onUnmounted(() => {
 /* 终端日志区 */
 .log-terminal {
   background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px;
-  max-height: calc(100vh - 280px); min-height: 400px;
+  max-height: calc(100dvh - 280px); min-height: 400px;
   overflow-y: auto; padding: 16px;
   font-family: var(--font-mono);
   font-size: 12px; line-height: 1.8;

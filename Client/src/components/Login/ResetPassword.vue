@@ -115,7 +115,7 @@ async function handleReset() {
 
 <style scoped>
 .reset-page {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex; align-items: center; justify-content: center;
   padding: 24px;
   position: relative;
