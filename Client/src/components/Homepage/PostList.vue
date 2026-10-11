@@ -208,8 +208,6 @@ defineEmits(['load-more', 'refresh'])
   color: var(--accent);
 }
 
-  color: var(--accent);
-}
 
 /* ====== 骨架屏 ====== */
 .skeleton-wrap { display: flex; flex-direction: column; gap: 0; }
