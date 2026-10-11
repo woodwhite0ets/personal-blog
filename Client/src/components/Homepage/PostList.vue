@@ -208,7 +208,6 @@ defineEmits(['load-more', 'refresh'])
   color: var(--accent);
 }
 
-.btn-prompt {
   color: var(--accent);
 }
 
