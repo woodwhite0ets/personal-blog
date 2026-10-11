@@ -52,7 +52,7 @@ const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
 
 const navLinks = [
   { to: '/HomePage', num: '01', label: '首页' },
-  { to: '/forum', num: '02', label: '论坛' },
+  { to: '/forum', label: '文章' },
   { to: '/archive', num: '03', label: '归档' },
   { to: '/about', num: '04', label: '关于' },
 ]

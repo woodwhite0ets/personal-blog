@@ -108,7 +108,7 @@
 
       <!-- 文章列表 — 模块化组件 -->
       <PostList
-        :posts="posts"
+        :posts="posts.slice(0, 6)"
         :loading="loading"
         :loading-more="loadingMore"
         :error="error"
@@ -117,6 +117,7 @@
         @load-more="loadMore"
         @refresh="fetchPosts"
       />
+      <router-link to="/forum" class="view-all">查看全部文章</router-link>
 
       <!-- 侧边栏 — 保持不变 -->
       <aside class="sidebar">
@@ -756,4 +757,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .intro-links { display: flex; justify-content: center; gap: 24px; }
 .intro-link { font-size: 15px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .2s; }
 .intro-link:hover { border-color: var(--accent); }
+
+.view-all { display: inline-block; margin-top: 28px; font-size: 16px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .2s; }
+.view-all:hover { border-color: var(--accent); }
 </style>
