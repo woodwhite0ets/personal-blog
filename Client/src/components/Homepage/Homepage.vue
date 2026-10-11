@@ -124,12 +124,36 @@
       <p class="home-stats">{{ totalPublished }} 篇文章 · {{ tags.length }} 个分类 · <router-link to="/forum" class="stats-link">全部文章</router-link></p>
     </section>
 
+    <!-- ====== 热门文章 ====== -->
+    <section class="home-popular anim-fade-up" v-if="popular.length">
+      <h2 class="home-popular-title">热门文章</h2>
+      <div class="popular-grid">
+        <router-link v-for="(p, i) in popular" :key="p.id" :to="`/post/${p.slug || p.id}`" class="popular-card">
+          <span class="popular-num">{{ String(i + 1).padStart(2, '0') }}</span>
+          <span class="popular-title">{{ p.title }}</span>
+          <span class="popular-meta">{{ p.views }} 次阅读</span>
+        </router-link>
+      </div>
+    </section>
+
+    <!-- ====== 写作活动 ====== -->
+    <section class="home-activity anim-fade-up" v-if="stats.byMonth && stats.byMonth.length">
+      <h2 class="home-activity-title">写作活动</h2>
+      <div class="activity-grid">
+        <div v-for="m in stats.byMonth" :key="m.m" class="activity-col" :title="`${m.m}：${m.c} 篇`">
+          <div class="activity-bar" :style="{ height: Math.max(6, Math.round(m.c / maxMonth * 64)) + 'px' }"></div>
+          <span class="activity-label">{{ m.m.slice(5) }}月</span>
+        </div>
+      </div>
+      <p class="activity-sum">{{ stats.posts }} 篇文章 · {{ stats.views }} 次阅读 · {{ stats.comments }} 条评论 · {{ stats.tags }} 个分类</p>
+    </section>
+
     <SiteFooter command='echo "© 2026 woodwhite@blog — 技术论坛"' />
   </div>
 </template>
 
 <script setup>
-import { ref, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
@@ -141,6 +165,21 @@ const route = useRoute()
 const navOpen = ref(false)
 const router = useRouter()
 const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
+
+// 站点统计 + 热门文章
+const stats = ref({ posts: 0, views: 0, comments: 0, tags: 0, byMonth: [] })
+const popular = ref([])
+const maxMonth = computed(() => Math.max(1, ...(stats.value.byMonth || []).map(m => m.c)))
+async function loadExtra() {
+  try {
+    const [a, b] = await Promise.all([
+      fetch('/api/stats').then(r => r.ok ? r.json() : null),
+      fetch('/api/posts?page=1&status=published&sort=popular').then(r => r.ok ? r.json() : null),
+    ])
+    if (a) stats.value = a
+    if (b) popular.value = (b.posts || []).slice(0, 3)
+  } catch {}
+}
 
 // ====== 文章数据层（取数/分页/筛选/搜索/标签/作者统计） ======
 const {
@@ -175,7 +214,7 @@ function scrollToPosts() {
   document.querySelector('.main-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-onMounted(() => document.addEventListener('click', handleClickOutside))
+onMounted(() => { document.addEventListener('click', handleClickOutside); loadExtra() })
 onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 
 // ====== 搜索 ======
@@ -737,4 +776,20 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .friend-item { font-size: 16px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .2s; }
 .friend-item:hover { border-color: var(--accent); }
 .friend-empty { font-size: 14px; color: var(--text-dim); }
+
+/* 首页 热门文章 / 写作活动 */
+.home-popular, .home-activity { max-width: 860px; margin: 0 auto; padding: 0 24px 64px; }
+.home-popular-title, .home-activity-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0 0 16px; }
+.popular-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.popular-card { display: flex; flex-direction: column; gap: 8px; padding: 20px 18px; border: 1px solid var(--border); border-radius: 4px; text-decoration: none; transition: border-color .25s, transform .25s; }
+.popular-card:hover { border-color: var(--text-bright); transform: translateY(-2px); }
+.popular-num { font-family: var(--font-hand); font-size: 20px; color: var(--text-faint); }
+.popular-title { font-size: 16px; line-height: 1.5; color: var(--text-bright); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.popular-meta { font-size: 13px; color: var(--text-dim); margin-top: auto; }
+.activity-grid { display: flex; align-items: flex-end; gap: 10px; height: 84px; margin-bottom: 14px; }
+.activity-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.activity-bar { width: 22px; background: var(--accent); border-radius: 2px; opacity: .85; }
+.activity-label { font-size: 12px; color: var(--text-dim); }
+.activity-sum { font-size: 14px; color: var(--text-dim); margin: 0; font-variant-numeric: tabular-nums; }
+@media (max-width: 700px) { .popular-grid { grid-template-columns: 1fr; } }
 </style>

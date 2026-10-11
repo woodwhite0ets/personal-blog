@@ -153,6 +153,23 @@ app.get('/api/authors', async (req, res) => {
 });
 
 app.use('/api/auth',   require('./routes/auth'));
+// ====== 站点统计（首页用）======
+app.get('/api/stats', async (req, res) => {
+  try {
+    const [[posts]] = await pool.query("SELECT COUNT(*) AS c FROM posts WHERE status='published'");
+    const [[views]] = await pool.query("SELECT COALESCE(SUM(views),0) AS v FROM posts WHERE status='published'");
+    const [[comments]] = await pool.query("SELECT COUNT(*) AS c FROM comments");
+    const [[tags]] = await pool.query("SELECT COUNT(*) AS c FROM tags");
+    const [byMonth] = await pool.query(
+      "SELECT DATE_FORMAT(published_at,'%Y-%m') AS m, COUNT(*) AS c FROM posts WHERE status='published' GROUP BY m ORDER BY m"
+    );
+    res.json({ posts: posts.c, views: views.v, comments: comments.c, tags: tags.c, byMonth });
+  } catch (err) {
+    console.error('stats error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
 app.use('/api/posts',  require('./routes/posts'));
 app.use('/api/users',  require('./routes/users'));
 app.use('/api/upload', require('./routes/upload'));
