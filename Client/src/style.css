@@ -195,7 +195,7 @@
   --ok-a30: rgba(56, 158, 109, 0.3);
   --ok-a40: rgba(56, 158, 109, 0.4);
 
-  --warn: #c08a2e;
+  --warn: #936b25;
   --warn-a8: rgba(192, 138, 46, 0.08);
   --warn-a20: rgba(192, 138, 46, 0.2);
 
@@ -1431,7 +1431,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* 首页：非对称 Hero 信息栏 / 活动条 / 色带 / 项目标签 */
 .hero-in { display: grid; grid-template-columns: 1fr 232px; gap: 64px; align-items: end; }
 .hero-rail { margin: 0; display: flex; flex-direction: column; gap: 18px; border-left: 1px solid color-mix(in srgb, var(--bg) 14%, transparent); padding-left: 28px; }
-.hero-rail dt { font-size: 12px; letter-spacing: .1em; color: color-mix(in srgb, var(--bg) 42%, transparent); margin-bottom: 5px; }
+.hero-rail dt { font-size: 12px; letter-spacing: .1em; color: color-mix(in srgb, var(--bg) 68%, transparent); margin-bottom: 5px; }
 .hero-rail dd { margin: 0; font-size: 15px; color: color-mix(in srgb, var(--bg) 88%, transparent); font-variant-numeric: tabular-nums; }
 .act-strip { display: flex; align-items: flex-end; gap: 9px; height: 78px; }
 .act-col { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }

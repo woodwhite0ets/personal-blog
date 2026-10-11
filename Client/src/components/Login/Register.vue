@@ -526,7 +526,7 @@ async function handleResend() {
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
   font-size: 13px; font-weight: 700;
-  background: var(--border); color: var(--text-muted);
+  background: var(--bg-deeper); color: var(--text-dim);
   border: 2px solid var(--border-strong);
   transition: all 0.3s;
 }

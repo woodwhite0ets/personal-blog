@@ -656,7 +656,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .sort-btn {
   padding: 4px 12px;
   font-family: inherit; font-size: 11px; font-weight: 600;
-  color: var(--text-dim); background: var(--bg-elevated);
+  color: var(--text-secondary); background: var(--bg-elevated);
   border: 1px solid var(--border); border-radius: 4px;
   cursor: pointer; transition: all 0.2s;
 }
