@@ -106,7 +106,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 }
 .brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; text-decoration: none; font-size: 14px; font-weight: 600; }
 .brand-bracket { color: var(--text-muted); }
-.brand-text { color: var(--accent); }
+.brand-text { font-family: var(--font-hand); font-size: 16px; color: var(--accent); }
 .brand-caret { color: var(--accent); font-size: 12px; margin-left: 1px; }
 .brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
 .nav-links { display: flex; gap: 28px; flex: 1; }

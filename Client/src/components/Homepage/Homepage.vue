@@ -515,8 +515,8 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  font-size: 10px; font-weight: 700; letter-spacing: 2px;
-  color: var(--text-dim); margin-bottom: 26px; text-transform: uppercase;
+  font-family: var(--font-hand); font-size: 14px; font-weight: 400; letter-spacing: 0;
+  color: var(--text-dim); margin-bottom: 26px;
 }
 
 .badge-dot {
@@ -537,8 +537,9 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .hero-caret { color: var(--accent); animation: caretBlink 1s step-end infinite; }
 
 .hero-title {
-  font-size: clamp(34px, 4.6vw, 54px); font-weight: 800; line-height: 1.14;
-  margin: 0 0 22px; max-width: 780px; letter-spacing: -0.03em;
+  font-family: var(--font-hand);
+  font-size: clamp(34px, 4.6vw, 54px); font-weight: 400; line-height: 1.42;
+  margin: 0 0 22px; max-width: 780px; letter-spacing: 0;
 }
 
 .hero-title a {
@@ -557,7 +558,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .meta-item { display: flex; align-items: center; gap: 6px; font-size: 11px; }
 
 .meta-label {
-  color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase; font-family: var(--font-hand); letter-spacing: 0; font-weight: 400;
 }
 
 .meta-value { color: var(--text-secondary); }
@@ -599,7 +600,8 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .dim { opacity: 0.3; }
 
 .panel-title {
-  flex: 1; font-size: 10px; font-weight: 600;
+  flex: 1; font-size: 10px;
+  font-family: var(--font-hand); font-weight: 400; letter-spacing: 0; font-weight: 400;
   color: var(--text-muted); text-align: center;
   letter-spacing: 1.5px; text-transform: lowercase;
 }
@@ -743,6 +745,6 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 }
 .hero-scroll-hint:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
 .hint-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: ledBlink 1.6s ease-in-out infinite; }
-.hint-label { font-family: var(--font-mono); }
+.hint-label { font-family: var(--font-hand); font-size: 15px; letter-spacing: 0; }
 .hint-caret { color: var(--accent); animation: floatCaret 2s ease-in-out infinite; }
 </style>
