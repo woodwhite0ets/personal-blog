@@ -1053,7 +1053,7 @@ button:active, .btn:active, .btn-write:active, .btn-login:active, .post-link:act
 .markdown-body h3:hover::before { opacity:.75; transform:translateX(0); }
 
 /* 排序/标签按钮激活扫光 */
-.sort-btn.active { position: relative; overflow: hidden; }
+.sort-btn.active { position: relative; }
 .sort-btn.active::after { content:''; position:absolute; top:0; left:0; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent); transform:translateX(-130%) skewX(-20deg); animation:shine .9s ease; }
 
 /* 知识库内容淡入 + 空态/错误态/登录提示弹入 */
@@ -1547,3 +1547,12 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   font-family: var(--font-hand); font-size: 74px; line-height: 1; color: var(--border);
 }
 @media (max-width: 860px) { .hm-about .hm-text-lead::before { display: none; } .hm-about .hm-text-lead { padding-left: 0; } }
+
+/* 文章页主内容容器（必须存在，否则条目会被 2 列网格交替塞进侧栏）*/
+.forum-main { min-width: 0; }
+.main-layout > .forum-main { grid-column: 1; }
+.main-layout > .sidebar { grid-column: 2; position: sticky; top: 96px; align-self: start; }
+@media (max-width: 860px) {
+  .main-layout > .forum-main, .main-layout > .sidebar { grid-column: 1; }
+  .main-layout > .sidebar { position: static; }
+}

@@ -33,8 +33,9 @@
 
     <!-- ====== 主体 ====== -->
     <div class="main-layout">
+      <main class="forum-main">
       <!-- 标签过滤提示 -->
-      <div v-if="activeTag" class="tag-filter-bar" style="grid-column: 1 / -1;">
+      <div v-if="activeTag" class="tag-filter-bar" >
         
         <span class="filter-label">筛选:</span>
         <span class="filter-tag">#{{ activeTag }}</span>
@@ -42,7 +43,7 @@
       </div>
 
       <!-- 搜索过滤提示 -->
-      <div v-if="activeSearch" class="tag-filter-bar" style="grid-column: 1 / -1;">
+      <div v-if="activeSearch" class="tag-filter-bar" >
         
         <span class="filter-label">搜索:</span>
         <span class="filter-tag">&quot;{{ activeSearch }}&quot;</span>
@@ -62,7 +63,8 @@
           :class="{ active: sortMode === 'popular' }"
           @click="switchSort('popular')"
         >热门</button>
-      </div>      <!-- 编辑式条目列表 -->
+      </div>
+        <!-- 编辑式条目列表 -->
       <div v-if="loading" class="state-box" role="status" aria-live="polite">正在加载…</div>
       <div v-else-if="error" class="state-box error" role="alert">{{ error }}</div>
       <div v-else-if="!posts.length" class="state-box" aria-live="polite">暂无文章。</div>
@@ -79,6 +81,8 @@
           {{ loadingMore ? '加载中…' : '加载更多' }}
         </button>
       </template>
+
+      </main>
 
       <!-- 侧边栏 -->
       <aside class="sidebar">
@@ -145,10 +149,10 @@
           </div>
           <div class="panel-body">
             <router-link to="/HomePage" class="link-item">
-              <span class="link-arrow">→</span> 博客首页
+              博客首页
             </router-link>
             <router-link to="/archive" class="link-item">
-              <span class="link-arrow">→</span> 文章归档
+              文章归档
             </router-link>
           </div>
         </div>
