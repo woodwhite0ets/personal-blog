@@ -47,17 +47,6 @@
     </section>
 
     <div class="hm">
-      <!-- 创作活动 -->
-      <section class="hm-sec" v-if="stats.byMonth && stats.byMonth.length">
-        <h2 class="hm-h">创作活动</h2>
-        <div class="act-strip">
-          <div v-for="m in stats.byMonth" :key="m.m" class="act-col" :title="`${m.m}：${m.c} 篇`">
-            <span class="act-bar" :style="{ height: Math.max(4, Math.round(m.c / maxMonth * 56)) + 'px' }"></span>
-            <span class="act-lbl">{{ m.m.slice(5) }}</span>
-          </div>
-        </div>
-      </section>
-
       <!-- 置顶 -->
       <section class="hm-sec" v-if="pinnedPost">
         <h2 class="hm-h">置顶</h2>

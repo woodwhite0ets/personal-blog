@@ -1445,3 +1445,56 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   .act-strip { gap: 5px; }
   .act-lbl { font-size: 10px; }
 }
+
+/* ===== 首页装饰系统（统一：网格 / 字母水印 / 点阵 / 分区方块 / 序号）===== */
+/* 1. 首屏：细网格 + 手写字母水印 */
+.hero-band { position: relative; overflow: hidden; }
+.hero-band::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(250,249,245,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(250,249,245,.055) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.hero-band::after {
+  content: 'woodwhite'; position: absolute; right: -3%; bottom: -14%;
+  font-family: var(--font-hand); font-size: clamp(140px, 22vw, 260px); line-height: .8;
+  color: transparent; -webkit-text-stroke: 1px rgba(250,249,245,.075);
+  pointer-events: none; user-select: none; white-space: nowrap; z-index: 0;
+}
+.hero-in { position: relative; z-index: 1; }
+
+/* 2. 分区标题前的强调小方块 */
+.hm-h::before { content: ''; flex: none; width: 7px; height: 7px; background: var(--accent); }
+.hm-h { gap: 14px; }
+
+/* 3. 色带：点阵底纹 */
+.band-tint {
+  background-color: var(--bg-deeper);
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 22px 22px;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+
+/* 4. 项目序号（01 / 02）*/
+.band-tint .hm-2up { counter-reset: proj; }
+.band-tint .hm-proj { position: relative; counter-increment: proj; padding-left: 54px; }
+.band-tint .hm-proj::before {
+  content: counter(proj, decimal-leading-zero); position: absolute; left: 0; top: 2px;
+  font-family: var(--font-hand); font-size: 30px; line-height: 1; color: var(--text-faint);
+}
+.band-tint .hm-proj:hover::before { color: var(--accent); }
+
+/* 5. 列表悬停：细横线延展 */
+.hm-list a { position: relative; }
+.hm-list a::after {
+  content: ''; position: absolute; left: 0; bottom: -1px; width: 0; height: 1px;
+  background: var(--accent); transition: width .3s var(--ease-spring, ease);
+}
+.hm-list a:hover::after { width: 100%; }
+
+@media (max-width: 860px) {
+  .hero-band::after { font-size: 110px; bottom: -8%; right: -6%; }
+  .band-tint .hm-proj { padding-left: 0; }
+  .band-tint .hm-proj::before { position: static; display: block; margin-bottom: 8px; }
+}
