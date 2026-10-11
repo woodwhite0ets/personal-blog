@@ -109,28 +109,16 @@
 
       <!-- 侧边栏 — 保持不变 -->
       <aside class="sidebar">
-        <div class="sidebar-panel">
+        <div class="sidebar-panel author-panel">
           <div class="panel-bar">
-            <span class="panel-dot dot-cyan"></span>
-            <span class="panel-dot dot-cyan dim"></span>
-            <span class="panel-title">系统.信息</span>
+            <span class="panel-title">关于</span>
           </div>
           <div class="panel-body">
-            <div class="info-line">
-              <span class="info-key">系统</span>
-              <span class="info-val">博客系统 v2.0.1</span>
-            </div>
-            <div class="info-line">
-              <span class="info-key">运行时间</span>
-              <span class="info-val terminal-green">在线</span>
-            </div>
-            <div class="info-line">
-              <span class="info-key">当前时间</span>
-              <span class="info-val terminal-green">{{ now }}</span>
-            </div>
-            <div class="info-line">
-              <span class="info-key">文章</span>
-              <span class="info-val"><span class="anim-count" v-count="totalPublished" data-suffix=" 已发布"></span></span>
+            <p class="author-name">WoodWhite</p>
+            <p class="author-bio">全栈开发，记录工程实践、架构与开源的点滴。</p>
+            <div class="author-links">
+              <router-link to="/about" class="author-link">关于我</router-link>
+              <router-link to="/archive" class="author-link">全部文章</router-link>
             </div>
           </div>
         </div>
@@ -159,7 +147,7 @@
           <div class="panel-bar">
             <span class="panel-dot dot-yellow"></span>
             <span class="panel-dot dot-yellow dim"></span>
-            <span class="panel-title">标签.索引</span>
+            <span class="panel-title">标签</span>
           </div>
           <div class="panel-body">
             <div class="tag-cloud">
@@ -180,7 +168,7 @@
           <div class="panel-bar">
             <span class="panel-dot dot-purple"></span>
             <span class="panel-dot dot-purple dim"></span>
-            <span class="panel-title">链接.符号链接</span>
+            <span class="panel-title">链接</span>
           </div>
           <div class="panel-body">
             <a href="https://github.com" target="_blank" class="link-item" v-if="false">
@@ -754,4 +742,12 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .panel-bar { border-bottom: 1px solid var(--border); }
 .panel-title { font-size: 17px; color: var(--text-bright); }
 .post-card, .post-item { border-bottom: 1px solid var(--border); }
+
+/* 作者简介卡（信笺风）*/
+.author-panel .panel-body { padding: 4px 0; }
+.author-name { font-family: var(--font-hand); font-size: 22px; color: var(--text-bright); margin: 0 0 6px; }
+.author-bio { font-size: 15px; line-height: 1.75; color: var(--text-secondary); margin: 0 0 14px; }
+.author-links { display: flex; gap: 16px; }
+.author-link { font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 1px; transition: border-color .2s; }
+.author-link:hover { border-color: var(--accent); }
 </style>

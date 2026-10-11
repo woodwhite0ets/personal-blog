@@ -50,6 +50,16 @@
 
       <article class="post-article">
         <!-- 标签 -->
+        <nav class="breadcrumb" aria-label="面包屑">
+          <router-link to="/HomePage">首页</router-link>
+          <template v-if="post.tags && post.tags[0]">
+            <span class="bc-sep">/</span>
+            <router-link :to="`/HomePage?tag=${encodeURIComponent(post.tags[0].name)}`">{{ post.tags[0].name }}</router-link>
+          </template>
+          <span class="bc-sep">/</span>
+          <span class="bc-cur">{{ post.title }}</span>
+        </nav>
+
         <div class="post-meta-top">
           <router-link
             v-for="tag in normalizedTags"
@@ -87,6 +97,9 @@
           <button class="btn btn-secondary btn-like" :class="{ liked: post.user_liked }" @click="onLikeClick" :disabled="liking">
             <span class="post-icon">{{ post.user_liked ? '♥' : '♡' }}</span>
             <span>{{ post.like_count || 0 }} {{ post.user_liked ? '已赞' : '点赞' }}</span>
+          </button>
+          <button class="btn btn-secondary btn-share" type="button" @click="sharePost">
+            {{ copied ? '已复制链接' : '复制链接' }}
           </button>
           <span class="comment-count-badge">
             <span class="post-icon">💬</span> {{ post.comment_count || 0 }} 条评论
@@ -230,7 +243,6 @@
             <span v-if="post.author.nickname" class="author-card-nick">{{ post.author.nickname }}</span>
             <span class="author-card-bio" v-if="post.author.bio">{{ post.author.bio }}</span>
           </div>
-          <span class="author-card-arrow">→</span>
         </router-link>
       </div>
     </template>
@@ -240,7 +252,7 @@
     <!-- 确认弹窗 -->
     <ConfirmModal
       :visible="showDeleteModal"
-      :title="`rm -rf ./posts/${post?.slug || slug}`"
+      :title="'删除文章'"
       :message="'确定永久删除 &quot;' + (post?.title || '') + '&quot;? 此操作无法撤销。'"
       confirm-text="删除"
       :danger="true"
@@ -443,6 +455,18 @@ async function fetchPost() {
   } finally {
     if (mySeq === fetchSeq) loading.value = false
   }
+}
+
+// ====== 分享：复制链接 ======
+const copied = ref(false)
+async function sharePost() {
+  const url = `${SITE_URL}/post/${post.value?.slug || slug.value}`
+  try {
+    if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(url)
+    else { const t=document.createElement('textarea'); t.value=url; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove() }
+    copied.value = true
+    setTimeout(() => { copied.value = false }, 1600)
+  } catch { /* 复制失败静默 */ }
 }
 
 // ====== 上下篇 / 相关文章 ======
@@ -1091,4 +1115,16 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .related-list a { color: var(--text); text-decoration: none; font-size: 16px; transition: color .2s; }
 .related-list a:hover { color: var(--accent); }
 .related-date { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
+
+/* 面包屑 + 分享 + 作者卡（信笺风）*/
+.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; color: var(--text-dim); margin: 0 0 18px; }
+.breadcrumb a { color: var(--text-dim); text-decoration: none; transition: color .2s; }
+.breadcrumb a:hover { color: var(--accent); }
+.bc-sep { color: var(--text-faint); }
+.bc-cur { color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 40ch; }
+.btn-share { font-size: 15px; }
+.author-card-inner { display: flex; align-items: center; gap: 16px; padding: 24px; border: 1px solid var(--border); border-radius: 4px; text-decoration: none; }
+.author-card-body { display: flex; flex-direction: column; gap: 2px; }
+.author-card-name { font-size: 16px; color: var(--text-bright); }
+.author-card-bio { font-size: 14px; color: var(--text-dim); }
 </style>
