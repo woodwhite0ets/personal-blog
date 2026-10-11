@@ -78,19 +78,27 @@
     </section>
 
     <!-- ====== 主体 ====== -->
-    <!-- ====== 标签云 + 入口 ====== -->
-    <section class="home-tags anim-fade-up">
-      <h2 class="home-tags-title">标签</h2>
-      <div class="tag-cloud">
-        <router-link
-          v-for="tag in tags"
-          :key="tag.name"
-          :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
-          class="tag" :class="tag.size"
-        >#{{ tag.name }}</router-link>
-        <span v-if="!tags.length" class="no-tags">— 暂无标签</span>
-      </div>
-      <router-link to="/forum" class="view-all">浏览全部文章</router-link>
+    <!-- ====== 项目 ====== -->
+    <section class="home-projects anim-fade-up">
+      <h2 class="home-projects-title">项目</h2>
+      <ul class="project-list">
+        <li class="project-row">
+          <h3 class="project-name">woodwhite@blog</h3>
+          <p class="project-desc">本站 —— 基于 Vue 3 + Express + MySQL 的全栈技术博客，含认证、文章、评论、点赞与管理后台。</p>
+          <div class="project-tags"><span>Vue 3</span><span>Express 5</span><span>MySQL</span></div>
+        </li>
+        <li class="project-row">
+          <h3 class="project-name">mcp-gateway</h3>
+          <p class="project-desc">面向个人知识库与服务器管理的 MCP 网关，把知识检索、文档读取与基础运维统一提供给 AI 客户端。</p>
+          <div class="project-tags"><span>PostgreSQL</span><span>pgvector</span><span>MCP</span></div>
+        </li>
+        <li class="project-row">
+          <h3 class="project-name">乐清市充电桩分布图</h3>
+          <p class="project-desc">充电桩分布与检定监管系统，经历从单体 SQLite 到 Docker + PostGIS 的架构升级。</p>
+          <div class="project-tags"><span>Docker</span><span>PostGIS</span><span>地理可视化</span></div>
+        </li>
+      </ul>
+      <router-link to="/about" class="view-all">查看全部项目</router-link>
     </section>
 
     <SiteFooter command='echo "© 2026 woodwhite@blog — 技术论坛"' />
@@ -666,10 +674,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .view-all { display: inline-block; margin-top: 28px; font-size: 16px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .2s; }
 .view-all:hover { border-color: var(--accent); }
 
-/* 首页标签云（落地页）*/
-.home-tags { max-width: 860px; margin: 0 auto; padding: 8px 24px 96px; text-align: left; }
-.home-tags-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0 0 20px; }
-.home-tags .tag-cloud { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 12px; margin-bottom: 32px; }
+
 
 /* 首页个人介绍（左对齐·非对称·信笺风）*/
 .intro-strip { display: flex; gap: 36px; align-items: flex-start; max-width: 860px; margin: 0 auto; padding: 24px 24px 56px 24px; }
@@ -681,4 +686,14 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .intro-links { display: flex; gap: 12px; }
 .intro-link { font-size: 15px; color: var(--text-bright); text-decoration: none; padding: 8px 20px; border: 1px solid var(--border-strong); border-radius: 4px; transition: background .25s var(--ease-spring), color .25s var(--ease-spring), border-color .25s var(--ease-spring); }
 .intro-link:hover { background: var(--text-bright); color: var(--bg); border-color: var(--text-bright); }
+
+/* 首页项目区（落地页·信笺风·左对齐）*/
+.home-projects { max-width: 860px; margin: 0 auto; padding: 8px 24px 96px; text-align: left; }
+.home-projects-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0 0 8px; }
+.project-list { list-style: none; margin: 0 0 28px; padding: 0; }
+.project-row { padding: 26px 0; border-bottom: 1px solid var(--border); }
+.project-name { font-size: 19px; font-weight: 600; color: var(--text-bright); margin: 0 0 8px; }
+.project-desc { font-size: 16px; line-height: 1.85; color: var(--text-secondary); margin: 0 0 12px; max-width: 620px; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.project-tags span { font-size: 13px; color: var(--text-dim); border: 1px solid var(--border); border-radius: 3px; padding: 2px 10px; }
 </style>
