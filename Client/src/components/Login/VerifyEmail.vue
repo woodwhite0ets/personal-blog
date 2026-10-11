@@ -5,14 +5,14 @@
     <div class="verify-card">
       <div class="card-body">
         <!-- 加载中 -->
-        <div v-if="loading" class="state deco-hero">
+        <div v-if="loading" class="state deco-hero deco-hero-sm">
           <h1 class="auth-title">验证邮箱</h1>
           <span class="spinner" role="status" aria-label="加载中"></span>
           <span class="state-text">正在验证邮箱…</span>
         </div>
 
         <!-- 成功 -->
-        <div v-else-if="success" class="state success deco-hero">
+        <div v-else-if="success" class="state success deco-hero deco-hero-sm">
           <h1 class="auth-title">邮箱已验证</h1>
           <p class="verify-text">
             邮箱验证成功！<br/>
@@ -24,7 +24,7 @@
         </div>
 
         <!-- 失败 -->
-        <div v-else class="state error deco-hero">
+        <div v-else class="state error deco-hero deco-hero-sm">
           <h1 class="auth-title">验证邮箱</h1>
           <p class="verify-text">{{ errorMessage }}</p>
           <router-link to="/RegisterPage" class="btn-register deco-link">

@@ -6,7 +6,7 @@
 
     <div class="login-card">
       <div class="card-body">
-        <div class="header deco-hero">
+        <div class="header deco-hero deco-hero-sm">
           <h1 class="login-title">woodwhite@blog</h1>
           <p class="subtitle">登录以继续</p>
         </div>

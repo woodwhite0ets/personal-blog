@@ -21,7 +21,7 @@ Registerview · VUE
  
         <!-- ====== 步骤 1：注册表单 ====== -->
         <template v-if="step === 1">
-          <div class="deco-hero">
+          <div class="deco-hero deco-hero-sm">
             <h1 class="auth-title">创建账户</h1>
             <!-- 实时头像预览 -->
             <div class="avatar-preview">
@@ -185,7 +185,7 @@ Registerview · VUE
  
         <!-- ====== 步骤 2：验证提示 ====== -->
         <template v-else>
-          <div class="verify-prompt deco-hero">
+          <div class="verify-prompt deco-hero deco-hero-sm">
             <h1 class="auth-title">验证邮箱</h1>
             <p class="verify-text">
               一封验证邮件已发送到<br/>

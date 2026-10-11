@@ -4,7 +4,7 @@
 
     <div class="card">
       <div class="card-body">
-        <div class="header deco-hero">
+        <div class="header deco-hero deco-hero-sm">
           <h1 class="auth-title">重置密码</h1>
           <p class="subtitle">
              设置新密码（至少 8 位，含字母和数字）

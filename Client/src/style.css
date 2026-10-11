@@ -1612,3 +1612,6 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   content: ''; display: inline-block; width: 7px; height: 7px; background: var(--accent);
   margin-right: 12px; vertical-align: middle;
 }
+
+/* 窄容器（认证卡片）装饰缩小，避免拥挤 */
+.deco-hero-sm::after { width: clamp(110px, 34%, 190px); height: 120px; right: -14px; top: -12px; }

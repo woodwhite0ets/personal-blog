@@ -4,7 +4,7 @@
 
     <div class="card">
       <div class="card-body">
-        <div class="header deco-hero">
+        <div class="header deco-hero deco-hero-sm">
           <h1 class="auth-title">找回密码</h1>
           <p class="subtitle">
              输入注册邮箱，我们会发送重置链接

@@ -50,7 +50,8 @@
         <img :src="post.cover_image" :alt="post.title" class="cover-img" loading="lazy" />
       </div>
 
-      <article class="post-article deco-hero">
+      <article class="post-article">
+        <header class="post-head deco-hero">
         <!-- 标签 -->
         <nav class="breadcrumb" aria-label="面包屑">
           <router-link to="/HomePage">首页</router-link>
@@ -96,6 +97,8 @@
             <span class="meta-item">更新于 {{ updatedText }}</span>
           </template>
         </div>
+
+        </header>
 
         <!-- 正文 -->
         <div class="post-content markdown-body" v-html="renderedContent"></div>
