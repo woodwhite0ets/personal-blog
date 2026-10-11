@@ -658,7 +658,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 
 /* ====== Hero 滚动提示 ====== */
 /* ===== 信笺风覆盖（2026-10-11）===== */
-.hero-inner { max-width: 820px; padding: 112px 24px 92px; }
+.hero-inner { max-width: 860px; padding: 112px 24px 92px; }
 .hero-excerpt { font-family: var(--font-sans); font-size: 18px; line-height: 1.85; color: var(--text-secondary); max-width: 660px; margin-bottom: 30px; }
 .hero-badge { font-size: 15px; color: var(--text-muted); }
 .hero-meta { gap: 16px; }
