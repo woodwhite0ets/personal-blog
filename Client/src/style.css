@@ -1384,14 +1384,14 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hero-band { background: var(--text-bright); color: var(--bg); }
 .hero-in { max-width: 1000px; margin: 0 auto; padding: 104px 24px 96px; }
 .hero-name { font-family: var(--font-hand); font-size: clamp(52px, 7.4vw, 92px); line-height: 1; font-weight: 400; letter-spacing: .07em; margin: 0; color: var(--bg); }
-.hero-role { margin: 22px 0 0; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: rgba(250,249,245,.5); }
-.hero-statement { margin: 20px 0 0; font-size: 21px; line-height: 1.72; max-width: 540px; color: rgba(250,249,245,.82); text-wrap: pretty; }
+.hero-role { margin: 22px 0 0; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, var(--bg) 50%, transparent); }
+.hero-statement { margin: 20px 0 0; font-size: 21px; line-height: 1.72; max-width: 540px; color: color-mix(in srgb, var(--bg) 82%, transparent); text-wrap: pretty; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px; }
 .hero-btn { display: inline-block; padding: 12px 26px; font-size: 15px; text-decoration: none; border-radius: 3px; transition: opacity .2s, border-color .2s, color .2s; }
 .hero-btn-solid { background: var(--bg); color: var(--text-bright); }
 .hero-btn-solid:hover { opacity: .86; }
-.hero-btn-ghost { border: 1px solid rgba(250,249,245,.28); color: rgba(250,249,245,.9); }
-.hero-btn-ghost:hover { border-color: rgba(250,249,245,.7); }
+.hero-btn-ghost { border: 1px solid color-mix(in srgb, var(--bg) 28%, transparent); color: color-mix(in srgb, var(--bg) 90%, transparent); }
+.hero-btn-ghost:hover { border-color: color-mix(in srgb, var(--bg) 70%, transparent); }
 .hm { max-width: 1000px; margin: 0 auto; padding: 0 24px 112px; }
 .hm-sec { padding: 64px 0; border-bottom: 1px solid var(--border); }
 .hm-sec-last { border-bottom: none; padding-bottom: 0; }
@@ -1426,9 +1426,9 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 
 /* 首页：非对称 Hero 信息栏 / 活动条 / 色带 / 项目标签 */
 .hero-in { display: grid; grid-template-columns: 1fr 232px; gap: 64px; align-items: end; }
-.hero-rail { margin: 0; display: flex; flex-direction: column; gap: 18px; border-left: 1px solid rgba(250,249,245,.14); padding-left: 28px; }
-.hero-rail dt { font-size: 12px; letter-spacing: .1em; color: rgba(250,249,245,.42); margin-bottom: 5px; }
-.hero-rail dd { margin: 0; font-size: 15px; color: rgba(250,249,245,.88); font-variant-numeric: tabular-nums; }
+.hero-rail { margin: 0; display: flex; flex-direction: column; gap: 18px; border-left: 1px solid color-mix(in srgb, var(--bg) 14%, transparent); padding-left: 28px; }
+.hero-rail dt { font-size: 12px; letter-spacing: .1em; color: color-mix(in srgb, var(--bg) 42%, transparent); margin-bottom: 5px; }
+.hero-rail dd { margin: 0; font-size: 15px; color: color-mix(in srgb, var(--bg) 88%, transparent); font-variant-numeric: tabular-nums; }
 .act-strip { display: flex; align-items: flex-end; gap: 9px; height: 78px; }
 .act-col { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }
 .act-bar { width: 100%; max-width: 30px; background: var(--accent); opacity: .82; border-radius: 2px 2px 0 0; }
@@ -1441,7 +1441,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hm-proj .hm-text { margin-bottom: 0; }
 @media (max-width: 860px) {
   .hero-in { grid-template-columns: 1fr; gap: 36px; align-items: start; }
-  .hero-rail { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px 24px; border-left: none; border-top: 1px solid rgba(250,249,245,.14); padding: 24px 0 0; }
+  .hero-rail { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px 24px; border-left: none; border-top: 1px solid color-mix(in srgb, var(--bg) 14%, transparent); padding: 24px 0 0; }
   .act-strip { gap: 5px; }
   .act-lbl { font-size: 10px; }
 }
@@ -1452,14 +1452,14 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hero-band::before {
   content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background-image:
-    linear-gradient(rgba(250,249,245,.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(250,249,245,.055) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--bg) 5.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--bg) 5.5%, transparent) 1px, transparent 1px);
   background-size: 56px 56px;
 }
 .hero-band::after {
   content: 'woodwhite'; position: absolute; right: -3%; bottom: -14%;
   font-family: var(--font-hand); font-size: clamp(140px, 22vw, 260px); line-height: .8;
-  color: transparent; -webkit-text-stroke: 1px rgba(250,249,245,.075);
+  color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--bg) 7.5%, transparent);
   pointer-events: none; user-select: none; white-space: nowrap; z-index: 0;
 }
 .hero-in { position: relative; z-index: 1; }
