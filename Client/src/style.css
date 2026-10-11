@@ -1083,7 +1083,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
    手写标题（2026-10-11）：英文 Homemade Apple + 中文 龙藏
    仅用于文章标题；正文/UI/首页 hero 保持可读字体
    ============================================================ */
-:root { --font-hand: 'Caveat', 'LXGW WenKai Screen', cursive; }
+:root { --font-hand: 'Caveat Variable', 'LXGW WenKai Screen', cursive; } /* 家族名须与 @fontsource-variable/caveat 声明一致，否则 Caveat 永不加载 */
 .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
   font-family: var(--font-hand);
   font-weight: 400;
