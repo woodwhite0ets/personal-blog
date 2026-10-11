@@ -97,6 +97,7 @@
       <router-link to="/about" class="view-all">查看全部项目</router-link>
     </section>
 
+    <div class="home-cols">
     <!-- ====== 现在 ====== -->
     <section class="home-now anim-fade-up">
       <h2 class="home-now-title">现在</h2>
@@ -112,6 +113,9 @@
       </div>
     </section>
 
+    </div>
+
+    <div class="home-cols">
     <!-- ====== 最近更新 ====== -->
     <section class="home-recent anim-fade-up">
       <h2 class="home-recent-title">最近更新</h2>
@@ -135,6 +139,8 @@
         </router-link>
       </div>
     </section>
+
+    </div>
 
     <!-- ====== 写作活动 ====== -->
     <section class="home-activity anim-fade-up" v-if="stats.byMonth && stats.byMonth.length">
@@ -757,7 +763,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .sort-btn { padding: 6px 14px; }
 
 /* 首页最近更新（信笺风）*/
-.home-recent { max-width: 860px; margin: 0 auto; padding: 0 24px 96px; }
+.home-recent { margin: 0; padding: 0; }
 .home-recent-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0 0 8px; }
 .recent-list { list-style: none; margin: 0 0 20px; padding: 0; }
 .recent-list li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
@@ -769,7 +775,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .stats-link:hover { text-decoration: underline; }
 
 /* 首页 现在 / 友链 */
-.home-now, .home-links { max-width: 860px; margin: 0 auto; padding: 0 24px 64px; }
+.home-now, .home-links { margin: 0; padding: 0; }
 .home-now-title, .home-links-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0 0 10px; }
 .home-now-text { font-size: 17px; line-height: 1.95; color: var(--text-secondary); max-width: 620px; margin: 0; }
 .friend-list { display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px; }
@@ -778,7 +784,8 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .friend-empty { font-size: 14px; color: var(--text-dim); }
 
 /* 首页 热门文章 / 写作活动 */
-.home-popular, .home-activity { max-width: 860px; margin: 0 auto; padding: 0 24px 64px; }
+.home-popular { margin: 0; padding: 0; }
+.home-activity { max-width: 860px; margin: 0 auto; padding: 0 24px 96px; }
 .home-popular-title, .home-activity-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0 0 16px; }
 .popular-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .popular-card { display: flex; flex-direction: column; gap: 8px; padding: 20px 18px; border: 1px solid var(--border); border-radius: 4px; text-decoration: none; transition: border-color .25s, transform .25s; }
@@ -792,4 +799,8 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .activity-label { font-size: 12px; color: var(--text-dim); }
 .activity-sum { font-size: 14px; color: var(--text-dim); margin: 0; font-variant-numeric: tabular-nums; }
 @media (max-width: 700px) { .popular-grid { grid-template-columns: 1fr; } }
+
+/* 首页两栏并排（打破纵向单调）*/
+.home-cols { max-width: 860px; margin: 0 auto; padding: 0 24px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: start; }
+@media (max-width: 760px) { .home-cols { grid-template-columns: 1fr; gap: 40px; } }
 </style>
