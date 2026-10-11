@@ -219,6 +219,13 @@ async function runMigrations(conn) {
     await conn.query("ALTER TABLE `posts` ADD INDEX `idx_post_type` (`post_type`)");
   }
 
+  // 系列 / 专栏
+  const [postColsX] = await conn.query('SHOW COLUMNS FROM `posts`');
+  if (!postColsX.map(c => c.Field).includes('series')) {
+    console.log('[db] migration: adding posts.series');
+    await conn.query('ALTER TABLE `posts` ADD COLUMN `series` VARCHAR(100) DEFAULT NULL');
+  }
+
   // 用户注册 IP（防挑衅/追溯）
   const [userCols2] = await conn.query('SHOW COLUMNS FROM `users`');
   const userColNames2 = userCols2.map(c => c.Field);

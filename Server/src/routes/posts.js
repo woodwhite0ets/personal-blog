@@ -50,7 +50,7 @@ router.get('/', authOptional, async (req, res) => {
     let dataSql   = `
       SELECT DISTINCT
         p.id, p.title, p.slug, p.excerpt, p.cover_image,
-        p.is_pinned, p.status, p.post_type, p.read_time, p.published_at AS date, p.views,
+        p.is_pinned, p.status, p.post_type, p.series, p.read_time, p.published_at AS date, p.views,
         u.username, u.nickname, u.avatar
       FROM posts p
       JOIN users u ON p.author_id = u.id

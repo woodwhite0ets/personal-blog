@@ -97,6 +97,21 @@
       <router-link to="/about" class="view-all">查看全部项目</router-link>
     </section>
 
+    <!-- ====== 现在 ====== -->
+    <section class="home-now anim-fade-up">
+      <h2 class="home-now-title">现在</h2>
+      <p class="home-now-text">正在学习分布式系统与 AI 工程化，同时在打磨这个博客和 mcp-gateway。最近在读《Designing Data-Intensive Applications》。</p>
+    </section>
+
+    <!-- ====== 友链 ====== -->
+    <section class="home-links anim-fade-up">
+      <h2 class="home-links-title">友链</h2>
+      <div class="friend-list">
+        <a href="https://github.com" target="_blank" rel="noopener" class="friend-item">GitHub</a>
+        <span class="friend-empty">欢迎交换友链 —— 在「关于」页联系我</span>
+      </div>
+    </section>
+
     <!-- ====== 最近更新 ====== -->
     <section class="home-recent anim-fade-up">
       <h2 class="home-recent-title">最近更新</h2>
@@ -713,4 +728,13 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .home-stats { font-size: 14px; color: var(--text-dim); margin: 0; }
 .stats-link { color: var(--accent); text-decoration: none; }
 .stats-link:hover { text-decoration: underline; }
+
+/* 首页 现在 / 友链 */
+.home-now, .home-links { max-width: 860px; margin: 0 auto; padding: 0 24px 64px; }
+.home-now-title, .home-links-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0 0 10px; }
+.home-now-text { font-size: 17px; line-height: 1.95; color: var(--text-secondary); max-width: 620px; margin: 0; }
+.friend-list { display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px; }
+.friend-item { font-size: 16px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .2s; }
+.friend-item:hover { border-color: var(--accent); }
+.friend-empty { font-size: 14px; color: var(--text-dim); }
 </style>

@@ -8,6 +8,8 @@
       <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
       <span class="footer-link-sep">·</span>
       <router-link to="/about">关于</router-link>
+      <span class="footer-link-sep">·</span>
+      <a href="/feed.xml" type="application/rss+xml">RSS 订阅</a>
     </div>
 
     <div class="footer-beian">

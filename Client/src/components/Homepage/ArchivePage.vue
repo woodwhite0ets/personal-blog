@@ -6,7 +6,7 @@
     <div class="archive-main">
       <div class="archive-header">
         <h1 class="archive-title">归档</h1>
-        <p class="archive-sub">共收录 {{ posts.length }} 篇文章</p>
+        <p class="archive-sub">共收录 {{ posts.length }} 篇文章 · <router-link to="/tags" class="archive-tags-link">按分类浏览</router-link></p>
       </div>
 
       <div v-if="loading" class="state-box">

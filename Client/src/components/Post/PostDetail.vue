@@ -73,6 +73,7 @@
 
         <!-- 标题 -->
         <h1 class="post-title">{{ post.title }}</h1>
+        <p class="post-series" v-if="post.series">系列 · {{ post.series }}</p>
 
         <!-- 元信息 -->
         <div class="post-meta-line">
@@ -85,7 +86,13 @@
           <span class="meta-sep"></span>
           <span class="meta-item">{{ post.read_time }}</span>
           <span class="meta-sep"></span>
-          <span class="meta-item view-count">👁 {{ post.views || 0 }} 浏览</span>
+          <span class="meta-item" v-if="post.word_count">{{ post.word_count }} 字</span>
+          <span class="meta-sep" v-if="post.word_count"></span>
+          <span class="meta-item">{{ post.views || 0 }} 浏览</span>
+          <template v-if="updatedText">
+            <span class="meta-sep"></span>
+            <span class="meta-item">更新于 {{ updatedText }}</span>
+          </template>
         </div>
 
         <!-- 正文 -->
@@ -467,6 +474,15 @@ async function sharePost() {
     setTimeout(() => { copied.value = false }, 1600)
   } catch { /* 复制失败静默 */ }
 }
+
+// ====== 更新日期（与创建日期相差>1天才显示）======
+const updatedText = computed(() => {
+  const p = post.value
+  if (!p || !p.updated_at || !p.created_at) return ''
+  const u = new Date(p.updated_at), c = new Date(p.created_at)
+  if (isNaN(u) || isNaN(c) || u - c < 86400000) return ''
+  return u.toISOString().split('T')[0]
+})
 
 // ====== 上下篇 / 相关文章 ======
 async function fetchAdjacent(slugVal) {
@@ -1128,4 +1144,6 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .author-card-bio { font-size: 14px; color: var(--text-dim); }
 
 .author-card-inner { padding: 28px; }
+
+.post-series { font-size: 15px; color: var(--accent); margin: -10px 0 16px; }
 </style>

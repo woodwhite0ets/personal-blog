@@ -1264,3 +1264,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 
 /* 归档页标题（信笺风）*/
 .archive-title { font-family: var(--font-hand); font-size: 40px; font-weight: 400; color: var(--text-bright); margin: 0 0 6px; }
+
+/* 归档/页脚补充（信笺风）*/
+.archive-tags-link { color: var(--accent); text-decoration: none; }
+.archive-tags-link:hover { text-decoration: underline; }
