@@ -1,6 +1,8 @@
 <template>
   <div class="user-page">
 
+    <span class="edge-label" aria-hidden="true">用户 · woodwhite@blog</span>
+
     <!-- ====== 导航栏 ====== -->
     <SiteNav />
 
@@ -12,7 +14,7 @@
     </div>
 
     <!-- ====== 用户资料头 ====== -->
-    <section v-else class="user-hero">
+    <section v-else class="user-hero deco-hero">
       <div class="user-hero-inner">
         <div class="avatar-wrap" :class="{ 'avatar-editable': isOwnPage }" @click="isOwnPage && triggerAvatarUpload()">
           <UserAvatar :src="profile?.avatar" :alt="(profile?.nickname || username)" size="xl" />
@@ -68,7 +70,7 @@
       <aside class="sidebar">
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">概况</span>
+            <span class="panel-title deco-rule">概况</span>
           </div>
           <div class="panel-body">
             <div class="info-line">
@@ -89,7 +91,7 @@
         <!-- 编辑资料 + 草稿（仅本人可见） -->
         <div v-if="isOwnPage" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">账户</span>
+            <span class="panel-title deco-rule">账户</span>
           </div>
           <div class="panel-body">
             <button class="btn btn-secondary btn-block btn-change-pwd" @click="openProfileModal">编辑资料</button>
@@ -103,12 +105,13 @@
         <!-- 草稿列表 -->
         <div v-if="isOwnPage && showDrafts" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">草稿（{{ draftCount }})</span>
+            <span class="panel-title deco-rule">草稿（{{ draftCount }})</span>
           </div>
           <div class="panel-body">
             <div v-if="drafts.length === 0" class="no-drafts">— 暂无草稿</div>
-            <div v-for="d in drafts" :key="d.id" class="draft-item">
-              <router-link :to="`/editor/${d.slug}`" class="draft-link">{{ d.title || '未命名' }}</router-link>
+            <div v-for="(d, i) in drafts" :key="d.id" class="draft-item">
+              <span class="deco-idx">{{ String(i + 1).padStart(2, '0') }}</span>
+              <router-link :to="`/editor/${d.slug}`" class="draft-link deco-link">{{ d.title || '未命名' }}</router-link>
               <span class="draft-date">{{ formatDate(d.published_at || d.created_at) }}</span>
             </div>
           </div>
@@ -117,7 +120,7 @@
         <!-- 修改密码（仅本人可见） -->
         <div v-if="isOwnPage" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">修改密码</span>
+            <span class="panel-title deco-rule">修改密码</span>
           </div>
           <div class="panel-body">
             <button class="btn btn-secondary btn-block btn-change-pwd" @click="openPwdModal">修改密码</button>
@@ -126,7 +129,7 @@
 
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">使用的标签</span>
+            <span class="panel-title deco-rule">使用的标签</span>
           </div>
           <div class="panel-body">
             <div class="tag-cloud">
@@ -143,6 +146,7 @@
           </div>
         </div>
       </aside>
+      <span class="deco-end" aria-hidden="true" style="grid-column: 1 / -1"></span>
     </div>
 
     <!-- ====== 页脚 ====== -->

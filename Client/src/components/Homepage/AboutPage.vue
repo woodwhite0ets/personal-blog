@@ -1,11 +1,13 @@
 <template>
   <div class="about-page">
 
+    <span class="edge-label" aria-hidden="true">关于 · woodwhite@blog</span>
+
     <SiteNav />
 
     <div class="about-main">
       <!-- 个人简介 -->
-      <div class="about-hero">
+      <div class="about-hero deco-hero">
         <div class="avatar-box">
           <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" :alt="'WoodWhite'" size="xl" />
         </div>
@@ -22,7 +24,7 @@
       <!-- 关于本站 -->
       <div class="about-panel">
         <div class="panel-bar">
-          <span class="section-block" aria-hidden="true"></span><span class="panel-title">关于本站</span><span class="panel-rule" aria-hidden="true"></span>
+          <span class="panel-title deco-rule">关于本站</span>
         </div>
         <div class="panel-body markdown-body">
           <p>这里是 <strong>woodwhite@blog</strong> —— 一个记录全栈开发与工程实践的技术博客。</p>
@@ -45,11 +47,12 @@
       <!-- 项目 / 经历 -->
       <div class="about-panel">
         <div class="panel-bar">
-          <span class="section-block" aria-hidden="true"></span><span class="panel-title">项目经历</span><span class="panel-rule" aria-hidden="true"></span>
+          <span class="panel-title deco-rule">项目经历</span>
         </div>
         <div class="panel-body">
           <div class="project-item">
             <div class="project-head">
+              <span class="deco-idx">01</span>
               <span class="project-name">woodwhite@blog</span>
               <span class="project-status">进行中</span>
             </div>
@@ -61,6 +64,7 @@
 
           <div class="project-item">
             <div class="project-head">
+              <span class="deco-idx">02</span>
               <span class="project-name">mcp-gateway</span>
               <span class="project-status">进行中</span>
             </div>
@@ -72,6 +76,7 @@
 
           <div class="project-item">
             <div class="project-head">
+              <span class="deco-idx">03</span>
               <span class="project-name">智能电力监控平台</span>
               <span class="project-status dim-status">多协议工业数据采集</span>
             </div>
@@ -83,6 +88,7 @@
 
           <div class="project-item">
             <div class="project-head">
+              <span class="deco-idx">04</span>
               <span class="project-name">乐清市充电桩分布图</span>
               <span class="project-status dim-status">检定监管平台</span>
             </div>
@@ -94,6 +100,7 @@
 
           <div class="project-item">
             <div class="project-head">
+              <span class="deco-idx">05</span>
               <span class="project-name">AI 工具链实践</span>
               <span class="project-status dim-status">Claude Code 生态</span>
             </div>
@@ -108,16 +115,16 @@
       <!-- 联系方式 -->
       <div class="about-panel">
         <div class="panel-bar">
-          <span class="section-block" aria-hidden="true"></span><span class="panel-title">联系方式</span><span class="panel-rule" aria-hidden="true"></span>
+          <span class="panel-title deco-rule">联系方式</span>
         </div>
         <div class="panel-body">
           <div class="contact-line">
             <span class="contact-label">邮箱</span>
-            <a class="contact-val" href="mailto:1903784785@qq.com">1903784785@qq.com</a>
+            <a class="contact-val deco-link" href="mailto:1903784785@qq.com">1903784785@qq.com</a>
           </div>
           <div class="contact-line">
             <span class="contact-label">GitHub</span>
-            <a class="contact-val" href="https://github.com/woodwhite0ets" target="_blank" rel="noopener">github.com/woodwhite0ets</a>
+            <a class="contact-val deco-link" href="https://github.com/woodwhite0ets" target="_blank" rel="noopener">github.com/woodwhite0ets</a>
           </div>
           <div class="contact-line">
             <span class="contact-label">微信</span>
@@ -125,6 +132,8 @@
           </div>
         </div>
       </div>
+
+      <span class="deco-end" aria-hidden="true"></span>
     </div>
 
     <SiteFooter />
@@ -210,7 +219,7 @@ onMounted(async () => {
 .dot-yellow { background: var(--warn); }
 .dot-green  { background: var(--ok); }
 .dim { opacity: 0.3; }
-.panel-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); }
+.panel-title { flex: 1; font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); }
 .section-block { width: 7px; height: 7px; background: var(--accent); flex-shrink: 0; }
 .panel-rule { flex: 1; height: 1px; background: var(--border); }
 .panel-body { padding: 20px 24px; }

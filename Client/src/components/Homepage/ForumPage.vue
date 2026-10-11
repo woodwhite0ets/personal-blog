@@ -1,6 +1,8 @@
 <template>
   <div class="forum-page">
 
+    <span class="edge-label" aria-hidden="true">文章 · woodwhite@blog</span>
+
     <!-- ====== 导航栏 ====== -->
     <SiteNav>
   <template #search>
@@ -26,7 +28,7 @@
 </SiteNav>
 
     <!-- ====== Hero：论坛介绍 ====== -->
-    <section class="ed-hero">
+    <section class="ed-hero deco-hero">
       <h1 class="ed-hero-title">文章</h1>
       <p class="ed-hero-excerpt">全栈开发 · 系统架构 · 开源实践。这里是我写下的全部文章。</p>
     </section>
@@ -70,9 +72,9 @@
       <div v-else-if="!posts.length" class="state-box" aria-live="polite">暂无文章。</div>
       <template v-else>
         <article v-for="(p, i) in posts" :key="p.id" class="ed-entry">
-          <span class="ed-num">{{ String(i + 1).padStart(2, '0') }}</span>
+          <span class="deco-idx">{{ String(i + 1).padStart(2, '0') }}</span>
           <div class="ed-entry-body">
-            <h3 class="ed-entry-title"><router-link :to="`/post/${p.slug || p.id}`">{{ p.title }}</router-link></h3>
+            <h3 class="ed-entry-title"><router-link :to="`/post/${p.slug || p.id}`" class="deco-link">{{ p.title }}</router-link></h3>
             <p class="ed-entry-excerpt">{{ p.excerpt }}</p>
             <p class="ed-entry-meta">{{ p.date }} · {{ p.read_time }} · {{ p.views || 0 }} 次阅读</p>
           </div>
@@ -88,7 +90,7 @@
       <aside class="sidebar">
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">概况</span>
+            <span class="panel-title deco-rule">概况</span>
           </div>
           <div class="panel-body">
             <div class="info-line">
@@ -108,7 +110,7 @@
 
         <div v-if="contributors.length" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">活跃用户</span>
+            <span class="panel-title deco-rule">活跃用户</span>
           </div>
           <div class="panel-body">
             <router-link
@@ -126,7 +128,7 @@
 
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">标签</span>
+            <span class="panel-title deco-rule">标签</span>
           </div>
           <div class="panel-body">
             <div class="tag-cloud">
@@ -145,7 +147,7 @@
 
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">链接</span>
+            <span class="panel-title deco-rule">链接</span>
           </div>
           <div class="panel-body">
             <router-link to="/HomePage" class="link-item">
@@ -157,6 +159,7 @@
           </div>
         </div>
       </aside>
+      <span class="deco-end" aria-hidden="true" style="grid-column: 1 / -1"></span>
     </div>
 
     <SiteFooter command='echo "© 2026 woodwhite@blog — 社区论坛"' />

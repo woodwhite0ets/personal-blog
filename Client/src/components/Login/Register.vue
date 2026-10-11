@@ -2,6 +2,7 @@
 Registerview · VUE
 <template>
   <div class="register-page">
+    <span class="edge-label" aria-hidden="true">注册 · woodwhite@blog</span>
  
     <div class="register-card">
       <div class="card-body">
@@ -20,17 +21,19 @@ Registerview · VUE
  
         <!-- ====== 步骤 1：注册表单 ====== -->
         <template v-if="step === 1">
-          <h1 class="auth-title">创建账户</h1>
-          <!-- 实时头像预览 -->
-          <div class="avatar-preview">
-            <div class="avatar-circle">{{ previewChar }}</div>
-            <span class="avatar-hint">头像</span>
-          </div>
+          <div class="deco-hero">
+            <h1 class="auth-title">创建账户</h1>
+            <!-- 实时头像预览 -->
+            <div class="avatar-preview">
+              <div class="avatar-circle">{{ previewChar }}</div>
+              <span class="avatar-hint">头像</span>
+            </div>
 
-          <div class="header">
-            <p class="subtitle">
-              创建你的账户
-            </p>
+            <div class="header">
+              <p class="subtitle">
+                创建你的账户
+              </p>
+            </div>
           </div>
  
           <form @submit.prevent="handleRegister" class="register-form">
@@ -182,7 +185,7 @@ Registerview · VUE
  
         <!-- ====== 步骤 2：验证提示 ====== -->
         <template v-else>
-          <div class="verify-prompt">
+          <div class="verify-prompt deco-hero">
             <h1 class="auth-title">验证邮箱</h1>
             <p class="verify-text">
               一封验证邮件已发送到<br/>
@@ -199,8 +202,9 @@ Registerview · VUE
         </template>
  
         <p class="back-link">
-          <router-link to="/login">已有账号？去登录</router-link>
+          <router-link to="/login" class="deco-link">已有账号？去登录</router-link>
         </p>
+        <span class="deco-end" aria-hidden="true"></span>
       </div>
     </div>
   </div>

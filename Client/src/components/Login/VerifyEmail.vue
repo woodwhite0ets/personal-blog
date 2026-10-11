@@ -1,17 +1,18 @@
 <template>
   <div class="verify-page">
+    <span class="edge-label" aria-hidden="true">邮箱验证 · woodwhite@blog</span>
 
     <div class="verify-card">
       <div class="card-body">
         <!-- 加载中 -->
-        <div v-if="loading" class="state">
+        <div v-if="loading" class="state deco-hero">
           <h1 class="auth-title">验证邮箱</h1>
           <span class="spinner" role="status" aria-label="加载中"></span>
           <span class="state-text">正在验证邮箱…</span>
         </div>
 
         <!-- 成功 -->
-        <div v-else-if="success" class="state success">
+        <div v-else-if="success" class="state success deco-hero">
           <h1 class="auth-title">邮箱已验证</h1>
           <p class="verify-text">
             邮箱验证成功！<br/>
@@ -23,13 +24,14 @@
         </div>
 
         <!-- 失败 -->
-        <div v-else class="state error">
+        <div v-else class="state error deco-hero">
           <h1 class="auth-title">验证邮箱</h1>
           <p class="verify-text">{{ errorMessage }}</p>
-          <router-link to="/RegisterPage" class="btn-register">
+          <router-link to="/RegisterPage" class="btn-register deco-link">
             重新注册
           </router-link>
         </div>
+        <span class="deco-end" aria-hidden="true"></span>
       </div>
     </div>
   </div>

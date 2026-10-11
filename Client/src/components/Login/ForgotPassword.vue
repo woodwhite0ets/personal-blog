@@ -1,9 +1,10 @@
 <template>
   <div class="forgot-page">
+    <span class="edge-label" aria-hidden="true">找回密码 · woodwhite@blog</span>
 
     <div class="card">
       <div class="card-body">
-        <div class="header">
+        <div class="header deco-hero">
           <h1 class="auth-title">找回密码</h1>
           <p class="subtitle">
              输入注册邮箱，我们会发送重置链接
@@ -45,8 +46,9 @@
         </form>
 
         <p class="back-link">
-          <router-link to="/login">返回登录</router-link>
+          <router-link to="/login" class="deco-link">返回登录</router-link>
         </p>
+        <span class="deco-end" aria-hidden="true"></span>
       </div>
     </div>
   </div>

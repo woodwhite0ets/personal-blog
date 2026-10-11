@@ -1,10 +1,12 @@
 <template>
   <div class="archive-page">
 
+    <span class="edge-label" aria-hidden="true">归档 · woodwhite@blog</span>
+
     <SiteNav />
 
     <div class="archive-main">
-      <header class="archive-header">
+      <header class="archive-header deco-hero">
         <h1 class="archive-title">归档</h1>
         <p class="archive-sub">共收录 {{ posts.length }} 篇文章 · <router-link to="/tags" class="archive-tags-link">按分类浏览</router-link></p>
       </header>
@@ -24,18 +26,16 @@
 
       <div v-else class="archive-list">
         <div v-for="(group, year) in groupedPosts" :key="year" class="year-group">
-          <div class="year-head">
-            <span class="section-block"></span>
+          <div class="year-head deco-rule">
             <span class="year-num">{{ year }}</span>
             <span class="year-count">{{ group.length }} 篇文章</span>
-            <span class="year-rule"></span>
           </div>
           <div class="year-posts">
             <router-link
               v-for="p in group"
               :key="p.id"
               :to="`/post/${p.slug}`"
-              class="archive-item"
+              class="archive-item deco-link"
             >
               <span class="arch-date">{{ p.date }}</span>
               <span class="arch-title">{{ p.title }}</span>
@@ -44,6 +44,7 @@
           </div>
         </div>
       </div>
+      <span class="deco-end" aria-hidden="true"></span>
     </div>
 
     <SiteFooter />

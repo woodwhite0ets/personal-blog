@@ -1,9 +1,10 @@
 <template>
   <div class="reset-page">
+    <span class="edge-label" aria-hidden="true">重置密码 · woodwhite@blog</span>
 
     <div class="card">
       <div class="card-body">
-        <div class="header">
+        <div class="header deco-hero">
           <h1 class="auth-title">重置密码</h1>
           <p class="subtitle">
              设置新密码（至少 8 位，含字母和数字）
@@ -61,8 +62,9 @@
         </form>
 
         <p class="back-link">
-          <router-link to="/login">返回登录</router-link>
+          <router-link to="/login" class="deco-link">返回登录</router-link>
         </p>
+        <span class="deco-end" aria-hidden="true"></span>
       </div>
     </div>
   </div>

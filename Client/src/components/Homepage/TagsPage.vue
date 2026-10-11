@@ -1,21 +1,24 @@
 <template>
   <div class="tags-page">
+    <span class="edge-label" aria-hidden="true">分类 · woodwhite@blog</span>
     <SiteNav />
     <div class="tags-main">
-      <header class="tags-header">
+      <header class="tags-header deco-hero">
         <h1 class="tags-title">分类</h1>
         <p class="tags-sub">共 {{ tags.length }} 个标签 · {{ total }} 篇文章</p>
       </header>
       <div v-if="loading" class="state-box" role="status" aria-live="polite">正在加载…</div>
       <div v-else-if="!tags.length" class="state-box">暂无标签。</div>
       <ul v-else class="tag-grid">
-        <li v-for="t in tags" :key="t.name">
-          <router-link :to="`/forum?tag=${encodeURIComponent(t.name)}`" class="tag-row">
+        <li v-for="(t, i) in tags" :key="t.name">
+          <router-link :to="`/forum?tag=${encodeURIComponent(t.name)}`" class="tag-row deco-link">
+            <span class="deco-idx">{{ String(i + 1).padStart(2, '0') }}</span>
             <span class="tag-name">{{ t.name }}</span>
             <span class="tag-count">{{ t.post_count }}</span>
           </router-link>
         </li>
       </ul>
+      <span class="deco-end" aria-hidden="true"></span>
     </div>
     <SiteFooter />
   </div>
@@ -62,7 +65,7 @@ onMounted(async () => {
 
 .tag-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; }
 .tag-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); text-decoration: none; }
-.tag-name { font-size: 17px; color: var(--text); transition: color 0.2s; }
+.tag-name { flex: 1; font-size: 17px; color: var(--text); transition: color 0.2s; }
 .tag-row:hover .tag-name { color: var(--accent); }
 .tag-count { font-size: 14px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
 .state-box { padding: 40px 0; color: var(--text-dim); }

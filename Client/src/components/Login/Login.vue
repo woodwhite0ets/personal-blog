@@ -1,9 +1,12 @@
 
 <template>
   <div class="login-page">
+
+    <span class="edge-label" aria-hidden="true">登录 · woodwhite@blog</span>
+
     <div class="login-card">
       <div class="card-body">
-        <div class="header">
+        <div class="header deco-hero">
           <h1 class="login-title">woodwhite@blog</h1>
           <p class="subtitle">登录以继续</p>
         </div>
@@ -86,10 +89,11 @@
         </div>
 
         <p class="back-link">
-          <router-link to="/RegisterPage">注册一个账号</router-link>
+          <router-link to="/RegisterPage" class="deco-link">注册一个账号</router-link>
           <span class="back-sep">·</span>
-          <router-link to="/forgot-password" class="forgot-link">忘记密码？</router-link>
+          <router-link to="/forgot-password" class="forgot-link deco-link">忘记密码？</router-link>
         </p>
+        <span class="deco-end" aria-hidden="true"></span>
       </div>
     </div>
   </div>

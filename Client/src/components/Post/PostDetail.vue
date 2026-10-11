@@ -1,6 +1,8 @@
 <template>
   <div class="post-detail-page">
 
+    <span class="edge-label" aria-hidden="true">文章 · woodwhite@blog</span>
+
     <!-- ====== 导航栏 ====== -->
     <SiteNav />
 
@@ -48,7 +50,7 @@
         <img :src="post.cover_image" :alt="post.title" class="cover-img" loading="lazy" />
       </div>
 
-      <article class="post-article">
+      <article class="post-article deco-hero">
         <!-- 标签 -->
         <nav class="breadcrumb" aria-label="面包屑">
           <router-link to="/HomePage">首页</router-link>
@@ -133,10 +135,11 @@
           </router-link>
         </nav>
         <section class="related" v-if="related.length">
-          <h2 class="related-title">相关文章</h2>
+          <h2 class="related-title deco-rule">相关文章</h2>
           <ul class="related-list">
-            <li v-for="r in related" :key="r.slug">
-              <router-link :to="`/post/${r.slug}`">{{ r.title }}</router-link>
+            <li v-for="(r, i) in related" :key="r.slug">
+              <span class="deco-idx">{{ String(i + 1).padStart(2, '0') }}</span>
+              <router-link :to="`/post/${r.slug}`" class="deco-link">{{ r.title }}</router-link>
               <span class="related-date">{{ r.date }}</span>
             </li>
           </ul>
@@ -147,7 +150,7 @@
       <section class="comment-section" v-if="post">
         <div class="comment-head">
           
-          <span class="section-title">评论</span>
+          <span class="section-title deco-rule">评论</span>
           <span class="section-count">— {{ commentList.length }} 条评论</span>
         </div>
 
@@ -251,6 +254,8 @@
           </div>
         </router-link>
       </div>
+
+      <span class="deco-end" aria-hidden="true"></span>
     </template>
 
     <SiteFooter :command="'文章：' + slug" />
@@ -855,7 +860,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 }
 
 .section-prompt { color: var(--accent); font-weight: 700; font-size: 13px; }
-.section-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.section-title { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
 .section-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
 
 .comment-form { margin-bottom: 24px; }
@@ -1126,7 +1131,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .related-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); margin: 0 0 14px; }
 .related-list { list-style: none; padding: 0; margin: 0; }
 .related-list li { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-.related-list a { color: var(--text); text-decoration: none; font-size: 16px; transition: color .2s; }
+.related-list a { flex: 1; min-width: 0; color: var(--text); text-decoration: none; font-size: 16px; transition: color .2s; }
 .related-list a:hover { color: var(--accent); }
 .related-date { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
 

@@ -1560,3 +1560,55 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* 文章页条目：摘要限 3 行，保持列表紧凑可扫读 */
 .ed-entry-excerpt { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 @media (max-width: 860px) { .ed-entry-excerpt { -webkit-line-clamp: 2; } }
+
+/* ===== 全站装饰原语（与首页同一语言；各页只加 class，不另写装饰）===== */
+:root { --deco-line: color-mix(in srgb, var(--text-bright) 9%, transparent); }
+
+/* 1. 页头：细网格 + 同心弧线稿（mask 实现，深浅主题自适应）*/
+.deco-hero { position: relative; overflow: hidden; }
+.deco-hero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(var(--deco-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--deco-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.deco-hero::after {
+  content: ''; position: absolute; right: -24px; top: -18px; width: clamp(180px, 24vw, 320px); height: 172px;
+  background-color: var(--text-bright); opacity: .1; pointer-events: none; z-index: 0;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 170'%3E%3Cg fill='none' stroke='%23000' stroke-width='1'%3E%3Cpath d='M10 158 A120 120 0 0 1 250 158'/%3E%3Cpath d='M55 158 A75 75 0 0 1 205 158'/%3E%3Cpath d='M95 158 A35 35 0 0 1 165 158'/%3E%3Cline x1='0' y1='158' x2='260' y2='158'/%3E%3C/g%3E%3Ccircle cx='130' cy='123' r='3.5' fill='%23000'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 170'%3E%3Cg fill='none' stroke='%23000' stroke-width='1'%3E%3Cpath d='M10 158 A120 120 0 0 1 250 158'/%3E%3Cpath d='M55 158 A75 75 0 0 1 205 158'/%3E%3Cpath d='M95 158 A35 35 0 0 1 165 158'/%3E%3Cline x1='0' y1='158' x2='260' y2='158'/%3E%3C/g%3E%3Ccircle cx='130' cy='123' r='3.5' fill='%23000'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+.deco-hero > * { position: relative; z-index: 1; }
+@media (max-width: 860px) { .deco-hero::after { opacity: .07; right: -46px; } }
+
+/* 2. 分区标题：accent 方块 + 延展发丝线 + 末端双刻度 */
+.deco-rule { display: flex; align-items: center; gap: 14px; }
+.deco-rule::before { content: ''; flex: none; width: 7px; height: 7px; background: var(--accent); }
+.deco-rule::after {
+  content: ''; flex: 1; height: 5px;
+  background:
+    linear-gradient(var(--border), var(--border)) left center / calc(100% - 9px) 1px no-repeat,
+    linear-gradient(var(--border), var(--border)) right center / 1px 5px no-repeat,
+    linear-gradient(var(--border), var(--border)) calc(100% - 6px) center / 1px 5px no-repeat;
+}
+
+/* 3. 序列序号 */
+.deco-idx { font-family: var(--font-hand); font-size: 22px; line-height: 1; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+
+/* 4. 页尾装饰终止符（发丝线 + 菱形）*/
+.deco-end { display: block; height: 8px; position: relative; margin-top: 8px; }
+.deco-end::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--border); }
+.deco-end::after { content: ''; position: absolute; left: 0; top: -3px; width: 7px; height: 7px; background: var(--accent); transform: rotate(45deg); }
+
+/* 5. 通用：列表悬停下划线延展 */
+.deco-link { position: relative; }
+.deco-link::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 0; height: 1px; background: var(--accent); transition: width .3s ease; }
+.deco-link:hover::after { width: 100%; }
+
+/* 正文小标题：非 flex 版本（含内联格式的标题不会被拆散），沿用同一装饰词汇 */
+.post-content h2, .post-content h3 { border-bottom: 1px solid var(--border); padding-bottom: .4em; }
+.post-content h2::before, .post-content h3::before {
+  content: ''; display: inline-block; width: 7px; height: 7px; background: var(--accent);
+  margin-right: 12px; vertical-align: middle;
+}
