@@ -3,7 +3,7 @@ const path = require('path');
 const pool = require('./config/db');
 
 const SITE_URL = (process.env.SITE_URL || 'https://blog.woodwhite.top').replace(/\/+$/, '');
-const DEFAULT_OG_IMAGE = `${SITE_URL}/uploads/og-default.png`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.jpg`;
 
 function escapeHtml(s) {
   return String(s == null ? '' : s)

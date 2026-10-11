@@ -2,7 +2,7 @@
   <div class="dashboard">
     <div class="section-head">
       <span class="section-arrow"></span>
-      <span class="section-title">仪表盘</span>
+      <h1 class="section-title">仪表盘</h1>
     </div>
 
     <div v-if="loading" class="state-box" role="status" aria-live="polite">
@@ -62,7 +62,7 @@
       <div class="data-grid">
         <div class="data-panel">
           <div class="panel-bar">
-            <span class="panel-title">tail -5 /var/log/users.log</span>
+            <span class="panel-title">最近用户动态</span>
           </div>
           <div class="panel-body">
             <table class="data-table">
@@ -84,7 +84,7 @@
 
         <div class="data-panel">
           <div class="panel-bar">
-            <span class="panel-title">tail -5 /var/log/posts.log</span>
+            <span class="panel-title">最近文章动态</span>
           </div>
           <div class="panel-body">
             <table class="data-table">

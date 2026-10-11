@@ -2,7 +2,7 @@
   <div class="users-manager">
     <div class="section-head">
       <span class="section-arrow"></span>
-      <span class="section-title">用户管理</span>
+      <h1 class="section-title">用户管理</h1>
       <span class="section-count">— 共 {{ total }} 名用户</span>
     </div>
 

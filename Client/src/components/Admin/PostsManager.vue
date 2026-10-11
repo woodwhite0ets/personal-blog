@@ -2,7 +2,7 @@
   <div class="posts-manager">
     <div class="section-head">
       <span class="section-arrow"></span>
-      <span class="section-title">文章管理</span>
+      <h1 class="section-title">文章管理</h1>
       <span class="section-count">— 共 {{ total }} 条记录</span>
     </div>
 
