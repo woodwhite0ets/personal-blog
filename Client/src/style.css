@@ -1338,3 +1338,40 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .bento .list-date { color: var(--text-dim); font-size: 13px; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .bento .link-row a { font-size: 15px; color: var(--accent); text-decoration: none; }
 .bento .link-row a:hover { text-decoration: underline; }
+
+/* ===== 首页 杂志编辑式（方向 A）===== */
+.ed-hero { max-width: 1000px; margin: 0 auto; padding: 72px 24px 44px; border-bottom: 1px solid var(--border); }
+.ed-kicker { font-family: var(--font-hand); font-size: 20px; color: var(--text-dim); }
+.ed-hero-title { font-family: var(--font-hand); font-size: clamp(40px, 5vw, 64px); line-height: 1.1; margin: 10px 0 16px; max-width: 780px; }
+.ed-hero-title a { color: var(--text-bright); text-decoration: none; }
+.ed-hero-title a:hover { color: var(--accent); }
+.ed-hero-excerpt { font-size: 19px; line-height: 1.85; color: var(--text-secondary); max-width: 560px; margin: 0 0 14px; }
+.ed-hero-meta { font-size: 14px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.ed-cols { max-width: 1000px; margin: 0 auto; padding: 52px 24px 96px; display: grid; grid-template-columns: 1fr 288px; gap: 56px; align-items: start; }
+.ed-entry { display: grid; grid-template-columns: 52px 1fr; gap: 18px; padding: 26px 0; border-bottom: 1px solid var(--border); }
+.ed-num { font-family: var(--font-hand); font-size: 26px; color: var(--text-faint); line-height: 1; }
+.ed-entry-title { font-size: 23px; line-height: 1.4; margin: 0 0 8px; }
+.ed-entry-title a { color: var(--text-bright); text-decoration: none; transition: color .2s; }
+.ed-entry-title a:hover { color: var(--accent); }
+.ed-entry-excerpt { font-size: 16px; line-height: 1.8; color: var(--text-secondary); margin: 0 0 8px; }
+.ed-entry-meta { font-size: 13px; color: var(--text-dim); margin: 0; font-variant-numeric: tabular-nums; }
+.ed-more { display: inline-block; margin-top: 26px; font-size: 16px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; }
+.ed-more:hover { border-color: var(--accent); }
+.ed-rail { position: sticky; top: 96px; }
+.ed-box { padding-bottom: 26px; margin-bottom: 26px; border-bottom: 1px solid var(--border); }
+.ed-box:last-child, .ed-box-last { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.ed-box h4 { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); margin: 0 0 12px; }
+.ed-about { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
+.ed-name { font-family: var(--font-hand); font-size: 22px; color: var(--text-bright); margin: 0; }
+.ed-role { font-size: 13px; color: var(--text-dim); margin: 0; }
+.ed-text { font-size: 15px; line-height: 1.8; color: var(--text-secondary); margin: 0; }
+.ed-stats { display: flex; flex-wrap: wrap; gap: 20px; }
+.ed-stats span { font-size: 13px; color: var(--text-dim); }
+.ed-stats b { font-family: var(--font-hand); font-size: 30px; font-weight: 400; color: var(--text-bright); display: block; line-height: 1.1; }
+.ed-rank { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; color: var(--text-secondary); text-decoration: none; padding: 6px 0; }
+.ed-rank:hover .ed-rank-t { color: var(--accent); }
+.ed-rank-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ed-rank-n { color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.ed-box > a { display: block; font-size: 15px; color: var(--accent); text-decoration: none; padding: 5px 0; }
+.ed-box > a:hover { text-decoration: underline; }
+@media (max-width: 860px) { .ed-cols { grid-template-columns: 1fr; gap: 40px; } .ed-rail { position: static; } }
