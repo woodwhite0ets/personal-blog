@@ -645,8 +645,9 @@ onBeforeUnmount(() => { resetSeoMeta() })
 }
 
 .post-title {
-  font-size: 34px; font-weight: 800; line-height: 1.3;
-  color: var(--text-bright); margin: 0 0 20px; letter-spacing: -0.5px;
+  font-family: var(--font-hand);
+  font-size: 34px; font-weight: 400; line-height: 1.45;
+  color: var(--text-bright); margin: 0 0 20px; letter-spacing: 0;
 }
 
 .post-meta-line {
