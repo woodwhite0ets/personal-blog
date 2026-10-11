@@ -9,6 +9,7 @@
         </router-link>
       </nav>
       <div class="nav-actions">
+        <ThemeSwitcher />
         <slot name="search" />
         <router-link v-if="!isLoggedIn" to="/login" class="btn-login">登录</router-link>
         <template v-else>
@@ -44,6 +45,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import UserAvatar from './UserAvatar.vue'
+import ThemeSwitcher from './ThemeSwitcher.vue'
 import { useAuth } from '../../stores/auth.js'
 
 const route = useRoute()
