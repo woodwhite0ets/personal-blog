@@ -62,14 +62,16 @@
       </button>
     </section>
 
-    <!-- ====== 简介 ====== -->
+    <!-- ====== 个人介绍 ====== -->
     <section class="intro-strip anim-fade-up">
-      <p class="intro-lead">你好，我是 WoodWhite。</p>
-      <p class="intro-text">全栈开发，专注 Web 工程实践与系统架构。这里记录做过的项目、踩过的坑，以及一些关于工程与设计的思考。</p>
+      <div class="intro-avatar"><UserAvatar alt="WoodWhite" size="xl" /></div>
+      <h2 class="intro-name">WoodWhite</h2>
+      <p class="intro-role">应届毕业生 · Web 全栈开发</p>
+      <p class="intro-text">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL 等技术栈。持续学习、乐于分享，希望在实践中不断成长。</p>
       <div class="intro-links">
         <router-link to="/about" class="intro-link">关于我</router-link>
+        <router-link to="/forum" class="intro-link">文章</router-link>
         <router-link to="/archive" class="intro-link">归档</router-link>
-        <router-link to="/forum" class="intro-link">论坛</router-link>
       </div>
     </section>
 
@@ -657,13 +659,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .author-link { font-size: 14px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 1px; transition: border-color .2s; }
 .author-link:hover { border-color: var(--accent); }
 
-/* 首页简介区（信笺风）*/
-.intro-strip { max-width: 820px; margin: 0 auto; padding: 6px 24px 56px; text-align: center; }
-.intro-lead { font-family: var(--font-hand); font-size: 30px; color: var(--text-bright); margin: 0 0 12px; }
-.intro-text { font-size: 17px; line-height: 1.9; color: var(--text-secondary); max-width: 620px; margin: 0 auto 20px; }
-.intro-links { display: flex; justify-content: center; gap: 24px; }
-.intro-link { font-size: 15px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .2s; }
-.intro-link:hover { border-color: var(--accent); }
+
 
 .view-all { display: inline-block; margin-top: 28px; font-size: 16px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .2s; }
 .view-all:hover { border-color: var(--accent); }
@@ -672,4 +668,14 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .home-tags { max-width: 820px; margin: 0 auto; padding: 8px 24px 96px; text-align: center; }
 .home-tags-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0 0 20px; }
 .home-tags .tag-cloud { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 32px; }
+
+/* 首页个人介绍（落地页·信笺风）*/
+.intro-strip { max-width: 720px; margin: 0 auto; padding: 20px 24px 48px; text-align: center; }
+.intro-avatar { display: flex; justify-content: center; margin-bottom: 20px; }
+.intro-name { font-family: var(--font-hand); font-size: 40px; font-weight: 400; color: var(--text-bright); margin: 0 0 8px; line-height: 1.1; }
+.intro-role { font-size: 14px; letter-spacing: .12em; color: var(--text-dim); margin: 0 0 20px; }
+.intro-text { font-size: 17px; line-height: 1.95; color: var(--text-secondary); max-width: 560px; margin: 0 auto 26px; }
+.intro-links { display: flex; justify-content: center; gap: 14px; }
+.intro-link { font-size: 15px; color: var(--text-bright); text-decoration: none; padding: 8px 20px; border: 1px solid var(--border-strong); border-radius: 4px; transition: background .25s var(--ease-spring), color .25s var(--ease-spring), border-color .25s var(--ease-spring); }
+.intro-link:hover { background: var(--text-bright); color: var(--bg); border-color: var(--text-bright); }
 </style>
