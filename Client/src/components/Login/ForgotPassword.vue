@@ -1,22 +1,10 @@
 <template>
   <div class="forgot-page">
-    <div class="bg-grid"></div>
-    <div class="bg-glow"></div>
 
     <div class="card">
-      <div class="terminal-bar">
-        <span class="terminal-dot dot-red"></span>
-        <span class="terminal-dot dot-yellow"></span>
-        <span class="terminal-dot dot-green"></span>
-        <span class="terminal-title">auth --forgot</span>
-      </div>
-
       <div class="card-body">
         <div class="header">
-          <div class="prompt-line">
-            <span class="prompt-arrow">❯</span>
-            <span class="prompt-cmd">reset password</span>
-          </div>
+          <h1 class="auth-title">找回密码</h1>
           <p class="subtitle">
             <span class="comment">// 输入注册邮箱，我们会发送重置链接</span>
           </p>

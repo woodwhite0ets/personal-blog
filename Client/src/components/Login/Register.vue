@@ -2,17 +2,8 @@
 Registerview · VUE
 <template>
   <div class="register-page">
-    <div class="bg-grid"></div>
-    <div class="bg-glow"></div>
  
     <div class="register-card">
-      <div class="terminal-bar">
-        <span class="terminal-dot dot-red"></span>
-        <span class="terminal-dot dot-yellow"></span>
-        <span class="terminal-dot dot-green"></span>
-        <span class="terminal-title">useradd --register</span>
-      </div>
- 
       <div class="card-body">
         <!-- 步骤指示器 -->
         <div class="steps">

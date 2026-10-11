@@ -1,22 +1,10 @@
 <template>
   <div class="reset-page">
-    <div class="bg-grid"></div>
-    <div class="bg-glow"></div>
 
     <div class="card">
-      <div class="terminal-bar">
-        <span class="terminal-dot dot-red"></span>
-        <span class="terminal-dot dot-yellow"></span>
-        <span class="terminal-dot dot-green"></span>
-        <span class="terminal-title">auth --reset</span>
-      </div>
-
       <div class="card-body">
         <div class="header">
-          <div class="prompt-line">
-            <span class="prompt-arrow">❯</span>
-            <span class="prompt-cmd">set new password</span>
-          </div>
+          <h1 class="auth-title">重置密码</h1>
           <p class="subtitle">
             <span class="comment">// 设置新密码（至少 8 位，含字母和数字）</span>
           </p>

@@ -1,16 +1,7 @@
 <template>
   <div class="verify-page">
-    <div class="bg-grid"></div>
-    <div class="bg-glow"></div>
 
     <div class="verify-card">
-      <div class="terminal-bar">
-        <span class="terminal-dot dot-red"></span>
-        <span class="terminal-dot dot-yellow"></span>
-        <span class="terminal-dot dot-green"></span>
-        <span class="terminal-title">systemd --verify-email</span>
-      </div>
-
       <div class="card-body">
         <!-- 加载中 -->
         <div v-if="loading" class="state">
@@ -21,10 +12,7 @@
         <!-- 成功 -->
         <div v-else-if="success" class="state success">
           <div class="verify-icon">✓</div>
-          <div class="prompt-line">
-            <span class="prompt-arrow">❯</span>
-            <span class="prompt-cmd">verify --success</span>
-          </div>
+          <h1 class="auth-title">邮箱已验证</h1>
           <p class="verify-text">
             邮箱验证成功！<br/>
             欢迎 <strong>@{{ username }}</strong>
