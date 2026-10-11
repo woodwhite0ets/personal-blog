@@ -463,11 +463,11 @@ async function handleGuestLogin() {
 }
 
 .divider-text {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--text-faint);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .btn-guest {
