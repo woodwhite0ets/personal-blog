@@ -55,7 +55,7 @@
 
           <button type="submit" class="btn btn-primary btn-block" :disabled="loading">
             <span v-if="loading" class="spinner"></span>
-            <span v-else class="btn-arrow">❯</span>
+            
             {{ loading ? 'Resetting...' : 'Reset Password' }}
           </button>
         </form>

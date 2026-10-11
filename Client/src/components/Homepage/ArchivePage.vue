@@ -7,7 +7,7 @@
 
     <div class="archive-main">
       <div class="archive-header">
-        <h1 class="archive-title">~/posts/archive</h1>
+        <h1 class="archive-title">文章/archive</h1>
         <p class="archive-sub">共收录 {{ posts.length }} 篇文章</p>
       </div>
 

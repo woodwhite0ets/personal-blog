@@ -28,7 +28,7 @@ Registerview · VUE
 
           <div class="header">
             <div class="prompt-line">
-              <span class="prompt-arrow">❯</span>
+              
               <span class="prompt-cmd">create_user --new</span>
             </div>
             <p class="subtitle">
@@ -177,7 +177,7 @@ Registerview · VUE
  
             <button type="submit" class="btn btn-primary btn-glow" :disabled="loading">
               <span v-if="loading" class="spinner"></span>
-              <span v-if="!loading" class="btn-arrow">❯</span>
+              
               {{ loading ? '注册中...' : '注册' }}
             </button>
           </form>
@@ -188,7 +188,7 @@ Registerview · VUE
           <div class="verify-prompt">
             <div class="verify-icon">✉</div>
             <div class="prompt-line">
-              <span class="prompt-arrow">❯</span>
+              
               <span class="prompt-cmd">check_inbox --wait</span>
             </div>
             <p class="verify-text">

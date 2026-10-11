@@ -157,7 +157,7 @@
     <!-- ====== 页脚 ====== -->
     <footer class="footer">
       <div class="footer-line">
-        <span class="footer-prompt">❯</span>
+        
         <span class="footer-cmd">finger @{{ username }}</span>
       </div>
     </footer>

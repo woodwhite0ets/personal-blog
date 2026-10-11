@@ -18,7 +18,7 @@
             欢迎 <strong>@{{ username }}</strong>
           </p>
           <router-link to="/HomePage" class="btn btn-primary btn-glow">
-            <span class="btn-arrow">❯</span> enter blog
+             enter blog
           </router-link>
         </div>
 
@@ -26,7 +26,7 @@
         <div v-else class="state error">
           <span class="err-prefix">ERR!</span>
           <div class="prompt-line">
-            <span class="prompt-arrow">❯</span>
+            
             <span class="prompt-cmd">verify --failed</span>
           </div>
           <p class="verify-text">{{ errorMessage }}</p>

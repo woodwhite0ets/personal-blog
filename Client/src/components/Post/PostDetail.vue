@@ -12,7 +12,7 @@
       </button>
       <nav class="toc-nav" aria-label="文章目录">
         <div class="toc-head">
-          <span class="toc-prompt">❯</span>
+          
           <span class="toc-title">目录</span>
           <span class="toc-count">{{ toc.length }}</span>
         </div>
@@ -106,7 +106,7 @@
       <!-- 评论区 -->
       <section class="comment-section" v-if="post">
         <div class="comment-head">
-          <span class="section-prompt">❯</span>
+          
           <span class="section-title">cat ./comments.log</span>
           <span class="section-count">— {{ commentList.length }} 条评论</span>
         </div>

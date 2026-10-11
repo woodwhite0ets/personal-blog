@@ -66,7 +66,7 @@
     <div class="main-layout">
       <!-- 标签过滤提示 -->
       <div v-if="activeTag" class="tag-filter-bar" style="grid-column: 1 / -1; margin-bottom: -28px;">
-        <span class="filter-prompt">❯</span>
+        
         <span class="filter-label">筛选:</span>
         <span class="filter-tag">#{{ activeTag }}</span>
         <router-link :to="clearTagLink" class="filter-clear">× 清除</router-link>
@@ -74,7 +74,7 @@
 
       <!-- 搜索过滤提示 -->
       <div v-if="activeSearch" class="tag-filter-bar" style="grid-column: 1 / -1; margin-bottom: -28px;">
-        <span class="filter-prompt">❯</span>
+        
         <span class="filter-label">搜索:</span>
         <span class="filter-tag">&quot;{{ activeSearch }}&quot;</span>
         <router-link :to="clearSearchLink" class="filter-clear">× 清除</router-link>
