@@ -20,26 +20,23 @@ Registerview · VUE
  
         <!-- ====== 步骤 1：注册表单 ====== -->
         <template v-if="step === 1">
+          <h1 class="auth-title">创建账户</h1>
           <!-- 实时头像预览 -->
           <div class="avatar-preview">
             <div class="avatar-circle">{{ previewChar }}</div>
-            <span class="avatar-hint">avatar 头像</span>
+            <span class="avatar-hint">头像</span>
           </div>
 
           <div class="header">
-            <div class="prompt-line">
-              
-              <span class="prompt-cmd">create_user --new</span>
-            </div>
             <p class="subtitle">
-              <span class="comment">// 创建你的账户</span>
+              创建你的账户
             </p>
           </div>
  
           <form @submit.prevent="handleRegister" class="register-form">
             <div class="field">
               <label for="username">
-                <span class="label-icon">@</span> 用户名
+                用户名
               </label>
               <input
                 id="username"
@@ -50,13 +47,13 @@ Registerview · VUE
                 :class="{ error: errors.username }"
               />
               <span v-if="errors.username" class="field-error">
-                <span class="err-prefix">ERR!</span> {{ errors.username }}
+                {{ errors.username }}
               </span>
             </div>
  
             <div class="field">
               <label for="nickname">
-                <span class="label-icon">N</span> 昵称
+                昵称
               </label>
               <input
                 id="nickname"
@@ -66,13 +63,13 @@ Registerview · VUE
                 :class="{ error: errors.nickname }"
               />
               <span v-if="errors.nickname" class="field-error">
-                <span class="err-prefix">ERR!</span> {{ errors.nickname }}
+                {{ errors.nickname }}
               </span>
             </div>
  
             <div class="field">
               <label for="email">
-                <span class="label-icon">@</span> 邮箱
+                邮箱
               </label>
               <input
                 id="email"
@@ -83,13 +80,13 @@ Registerview · VUE
                 :class="{ error: errors.email }"
               />
               <span v-if="errors.email" class="field-error">
-                <span class="err-prefix">ERR!</span> {{ errors.email }}
+                {{ errors.email }}
               </span>
             </div>
  
             <div class="field">
               <label for="password">
-                <span class="label-icon">#</span> 密码
+                密码
               </label>
               <div class="password-wrap">
                 <input
@@ -110,7 +107,7 @@ Registerview · VUE
                 </button>
               </div>
               <span v-if="errors.password" class="field-error">
-                <span class="err-prefix">ERR!</span> {{ errors.password }}
+                {{ errors.password }}
               </span>
               <div v-if="form.password" class="password-strength">
                 <span
@@ -125,7 +122,7 @@ Registerview · VUE
  
             <div class="field">
               <label for="confirm">
-                <span class="label-icon">#</span> 确认密码
+                确认密码
               </label>
               <input
                 id="confirm"
@@ -136,14 +133,14 @@ Registerview · VUE
                 :class="{ error: errors.confirm }"
               />
               <span v-if="errors.confirm" class="field-error">
-                <span class="err-prefix">ERR!</span> {{ errors.confirm }}
+                {{ errors.confirm }}
               </span>
             </div>
  
             <!-- 图形验证码 -->
             <div class="field">
               <label for="captcha">
-                <span class="label-icon">✓</span> 验证码
+                验证码
               </label>
               <div class="captcha-wrap">
                 <input
@@ -167,15 +164,15 @@ Registerview · VUE
                 </button>
               </div>
               <span v-if="errors.captcha" class="field-error">
-                <span class="err-prefix">ERR!</span> {{ errors.captcha }}
+                {{ errors.captcha }}
               </span>
             </div>
  
             <p v-if="serverError" class="server-error">
-              <span class="err-prefix">ERR!</span> {{ serverError }}
+              {{ serverError }}
             </p>
  
-            <button type="submit" class="btn btn-primary btn-glow" :disabled="loading">
+            <button type="submit" class="btn btn-primary" :disabled="loading">
               <span v-if="loading" class="spinner" role="status" aria-label="提交中"></span>
               
               {{ loading ? '注册中...' : '注册' }}
@@ -186,11 +183,7 @@ Registerview · VUE
         <!-- ====== 步骤 2：验证提示 ====== -->
         <template v-else>
           <div class="verify-prompt">
-            <div class="verify-icon">✉</div>
-            <div class="prompt-line">
-              
-              <span class="prompt-cmd">check_inbox --wait</span>
-            </div>
+            <h1 class="auth-title">验证邮箱</h1>
             <p class="verify-text">
               一封验证邮件已发送到<br/>
               <strong>{{ form.email }}</strong>
@@ -206,15 +199,8 @@ Registerview · VUE
         </template>
  
         <p class="back-link">
-          <router-link to="/login">← 已有账号？去登录</router-link>
+          <router-link to="/login">已有账号？去登录</router-link>
         </p>
-      </div>
- 
-      <div class="terminal-status">
-        <span class="status-dot"></span>
-        <span>TLS 1.3</span>
-        <span class="status-sep">|</span>
-        <span>PORT :::3027</span>
       </div>
     </div>
   </div>
@@ -402,7 +388,7 @@ async function handleRegister() {
     // 注册成功 → 进入验证步骤
     step.value = 2
   } catch {
-    serverError.value = 'connection refused — 请检查后端'
+    serverError.value = '网络连接失败，请稍后重试 — 请检查后端'
   } finally {
     loading.value = false
   }
@@ -423,7 +409,7 @@ async function handleResend() {
       serverError.value = data.message || '发送失败'
     }
   } catch {
-    serverError.value = 'connection refused'
+    serverError.value = '网络连接失败，请稍后重试'
   } finally {
     resending.value = false
   }
@@ -816,3 +802,20 @@ async function handleResend() {
 .login-card, .register-card, .verify-card, .card { max-width: 420px; margin: 0 auto; }
 </style>
  
+
+<style scoped>
+.register-page { min-height:100dvh; display:block; padding:72px 24px; background:var(--bg); }
+.register-card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
+.card-body { max-width:560px; margin:0 auto; padding:0; }
+.auth-title { font-family:var(--font-hand); font-size:clamp(40px,5vw,64px); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
+.terminal-status { display:none; }
+
+/* ===== 父级收口：清掉终端风残留（渐变/光晕/卡片阴影/装饰符号）===== */
+.err-prefix, .terminal-status, .terminal-bar, .terminal-dot, .terminal-title,
+.prompt-line, .prompt-arrow, .prompt-cmd, .status-dot, .status-sep,
+.bg-glow, .verify-icon, .label-icon { display: none !important; }
+.btn-glow { background: var(--accent) !important; box-shadow: none !important; }
+.btn-glow::before { display: none !important; }
+.login-card, .register-card, .verify-card, .card-body { box-shadow: none !important; animation: none !important; }
+.login-page, .register-page, .verify-page { background-image: none !important; }
+</style>

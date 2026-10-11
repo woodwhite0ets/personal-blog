@@ -4,14 +4,14 @@
     <SiteNav />
 
     <div class="archive-main">
-      <div class="archive-header">
+      <header class="archive-header">
         <h1 class="archive-title">归档</h1>
         <p class="archive-sub">共收录 {{ posts.length }} 篇文章 · <router-link to="/tags" class="archive-tags-link">按分类浏览</router-link></p>
-      </div>
+      </header>
 
       <div v-if="loading" class="state-box" role="status" aria-live="polite">
         <span class="spinner" role="status" aria-label="加载中"></span>
-        <span>正在加载归档...</span>
+        <span>正在加载归档…</span>
       </div>
 
       <div v-else-if="error" class="state-box error" role="alert">
@@ -25,8 +25,10 @@
       <div v-else class="archive-list">
         <div v-for="(group, year) in groupedPosts" :key="year" class="year-group">
           <div class="year-head">
+            <span class="section-block"></span>
             <span class="year-num">{{ year }}</span>
             <span class="year-count">{{ group.length }} 篇文章</span>
+            <span class="year-rule"></span>
           </div>
           <div class="year-posts">
             <router-link
@@ -44,7 +46,7 @@
       </div>
     </div>
 
-    <SiteFooter command="ls -laR ./posts/" />
+    <SiteFooter />
   </div>
 </template>
 
@@ -101,69 +103,45 @@ onMounted(async () => {
   overflow-x: hidden;
 }
 
-.bg-grid {
-  position: fixed; inset: 0;
-  background-image:
-    linear-gradient(var(--overlay-a15) 1px, transparent 1px),
-    linear-gradient(90deg, var(--overlay-a15) 1px, transparent 1px);
-  background-size: 64px 64px;
-  pointer-events: none; z-index: 0;
+/* 容器：契约 1000px / 左右 24px */
+.archive-main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-.bg-scanline {
-  position: fixed; inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scanline) 2px, var(--scanline) 4px);
-  pointer-events: none; z-index: 0;
-  animation: scan 8s linear infinite;
-}
-@keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(4px); } }
-
-/* Navbar */
-.navbar {
-  position: sticky; top: 0; z-index: 100;
-  background: var(--navbar-bg); backdrop-filter: blur(16px);
+.archive-header { padding: 64px 0 28px; }
+.archive-title {
+  font-family: var(--font-hand);
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 400;
+  color: var(--text-bright);
+  margin: 0;
+  text-wrap: balance;
   border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
 }
-.navbar-inner {
-  max-width: 1060px; margin: 0 auto; padding: 0 24px;
-  height: 56px; display: flex; align-items: center; gap: 36px;
-}
-.brand { display: flex; align-items: baseline; gap: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
-.brand-bracket { color: var(--text-muted); }
-.brand-text { color: var(--accent); }
-.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
-.nav-links { display: flex; gap: 28px; flex: 1; }
-.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 12px; font-weight: 500; color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px; }
-.nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; }
-.nav-links a:hover, .nav-links a.router-link-active { color: var(--text); }
-.nav-links a.router-link-active .nav-num { color: var(--accent); }
-.nav-actions { display: flex; align-items: center; gap: 12px; }
-
-/* Archive */
-.archive-main { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 56px 24px; }
-.archive-header { margin-bottom: 40px; }
-.archive-title { font-size: 22px; font-weight: 800; color: var(--text-bright); margin: 0 0 8px; }
-.archive-sub { font-size: 11px; color: var(--text-muted); margin: 0; }
+.archive-sub { margin: 12px 0 0; font-size: 15px; color: var(--text-secondary); }
+.archive-tags-link { color: var(--accent); text-decoration: none; }
+.archive-tags-link:hover { color: var(--accent-hover); }
 
 .state-box { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted); }
 .state-box.error { color: var(--err); }
 .spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.year-group { margin-bottom: 36px; }
-.year-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-.year-num { font-size: 20px; font-weight: 800; color: var(--accent); }
-.year-count { font-size: 11px; color: var(--text-muted); }
+.year-group { padding: 16px 0 8px; }
+.year-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.section-block { width: 7px; height: 7px; background: var(--accent); flex-shrink: 0; }
+.year-num { font-size: 15px; font-weight: 700; color: var(--text-bright); }
+.year-count { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.year-rule { flex: 1; height: 1px; background: var(--border); }
 
-.year-posts { display: flex; flex-direction: column; }
-.archive-item { display: flex; align-items: center; gap: 16px; padding: 8px 0; text-decoration: none; border-bottom: 1px solid var(--overlay-a2); transition: background 0.15s; }
-.archive-item:hover { background: var(--accent-a2); }
-.arch-date { font-size: 11px; color: var(--text-muted); font-weight: 600; min-width: 85px; font-family: var(--font-sans); }
-.arch-title { flex: 1; font-size: 14px; color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.arch-tag { font-size: 10px; color: var(--text-faint); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-
-
-/* 统一：内容页容器 860 / 上边距 88 */
-.archive-main { max-width: 860px; padding: 88px 24px 72px; }
-.archive-title { font-family: var(--font-hand); font-size: 40px; font-weight: 400; }
+.year-posts { display: flex; flex-direction: column; margin-top: 8px; }
+.archive-item { display: flex; align-items: baseline; gap: 24px; padding: 11px 0; text-decoration: none; border-bottom: 1px solid var(--border); }
+.archive-item:last-child { border-bottom: none; }
+.arch-date { font-size: 13px; color: var(--text-muted); font-weight: 600; min-width: 90px; font-variant-numeric: tabular-nums; }
+.arch-title { flex: 1; min-width: 0; font-size: 15px; color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.2s; }
+.archive-item:hover .arch-title { color: var(--accent); }
+.arch-tag { font-size: 12px; color: var(--text-dim); font-weight: 500; }
 </style>

@@ -6,21 +6,21 @@
         <div class="header">
           <h1 class="auth-title">重置密码</h1>
           <p class="subtitle">
-            <span class="comment">// 设置新密码（至少 8 位，含字母和数字）</span>
+             设置新密码（至少 8 位，含字母和数字）
           </p>
         </div>
 
         <!-- 成功状态 -->
         <div v-if="done" class="success-box">
           <div class="success-icon">✓</div>
-          <p class="success-text">password reset successful!</p>
-          <router-link to="/login" class="btn-back">← go to login</router-link>
+          <p class="success-text">密码已重置成功</p>
+          <router-link to="/login" class="btn-back">返回登录</router-link>
         </div>
 
         <!-- 表单 -->
         <form v-else @submit.prevent="handleReset" class="form">
           <div class="field">
-            <label for="password"><span class="label-icon">#</span> new password</label>
+            <label for="password">新密码</label>
             <div class="input-wrap">
               <input
                 id="password"
@@ -32,12 +32,12 @@
               />
             </div>
             <span v-if="errors.password" class="field-error">
-              <span class="err-prefix">ERR!</span> {{ errors.password }}
+              {{ errors.password }}
             </span>
           </div>
 
           <div class="field">
-            <label for="confirm"><span class="label-icon">#</span> confirm password</label>
+            <label for="confirm">确认密码</label>
             <div class="input-wrap">
               <input
                 id="confirm"
@@ -49,19 +49,19 @@
               />
             </div>
             <span v-if="errors.confirm" class="field-error">
-              <span class="err-prefix">ERR!</span> {{ errors.confirm }}
+              {{ errors.confirm }}
             </span>
           </div>
 
           <button type="submit" class="btn btn-primary btn-block" :disabled="loading">
             <span v-if="loading" class="spinner" role="status" aria-label="提交中"></span>
             
-            {{ loading ? 'Resetting...' : 'Reset Password' }}
+            {{ loading ? '重置中…' : '重置密码' }}
           </button>
         </form>
 
         <p class="back-link">
-          <router-link to="/login">← back to login</router-link>
+          <router-link to="/login">返回登录</router-link>
         </p>
       </div>
     </div>
@@ -84,11 +84,11 @@ async function handleReset() {
   errors.confirm = ''
 
   if (form.password.length < 8 || !/(?=.*[a-zA-Z])(?=.*\d)/.test(form.password)) {
-    errors.password = 'at least 8 chars with letters and numbers'
+    errors.password = '密码至少 8 位，且需包含字母和数字'
     return
   }
   if (form.password !== form.confirm) {
-    errors.confirm = 'passwords do not match'
+    errors.confirm = '两次输入的密码不一致'
     return
   }
 
@@ -103,10 +103,10 @@ async function handleReset() {
     if (res.ok) {
       done.value = true
     } else {
-      errors.confirm = data.message || 'reset failed'
+      errors.confirm = data.message || '重置密码失败，请重试'
     }
   } catch {
-    errors.confirm = 'network error — please try again'
+    errors.confirm = '网络连接失败，请稍后重试'
   } finally {
     loading.value = false
   }
@@ -179,4 +179,20 @@ async function handleReset() {
 
 /* 统一：auth 卡片宽度 420 */
 .login-card, .register-card, .verify-card, .card { max-width: 420px; margin: 0 auto; }
+</style>
+
+<style scoped>
+.forgot-page, .reset-page { min-height:100dvh; display:block; padding:72px 24px; background:var(--bg); }
+.card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
+.card-body { max-width:560px; margin:0 auto; padding:0; }
+.auth-title { font-family:var(--font-hand); font-size:clamp(40px,5vw,64px); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
+
+/* ===== 父级收口：清掉终端风残留（渐变/光晕/卡片阴影/装饰符号）===== */
+.err-prefix, .terminal-status, .terminal-bar, .terminal-dot, .terminal-title,
+.prompt-line, .prompt-arrow, .prompt-cmd, .status-dot, .status-sep,
+.bg-glow, .verify-icon, .label-icon { display: none !important; }
+.btn-glow { background: var(--accent) !important; box-shadow: none !important; }
+.btn-glow::before { display: none !important; }
+.login-card, .register-card, .verify-card, .card-body { box-shadow: none !important; animation: none !important; }
+.login-page, .register-page, .verify-page { background-image: none !important; }
 </style>

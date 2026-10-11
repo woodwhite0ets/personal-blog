@@ -7,7 +7,7 @@
     <!-- ====== 文章目录（TOC） ====== -->
     <div v-if="post && toc.length" class="toc-panel" :class="{ open: tocOpen }">
       <button class="toc-toggle" @click="tocOpen = !tocOpen" :aria-expanded="tocOpen" title="文章目录">
-        <span class="toc-toggle-ico">{{ tocOpen ? '✕' : '☰' }}</span>
+        <span class="toc-toggle-ico" aria-hidden="true">{{ tocOpen ? '−' : '+' }}</span>
         <span class="toc-toggle-label">目录</span>
       </button>
       <nav class="toc-nav" aria-label="文章目录">
@@ -36,7 +36,7 @@
 
     <!-- ====== 错误状态 ====== -->
     <div v-else-if="error" class="state-box error" role="alert">
-      <span class="err-prefix">ERR!</span>
+      <span class="err-prefix">文章暂时无法打开</span>
       <span class="state-text">{{ error }}</span>
       <router-link to="/HomePage" class="link-btn">← 返回首页</router-link>
     </div>
@@ -109,16 +109,16 @@
             {{ copied ? '已复制链接' : '复制链接' }}
           </button>
           <span class="comment-count-badge">
-            <span class="post-icon">💬</span> {{ post.comment_count || 0 }} 条评论
+            {{ post.comment_count || 0 }} 条评论
           </span>
           <router-link v-if="canEdit" :to="`/editor/${post.slug || post.id}`" class="btn btn-primary btn-edit">
-            <span class="post-icon">✎</span> 编辑文章
+            编辑文章
           </router-link>
           <button v-if="canDelete" class="btn btn-danger btn-delete" @click="confirmDeletePost">
-            <span class="post-icon">🗑</span> 删除文章
+            删除文章
           </button>
           <router-link to="/HomePage" class="btn btn-ghost btn-back">
-            <span class="post-icon">←</span> 返回首页
+            返回首页
           </router-link>
         </div>
         <nav class="post-nav" v-if="neighbors.prev || neighbors.next">
@@ -147,7 +147,7 @@
       <section class="comment-section" v-if="post">
         <div class="comment-head">
           
-          <span class="section-title">cat ./comments.log</span>
+          <span class="section-title">评论</span>
           <span class="section-count">— {{ commentList.length }} 条评论</span>
         </div>
 
@@ -236,8 +236,7 @@
         </div>
 
         <div v-else-if="!commentLoading" class="comment-empty">
-          <span class="empty-icon">💬</span>
-          <span>暂无评论 — 抢占沙发！</span>
+          <span>暂无评论，欢迎留下第一条。</span>
         </div>
       </section>
 
@@ -254,7 +253,7 @@
       </div>
     </template>
 
-    <SiteFooter :command="'cat ./posts/' + slug + '.md'" />
+    <SiteFooter :command="'文章：' + slug" />
 
     <!-- 确认弹窗 -->
     <ConfirmModal
@@ -1156,4 +1155,45 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 /* 统一：文章页上边距 88，正文保持阅读宽度 */
 .post-article { padding-top: 88px; }
+/* 编辑式信笺：页面结构保持轻、薄、可读 */
+.post-detail-page { background: var(--bg); }
+.cover-wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px; border-bottom: 0; }
+.cover-img { max-height: 360px; border-bottom: 1px solid var(--border); }
+.post-article, .comment-section, .author-card { max-width: 1000px; margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; }
+.post-article { padding-top: 64px; padding-bottom: 40px; }
+.post-title { font-family: var(--font-hand); font-size: clamp(40px, 5vw, 64px); line-height: 1.15; text-align: left; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin: 0 0 18px; text-wrap: balance; }
+.post-meta-top { margin-bottom: 14px; }
+.post-tag, .post-badge { text-transform: none; letter-spacing: 0; border-radius: 0; padding: 0; }
+.post-meta-line { font-variant-numeric: tabular-nums; margin-bottom: 44px; padding-bottom: 18px; }
+.post-content { max-width: 760px; }
+.post-actions { border-top: 1px solid var(--border); }
+.btn, .btn-write, .toc-toggle { border-radius: 0; box-shadow: none; }
+.author-card { margin-bottom: 56px; }
+.author-card-inner { border-radius: 0; box-shadow: none; background: transparent; padding: 20px 0; border-left: 0; border-right: 0; }
+.comment-section { margin-bottom: 32px; }
+.comment-head { border-bottom: 1px solid var(--border); }
+.section-title, .related-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; }
+.section-count { font-variant-numeric: tabular-nums; }
+.comment-item { border-radius: 0; }
+.toc-toggle, .toc-nav { border-radius: 0; box-shadow: none; }
+.toc-nav { background: var(--bg); }
+.toc-count { border-radius: 0; }
+.post-icon, .empty-icon { display: none; }
+.bg-grid, .bg-scanline { display: none; }
+.btn-comment-submit::after { display: none; animation: none; }
+@media (max-width: 860px) {
+  .post-article, .comment-section, .author-card, .cover-wrap { padding-left: 24px; padding-right: 24px; }
+  .post-article { padding-top: 44px; }
+  .post-title { font-size: clamp(40px, 9vw, 52px); }
+  .post-content { max-width: none; }
+  .post-nav { grid-template-columns: 1fr; gap: 18px; }
+  .post-nav-item.next { text-align: left; }
+}
+
+/* ===== 父级收口：去渐变/光晕/扫光/大圆角（信笺契约）===== */
+.author-card-inner { border-radius: 4px !important; box-shadow: none !important; background-image: none !important; }
+.author-avatar-md, .author-avatar { background-image: none !important; background: var(--bg-deeper) !important; color: var(--text-secondary) !important; }
+.btn-comment-submit { position: static !important; overflow: visible !important; box-shadow: none !important; }
+.btn-comment-submit::after, .btn-comment-submit::before { display: none !important; animation: none !important; }
+.post-detail-page .btn-primary, .post-detail-page .btn { box-shadow: none !important; }
 </style>

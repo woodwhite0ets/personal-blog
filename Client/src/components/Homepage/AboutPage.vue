@@ -22,7 +22,7 @@
       <!-- 关于本站 -->
       <div class="about-panel">
         <div class="panel-bar">
-          <span class="panel-title">关于本站</span>
+          <span class="section-block" aria-hidden="true"></span><span class="panel-title">关于本站</span><span class="panel-rule" aria-hidden="true"></span>
         </div>
         <div class="panel-body markdown-body">
           <p>这里是 <strong>woodwhite@blog</strong> —— 一个记录全栈开发与工程实践的技术博客。</p>
@@ -45,7 +45,7 @@
       <!-- 项目 / 经历 -->
       <div class="about-panel">
         <div class="panel-bar">
-          <span class="panel-title">项目经历</span>
+          <span class="section-block" aria-hidden="true"></span><span class="panel-title">项目经历</span><span class="panel-rule" aria-hidden="true"></span>
         </div>
         <div class="panel-body">
           <div class="project-item">
@@ -108,21 +108,18 @@
       <!-- 联系方式 -->
       <div class="about-panel">
         <div class="panel-bar">
-          <span class="panel-title">联系方式</span>
+          <span class="section-block" aria-hidden="true"></span><span class="panel-title">联系方式</span><span class="panel-rule" aria-hidden="true"></span>
         </div>
         <div class="panel-body">
           <div class="contact-line">
-            <span class="contact-icon">✉</span>
             <span class="contact-label">邮箱</span>
             <a class="contact-val" href="mailto:1903784785@qq.com">1903784785@qq.com</a>
           </div>
           <div class="contact-line">
-            <span class="contact-icon">⌥</span>
             <span class="contact-label">GitHub</span>
             <a class="contact-val" href="https://github.com/woodwhite0ets" target="_blank" rel="noopener">github.com/woodwhite0ets</a>
           </div>
           <div class="contact-line">
-            <span class="contact-icon">◆</span>
             <span class="contact-label">微信</span>
             <span class="contact-val">Woodwhite-0827</span>
           </div>
@@ -130,7 +127,7 @@
       </div>
     </div>
 
-    <SiteFooter command="cat /etc/motd" />
+    <SiteFooter />
   </div>
 </template>
 
@@ -165,30 +162,6 @@ onMounted(async () => {
   overflow-x: hidden;
 }
 
-.bg-grid {
-  position: fixed; inset: 0;
-  background-image:
-    linear-gradient(var(--overlay-a15) 1px, transparent 1px),
-    linear-gradient(90deg, var(--overlay-a15) 1px, transparent 1px);
-  background-size: 64px 64px;
-  pointer-events: none; z-index: 0;
-}
-
-.bg-scanline {
-  position: fixed; inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scanline) 2px, var(--scanline) 4px);
-  pointer-events: none; z-index: 0;
-  animation: scan 8s linear infinite;
-}
-@keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(4px); } }
-
-.bg-glow {
-  position: fixed; top: -15%; left: 50%; transform: translateX(-50%);
-  width: 800px; height: 500px;
-  background: radial-gradient(ellipse, var(--accent-a8) 0%, transparent 60%);
-  pointer-events: none; z-index: 0;
-}
-
 /* Navbar */
 .navbar {
   position: sticky; top: 0; z-index: 100;
@@ -216,16 +189,13 @@ onMounted(async () => {
 .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 /* About */
-.about-main { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 48px 24px; display: flex; flex-direction: column; gap: 24px; animation: fadeInUp 0.5s ease; }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.about-main { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 64px 24px 72px; display: flex; flex-direction: column; gap: 32px; }
 
 /* 个人简介 hero */
 .about-hero {
   display: flex; align-items: center; gap: 24px;
-  padding: 32px 28px;
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: 10px;
-  box-shadow: 0 4px 24px var(--shadow);
+  padding: 0 0 28px;
+  border-bottom: 1px solid var(--border);
 }
 .avatar-box { flex-shrink: 0; }
 .hero-name { font-size: 24px; color: var(--text-bright); margin-bottom: 6px; }
@@ -233,23 +203,16 @@ onMounted(async () => {
 .hero-desc { font-size: 13px; line-height: 1.8; color: var(--text-secondary); margin: 0; }
 
 /* 通用面板 */
-.about-panel {
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: 8px; overflow: hidden;
-  transition: border-color 0.3s, transform 0.3s;
-}
-.about-panel:hover { border-color: var(--accent-a25); transform: translateY(-2px); }
-.panel-bar {
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 12px; background: var(--overlay-a15);
-  border-bottom: 1px solid var(--border);
-}
+.about-panel { border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+.panel-bar { display: flex; align-items: center; gap: 7px; padding: 0 0 10px; }
 .panel-dot { width: 8px; height: 8px; border-radius: 50%; }
 .dot-cyan   { background: var(--accent); }
 .dot-yellow { background: var(--warn); }
 .dot-green  { background: var(--ok); }
 .dim { opacity: 0.3; }
-.panel-title { flex: 1; font-size: 11px; font-weight: 600; color: var(--text-muted); text-align: center; letter-spacing: 1.5px; }
+.panel-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); }
+.section-block { width: 7px; height: 7px; background: var(--accent); flex-shrink: 0; }
+.panel-rule { flex: 1; height: 1px; background: var(--border); }
 .panel-body { padding: 20px 24px; }
 
 .markdown-body { font-size: 14px; line-height: 1.8; color: var(--text); }
@@ -265,23 +228,24 @@ onMounted(async () => {
 .project-item:last-child { border-bottom: none; padding-bottom: 0; }
 .project-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .project-name { font-size: 14px; font-weight: 600; color: var(--text-bright); }
-.project-status { font-size: 10px; font-weight: 700; color: var(--ok); background: var(--ok-a10); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--ok-a30); }
-.dim-status { color: var(--text-faint); background: transparent; border-color: var(--border); }
+.project-status { font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.dim-status { color: var(--text-faint); }
 .project-desc { font-size: 12px; line-height: 1.7; color: var(--text-secondary); margin: 0 0 10px; }
 .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.ptag { font-size: 10px; color: var(--accent); background: var(--accent-a6); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--accent-a15); }
+.ptag { font-size: 12px; color: var(--text-dim); }
+.ptag + .ptag::before { content: ' · '; color: var(--border-strong); }
 
 /* 联系方式 */
-.contact-line { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.contact-line { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); }
 .contact-line:last-child { border-bottom: none; }
-.contact-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: var(--accent); background: var(--accent-a8); border-radius: 6px; font-size: 14px; }
-.contact-label { font-size: 12px; color: var(--text-muted); width: 56px; flex-shrink: 0; }
+.contact-label { font-size: 13px; color: var(--text-muted); width: 56px; flex-shrink: 0; }
 .contact-val { font-size: 13px; color: var(--text); text-decoration: none; transition: color 0.2s; }
 a.contact-val:hover { color: var(--accent); }
 .dim-val { color: var(--text-faint); }
 
 @media (max-width: 560px) {
-  .about-hero { flex-direction: column; text-align: center; }
+  .about-hero { flex-direction: column; align-items: flex-start; }
+  .hero-name { width: 100%; }
   .nav-links { display: none; }
   .nav-toggle { display: flex; }
   .nav-actions { gap: 8px; }
@@ -290,14 +254,6 @@ a.contact-val:hover { color: var(--accent); }
   .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
 }
 
-/* 信笺统一（组件内，替代原全局 !important）*/
-.sidebar-panel { background: transparent; border: 1px solid var(--border); border-radius: 4px; box-shadow: none; padding: 6px; }
-.panel-bar { border-bottom: 1px solid var(--border); background: transparent; padding: 14px 18px 12px; }
-.panel-body { padding: 14px 18px 18px; }
-.panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
 .info-key { color: var(--text-dim); }
-
-/* 统一：内容页容器 860 / 上边距 88 / 标题手写 */
-.about-main { max-width: 860px; padding: 88px 24px 72px; }
-.hero-name { font-family: var(--font-hand); font-size: 40px; font-weight: 400; }
+.hero-name { font-family: var(--font-hand); font-size: clamp(40px, 5vw, 64px); font-weight: 400; color: var(--text-bright); margin: 0 0 12px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
 </style>

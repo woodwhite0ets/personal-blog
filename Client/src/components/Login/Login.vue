@@ -12,7 +12,7 @@
         <form @submit.prevent="handleLogin" class="login-form">
           <div class="field">
             <label for="username">
-              <span class="label-icon">@</span> 用户名
+              用户名
             </label>
             <div class="input-wrap">
               <input
@@ -27,13 +27,13 @@
               <span class="input-cursor" v-if="!form.username"></span>
             </div>
             <span v-if="errors.username" class="field-error">
-              <span class="err-prefix">ERR!</span> {{ errors.username }}
+              {{ errors.username }}
             </span>
           </div>
  
           <div class="field">
             <label for="password">
-              <span class="label-icon">#</span> 密码
+              密码
             </label>
             <div class="input-wrap">
               <input
@@ -46,22 +46,22 @@
               />
             </div>
             <span v-if="errors.password" class="field-error">
-              <span class="err-prefix">ERR!</span> {{ errors.password }}
+              {{ errors.password }}
             </span>
           </div>
  
           <div class="field-row">
             <label class="checkbox-label">
               <input v-model="form.remember" type="checkbox" />
-              <span class="check-text">-- 记住我（保持登录状态）</span>
+              <span class="check-text">记住我（保持登录状态）</span>
             </label>
           </div>
  
           <p v-if="serverError" class="server-error">
-            <span class="err-prefix">ERR!</span> {{ serverError }}
+            {{ serverError }}
           </p>
  
-          <button type="submit" class="btn btn-primary btn-glow" :disabled="loading">
+          <button type="submit" class="btn btn-primary" :disabled="loading">
             <span v-if="loading" class="spinner" role="status" aria-label="提交中"></span>
             
             {{ loading ? '登录中...' : '进入' }}
@@ -72,31 +72,24 @@
         <div class="guest-section">
           <div class="guest-divider">
             <span class="divider-line"></span>
-            <span class="divider-text">-- 或 --</span>
+            <span class="divider-text">或</span>
             <span class="divider-line"></span>
           </div>
           <button class="btn btn-ghost btn-guest" @click="handleGuestLogin" :disabled="guestLoading">
             <span v-if="guestLoading" class="spinner-guest"></span>
-            <span v-else class="guest-icon">👤</span>
+            <span v-else class="guest-icon"></span>
             {{ guestLoading ? '进入中...' : '以游客身份浏览' }}
           </button>
           <p class="guest-hint">
-            <span class="comment">// 只读模式：可浏览文章，无需注册</span>
+             只读模式：可浏览文章，无需注册
           </p>
         </div>
 
         <p class="back-link">
-          <router-link to="/RegisterPage">← 注册一个账号</router-link>
+          <router-link to="/RegisterPage">注册一个账号</router-link>
           <span class="back-sep">·</span>
           <router-link to="/forgot-password" class="forgot-link">忘记密码？</router-link>
         </p>
-      </div>
- 
-      <div class="terminal-status">
-        <span class="status-dot"></span>
-        <span>ENCRYPTED</span>
-        <span class="status-sep">|</span>
-        <span>PORT :::3027</span>
       </div>
     </div>
   </div>
@@ -607,3 +600,20 @@ async function handleGuestLogin() {
 .login-card, .register-card, .verify-card, .card { max-width: 420px; margin: 0 auto; }
 </style>
  
+
+<style scoped>
+.login-page { min-height: 100dvh; display:block; padding:72px 24px; background:var(--bg); }
+.login-card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
+.card-body { max-width:560px; margin:0 auto; padding:0; }
+.login-title, .auth-title { font-family:var(--font-hand); font-size:clamp(40px,5vw,64px); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
+.terminal-status { display:none; }
+
+/* ===== 父级收口：清掉终端风残留（渐变/光晕/卡片阴影/装饰符号）===== */
+.err-prefix, .terminal-status, .terminal-bar, .terminal-dot, .terminal-title,
+.prompt-line, .prompt-arrow, .prompt-cmd, .status-dot, .status-sep,
+.bg-glow, .verify-icon, .label-icon { display: none !important; }
+.btn-glow { background: var(--accent) !important; box-shadow: none !important; }
+.btn-glow::before { display: none !important; }
+.login-card, .register-card, .verify-card, .card-body { box-shadow: none !important; animation: none !important; }
+.login-page, .register-page, .verify-page { background-image: none !important; }
+</style>

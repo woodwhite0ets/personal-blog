@@ -5,42 +5,31 @@
       <div class="card-body">
         <!-- 加载中 -->
         <div v-if="loading" class="state">
+          <h1 class="auth-title">验证邮箱</h1>
           <span class="spinner" role="status" aria-label="加载中"></span>
-          <span class="state-text">verifying...</span>
+          <span class="state-text">正在验证邮箱…</span>
         </div>
 
         <!-- 成功 -->
         <div v-else-if="success" class="state success">
-          <div class="verify-icon">✓</div>
           <h1 class="auth-title">邮箱已验证</h1>
           <p class="verify-text">
             邮箱验证成功！<br/>
             欢迎 <strong>@{{ username }}</strong>
           </p>
-          <router-link to="/HomePage" class="btn btn-primary btn-glow">
-             enter blog
+          <router-link to="/HomePage" class="btn btn-primary">
+             进入博客
           </router-link>
         </div>
 
         <!-- 失败 -->
         <div v-else class="state error">
-          <span class="err-prefix">ERR!</span>
-          <div class="prompt-line">
-            
-            <span class="prompt-cmd">verify --failed</span>
-          </div>
+          <h1 class="auth-title">验证邮箱</h1>
           <p class="verify-text">{{ errorMessage }}</p>
           <router-link to="/RegisterPage" class="btn-register">
-            ← 重新注册
+            重新注册
           </router-link>
         </div>
-      </div>
-
-      <div class="terminal-status">
-        <span class="status-dot" :class="success ? '' : 'error-dot'"></span>
-        <span>{{ success ? 'VERIFIED' : 'FAILED' }}</span>
-        <span class="status-sep">|</span>
-        <span>PORT :::3027</span>
       </div>
     </div>
   </div>
@@ -68,7 +57,7 @@ onMounted(async () => {
     const data = await res.json()
 
     if (!res.ok) {
-      errorMessage.value = data.message || 'verification failed'
+      errorMessage.value = data.message || '邮箱验证失败，请重试'
       return
     }
 
@@ -85,7 +74,7 @@ onMounted(async () => {
       await fetchMe()
     }
   } catch {
-    errorMessage.value = 'connection refused'
+    errorMessage.value = '网络连接失败，请稍后重试'
   } finally {
     loading.value = false
   }
@@ -242,4 +231,21 @@ onMounted(async () => {
 
 /* 统一：auth 卡片宽度 420 */
 .login-card, .register-card, .verify-card, .card { max-width: 420px; margin: 0 auto; }
+</style>
+
+<style scoped>
+.verify-page { min-height:100dvh; display:block; padding:72px 24px; background:var(--bg); }
+.verify-card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
+.card-body { max-width:560px; margin:0 auto; padding:0; }
+.auth-title { font-family:var(--font-hand); font-size:clamp(40px,5vw,64px); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
+.terminal-status { display:none; }
+
+/* ===== 父级收口：清掉终端风残留（渐变/光晕/卡片阴影/装饰符号）===== */
+.err-prefix, .terminal-status, .terminal-bar, .terminal-dot, .terminal-title,
+.prompt-line, .prompt-arrow, .prompt-cmd, .status-dot, .status-sep,
+.bg-glow, .verify-icon, .label-icon { display: none !important; }
+.btn-glow { background: var(--accent) !important; box-shadow: none !important; }
+.btn-glow::before { display: none !important; }
+.login-card, .register-card, .verify-card, .card-body { box-shadow: none !important; animation: none !important; }
+.login-page, .register-page, .verify-page { background-image: none !important; }
 </style>

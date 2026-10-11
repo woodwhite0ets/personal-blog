@@ -8,7 +8,7 @@
     <div v-if="notFound" class="user-notfound">
       <div class="notfound-icon">?</div>
       <p class="notfound-text">用户 @{{ username }} 不存在</p>
-      <router-link to="/HomePage" class="notfound-link">← 返回首页</router-link>
+      <router-link to="/HomePage" class="notfound-link">返回首页</router-link>
     </div>
 
     <!-- ====== 用户资料头 ====== -->
@@ -28,6 +28,7 @@
           @change="handleAvatarFile"
         />
         <div class="user-info">
+          <h1 class="user-page-title">{{ profile?.nickname || username }}</h1>
           <div class="user-name-line">
             <span class="user-at">@{{ username }}</span>
             <span v-if="profile?.nickname" class="user-nickname">{{ profile.nickname }}</span>
@@ -72,7 +73,7 @@
           <div class="panel-body">
             <div class="info-line">
               <span class="info-key">id</span>
-              <span class="info-val">uid_{{ profile?.id || '—' }}</span>
+              <span class="info-val">{{ profile?.id || '—' }}</span>
             </div>
             <div class="info-line">
               <span class="info-key">email</span>
@@ -88,7 +89,7 @@
         <!-- 编辑资料 + 草稿（仅本人可见） -->
         <div v-if="isOwnPage" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">account</span>
+            <span class="panel-title">账户</span>
           </div>
           <div class="panel-body">
             <button class="btn btn-secondary btn-block btn-change-pwd" @click="openProfileModal">编辑资料</button>
@@ -102,7 +103,7 @@
         <!-- 草稿列表 -->
         <div v-if="isOwnPage && showDrafts" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">drafts ({{ draftCount }})</span>
+            <span class="panel-title">草稿（{{ draftCount }})</span>
           </div>
           <div class="panel-body">
             <div v-if="drafts.length === 0" class="no-drafts">— 暂无草稿</div>
@@ -116,7 +117,7 @@
         <!-- 修改密码（仅本人可见） -->
         <div v-if="isOwnPage" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">security.pwd</span>
+            <span class="panel-title">修改密码</span>
           </div>
           <div class="panel-body">
             <button class="btn btn-secondary btn-block btn-change-pwd" @click="openPwdModal">修改密码</button>
@@ -125,7 +126,7 @@
 
         <div class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title">tags.used</span>
+            <span class="panel-title">使用的标签</span>
           </div>
           <div class="panel-body">
             <div class="tag-cloud">
@@ -148,7 +149,7 @@
     <footer class="footer">
       <div class="footer-line">
         
-        <span class="footer-cmd">finger @{{ username }}</span>
+        <span class="footer-cmd">用户资料：{{ username }}</span>
       </div>
     </footer>
 
@@ -157,7 +158,7 @@
       <div v-if="showPwdModal" class="modal-overlay" @click.self="showPwdModal = false">
         <div class="pwd-modal">
           <div class="pwd-modal-bar">
-            <span class="panel-title">passwd</span>
+            <span class="panel-title">修改密码</span>
             <button class="pwd-modal-close" @click="showPwdModal = false">×</button>
           </div>
           <div class="pwd-modal-body">
@@ -195,7 +196,7 @@
       <div v-if="showProfileModal" class="modal-overlay" @click.self="showProfileModal = false">
         <div class="pwd-modal">
           <div class="pwd-modal-bar">
-            <span class="panel-title">edit profile</span>
+            <span class="panel-title">编辑资料</span>
             <button class="pwd-modal-close" @click="showProfileModal = false">×</button>
           </div>
           <div class="pwd-modal-body">
@@ -217,7 +218,7 @@
               <div class="pwd-field">
                 <label>邮箱</label>
                 <input v-model="profileForm.email" type="email" placeholder="you@example.com" />
-                <span class="pwd-hint">// 修改邮箱需要重新验证</span>
+                <span class="pwd-hint">修改邮箱需要重新验证</span>
               </div>
               <span v-if="profileError" class="pwd-err">{{ profileError }}</span>
               <button class="btn btn-primary btn-block pwd-submit" @click="handleSaveProfile" :disabled="profileSaving">
@@ -930,4 +931,11 @@ watch(username, () => {
 
 /* 统一：用户页容器 1060 / 上边距 88 */
 .user-main, .user-page > .main { max-width: 1060px; }
+</style>
+
+<style scoped>
+.user-hero-inner, .main-layout, .footer-line, .user-notfound { max-width:1000px; margin:0 auto; padding-left:24px; padding-right:24px; }
+.user-page-title { font-family:var(--font-hand); font-size:clamp(40px,5vw,64px); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; margin:0 0 16px; }
+.stat-value, .stat-label, .info-val, .draft-date { font-variant-numeric:tabular-nums; }
+@media (max-width:860px) { .main-layout { grid-template-columns:1fr; } }
 </style>

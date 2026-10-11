@@ -6,7 +6,7 @@
         <div class="header">
           <h1 class="auth-title">找回密码</h1>
           <p class="subtitle">
-            <span class="comment">// 输入注册邮箱，我们会发送重置链接</span>
+             输入注册邮箱，我们会发送重置链接
           </p>
         </div>
 
@@ -14,14 +14,14 @@
         <div v-if="sent" class="success-box">
           <div class="success-icon">✓</div>
           <p class="success-text">if this email is registered, a reset link has been sent.</p>
-          <p class="comment success-hint">// 请查收邮箱（含垃圾箱），链接 1 小时内有效</p>
-          <router-link to="/login" class="btn-back">← back to login</router-link>
+          <p class="comment success-hint">请查收邮箱（含垃圾箱），链接 1 小时内有效</p>
+          <router-link to="/login" class="btn-back">返回登录</router-link>
         </div>
 
         <!-- 表单 -->
         <form v-else @submit.prevent="handleSend" class="form">
           <div class="field">
-            <label for="email"><span class="label-icon">@</span> email</label>
+            <label for="email">email</label>
             <div class="input-wrap">
               <input
                 id="email"
@@ -33,19 +33,19 @@
               />
             </div>
             <span v-if="errors.email" class="field-error">
-              <span class="err-prefix">ERR!</span> {{ errors.email }}
+              {{ errors.email }}
             </span>
           </div>
 
           <button type="submit" class="btn btn-primary btn-block" :disabled="loading">
             <span v-if="loading" class="spinner" role="status" aria-label="提交中"></span>
             
-            {{ loading ? 'Sending...' : 'Send Reset Link' }}
+            {{ loading ? '发送中…' : '发送重置链接' }}
           </button>
         </form>
 
         <p class="back-link">
-          <router-link to="/login">← back to login</router-link>
+          <router-link to="/login">返回登录</router-link>
         </p>
       </div>
     </div>
@@ -77,10 +77,10 @@ async function handleSend() {
       sent.value = true
     } else {
       const data = await res.json().catch(() => ({}))
-      errors.email = data.message || 'request failed'
+      errors.email = data.message || '请求未能完成，请稍后重试'
     }
   } catch {
-    errors.email = 'network error — please try again'
+    errors.email = '网络连接失败，请稍后重试'
   } finally {
     loading.value = false
   }
@@ -156,4 +156,20 @@ async function handleSend() {
 
 /* 统一：auth 卡片宽度 420 */
 .login-card, .register-card, .verify-card, .card { max-width: 420px; margin: 0 auto; }
+</style>
+
+<style scoped>
+.forgot-page, .reset-page { min-height:100dvh; display:block; padding:72px 24px; background:var(--bg); }
+.card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
+.card-body { max-width:560px; margin:0 auto; padding:0; }
+.auth-title { font-family:var(--font-hand); font-size:clamp(40px,5vw,64px); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
+
+/* ===== 父级收口：清掉终端风残留（渐变/光晕/卡片阴影/装饰符号）===== */
+.err-prefix, .terminal-status, .terminal-bar, .terminal-dot, .terminal-title,
+.prompt-line, .prompt-arrow, .prompt-cmd, .status-dot, .status-sep,
+.bg-glow, .verify-icon, .label-icon { display: none !important; }
+.btn-glow { background: var(--accent) !important; box-shadow: none !important; }
+.btn-glow::before { display: none !important; }
+.login-card, .register-card, .verify-card, .card-body { box-shadow: none !important; animation: none !important; }
+.login-page, .register-page, .verify-page { background-image: none !important; }
 </style>
