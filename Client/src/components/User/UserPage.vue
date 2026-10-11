@@ -69,7 +69,7 @@
           <div class="panel-bar">
             <span class="panel-dot dot-cyan"></span>
             <span class="panel-dot dot-cyan dim"></span>
-            <span class="panel-title">user.info</span>
+            <span class="panel-title">概况</span>
           </div>
           <div class="panel-body">
             <div class="info-line">
