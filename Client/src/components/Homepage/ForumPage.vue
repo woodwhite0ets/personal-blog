@@ -26,13 +26,9 @@
 </SiteNav>
 
     <!-- ====== Hero：论坛介绍 ====== -->
-    <section class="hero">
-      <div class="hero-inner">
-        <h1 class="hero-title">文章</h1>
-        <p class="hero-excerpt">
-          全栈开发 · 系统架构 · 开源实践。这里是我写下的全部文章。
-        </p>
-      </div>
+    <section class="ed-hero">
+      <h1 class="ed-hero-title">文章</h1>
+      <p class="ed-hero-excerpt">全栈开发 · 系统架构 · 开源实践。这里是我写下的全部文章。</p>
     </section>
 
     <!-- ====== 主体 ====== -->
@@ -66,19 +62,23 @@
           :class="{ active: sortMode === 'popular' }"
           @click="switchSort('popular')"
         >热门</button>
-      </div>
-
-      <!-- 帖子列表 -->
-      <PostList
-        :posts="posts"
-        :loading="loading"
-        :loading-more="loadingMore"
-        :error="error"
-        :has-more="hasMore"
-        empty-text="暂无帖子，来发布第一个话题吧。"
-        @load-more="loadMore"
-        @refresh="fetchPosts"
-      />
+      </div>      <!-- 编辑式条目列表 -->
+      <div v-if="loading" class="state-box" role="status" aria-live="polite">正在加载…</div>
+      <div v-else-if="error" class="state-box error" role="alert">{{ error }}</div>
+      <div v-else-if="!posts.length" class="state-box" aria-live="polite">暂无文章。</div>
+      <template v-else>
+        <article v-for="(p, i) in posts" :key="p.id" class="ed-entry">
+          <span class="ed-num">{{ String((currentPage - 1) * 10 + i + 1).padStart(2, '0') }}</span>
+          <div class="ed-entry-body">
+            <h3 class="ed-entry-title"><router-link :to="`/post/${p.slug || p.id}`">{{ p.title }}</router-link></h3>
+            <p class="ed-entry-excerpt">{{ p.excerpt }}</p>
+            <p class="ed-entry-meta">{{ p.date }} · {{ p.read_time }} · {{ p.views || 0 }} 次阅读</p>
+          </div>
+        </article>
+        <button v-if="hasMore" class="ed-more-btn" :disabled="loadingMore" @click="loadMore">
+          {{ loadingMore ? '加载中…' : '加载更多' }}
+        </button>
+      </template>
 
       <!-- 侧边栏 -->
       <aside class="sidebar">
@@ -162,7 +162,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import PostList from './PostList.vue'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 import UserAvatar from '../common/UserAvatar.vue'

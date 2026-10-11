@@ -25,68 +25,77 @@
   </template>
 </SiteNav>
 
-    <!-- ====== 杂志编辑式（方向 A）====== -->
-    <section class="ed-hero" v-if="pinnedPost">
-      <span class="ed-kicker">置顶</span>
-      <h1 class="ed-hero-title">
-        <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`">{{ pinnedPost.title }}</router-link>
-      </h1>
-      <p class="ed-hero-excerpt">{{ pinnedPost.excerpt }}</p>
-      <p class="ed-hero-meta">{{ pinnedPost.date }} · @WoodWhite · {{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次阅读</p>
+    <!-- ====== Bento 网格 ====== -->
+    <section class="bento">
+      <router-link v-if="pinnedPost" :to="`/post/${pinnedPost.slug || pinnedPost.id}`" class="tile tile-hero">
+        <span class="tile-label">置顶</span>
+        <h1 class="tile-hero-title">{{ pinnedPost.title }}</h1>
+        <p class="tile-hero-excerpt">{{ pinnedPost.excerpt }}</p>
+        <span class="tile-meta">{{ pinnedPost.date }} · {{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次阅读</span>
+      </router-link>
+
+      <div class="tile tile-about">
+        <span class="tile-label">关于</span>
+        <div class="about-flex">
+          <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
+          <div class="about-txt">
+            <p class="about-name">WoodWhite</p>
+            <p class="about-role">应届毕业生 · Web 全栈开发</p>
+            <p class="about-bio">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile tile-now">
+        <span class="tile-label">现在</span>
+        <p class="tile-text">学习分布式系统与 AI 工程化，同时在打磨这个博客和 mcp-gateway。</p>
+      </div>
+
+      <div class="tile tile-stats">
+        <span class="tile-label">统计</span>
+        <div class="stats-row">
+          <span><b>{{ totalPublished }}</b>文章</span>
+          <span><b>{{ stats.views }}</b>阅读</span>
+          <span><b>{{ stats.comments }}</b>评论</span>
+          <span><b>{{ tags.length }}</b>分类</span>
+        </div>
+      </div>
+
+      <div class="tile tile-links">
+        <span class="tile-label">友链</span>
+        <div class="link-row"><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></div>
+        <div class="link-row"><a href="/feed.xml">RSS 订阅</a></div>
+        <div class="link-row"><router-link to="/about">关于我</router-link></div>
+      </div>
+
+      <router-link to="/about" class="tile tile-proj">
+        <span class="tile-label">项目</span>
+        <h3 class="tile-h3">mcp-gateway</h3>
+        <p class="tile-text">面向知识库与服务器管理的 MCP 网关。</p>
+      </router-link>
+
+      <router-link to="/about" class="tile tile-proj">
+        <span class="tile-label">项目</span>
+        <h3 class="tile-h3">乐清市充电桩分布图</h3>
+        <p class="tile-text">SQLite → Docker + PostGIS 架构升级。</p>
+      </router-link>
+
+      <div class="tile tile-list">
+        <span class="tile-label">最近更新</span>
+        <router-link v-for="p in posts.slice(0, 3)" :key="p.id" :to="`/post/${p.slug || p.id}`" class="list-row">
+          <span class="list-title">{{ p.title }}</span>
+          <span class="list-date">{{ p.date?.slice(5) }}</span>
+        </router-link>
+      </div>
+
+      <div class="tile tile-list">
+        <span class="tile-label">热门</span>
+        <router-link v-for="p in popular" :key="p.id" :to="`/post/${p.slug || p.id}`" class="list-row">
+          <span class="list-title">{{ p.title }}</span>
+          <span class="list-date">{{ p.views }}</span>
+        </router-link>
+      </div>
     </section>
-
-    <div class="ed-cols">
-      <main class="ed-main">
-        <article v-for="(p, i) in posts.slice(0, 6)" :key="p.id" class="ed-entry">
-          <span class="ed-num">{{ String(i + 1).padStart(2, '0') }}</span>
-          <div class="ed-entry-body">
-            <h3 class="ed-entry-title"><router-link :to="`/post/${p.slug || p.id}`">{{ p.title }}</router-link></h3>
-            <p class="ed-entry-excerpt">{{ p.excerpt }}</p>
-            <p class="ed-entry-meta">{{ p.date }} · {{ p.read_time }} · {{ p.views || 0 }} 次阅读</p>
-          </div>
-        </article>
-        <router-link to="/forum" class="ed-more">查看全部文章</router-link>
-      </main>
-
-      <aside class="ed-rail">
-        <div class="ed-box">
-          <h4>关于</h4>
-          <div class="ed-about">
-            <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
-            <div>
-              <p class="ed-name">WoodWhite</p>
-              <p class="ed-role">应届毕业生 · Web 全栈开发</p>
-            </div>
-          </div>
-          <p class="ed-text">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。</p>
-        </div>
-        <div class="ed-box">
-          <h4>现在</h4>
-          <p class="ed-text">学习分布式系统与 AI 工程化，同时在打磨这个博客和 mcp-gateway。</p>
-        </div>
-        <div class="ed-box">
-          <h4>统计</h4>
-          <div class="ed-stats">
-            <span><b>{{ totalPublished }}</b>文章</span>
-            <span><b>{{ stats.views }}</b>阅读</span>
-            <span><b>{{ stats.comments }}</b>评论</span>
-            <span><b>{{ tags.length }}</b>分类</span>
-          </div>
-        </div>
-        <div class="ed-box">
-          <h4>热门</h4>
-          <router-link v-for="p in popular" :key="p.id" :to="`/post/${p.slug || p.id}`" class="ed-rank">
-            <span class="ed-rank-t">{{ p.title }}</span><span class="ed-rank-n">{{ p.views }}</span>
-          </router-link>
-        </div>
-        <div class="ed-box ed-box-last">
-          <h4>友链</h4>
-          <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
-          <a href="/feed.xml">RSS 订阅</a>
-          <router-link to="/about">关于我</router-link>
-        </div>
-      </aside>
-    </div>
     <SiteFooter command='echo "© 2026 woodwhite@blog — 技术论坛"' />
   </div>
 </template>

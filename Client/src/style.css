@@ -1375,3 +1375,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .ed-box > a { display: block; font-size: 15px; color: var(--accent); text-decoration: none; padding: 5px 0; }
 .ed-box > a:hover { text-decoration: underline; }
 @media (max-width: 860px) { .ed-cols { grid-template-columns: 1fr; gap: 40px; } .ed-rail { position: static; } }
+/* 文章页编辑式两栏 + 加载按钮 */
+.main-layout { grid-template-columns: 1fr 288px; gap: 56px; }
+.ed-more-btn { margin-top: 26px; padding: 10px 22px; font: inherit; font-size: 15px; color: var(--text-bright); background: transparent; border: 1px solid var(--border-strong); border-radius: 4px; cursor: pointer; }
+.ed-more-btn:hover { border-color: var(--text-bright); }
