@@ -2,14 +2,10 @@
   <header class="navbar">
     <div class="navbar-inner">
       <router-link to="/HomePage" class="brand">
-        <span class="brand-bracket">[</span>
-        <span class="brand-text">woodwhite@blog</span><span class="brand-caret anim-caret">▌</span>
-        <span class="brand-bracket">]</span>
-        <span class="brand-path">~/{{ section }}</span>
+        <span class="brand-text">woodwhite@blog</span>
       </router-link>
       <nav class="nav-links" :class="{ open: navOpen }" @click="navOpen = false">
-        <router-link v-for="l in navLinks" :key="l.to" :to="l.to">
-          <span class="nav-num">{{ l.num }}</span> {{ l.label }}
+        <router-link v-for="l in navLinks" :key="l.to" :to="l.to"> {{ l.label }}
         </router-link>
       </nav>
       <div class="nav-actions">

@@ -46,7 +46,7 @@
         try {
           var t = localStorage.getItem('blog-theme');
           var ok = ['terminal', 'paper', 'midnight', 'solar'].indexOf(t) >= 0;
-          if (ok) document.documentElement.setAttribute('data-theme', t);
+          document.documentElement.setAttribute('data-theme', ok ? t : 'paper');
         } catch (e) {}
       })();
     </script>

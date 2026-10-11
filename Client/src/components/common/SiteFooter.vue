@@ -1,30 +1,9 @@
 <template>
   <footer class="footer">
-    <div class="footer-terminal anim-fade-up">
-      <div class="terminal-bar">
-        <span class="dot dot-red"></span>
-        <span class="dot dot-yellow"></span>
-        <span class="dot dot-green"></span>
-        <span class="terminal-title">woodwhite@blog — zsh</span>
-      </div>
-      <div class="terminal-body">
-        <div class="footer-line">
-          <span class="footer-prompt">❯</span>
-          <span class="footer-cmd">{{ displayed }}</span>
-          <span class="footer-caret anim-caret">▌</span>
-        </div>
-        <div class="footer-status">
-          <span class="status-dot"></span>
-          <span>系统正常运行</span>
-          <span class="footer-sep">·</span>
-          <span>v2.0.1</span>
-          <span class="footer-sep">·</span>
-          <span>{{ typedLen }}/{{ fullCmd.length }} 字符</span>
-        </div>
-        <div class="footer-progress"><span :style="{ width: progressPct + '%' }"></span></div>
-      </div>
+    <div class="footer-brand anim-fade-up">
+      <span class="footer-wordmark">woodwhite@blog</span>
+      <span class="footer-tagline">技术博客 · 全栈开发 · 开源分享</span>
     </div>
-
     <div class="footer-links">
       <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
       <span class="footer-link-sep">·</span>

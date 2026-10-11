@@ -34,11 +34,6 @@
           <span class="badge-dot"></span>
           置顶
         </div>
-        <div class="hero-terminal anim-fade-up">
-          <span class="hero-prompt">❯</span>
-          <span class="hero-cmd anim-gradient-move">cat ./welcome.md</span>
-          <span class="hero-caret anim-caret">▌</span>
-        </div>
         <h1 class="hero-title">
           <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`">
             {{ pinnedPost.title }}

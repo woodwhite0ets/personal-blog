@@ -141,22 +141,22 @@
 [data-theme="paper"] {
   color-scheme: light;
 
-  --bg: #f7f6f2;
+  --bg: #faf9f5;
   --bg-elevated: #ffffff;
   --bg-float: #ffffff;
-  --bg-deeper: #efede6;
-  --bg-code: #f0ede6;
+  --bg-deeper: #f3f1ea;
+  --bg-code: #f3f1ea;
 
-  --text: #2b2d34;
-  --text-bright: #16171d;
-  --text-dim: #5c5f68;
-  --text-muted: #8c909a;
+  --text: #23211c;
+  --text-bright: #14120c;
+  --text-dim: #6b665a;
+  --text-muted: #98928a;
   --text-faint: #b6bac3;
-  --text-secondary: #848a96;
+  --text-secondary: #7d776b;
   --text-hint: #9aa0ac;
 
-  --accent: #4f5bd5;
-  --accent-hover: #3f4bc4;
+  --accent: #2f4a73;
+  --accent-hover: #24406a;
   --on-accent: #ffffff;
   --accent-a2: rgba(46, 125, 143, 0.02);
   --accent-a2: color-mix(in srgb, var(--accent) 2%, transparent);
@@ -215,7 +215,7 @@
   --border-strong: #d6d3ca;
   --border-a30: rgba(0,0,0,0.08);
   --border-a50: rgba(0,0,0,0.12);
-  --divider: #ecebe4;
+  --divider: #ebe7dd;
 
   --overlay-a1: rgba(0, 0, 0, 0.01);
   --overlay-a15: rgba(0, 0, 0, 0.015);
@@ -230,12 +230,12 @@
   --text-secondary-a8: rgba(132, 138, 150, 0.08);
   --text-secondary-a20: rgba(132, 138, 150, 0.2);
 
-  --navbar-bg: rgba(247,246,242,0.88);
+  --navbar-bg: rgba(250,249,245,0.86);
 
-  --aurora-1: rgba(46, 125, 143, 0.16);
-  --aurora-2: rgba(214, 160, 70, 0.15);
-  --aurora-3: rgba(224, 150, 140, 0.13);
-  --scanline: rgba(120, 112, 96, 0.04);
+  --aurora-1: rgba(47, 74, 115, 0.10);
+  --aurora-2: rgba(160, 140, 100, 0.10);
+  --aurora-3: rgba(150, 130, 110, 0.08);
+  --scanline: rgba(0,0,0,0);
   --shadow: rgba(74, 60, 40, 0.12);
   --shadow-deep: rgba(74, 60, 40, 0.18);
   --modal-overlay: rgba(0,0,0,0.40);
