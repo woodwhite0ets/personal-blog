@@ -185,7 +185,7 @@
   --accent-a50: rgba(46, 125, 143, 0.5);
   --accent-a50: color-mix(in srgb, var(--accent) 50%, transparent);
 
-  --ok: #389e6d;
+  --ok: #32855c;
   --ok-hover: #2f8a5d;
   --ok-a6: rgba(56, 158, 109, 0.06);
   --ok-a8: rgba(56, 158, 109, 0.08);
@@ -209,7 +209,7 @@
   --err-a25: rgba(198, 86, 86, 0.25);
   --err-a30: rgba(198, 86, 86, 0.3);
 
-  --purple: #7c6bd8;
+  --purple: #7867d0;
 
   --border: #e6e4dd;
   --border-strong: #d6d3ca;
@@ -1388,7 +1388,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hero-band { background: var(--text-bright); color: var(--bg); }
 .hero-in { max-width: 1000px; margin: 0 auto; padding: 104px 24px 96px; }
 .hero-name { font-family: var(--font-hand); font-size: clamp(52px, 7.4vw, 92px); line-height: 1; font-weight: 400; letter-spacing: .07em; margin: 0; color: var(--bg); }
-.hero-role { margin: 22px 0 0; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, var(--bg) 50%, transparent); }
+.hero-role { margin: 22px 0 0; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, var(--bg) 72%, transparent); }
 .hero-statement { margin: 20px 0 0; font-size: 21px; line-height: 1.72; max-width: 540px; color: color-mix(in srgb, var(--bg) 82%, transparent); text-wrap: pretty; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px; }
 .hero-btn { display: inline-block; padding: 12px 26px; font-size: 15px; text-decoration: none; border-radius: 3px; transition: opacity .2s, border-color .2s, color .2s; }
