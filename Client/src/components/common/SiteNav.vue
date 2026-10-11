@@ -9,7 +9,6 @@
         </router-link>
       </nav>
       <div class="nav-actions">
-        <ThemeSwitcher />
         <slot name="search" />
         <router-link v-if="!isLoggedIn" to="/login" class="btn-login">登录</router-link>
         <template v-else>

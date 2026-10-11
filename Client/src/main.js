@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import '@fontsource-variable/manrope'
 import '@fontsource-variable/eb-garamond'
 import '@fontsource/noto-serif-sc/400.css'
 import '@fontsource/homemade-apple/400.css'
