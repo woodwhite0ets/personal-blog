@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard">
     <div class="section-head">
-      <span class="section-arrow">❯</span>
-      <span class="section-title">cat /proc/dashboard</span>
+      <span class="section-arrow"></span>
+      <span class="section-title">仪表盘</span>
     </div>
 
     <div v-if="loading" class="state-box">

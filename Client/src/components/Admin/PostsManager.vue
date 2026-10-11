@@ -1,8 +1,8 @@
 <template>
   <div class="posts-manager">
     <div class="section-head">
-      <span class="section-arrow">❯</span>
-      <span class="section-title">ls -la /var/posts</span>
+      <span class="section-arrow"></span>
+      <span class="section-title">文章管理</span>
       <span class="section-count">— 共 {{ total }} 条记录</span>
     </div>
 
@@ -84,7 +84,7 @@
       <!-- 分页 -->
       <div v-if="hasMore" class="load-more">
         <button class="btn btn-secondary" :disabled="loadingMore" @click="loadMore">
-          <span class="btn-prompt">❯</span>
+          <span class="btn-prompt"></span>
           {{ loadingMore ? '加载中...' : '更多文章' }}
         </button>
       </div>

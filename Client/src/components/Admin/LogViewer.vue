@@ -1,7 +1,7 @@
 <template>
   <div class="log-viewer">
     <div class="section-head">
-      <span class="section-arrow">❯</span>
+      <span class="section-arrow"></span>
       <!-- 日志来源切换 -->
       <div class="source-tabs">
         <button class="source-tab" :class="{ active: logSource === 'backend' }" @click="switchSource('backend')">

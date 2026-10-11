@@ -14,7 +14,7 @@
         </router-link>
         <div class="nav-actions">
           <ThemeSwitcher />
-          <span class="admin-badge">sudo 模式</span>
+          <span class="admin-badge">管理员</span>
           <router-link to="/HomePage" class="nav-link">← 博客</router-link>
           <button class="btn btn-secondary btn-user" @click="showMenu = !showMenu">
             <UserAvatar :src="currentUser?.avatar" :alt="(currentUser?.nickname || currentUser?.username || '?')" size="sm" />
@@ -37,7 +37,7 @@
           <div class="panel-bar">
             <span class="panel-dot dot-cyan"></span>
             <span class="panel-dot dot-cyan dim"></span>
-            <span class="panel-title">cat /etc/admin/menu</span>
+            <span class="panel-title">管理</span>
           </div>
           <div class="panel-body nav-body">
             <router-link to="/admin/dashboard" class="nav-item" active-class="active">
@@ -59,12 +59,12 @@
           <div class="panel-bar">
             <span class="panel-dot dot-green"></span>
             <span class="panel-dot dot-green dim"></span>
-            <span class="panel-title">system.info</span>
+            <span class="panel-title">系统信息</span>
           </div>
           <div class="panel-body">
             <div class="info-line">
               <span class="info-key">系统</span>
-              <span class="info-val">blogOS v2.0.1</span>
+              <span class="info-val">v2.0.1</span>
             </div>
             <div class="info-line">
               <span class="info-key">角色</span>
@@ -79,7 +79,7 @@
       </main>
     </div>
 
-    <SiteFooter command="sudo systemctl status blog-admin" />
+    <SiteFooter command="" />
   </div>
 </template>
 

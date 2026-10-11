@@ -1,8 +1,8 @@
 <template>
   <div class="users-manager">
     <div class="section-head">
-      <span class="section-arrow">❯</span>
-      <span class="section-title">cat /etc/passwd</span>
+      <span class="section-arrow"></span>
+      <span class="section-title">用户管理</span>
       <span class="section-count">— 共 {{ total }} 名用户</span>
     </div>
 
@@ -93,7 +93,7 @@
 
       <div v-if="hasMore" class="load-more">
         <button class="btn btn-secondary" :disabled="loadingMore" @click="loadMore">
-          <span class="btn-prompt">❯</span>
+          <span class="btn-prompt"></span>
           {{ loadingMore ? '加载中...' : '更多用户' }}
         </button>
       </div>
