@@ -1245,3 +1245,19 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* 触控尺寸：交互元素不小于 40px 高 */
 .nav-links a, .footer-links a, .post-tag, .related-list a { min-height: 40px; display: inline-flex; align-items: center; }
 .code-copy { min-height: 28px; }
+
+/* ============================================================
+   呼吸感：有边框容器的内边距加大（2026-10-11）
+   ============================================================ */
+.sidebar-panel { padding: 6px !important; }
+.panel-bar { padding: 14px 18px 12px !important; }
+.panel-body { padding: 14px 18px 18px !important; }
+.code-head { padding: 10px 16px !important; }
+.markdown-body .code-block pre { padding: 18px 20px !important; }
+.markdown-body table th, .markdown-body table td { padding: 10px 14px !important; }
+.markdown-body blockquote { padding: 12px 20px !important; }
+.author-card-inner { padding: 28px !important; }
+.hero-scroll-hint { padding: 8px 16px !important; }
+.sort-btn { padding: 6px 14px !important; }
+.sort-bar { padding: 12px 18px !important; }
+.markdown-body code { padding: 3px 7px !important; }
