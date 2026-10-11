@@ -86,8 +86,8 @@ app.use(cors({
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
-// 全局速率限制
-app.use(globalLimiter);
+// 速率限制：仅作用于 API（静态资源不计入，避免正常浏览被限流整页空白）
+app.use('/api', globalLimiter);
 
 // ====== 访问日志（记录客户端 IP / 方法 / 路径 / 状态码，供安全追溯） ======
 app.use((req, res, next) => {

@@ -3,7 +3,7 @@ const { rateLimit } = require('express-rate-limit');
 // ====== 全局速率限制（所有请求） ======
 const globalLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 分钟窗口
-  max: 200,            // 每分钟最多 200 个请求
+  max: 600,            // 每分钟最多 600 个 API 请求（静态资源不计，见 index.js）
   standardHeaders: true,
   legacyHeaders: false,
   message: { message: 'too many requests — slow down' },
