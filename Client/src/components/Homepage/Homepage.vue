@@ -74,112 +74,20 @@
     </section>
 
     <!-- ====== 主体 ====== -->
-    <div class="main-layout">
-      <!-- 标签过滤提示 -->
-      <div v-if="activeTag" class="tag-filter-bar" style="grid-column: 1 / -1; margin-bottom: -28px;">
-        
-        <span class="filter-label">筛选:</span>
-        <span class="filter-tag">#{{ activeTag }}</span>
-        <router-link :to="clearTagLink" class="filter-clear">× 清除</router-link>
+    <!-- ====== 标签云 + 入口 ====== -->
+    <section class="home-tags anim-fade-up">
+      <h2 class="home-tags-title">标签</h2>
+      <div class="tag-cloud">
+        <router-link
+          v-for="tag in tags"
+          :key="tag.name"
+          :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
+          class="tag" :class="tag.size"
+        >#{{ tag.name }}</router-link>
+        <span v-if="!tags.length" class="no-tags">— 暂无标签</span>
       </div>
-
-      <!-- 搜索过滤提示 -->
-      <div v-if="activeSearch" class="tag-filter-bar" style="grid-column: 1 / -1; margin-bottom: -28px;">
-        
-        <span class="filter-label">搜索:</span>
-        <span class="filter-tag">&quot;{{ activeSearch }}&quot;</span>
-        <router-link :to="clearSearchLink" class="filter-clear">× 清除</router-link>
-      </div>
-
-      <!-- 排序切换 -->
-      <div class="sort-bar">
-        <span class="sort-label">排序:</span>
-        <button
-          class="sort-btn"
-          :class="{ active: sortMode === 'latest' }"
-          @click="switchSort('latest')"
-        >最新</button>
-        <button
-          class="sort-btn"
-          :class="{ active: sortMode === 'popular' }"
-          @click="switchSort('popular')"
-        >热门</button>
-      </div>
-
-      <!-- 文章列表 — 模块化组件 -->
-      <PostList
-        :posts="posts.slice(0, 6)"
-        :loading="loading"
-        :loading-more="loadingMore"
-        :error="error"
-        :has-more="hasMore"
-        empty-text="暂无文章，稍后再来看看。"
-        @load-more="loadMore"
-        @refresh="fetchPosts"
-      />
-      <router-link to="/forum" class="view-all">查看全部文章</router-link>
-
-      <!-- 侧边栏 — 保持不变 -->
-      <aside class="sidebar">
-
-        <div v-if="contributors.length" class="sidebar-panel">
-          <div class="panel-bar">
-            <span class="panel-dot dot-green"></span>
-            <span class="panel-dot dot-green dim"></span>
-            <span class="panel-title">贡献者</span>
-          </div>
-          <div class="panel-body">
-            <router-link
-              v-for="c in contributors"
-              :key="c.username"
-              :to="`/user/${c.username}`"
-              class="contributor-item"
-            >
-              <UserAvatar :src="c.avatar" :alt="c.username" size="xs" />
-              <span class="contributor-name">@{{ c.username }}</span>
-              <span class="contributor-count">(<span class="anim-count" v-count="c.count"></span>)</span>
-            </router-link>
-          </div>
-        </div>
-
-        <div class="sidebar-panel">
-          <div class="panel-bar">
-            <span class="panel-dot dot-yellow"></span>
-            <span class="panel-dot dot-yellow dim"></span>
-            <span class="panel-title">标签</span>
-          </div>
-          <div class="panel-body">
-            <div class="tag-cloud">
-              <router-link
-                v-for="tag in tags"
-                :key="tag.name"
-                :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
-                class="tag" :class="tag.size"
-              >
-                #{{ tag.name }}
-              </router-link>
-              <span v-if="!tags.length" class="no-tags">— 暂无标签</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="sidebar-panel">
-          <div class="panel-bar">
-            <span class="panel-dot dot-purple"></span>
-            <span class="panel-dot dot-purple dim"></span>
-            <span class="panel-title">链接</span>
-          </div>
-          <div class="panel-body">
-            <a href="https://github.com" target="_blank" class="link-item" v-if="false">
-              <span class="link-arrow">→</span> github
-            </a>
-            <router-link to="/archive" class="link-item">
-              <span class="link-arrow">→</span> 归档
-            </router-link>
-          </div>
-        </div>
-      </aside>
-    </div>
+      <router-link to="/forum" class="view-all">浏览全部文章</router-link>
+    </section>
 
     <SiteFooter command='echo "© 2026 woodwhite@blog — 技术论坛"' />
   </div>
@@ -188,7 +96,6 @@
 <script setup>
 import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import PostList from './PostList.vue'
 import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
@@ -760,4 +667,9 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 
 .view-all { display: inline-block; margin-top: 28px; font-size: 16px; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .2s; }
 .view-all:hover { border-color: var(--accent); }
+
+/* 首页标签云（落地页）*/
+.home-tags { max-width: 820px; margin: 0 auto; padding: 8px 24px 96px; text-align: center; }
+.home-tags-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0 0 20px; }
+.home-tags .tag-cloud { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 32px; }
 </style>
