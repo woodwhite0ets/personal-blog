@@ -2,9 +2,8 @@
   <section class="post-list-section">
     <!-- 分区标题 -->
     <div class="section-head">
-      <span class="section-arrow">❯</span>
-      <span class="section-title">ls -la ./posts</span>
-      <span class="section-count">— {{ posts.length }} 篇文章</span>
+      <h2 class="section-title">文章</h2>
+      <span class="section-count">{{ posts.length }} 篇</span>
       <button v-if="emptyText" class="btn btn-secondary btn-sm btn-refresh" @click="$emit('refresh')" title="刷新">
         ↻
       </button>
@@ -50,7 +49,6 @@
           class="btn btn-secondary btn-load-more"
           :disabled="loadingMore"
         >
-          <span class="btn-prompt">❯</span>
           {{ loadingMore ? '加载中...' : '更多文章' }}
         </button>
       </div>
@@ -222,4 +220,11 @@ defineEmits(['load-more', 'refresh'])
 .skel-title { width: 70%; height: 16px; }
 .skel-excerpt { width: 90%; }
 .skel-meta { width: 40%; margin-bottom: 0; }
+
+/* 信笺风分区标题 */
+.section-head { display: flex; align-items: baseline; gap: 12px; margin: 0 0 8px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.section-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0; }
+.section-count { font-size: 13px; color: var(--text-dim); }
+.section-arrow { display: none; }
+.btn-load-more { border-radius: 4px; }
 </style>
