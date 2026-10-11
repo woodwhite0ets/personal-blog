@@ -55,7 +55,7 @@ function stripFrontmatter(src) {
 
 // 渲染 markdown → 已消毒 HTML（XSS 安全）
 // DOMPurify 配置：禁止 style/id/name 属性，只允许 http(s)/ftp/相对路径
-export function renderMarkdown(content) {
+export function renderMarkdown(content, options = {}) {
   if (!content || typeof content !== 'string') return ''
   const raw = marked(stripFrontmatter(content))
   const clean = DOMPurify.sanitize(raw, {
@@ -63,6 +63,8 @@ export function renderMarkdown(content) {
     ALLOWED_URI_REGEXP: /^(?:(?:https?|ftp):\/\/|\/)/i,
   })
   // 已消毒 HTML，先给不带 loading 的 img 补懒加载，再增强代码块（后者产物可信）
-  const lazy = clean.replace(/<img(?![^>]*\bloading=)/gi, '<img loading="lazy"')
-  return enhanceCodeBlocks(lazy)
+  let out = clean.replace(/<img(?![^>]*\bloading=)/gi, '<img loading="lazy"')
+  // 文章页：正文内 h1 降级为 h2，保证整页只有一个 H1（语义/SEO）
+  if (options.demoteH1) out = out.replace(/<(\/?)h1(\s[^>]*)?>/gi, '<$1h2$2>')
+  return enhanceCodeBlocks(out)
 }

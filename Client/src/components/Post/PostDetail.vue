@@ -101,6 +101,26 @@
             <span class="post-icon">←</span> 返回首页
           </router-link>
         </div>
+        <nav class="post-nav" v-if="neighbors.prev || neighbors.next">
+          <router-link v-if="neighbors.prev" class="post-nav-item prev" :to="`/post/${neighbors.prev.slug}`">
+            <span class="post-nav-label">上一篇</span>
+            <span class="post-nav-title">{{ neighbors.prev.title }}</span>
+          </router-link>
+          <span v-else class="post-nav-item empty"></span>
+          <router-link v-if="neighbors.next" class="post-nav-item next" :to="`/post/${neighbors.next.slug}`">
+            <span class="post-nav-label">下一篇</span>
+            <span class="post-nav-title">{{ neighbors.next.title }}</span>
+          </router-link>
+        </nav>
+        <section class="related" v-if="related.length">
+          <h2 class="related-title">相关文章</h2>
+          <ul class="related-list">
+            <li v-for="r in related" :key="r.slug">
+              <router-link :to="`/post/${r.slug}`">{{ r.title }}</router-link>
+              <span class="related-date">{{ r.date }}</span>
+            </li>
+          </ul>
+        </section>
       </article>
 
       <!-- 评论区 -->
@@ -258,6 +278,10 @@ const post = ref(null)
 const loading = ref(true)
 const error = ref('')
 
+// 上下篇 / 相关文章
+const neighbors = ref({ prev: null, next: null })
+const related = ref([])
+
 // 删除确认
 const showDeleteModal = ref(false)
 const deleting = ref(false)
@@ -332,7 +356,7 @@ const canDelete = computed(() => isAuthor.value || isAdmin.value)
 
 // ====== Markdown 渲染（XSS 消毒） ======
 const renderedContent = computed(() => {
-  return renderMarkdown(post.value?.content)
+  return renderMarkdown(post.value?.content, { demoteH1: true })
 })
 
 // ====== 文章目录（TOC） ======
@@ -412,11 +436,28 @@ async function fetchPost() {
     if (mySeq !== fetchSeq) return // 丢弃过期响应
     post.value = data.post
     updateSeoMeta(data.post)
+    fetchAdjacent(data.post.slug || slug.value)
   } catch (e) {
     if (mySeq !== fetchSeq) return
     error.value = e.message || '获取文章失败'
   } finally {
     if (mySeq === fetchSeq) loading.value = false
+  }
+}
+
+// ====== 上下篇 / 相关文章 ======
+async function fetchAdjacent(slugVal) {
+  try {
+    const [nbRes, rlRes] = await Promise.all([
+      fetch(`${API_BASE}/posts/${slugVal}/neighbors`),
+      fetch(`${API_BASE}/posts/${slugVal}/related`),
+    ])
+    neighbors.value = nbRes.ok ? await nbRes.json() : { prev: null, next: null }
+    const rl = rlRes.ok ? await rlRes.json() : { related: [] }
+    related.value = rl.related || []
+  } catch {
+    neighbors.value = { prev: null, next: null }
+    related.value = []
   }
 }
 
@@ -1035,4 +1076,19 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .comment-item { border-radius: 4px; }
 .author-card { border-radius: 4px; box-shadow: none; }
 .toc-panel, .toc { border-radius: 4px; }
+
+/* 上下篇 / 相关文章（信笺风）*/
+.post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 56px 0 8px; padding-top: 28px; border-top: 1px solid var(--border); }
+.post-nav-item { display: flex; flex-direction: column; gap: 4px; text-decoration: none; }
+.post-nav-item.next { text-align: right; }
+.post-nav-label { font-size: 13px; color: var(--text-dim); }
+.post-nav-title { font-size: 16px; color: var(--text-bright); transition: color .2s; }
+.post-nav-item:hover .post-nav-title { color: var(--accent); }
+.related { margin: 48px 0 8px; }
+.related-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); margin: 0 0 14px; }
+.related-list { list-style: none; padding: 0; margin: 0; }
+.related-list li { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.related-list a { color: var(--text); text-decoration: none; font-size: 16px; transition: color .2s; }
+.related-list a:hover { color: var(--accent); }
+.related-date { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
 </style>

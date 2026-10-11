@@ -1237,3 +1237,11 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .sidebar-panel { background: transparent !important; box-shadow: none !important; }
 .terminal-green { color: var(--text-secondary) !important; }
 .info-line .info-key { color: var(--text-dim) !important; }
+
+/* 无障碍：跳转主内容 */
+.skip-link { position: absolute; left: -9999px; top: 0; z-index: 300; padding: 10px 16px; background: var(--text-bright); color: var(--bg); text-decoration: none; border-radius: 0 0 4px 0; font-size: 15px; }
+.skip-link:focus { left: 0; }
+
+/* 触控尺寸：交互元素不小于 40px 高 */
+.nav-links a, .footer-links a, .post-tag, .related-list a { min-height: 40px; display: inline-flex; align-items: center; }
+.code-copy { min-height: 28px; }

@@ -272,6 +272,64 @@ router.get('/:slug', authOptional, async (req, res) => {
   }
 });
 
+// ====== GET /api/posts/:slug/neighbors — 上一篇 / 下一篇 ======
+router.get('/:slug/neighbors', authOptional, async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const [cur] = await pool.query(
+      "SELECT id, published_at FROM posts WHERE slug = ? AND status = 'published'",
+      [slug]
+    );
+    if (cur.length === 0) return res.status(404).json({ message: 'post not found' });
+    const { id, published_at } = cur[0];
+    const one = async (op, order) => {
+      const [r] = await pool.query(
+        `SELECT slug, title FROM posts
+         WHERE status = 'published' AND (published_at, id) ${op} (?, ?)
+         ORDER BY published_at ${order}, id ${order} LIMIT 1`,
+        [published_at, id]
+      );
+      return r[0] || null;
+    };
+    res.json({ prev: await one('<', 'DESC'), next: await one('>', 'ASC') });
+  } catch (err) {
+    console.error('neighbors error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
+// ====== GET /api/posts/:slug/related — 同标签相关文章 ======
+router.get('/:slug/related', authOptional, async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const [cur] = await pool.query('SELECT id FROM posts WHERE slug = ?', [slug]);
+    if (cur.length === 0) return res.status(404).json({ message: 'post not found' });
+    const id = cur[0].id;
+    const [rows] = await pool.query(
+      `SELECT p.slug, p.title, p.excerpt, p.published_at, COUNT(*) AS shared
+       FROM post_tags pt1
+       JOIN post_tags pt2 ON pt1.tag_id = pt2.tag_id AND pt2.post_id = ?
+       JOIN posts p ON p.id = pt1.post_id AND p.status = 'published' AND p.id <> ?
+       WHERE pt1.post_id <> ?
+       GROUP BY p.id
+       ORDER BY shared DESC, p.published_at DESC
+       LIMIT 4`,
+      [id, id, id]
+    );
+    res.json({
+      related: rows.map((r) => ({
+        slug: r.slug,
+        title: r.title,
+        excerpt: r.excerpt,
+        date: r.published_at ? r.published_at.toISOString().split('T')[0] : '',
+      })),
+    });
+  } catch (err) {
+    console.error('related error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
 // ====== POST /api/posts — 创建文章 ======
 router.post('/', authRequired, authNoGuest, async (req, res) => {
   const conn = await pool.getConnection();

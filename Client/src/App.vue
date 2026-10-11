@@ -29,12 +29,15 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
 <template>
   <div id="app">
+    <a href="#main-content" class="skip-link">跳到主内容</a>
     <div class="scroll-progress" :style="{ width: progress + '%' }"></div>
-    <router-view v-slot="{ Component }">
-      <transition name="router-fade" mode="out-in">
-        <component :is="Component" :key="$route.path" />
-      </transition>
-    </router-view>
+    <main id="main-content" tabindex="-1">
+      <router-view v-slot="{ Component }">
+        <transition name="router-fade" mode="out-in">
+          <component :is="Component" :key="$route.path" />
+        </transition>
+      </router-view>
+    </main>
     <button
       class="back-to-top"
       :class="{ visible: showTop }"

@@ -118,11 +118,11 @@ const routes = [
         component: () => import('../components/Admin/LogViewer.vue'),
       },
     ],
-  },
-  // catch-all：未知路径重定向到首页
+  },  // 404：未知路径
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/HomePage',
+    name: 'NotFound',
+    component: () => import('../components/NotFound.vue'),
   },
 ];
 
