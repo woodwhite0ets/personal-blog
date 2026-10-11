@@ -5,7 +5,7 @@
 
     <div class="archive-main">
       <div class="archive-header">
-        <h1 class="archive-title">文章/archive</h1>
+        <h1 class="archive-title">归档</h1>
         <p class="archive-sub">共收录 {{ posts.length }} 篇文章</p>
       </div>
 
@@ -25,9 +25,7 @@
       <div v-else class="archive-list">
         <div v-for="(group, year) in groupedPosts" :key="year" class="year-group">
           <div class="year-head">
-            <span class="year-bracket">[</span>
             <span class="year-num">{{ year }}</span>
-            <span class="year-bracket">]</span>
             <span class="year-count">{{ group.length }} 篇文章</span>
           </div>
           <div class="year-posts">
@@ -154,7 +152,6 @@ onMounted(async () => {
 
 .year-group { margin-bottom: 36px; }
 .year-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-.year-bracket { color: var(--text-faint); font-weight: 700; font-size: 16px; }
 .year-num { font-size: 20px; font-weight: 800; color: var(--accent); }
 .year-count { font-size: 11px; color: var(--text-muted); }
 

@@ -575,10 +575,6 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   margin: 0 auto 24px; max-width: 500px;
 }
 
-.hero-actions {
-  display: flex; justify-content: center; gap: 12px;
-}
-
 .btn-hero-write {
   padding: 10px 24px;
   transition: transform 0.2s;
