@@ -32,14 +32,6 @@
         <p class="hero-excerpt">
           全栈开发 · 系统架构 · 开源实践。这里是我写下的全部文章。
         </p>
-        <div class="hero-actions">
-          <router-link v-if="isLoggedIn" to="/editor?type=forum" class="btn btn-primary btn-hero-write">
-            写文章
-          </router-link>
-          <router-link v-else to="/login" class="btn btn-primary btn-hero-write">
-            登录后写文章
-          </router-link>
-        </div>
       </div>
     </section>
 
