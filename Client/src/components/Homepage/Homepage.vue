@@ -25,21 +25,40 @@
   </template>
 </SiteNav>
 
-    <!-- ====== 首屏 Hero 带（主体先行）====== -->
+    <!-- ====== 首屏 Hero 带（非对称：左文 + 右信息栏）====== -->
     <section class="hero-band">
       <div class="hero-in">
-        <h1 class="hero-name">WoodWhite</h1>
-        <p class="hero-role">应届毕业生 · Web 全栈开发</p>
-        <p class="hero-statement">写代码、做系统、记录踩过的坑。这里是我关于全栈开发、系统架构与开源实践的手记。</p>
-        <div class="hero-actions">
-          <router-link to="/forum" class="btn btn-solid">阅读文章</router-link>
-          <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+        <div class="hero-text">
+          <h1 class="hero-name">WoodWhite</h1>
+          <p class="hero-role">应届毕业生 · Web 全栈开发</p>
+          <p class="hero-statement">写代码、做系统、记录踩过的坑。这里是我关于全栈开发、系统架构与开源实践的手记。</p>
+          <div class="hero-actions">
+            <router-link to="/forum" class="btn btn-solid">阅读文章</router-link>
+            <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+          </div>
         </div>
+        <dl class="hero-rail">
+          <div><dt>现在</dt><dd>分布式系统与 AI 工程化</dd></div>
+          <div><dt>已发布</dt><dd>{{ totalPublished }} 篇</dd></div>
+          <div><dt>阅读</dt><dd>{{ stats.views }}</dd></div>
+          <div><dt>分类</dt><dd>{{ tags.length }}</dd></div>
+        </dl>
       </div>
     </section>
 
     <div class="hm">
-      <!-- 置顶文章 -->
+      <!-- 创作活动 -->
+      <section class="hm-sec" v-if="stats.byMonth && stats.byMonth.length">
+        <h2 class="hm-h">创作活动</h2>
+        <div class="act-strip">
+          <div v-for="m in stats.byMonth" :key="m.m" class="act-col" :title="`${m.m}：${m.c} 篇`">
+            <span class="act-bar" :style="{ height: Math.max(4, Math.round(m.c / maxMonth * 56)) + 'px' }"></span>
+            <span class="act-lbl">{{ m.m.slice(5) }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 置顶 -->
       <section class="hm-sec" v-if="pinnedPost">
         <h2 class="hm-h">置顶</h2>
         <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`" class="hm-feature">
@@ -49,47 +68,38 @@
         </router-link>
       </section>
 
-      <!-- 关于 / 现在 / 统计 -->
+      <!-- 关于 -->
       <section class="hm-sec">
-        <div class="hm-3up">
-          <div>
-            <h2 class="hm-h">关于</h2>
-            <div class="hm-about">
-              <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
-              <p class="hm-text">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。</p>
-            </div>
-          </div>
-          <div>
-            <h2 class="hm-h">现在</h2>
-            <p class="hm-text">学习分布式系统与 AI 工程化，同时在打磨这个博客和 mcp-gateway。</p>
-          </div>
-          <div>
-            <h2 class="hm-h">数据</h2>
-            <dl class="hm-stats">
-              <div><dt>文章</dt><dd>{{ totalPublished }}</dd></div>
-              <div><dt>阅读</dt><dd>{{ stats.views }}</dd></div>
-              <div><dt>评论</dt><dd>{{ stats.comments }}</dd></div>
-              <div><dt>分类</dt><dd>{{ tags.length }}</dd></div>
-            </dl>
-          </div>
+        <h2 class="hm-h">关于</h2>
+        <div class="hm-about">
+          <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
+          <p class="hm-text hm-text-lead">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。喜欢把复杂的东西做简单，也喜欢把做过的事写下来。</p>
         </div>
       </section>
+    </div>
 
-      <!-- 项目 -->
-      <section class="hm-sec">
-        <h2 class="hm-h">项目</h2>
-        <div class="hm-2up">
-          <router-link to="/about" class="hm-proj">
-            <h3 class="hm-proj-title">mcp-gateway</h3>
-            <p class="hm-text">面向知识库与服务器管理的 MCP 网关，把检索与运维能力统一提供给 AI 客户端。</p>
-          </router-link>
-          <router-link to="/about" class="hm-proj">
-            <h3 class="hm-proj-title">乐清市充电桩分布图</h3>
-            <p class="hm-text">充电桩空间分布可视化，从 SQLite 升级到 Docker + PostGIS 架构。</p>
-          </router-link>
+    <!-- 项目（色带，打破纵向单调）-->
+    <section class="band-tint">
+      <div class="hm">
+        <div class="hm-sec hm-sec-last">
+          <h2 class="hm-h">项目</h2>
+          <div class="hm-2up">
+            <router-link to="/about" class="hm-proj">
+              <h3 class="hm-proj-title">mcp-gateway</h3>
+              <p class="hm-text">面向知识库与服务器管理的 MCP 网关，把检索与运维能力统一提供给 AI 客户端。</p>
+              <span class="hm-tag">Node.js · MCP</span>
+            </router-link>
+            <router-link to="/about" class="hm-proj">
+              <h3 class="hm-proj-title">乐清市充电桩分布图</h3>
+              <p class="hm-text">充电桩空间分布可视化，从 SQLite 升级到 Docker + PostGIS 架构。</p>
+              <span class="hm-tag">PostGIS · Docker</span>
+            </router-link>
+          </div>
         </div>
-      </section>
+      </div>
+    </section>
 
+    <div class="hm">
       <!-- 最近 / 热门 -->
       <section class="hm-sec hm-sec-last">
         <div class="hm-2up">
