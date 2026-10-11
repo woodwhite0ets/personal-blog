@@ -1146,4 +1146,11 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .author-card-inner { padding: 28px; }
 
 .post-series { font-size: 15px; color: var(--accent); margin: -10px 0 16px; }
+
+/* 宽屏：目录常驻（不需点击展开）*/
+@media (min-width: 1200px) {
+  .toc-panel { top: 96px; transform: none; }
+  .toc-panel .toc-nav, .toc-panel.open .toc-nav { opacity: 1; transform: none; pointer-events: auto; }
+  .toc-toggle { display: none; }
+}
 </style>
