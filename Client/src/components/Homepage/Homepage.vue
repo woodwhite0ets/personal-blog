@@ -25,135 +25,77 @@
   </template>
 </SiteNav>
 
-    <!-- ====== Hero：置顶文章 ====== -->
-    <section v-if="pinnedPost" class="hero anim-fade-up">
-      <div class="hero-inner">
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          置顶
-        </div>
-        <h1 class="hero-title">
-          <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`">
-            {{ pinnedPost.title }}
-          </router-link>
-        </h1>
-        <p class="hero-excerpt">{{ pinnedPost.excerpt }}</p>
-        <div class="hero-meta">
-          <span class="meta-item">
-            <span class="meta-label">日期</span>
-            <span class="meta-value">{{ pinnedPost.date }}</span>
-          </span>
-          <span class="meta-sep"></span>
-          <span class="meta-item">
-            <span class="meta-label">阅读</span>
-            <span class="meta-value">{{ pinnedPost.read_time }}</span>
-          </span>
-          <span class="meta-sep"></span>
-          <span class="meta-item">
-            <span class="meta-label">标签</span>
-            <span class="meta-value">{{ pinnedPost.tag }}</span>
-          </span>
+    <!-- ====== Bento 网格 ====== -->
+    <section class="bento">
+      <router-link v-if="pinnedPost" :to="`/post/${pinnedPost.slug || pinnedPost.id}`" class="tile tile-hero">
+        <span class="tile-label">置顶</span>
+        <h1 class="tile-hero-title">{{ pinnedPost.title }}</h1>
+        <p class="tile-hero-excerpt">{{ pinnedPost.excerpt }}</p>
+        <span class="tile-meta">{{ pinnedPost.date }} · {{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次阅读</span>
+      </router-link>
+
+      <div class="tile tile-about">
+        <span class="tile-label">关于</span>
+        <div class="about-flex">
+          <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
+          <div class="about-txt">
+            <p class="about-name">WoodWhite</p>
+            <p class="about-role">应届毕业生 · Web 全栈开发</p>
+            <p class="about-bio">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。</p>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- ====== 个人介绍 ====== -->
-    <section class="intro-strip anim-fade-up">
-      <div class="intro-avatar"><UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="xl" /></div>
-      <div class="intro-body">
-        <h2 class="intro-name">WoodWhite</h2>
-        <p class="intro-role">应届毕业生 · Web 全栈开发</p>
-        <p class="intro-text">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL 等技术栈。持续学习、乐于分享，希望在实践中不断成长。</p>
-        <div class="intro-links">
-          <router-link to="/about" class="intro-link">关于我</router-link>
-          <router-link to="/forum" class="intro-link">文章</router-link>
-          <router-link to="/archive" class="intro-link">归档</router-link>
+      <div class="tile tile-now">
+        <span class="tile-label">现在</span>
+        <p class="tile-text">学习分布式系统与 AI 工程化，同时在打磨这个博客和 mcp-gateway。</p>
+      </div>
+
+      <div class="tile tile-stats">
+        <span class="tile-label">统计</span>
+        <div class="stats-row">
+          <span><b>{{ totalPublished }}</b>文章</span>
+          <span><b>{{ stats.views }}</b>阅读</span>
+          <span><b>{{ stats.comments }}</b>评论</span>
+          <span><b>{{ tags.length }}</b>分类</span>
         </div>
       </div>
-    </section>
 
-    <!-- ====== 主体 ====== -->
-    <!-- ====== 项目 ====== -->
-    <section class="home-projects anim-fade-up">
-      <h2 class="home-projects-title">项目</h2>
-      <ul class="project-list">
-        <li class="project-row">
-          <h3 class="project-name">woodwhite@blog</h3>
-          <p class="project-desc">本站 —— 基于 Vue 3 + Express + MySQL 的全栈技术博客，含认证、文章、评论、点赞与管理后台。</p>
-          <div class="project-tags"><span>Vue 3</span><span>Express 5</span><span>MySQL</span></div>
-        </li>
-        <li class="project-row">
-          <h3 class="project-name">mcp-gateway</h3>
-          <p class="project-desc">面向个人知识库与服务器管理的 MCP 网关，把知识检索、文档读取与基础运维统一提供给 AI 客户端。</p>
-          <div class="project-tags"><span>PostgreSQL</span><span>pgvector</span><span>MCP</span></div>
-        </li>
-        <li class="project-row">
-          <h3 class="project-name">乐清市充电桩分布图</h3>
-          <p class="project-desc">充电桩分布与检定监管系统，经历从单体 SQLite 到 Docker + PostGIS 的架构升级。</p>
-          <div class="project-tags"><span>Docker</span><span>PostGIS</span><span>地理可视化</span></div>
-        </li>
-      </ul>
-
-      <router-link to="/about" class="view-all">查看全部项目</router-link>
-    </section>
-
-    <div class="home-cols">
-    <!-- ====== 现在 ====== -->
-    <section class="home-now anim-fade-up">
-      <h2 class="home-now-title">现在</h2>
-      <p class="home-now-text">正在学习分布式系统与 AI 工程化，同时在打磨这个博客和 mcp-gateway。最近在读《Designing Data-Intensive Applications》。</p>
-    </section>
-
-    <!-- ====== 友链 ====== -->
-    <section class="home-links anim-fade-up">
-      <h2 class="home-links-title">友链</h2>
-      <div class="friend-list">
-        <a href="https://github.com" target="_blank" rel="noopener" class="friend-item">GitHub</a>
-        <span class="friend-empty">欢迎交换友链 —— 在「关于」页联系我</span>
+      <div class="tile tile-links">
+        <span class="tile-label">友链</span>
+        <div class="link-row"><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></div>
+        <div class="link-row"><a href="/feed.xml">RSS 订阅</a></div>
+        <div class="link-row"><router-link to="/about">关于我</router-link></div>
       </div>
-    </section>
 
-    </div>
+      <router-link to="/about" class="tile tile-proj">
+        <span class="tile-label">项目</span>
+        <h3 class="tile-h3">mcp-gateway</h3>
+        <p class="tile-text">面向知识库与服务器管理的 MCP 网关。</p>
+      </router-link>
 
-    <div class="home-cols">
-    <!-- ====== 最近更新 ====== -->
-    <section class="home-recent anim-fade-up">
-      <h2 class="home-recent-title">最近更新</h2>
-      <ul class="recent-list">
-        <li v-for="p in posts.slice(0, 3)" :key="p.id">
-          <router-link :to="`/post/${p.slug || p.id}`" class="recent-link">{{ p.title }}</router-link>
-          <time class="recent-date">{{ p.date }}</time>
-        </li>
-      </ul>
-      <p class="home-stats">{{ totalPublished }} 篇文章 · {{ tags.length }} 个分类 · <router-link to="/forum" class="stats-link">全部文章</router-link></p>
-    </section>
+      <router-link to="/about" class="tile tile-proj">
+        <span class="tile-label">项目</span>
+        <h3 class="tile-h3">乐清市充电桩分布图</h3>
+        <p class="tile-text">SQLite → Docker + PostGIS 架构升级。</p>
+      </router-link>
 
-    <!-- ====== 热门文章 ====== -->
-    <section class="home-popular anim-fade-up" v-if="popular.length">
-      <h2 class="home-popular-title">热门文章</h2>
-      <div class="popular-grid">
-        <router-link v-for="(p, i) in popular" :key="p.id" :to="`/post/${p.slug || p.id}`" class="popular-card">
-          <span class="popular-num">{{ String(i + 1).padStart(2, '0') }}</span>
-          <span class="popular-title">{{ p.title }}</span>
-          <span class="popular-meta">{{ p.views }} 次阅读</span>
+      <div class="tile tile-list">
+        <span class="tile-label">最近更新</span>
+        <router-link v-for="p in posts.slice(0, 3)" :key="p.id" :to="`/post/${p.slug || p.id}`" class="list-row">
+          <span class="list-title">{{ p.title }}</span>
+          <span class="list-date">{{ p.date?.slice(5) }}</span>
+        </router-link>
+      </div>
+
+      <div class="tile tile-list">
+        <span class="tile-label">热门</span>
+        <router-link v-for="p in popular" :key="p.id" :to="`/post/${p.slug || p.id}`" class="list-row">
+          <span class="list-title">{{ p.title }}</span>
+          <span class="list-date">{{ p.views }}</span>
         </router-link>
       </div>
     </section>
-
-    </div>
-
-    <!-- ====== 写作活动 ====== -->
-    <section class="home-activity anim-fade-up" v-if="stats.byMonth && stats.byMonth.length">
-      <h2 class="home-activity-title">写作活动</h2>
-      <div class="activity-grid">
-        <div v-for="m in stats.byMonth" :key="m.m" class="activity-col" :title="`${m.m}：${m.c} 篇`">
-          <div class="activity-bar" :style="{ height: Math.max(6, Math.round(m.c / maxMonth * 64)) + 'px' }"></div>
-          <span class="activity-label">{{ m.m.slice(5) }}月</span>
-        </div>
-      </div>
-      <p class="activity-sum">{{ stats.posts }} 篇文章 · {{ stats.views }} 次阅读 · {{ stats.comments }} 条评论 · {{ stats.tags }} 个分类</p>
-    </section>
-
     <SiteFooter command='echo "© 2026 woodwhite@blog — 技术论坛"' />
   </div>
 </template>
