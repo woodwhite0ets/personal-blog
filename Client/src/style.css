@@ -1556,3 +1556,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   .main-layout > .forum-main, .main-layout > .sidebar { grid-column: 1; }
   .main-layout > .sidebar { position: static; }
 }
+
+/* 文章页条目：摘要限 3 行，保持列表紧凑可扫读 */
+.ed-entry-excerpt { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 860px) { .ed-entry-excerpt { -webkit-line-clamp: 2; } }
