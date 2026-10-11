@@ -1274,3 +1274,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .btn-icon:hover { background: var(--overlay-a4); color: var(--text-bright); border-color: transparent; }
 .theme-btn { border: 1px solid transparent; background: transparent; border-radius: 4px; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; transition: background .2s, color .2s; }
 .theme-btn:hover { background: var(--overlay-a4); color: var(--text-bright); }
+
+/* 图标尺寸修复（SVG 曾被 flex 压成 0 宽）*/
+.btn-icon svg, .theme-btn svg { width: 17px; height: 17px; flex-shrink: 0; display: block; }
+.nav-toggle svg { flex-shrink: 0; }
