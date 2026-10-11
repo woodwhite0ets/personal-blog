@@ -744,4 +744,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 /* 统一：列表页容器 1060 / 上边距 88 */
 .main-layout { max-width: 1060px; }
+
+/* 统一：页面标题手写 40px */
+.hero-title { font-family: var(--font-hand); font-size: 40px; font-weight: 400; }
 </style>
