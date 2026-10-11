@@ -1313,3 +1313,25 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .list-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .list-date { color: var(--text-dim); font-size: 13px; white-space: nowrap; font-variant-numeric: tabular-nums; }
 @media (max-width: 820px) { .bento { grid-template-columns: 1fr; } .bento .tile, .tile-hero { grid-column: auto !important; grid-row: auto !important; } }
+
+/* ===== Bento 美化：打破均匀白卡，制造层级与对比 ===== */
+/* 统计块：反色（墨底纸字），手写大数字 */
+.bento .tile-stats { background: var(--text-bright); border-color: var(--text-bright); }
+.bento .tile-stats .tile-label { color: rgba(250,249,245,.6); }
+.bento .tile-stats .stats-row span { color: rgba(250,249,245,.72); }
+.bento .tile-stats .stats-row b { color: var(--bg); font-size: 34px; }
+/* 关于块：纸色凹面 */
+.bento .tile-about { background: var(--bg-deeper); border-color: transparent; }
+/* 现在块：去卡片，加左发丝线 */
+.bento .tile-now { background: transparent; border: none; border-left: 2px solid var(--accent); border-radius: 0; padding: 4px 0 4px 20px; }
+/* 项目块：去卡片，顶部发丝线 */
+.bento .tile-proj { background: transparent; border: none; border-top: 1px solid var(--border); border-radius: 0; padding: 20px 0 0; }
+.bento .tile-proj:hover { border-top-color: var(--text-bright); }
+/* 友链/列表：去卡片，极简 */
+.bento .tile-links, .bento .tile-list { background: transparent; border: none; border-top: 1px solid var(--border); border-radius: 0; padding: 18px 0 0; min-height: auto; }
+/* 置顶大块：底部发丝线 */
+.bento .tile-hero { border-bottom: 1px solid var(--border); padding-bottom: 24px; }
+/* 标签统一更小写意 */
+.tile-label { font-size: 18px; letter-spacing: .01em; }
+/* 格子尺寸错落：热门略高 */
+.bento .tile-list { min-height: 150px; }
