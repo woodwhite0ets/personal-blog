@@ -43,7 +43,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import ThemeSwitcher from './ThemeSwitcher.vue'
 import UserAvatar from './UserAvatar.vue'
 import { useAuth } from '../../stores/auth.js'
 

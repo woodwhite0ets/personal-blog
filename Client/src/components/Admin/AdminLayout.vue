@@ -11,7 +11,6 @@
           <span class="brand-path">~/admin</span>
         </router-link>
         <div class="nav-actions">
-          <ThemeSwitcher />
           <span class="admin-badge">管理员</span>
           <router-link to="/HomePage" class="nav-link">← 博客</router-link>
           <button class="btn btn-secondary btn-user" @click="showMenu = !showMenu">
@@ -84,7 +83,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuth } from '../../stores/auth.js'
-import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 import UserAvatar from '../common/UserAvatar.vue'
 

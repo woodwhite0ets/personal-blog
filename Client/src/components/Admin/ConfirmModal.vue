@@ -43,7 +43,7 @@ defineEmits(['confirm', 'cancel'])
 
 <style scoped>
 .modal-overlay {
-  position: fixed; inset: 0; z-index: 9999;
+  position: fixed; inset: 0; z-index: 260;
   display: flex; align-items: center; justify-content: center;
   background: var(--modal-overlay);
   backdrop-filter: blur(4px);

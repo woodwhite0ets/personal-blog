@@ -136,7 +136,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteNav from '../common/SiteNav.vue'
 import UserAvatar from '../common/UserAvatar.vue'
 import SiteFooter from '../common/SiteFooter.vue'

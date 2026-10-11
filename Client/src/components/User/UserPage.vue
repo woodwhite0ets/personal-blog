@@ -249,7 +249,6 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import PostList from '../Homepage/PostList.vue'
-import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteNav from '../common/SiteNav.vue'
 import UserAvatar from '../common/UserAvatar.vue'
 import { useAuth, getToken } from '../../stores/auth.js'

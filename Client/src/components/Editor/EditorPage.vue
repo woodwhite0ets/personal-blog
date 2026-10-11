@@ -19,7 +19,6 @@
           <span class="brand-path">~/editor</span>
         </router-link>
         <div class="nav-actions">
-          <ThemeSwitcher />
           <span v-if="autoSaveLabel" class="auto-save-hint">{{ autoSaveLabel }}</span>
           <span class="draft-indicator" :class="{ published: form.status === 'published' }">
             <span class="indicator-dot"></span>
@@ -168,7 +167,6 @@ import { ref, reactive, computed, onMounted, onBeforeUnmount, watch, nextTick } 
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import { renderMarkdown } from '../../utils/markdown.js'
 import { useAuth, getToken } from '../../stores/auth.js'
-import ThemeSwitcher from '../common/ThemeSwitcher.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 
 const route = useRoute()
