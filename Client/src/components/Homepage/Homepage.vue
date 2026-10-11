@@ -25,8 +25,17 @@
   </template>
 </SiteNav>
 
+    <span class="edge-label" aria-hidden="true">woodwhite@blog · 2026</span>
+
     <!-- ====== 首屏 Hero 带（非对称：左文 + 右信息栏）====== -->
     <section class="hero-band">
+      <svg class="hero-orn" viewBox="0 0 260 170" aria-hidden="true" focusable="false">
+        <path d="M10 158 A120 120 0 0 1 250 158" fill="none" stroke="currentColor" stroke-width="1"/>
+        <path d="M55 158 A75 75 0 0 1 205 158" fill="none" stroke="currentColor" stroke-width="1"/>
+        <path d="M95 158 A35 35 0 0 1 165 158" fill="none" stroke="currentColor" stroke-width="1"/>
+        <line x1="0" y1="158" x2="260" y2="158" stroke="currentColor" stroke-width="1"/>
+        <circle cx="130" cy="123" r="3.5" fill="currentColor"/>
+      </svg>
       <div class="hero-in">
         <div class="hero-text">
           <h1 class="hero-name">WoodWhite</h1>

@@ -1498,3 +1498,52 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   .band-tint .hm-proj { padding-left: 0; }
   .band-tint .hm-proj::before { position: static; display: block; margin-bottom: 8px; }
 }
+
+/* ===== 装饰加强 ===== */
+/* 首屏几何线稿（同心弧） */
+.hero-band .hero-orn { position: absolute; top: -18px; right: -26px; width: clamp(200px, 26vw, 320px); color: var(--bg); opacity: .2; pointer-events: none; z-index: 0; }
+@media (max-width: 860px) { .hero-band .hero-orn { display: none; } }
+
+/* 左边缘竖向标签（杂志页码感） */
+.edge-label {
+  position: fixed; left: 16px; top: 50%; z-index: 40;
+  writing-mode: vertical-rl; transform: translateY(-50%) rotate(180deg);
+  font-size: 11px; letter-spacing: .3em; color: var(--text-faint);
+  padding-left: 10px; border-left: 1px solid var(--border);
+  pointer-events: none; user-select: none;
+}
+@media (max-width: 1280px) { .edge-label { display: none; } }
+
+/* 分区规则线：发丝线 + 末端双刻度 */
+.hm-h::after {
+  height: 5px;
+  background:
+    linear-gradient(var(--border), var(--border)) left center / calc(100% - 9px) 1px no-repeat,
+    linear-gradient(var(--border), var(--border)) right center / 1px 5px no-repeat,
+    linear-gradient(var(--border), var(--border)) calc(100% - 6px) center / 1px 5px no-repeat;
+  background-color: transparent;
+}
+
+/* 项目：悬停细边框 + 位移 */
+.band-tint .hm-proj { border: 1px solid transparent; border-radius: 4px; padding: 22px 22px 22px 74px; transition: border-color .25s var(--ease-spring, ease), transform .25s var(--ease-spring, ease), background-color .25s; }
+.band-tint .hm-proj:hover { border-color: var(--border); background: var(--bg-elevated); transform: translateY(-2px); }
+.band-tint .hm-proj::before { left: 22px; top: 24px; }
+@media (max-width: 860px) { .band-tint .hm-proj { padding: 18px; } .band-tint .hm-proj::before { left: 18px; top: 18px; } }
+
+/* 最近 / 热门 列表：序号 */
+.hm-list { counter-reset: li; }
+.hm-list a { padding-left: 30px; }
+.hm-list li { counter-increment: li; position: relative; }
+.hm-list li::before {
+  content: counter(li, decimal-leading-zero); position: absolute; left: 0; top: 12px;
+  font-family: var(--font-hand); font-size: 15px; line-height: 1; color: var(--text-faint);
+}
+
+/* 关于：装饰引号 */
+.hm-about { position: relative; }
+.hm-about .hm-text-lead { position: relative; padding-left: 42px; }
+.hm-about .hm-text-lead::before {
+  content: '\201C'; position: absolute; left: 0; top: -22px;
+  font-family: var(--font-hand); font-size: 74px; line-height: 1; color: var(--border);
+}
+@media (max-width: 860px) { .hm-about .hm-text-lead::before { display: none; } .hm-about .hm-text-lead { padding-left: 0; } }
