@@ -52,9 +52,6 @@
             <router-link to="/admin/logs" class="nav-item" active-class="active">
               <span class="nav-num">04</span> 日志
             </router-link>
-            <router-link to="/admin/gateway" class="nav-item" active-class="active">
-              <span class="nav-num">05</span> 网关权限
-            </router-link>
           </div>
         </div>
 

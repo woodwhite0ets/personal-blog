@@ -7,8 +7,6 @@
     <div class="footer-links">
       <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
       <span class="footer-link-sep">·</span>
-      <router-link to="/gateway">Gateway</router-link>
-      <span class="footer-link-sep">·</span>
       <router-link to="/about">关于</router-link>
     </div>
 

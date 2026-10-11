@@ -55,7 +55,6 @@ const navLinks = [
   { to: '/forum', num: '02', label: '论坛' },
   { to: '/archive', num: '03', label: '归档' },
   { to: '/about', num: '04', label: '关于' },
-  { to: '/gateway', num: '05', label: 'Gateway' },
 ]
 
 const section = computed(() => {
@@ -63,7 +62,6 @@ const section = computed(() => {
   if (p.startsWith('/forum')) return 'forum'
   if (p.startsWith('/archive')) return 'archive'
   if (p.startsWith('/about')) return 'about'
-  if (p.startsWith('/gateway')) return 'gateway'
   if (p.startsWith('/post/')) return 'post'
   if (p.startsWith('/user/')) return 'user'
   if (p.startsWith('/editor')) return 'editor'

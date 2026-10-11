@@ -141,19 +141,6 @@ export function useAuth() {
   // ====== 退出 ======
   async function logout() {
     clearToken()
-    // 统一退出：博客 token 已清，但仍需注销网关/知识库 httpOnly 会话
-    // （mcp_console_session cookie + 服务端内存 session），否则登出后 /gateway 仍残留登录态。
-    try {
-      const ctrl = new AbortController()
-      const timer = setTimeout(() => ctrl.abort(), 2500)
-      await fetch('/api/gateway/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'content-type': 'application/json' },
-        signal: ctrl.signal,
-      })
-      clearTimeout(timer)
-    } catch { /* 网关未登录或不可用，不阻塞博客登出 */ }
     currentUser.value = null
     router.push('/HomePage')
   }
