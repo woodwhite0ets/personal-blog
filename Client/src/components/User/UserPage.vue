@@ -920,4 +920,11 @@ watch(username, () => {
   .user-avatar-lg { width: 64px; height: 64px; font-size: 28px; }
   .user-at { font-size: 18px; }
 }
+
+/* 信笺统一（组件内，替代原全局 !important）*/
+.sidebar-panel { background: transparent; border: 1px solid var(--border); border-radius: 4px; box-shadow: none; padding: 6px; }
+.panel-bar { border-bottom: 1px solid var(--border); background: transparent; padding: 14px 18px 12px; }
+.panel-body { padding: 14px 18px 18px; }
+.panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
+.info-key { color: var(--text-dim); }
 </style>

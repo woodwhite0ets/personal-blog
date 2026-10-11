@@ -678,4 +678,14 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .project-desc { font-size: 16px; line-height: 1.85; color: var(--text-secondary); margin: 0 0 12px; max-width: 620px; }
 .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .project-tags span { font-size: 13px; color: var(--text-dim); border: 1px solid var(--border); border-radius: 3px; padding: 2px 10px; }
+
+/* 信笺统一（组件内，替代原全局 !important）*/
+.sidebar-panel { background: transparent; border: 1px solid var(--border); border-radius: 4px; box-shadow: none; padding: 6px; }
+.panel-bar { border-bottom: 1px solid var(--border); background: transparent; padding: 14px 18px 12px; }
+.panel-body { padding: 14px 18px 18px; }
+.panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
+.info-key { color: var(--text-dim); }
+
+.sort-bar { padding: 12px 18px; }
+.sort-btn { padding: 6px 14px; }
 </style>

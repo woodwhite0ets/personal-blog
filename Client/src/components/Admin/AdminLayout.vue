@@ -232,4 +232,11 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   .sidebar-panel { flex: 1; min-width: 140px; }
   .admin-badge { display: none; }
 }
+
+/* 信笺统一（组件内，替代原全局 !important）*/
+.sidebar-panel { background: transparent; border: 1px solid var(--border); border-radius: 4px; box-shadow: none; padding: 6px; }
+.panel-bar { border-bottom: 1px solid var(--border); background: transparent; padding: 14px 18px 12px; }
+.panel-body { padding: 14px 18px 18px; }
+.panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
+.info-key { color: var(--text-dim); }
 </style>

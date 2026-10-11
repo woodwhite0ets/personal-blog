@@ -1126,4 +1126,6 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .author-card-body { display: flex; flex-direction: column; gap: 2px; }
 .author-card-name { font-size: 16px; color: var(--text-bright); }
 .author-card-bio { font-size: 14px; color: var(--text-dim); }
+
+.author-card-inner { padding: 28px; }
 </style>
