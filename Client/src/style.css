@@ -1376,7 +1376,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .ed-box > a:hover { text-decoration: underline; }
 @media (max-width: 860px) { .ed-cols { grid-template-columns: 1fr; gap: 40px; } .ed-rail { position: static; } }
 /* 文章页编辑式两栏 + 加载按钮 */
-.main-layout { grid-template-columns: 1fr 288px; gap: 56px; }
+.forum-page .main-layout { grid-template-columns: 1fr 288px; gap: 56px; }
 .ed-more-btn { margin-top: 26px; padding: 10px 22px; font: inherit; font-size: 15px; color: var(--text-bright); background: transparent; border: 1px solid var(--border-strong); border-radius: 4px; cursor: pointer; }
 .ed-more-btn:hover { border-color: var(--text-bright); }
 
@@ -1548,13 +1548,15 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 }
 @media (max-width: 860px) { .hm-about .hm-text-lead::before { display: none; } .hm-about .hm-text-lead { padding-left: 0; } }
 
-/* 文章页主内容容器（必须存在，否则条目会被 2 列网格交替塞进侧栏）*/
-.forum-main { min-width: 0; }
-.main-layout > .forum-main { grid-column: 1; }
-.main-layout > .sidebar { grid-column: 2; position: sticky; top: 96px; align-self: start; }
+/* 文章页主内容容器（必须存在，否则条目会被 2 列网格交替塞进侧栏）
+   注意：必须限定 .forum-page 作用域——管理面板/用户页也有同名 .main-layout + .sidebar，
+   全局写会污染它们（曾导致管理面板侧栏被强制到 1fr 列=892px、内容被挤到 220px）*/
+.forum-page .forum-main { min-width: 0; }
+.forum-page .main-layout > .forum-main { grid-column: 1; }
+.forum-page .main-layout > .sidebar { grid-column: 2; position: sticky; top: 96px; align-self: start; }
 @media (max-width: 860px) {
-  .main-layout > .forum-main, .main-layout > .sidebar { grid-column: 1; }
-  .main-layout > .sidebar { position: static; }
+  .forum-page .main-layout > .forum-main, .forum-page .main-layout > .sidebar { grid-column: 1; }
+  .forum-page .main-layout > .sidebar { position: static; }
 }
 
 /* 文章页条目：摘要限 3 行，保持列表紧凑可扫读 */
