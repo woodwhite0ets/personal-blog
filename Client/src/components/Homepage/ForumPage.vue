@@ -34,7 +34,7 @@
     <!-- ====== 主体 ====== -->
     <div class="main-layout">
       <!-- 标签过滤提示 -->
-      <div v-if="activeTag" class="tag-filter-bar" style="grid-column: 1 / -1; margin-bottom: -28px;">
+      <div v-if="activeTag" class="tag-filter-bar" style="grid-column: 1 / -1;">
         
         <span class="filter-label">筛选:</span>
         <span class="filter-tag">#{{ activeTag }}</span>
@@ -42,7 +42,7 @@
       </div>
 
       <!-- 搜索过滤提示 -->
-      <div v-if="activeSearch" class="tag-filter-bar" style="grid-column: 1 / -1; margin-bottom: -28px;">
+      <div v-if="activeSearch" class="tag-filter-bar" style="grid-column: 1 / -1;">
         
         <span class="filter-label">搜索:</span>
         <span class="filter-tag">&quot;{{ activeSearch }}&quot;</span>
@@ -68,7 +68,7 @@
       <div v-else-if="!posts.length" class="state-box" aria-live="polite">暂无文章。</div>
       <template v-else>
         <article v-for="(p, i) in posts" :key="p.id" class="ed-entry">
-          <span class="ed-num">{{ String((currentPage - 1) * 10 + i + 1).padStart(2, '0') }}</span>
+          <span class="ed-num">{{ String(i + 1).padStart(2, '0') }}</span>
           <div class="ed-entry-body">
             <h3 class="ed-entry-title"><router-link :to="`/post/${p.slug || p.id}`">{{ p.title }}</router-link></h3>
             <p class="ed-entry-excerpt">{{ p.excerpt }}</p>
@@ -734,15 +734,21 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   .hero-title { font-size: 22px; }
 }
 
-/* 信笺统一（组件内，替代原全局 !important）*/
-.sidebar-panel { background: transparent; border: 1px solid var(--border); border-radius: 4px; box-shadow: none; padding: 6px; }
-.panel-bar { border-bottom: 1px solid var(--border); background: transparent; padding: 14px 18px 12px; }
-.panel-body { padding: 14px 18px 18px; }
-.panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
+/* 信笺统一：侧栏改为无卡片发丝线块（与首页右栏一致）*/
+.sidebar { gap: 0; }
+.sidebar-panel { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; box-shadow: none; padding: 0 0 24px; margin-bottom: 24px; }
+.sidebar-panel:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+.panel-bar { border-bottom: none; background: transparent; padding: 0 0 12px; }
+.panel-body { padding: 0; }
+.panel-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
 .info-key { color: var(--text-dim); }
 
-/* 统一：列表页容器 1060 / 上边距 88 */
-.main-layout { max-width: 1060px; }
+/* 排序 / 筛选：去掉色块，改发丝线行 */
+.sort-bar { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 0 0 14px; margin-bottom: 24px; }
+.tag-filter-bar { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 0 0 12px; margin-bottom: 20px; }
+
+/* 统一：列表页容器 1000（与首页 hero/网格左边缘对齐）*/
+.main-layout { max-width: 1000px; padding: 48px 24px 96px; grid-template-columns: 1fr 288px; gap: 56px; }
 
 /* 统一：页面标题手写 40px */
 .hero-title { font-family: var(--font-hand); font-size: 40px; font-weight: 400; }
