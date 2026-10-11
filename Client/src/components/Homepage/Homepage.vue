@@ -42,8 +42,8 @@
           <p class="hero-role">应届毕业生 · Web 全栈开发</p>
           <p class="hero-statement">写代码、做系统、记录踩过的坑。这里是我关于全栈开发、系统架构与开源实践的手记。</p>
           <div class="hero-actions">
-            <router-link to="/forum" class="btn btn-solid">阅读文章</router-link>
-            <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+            <router-link to="/forum" class="hero-btn hero-btn-solid">阅读文章</router-link>
+            <a href="https://github.com" target="_blank" rel="noopener" class="hero-btn hero-btn-ghost">GitHub</a>
           </div>
         </div>
         <dl class="hero-rail">

@@ -1387,11 +1387,11 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hero-role { margin: 22px 0 0; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: rgba(250,249,245,.5); }
 .hero-statement { margin: 20px 0 0; font-size: 21px; line-height: 1.72; max-width: 540px; color: rgba(250,249,245,.82); text-wrap: pretty; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px; }
-.btn { display: inline-block; padding: 12px 26px; font-size: 15px; text-decoration: none; border-radius: 3px; transition: opacity .2s, border-color .2s, color .2s; }
-.btn-solid { background: var(--bg); color: var(--text-bright); }
-.btn-solid:hover { opacity: .86; }
-.btn-ghost { border: 1px solid rgba(250,249,245,.28); color: rgba(250,249,245,.9); }
-.btn-ghost:hover { border-color: rgba(250,249,245,.7); }
+.hero-btn { display: inline-block; padding: 12px 26px; font-size: 15px; text-decoration: none; border-radius: 3px; transition: opacity .2s, border-color .2s, color .2s; }
+.hero-btn-solid { background: var(--bg); color: var(--text-bright); }
+.hero-btn-solid:hover { opacity: .86; }
+.hero-btn-ghost { border: 1px solid rgba(250,249,245,.28); color: rgba(250,249,245,.9); }
+.hero-btn-ghost:hover { border-color: rgba(250,249,245,.7); }
 .hm { max-width: 1000px; margin: 0 auto; padding: 0 24px 112px; }
 .hm-sec { padding: 64px 0; border-bottom: 1px solid var(--border); }
 .hm-sec-last { border-bottom: none; padding-bottom: 0; }
