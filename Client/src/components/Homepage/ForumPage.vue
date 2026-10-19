@@ -75,7 +75,7 @@
           <span class="deco-idx">{{ String(i + 1).padStart(2, '0') }}</span>
           <div class="ed-entry-body">
             <h3 class="ed-entry-title"><router-link :to="`/post/${p.slug || p.id}`" class="deco-link">{{ p.title }}</router-link></h3>
-            <p class="ed-entry-excerpt">{{ p.excerpt }}</p>
+            <p class="ed-entry-excerpt">{{ stripMarkdown(p.excerpt, 160) }}</p>
             <p class="ed-entry-meta">{{ p.date }} · {{ p.read_time }} · {{ p.views || 0 }} 次阅读</p>
           </div>
         </article>
@@ -169,6 +169,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { stripMarkdown } from '../../utils/excerpt.js'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 import UserAvatar from '../common/UserAvatar.vue'

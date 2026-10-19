@@ -280,6 +280,7 @@
 <script setup>
 import { ref, computed, nextTick, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { stripMarkdown } from '../../utils/excerpt.js'
 import { renderMarkdown } from '../../utils/markdown.js'
 import { useAuth, getToken } from '../../stores/auth.js'
 import { isGuest } from '../../stores/auth.js'
@@ -524,7 +525,7 @@ function setMeta(selector, attr, value) {
 function updateSeoMeta(p) {
   if (!p) return
   const title = `${p.title} — woodwhite@blog`
-  const desc = (p.excerpt || p.content || '').replace(/<[^>]*>/g, '').slice(0, 150)
+  const desc = stripMarkdown(p.excerpt || p.content || '', 150)
   const url = `${SITE_URL}/post/${p.slug}`
   const image = p.cover_image ? `${SITE_URL}${p.cover_image}` : `${SITE_URL}/og-default.jpg`
 

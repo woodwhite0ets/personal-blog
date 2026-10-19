@@ -3,7 +3,7 @@
     <h2 class="post-title">
       <router-link :to="`/post/${post.slug || post.id}`">{{ post.title }}</router-link>
     </h2>
-    <p class="post-excerpt">{{ post.excerpt }}</p>
+    <p class="post-excerpt">{{ stripMarkdown(post.excerpt, 160) }}</p>
     <div class="post-dateline">
       <time class="post-date">{{ post.date }}</time>
       <span v-if="post.author" class="post-author">
@@ -25,6 +25,8 @@
 </template>
 
 <script setup>
+import { stripMarkdown } from '../../../utils/excerpt.js'
+
 defineProps({
   post: { type: Object, required: true },
   index: { type: Number, default: 0 },
