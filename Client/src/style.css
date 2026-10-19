@@ -1214,17 +1214,50 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
    ⚠️ 坑：4 个主题里 terminal/midnight/solar 是深色，--text-bright 是【浅色】，
    若在此处硬编码纸色文字（如 rgba(250,249,245)），深色主题下会变成浅字压浅底 → 文字不可见。
    一律用 color-mix(in srgb, var(--bg) X%, transparent)。 */
-.hero-band { background: var(--text-bright); color: var(--bg); }
-.hero-in { max-width: 1200px; margin: 0 auto; padding: 104px 24px 96px; }
-.hero-name { font-family: var(--font-hand); font-size: clamp(46px, 6.2vw, 76px); line-height: 1.02; font-weight: 650; letter-spacing: -0.035em; margin: 0; color: var(--bg); }
-.hero-role { margin: 22px 0 0; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, var(--bg) 72%, transparent); }
-.hero-statement { margin: 20px 0 0; font-size: 21px; line-height: 1.72; max-width: 540px; color: color-mix(in srgb, var(--bg) 82%, transparent); text-wrap: pretty; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px; }
-.hero-btn { display: inline-block; padding: 12px 26px; font-size: 15px; text-decoration: none; border-radius: 3px; transition: opacity .2s, border-color .2s, color .2s; }
-.hero-btn-solid { background: var(--bg); color: var(--text-bright); }
-.hero-btn-solid:hover { opacity: .86; }
-.hero-btn-ghost { border: 1px solid color-mix(in srgb, var(--bg) 28%, transparent); color: color-mix(in srgb, var(--bg) 90%, transparent); }
-.hero-btn-ghost:hover { border-color: color-mix(in srgb, var(--bg) 70%, transparent); }
+/* ============================================================
+   首屏（2026-10-19 方案1：去掉深色横幅 → 白底巨型标题）
+   靠字号与留白制造气势，不用色块
+   ============================================================ */
+.hero-band { background: var(--bg); color: var(--text); border-bottom: 1px solid var(--border); }
+.hero-in {
+  max-width: 1200px; margin: 0 auto;
+  padding: 116px 24px 72px;
+  display: grid; grid-template-columns: 1fr 236px; gap: 80px; align-items: end;
+}
+.hero-name {
+  font-family: var(--font-sans);
+  font-size: clamp(56px, 9.2vw, 132px);
+  line-height: 0.92; font-weight: 650;
+  letter-spacing: -0.048em;
+  margin: 0; color: var(--text-bright);
+  text-wrap: balance;
+}
+.hero-role {
+  margin: 26px 0 0; font-size: 12px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-dim);
+}
+.hero-statement {
+  margin: 22px 0 0; font-size: 19px; line-height: 1.7;
+  max-width: 56ch; color: var(--text-secondary);
+  text-wrap: pretty;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.hero-btn {
+  display: inline-block; padding: 13px 28px; font-size: 14.5px; font-weight: 500;
+  text-decoration: none; border-radius: var(--radius-sm);
+  transition: background-color .15s, border-color .15s, color .15s, opacity .15s;
+}
+.hero-btn-solid { background: var(--text-bright); color: var(--bg); border: 1px solid var(--text-bright); }
+.hero-btn-solid:hover { opacity: .85; }
+.hero-btn-ghost { border: 1px solid var(--border-strong); color: var(--text-secondary); }
+.hero-btn-ghost:hover { border-color: var(--text-bright); color: var(--text-bright); }
+.hero-rail {
+  margin: 0; display: flex; flex-direction: column; gap: 18px;
+  border-left: 1px solid var(--border); padding-left: 28px;
+}
+.hero-rail dt { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
+.hero-rail dd { margin: 0; font-size: 15px; color: var(--text-bright); font-variant-numeric: tabular-nums; }
 .hm { max-width: 1200px; margin: 0 auto; padding: 0 24px 112px; }
 .hm-sec { padding: 96px 0; border-bottom: 1px solid var(--border); }
 .hm-sec-last { border-bottom: none; padding-bottom: 0; }
@@ -1273,10 +1306,6 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 }
 
 /* 首页：非对称 Hero 信息栏 / 活动条 / 色带 / 项目标签 */
-.hero-in { display: grid; grid-template-columns: 1fr 232px; gap: 64px; align-items: end; }
-.hero-rail { margin: 0; display: flex; flex-direction: column; gap: 18px; border-left: 1px solid color-mix(in srgb, var(--bg) 14%, transparent); padding-left: 28px; }
-.hero-rail dt { font-size: 12px; letter-spacing: .1em; color: color-mix(in srgb, var(--bg) 68%, transparent); margin-bottom: 5px; }
-.hero-rail dd { margin: 0; font-size: 15px; color: color-mix(in srgb, var(--bg) 88%, transparent); font-variant-numeric: tabular-nums; }
 .band-tint { background: var(--bg-deeper); }
 .band-tint .hm-sec { padding: 64px 0; }
 .hm-text-lead { font-size: 16.5px; line-height: 1.9; max-width: 640px; }
