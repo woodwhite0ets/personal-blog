@@ -1490,3 +1490,124 @@ html[data-theme="midnight"] {
   content: '' !important; flex: 1; height: 1px !important;
   background: var(--border) !important;
 }
+
+/* ============================================================
+   动效编排（2026-10-19）
+   原则：首屏一次性编排入场，滚动用 CSS scroll-driven（零 JS），
+        所有位移只走 transform / opacity / filter，尊重 reduced-motion
+   ============================================================ */
+
+@keyframes heroRise {
+  0%   { opacity: 0; transform: translateY(44px); filter: blur(14px); }
+  100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+@keyframes heroFade {
+  0%   { opacity: 0; transform: translateY(18px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes lineGrow {
+  0%   { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+/* 1. 首屏编排：标题 → 身份 → 简介 → 按钮 → 数据逐项 */
+.hero-band { border-bottom: none; position: relative; }
+.hero-band::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--border); transform-origin: left;
+  animation: lineGrow 1s cubic-bezier(.16, 1, .3, 1) .45s both;
+}
+
+.hero-name      { animation: heroRise .95s cubic-bezier(.16, 1, .3, 1) both; }
+.hero-role      { animation: heroFade .8s  cubic-bezier(.16, 1, .3, 1) .10s both; }
+.hero-statement { animation: heroFade .8s  cubic-bezier(.16, 1, .3, 1) .18s both; }
+.hero-actions   { animation: heroFade .8s  cubic-bezier(.16, 1, .3, 1) .28s both; }
+.hero-rail > div:nth-child(1) { animation: heroFade .7s cubic-bezier(.16, 1, .3, 1) .38s both; }
+.hero-rail > div:nth-child(2) { animation: heroFade .7s cubic-bezier(.16, 1, .3, 1) .44s both; }
+.hero-rail > div:nth-child(3) { animation: heroFade .7s cubic-bezier(.16, 1, .3, 1) .50s both; }
+.hero-rail > div:nth-child(4) { animation: heroFade .7s cubic-bezier(.16, 1, .3, 1) .56s both; }
+
+/* 2. 主按钮：深色块从左填充 → accent */
+.hero-btn-solid { position: relative; overflow: hidden; z-index: 0; }
+.hero-btn-solid::after {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: var(--accent); transform: scaleX(0); transform-origin: left;
+  transition: transform .42s cubic-bezier(.16, 1, .3, 1);
+}
+.hero-btn-solid:hover { opacity: 1; color: #fff; }
+.hero-btn-solid:hover::after { transform: scaleX(1); }
+
+/* 3. 滚动驱动：分区进入视口时升起（纯 CSS，无 JS 监听） */
+@keyframes secRise {
+  from { opacity: 0; transform: translateY(34px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@supports (animation-timeline: view()) {
+  .hm-sec {
+    animation: secRise linear both;
+    animation-timeline: view();
+    animation-range: entry 6% entry 36%;
+  }
+}
+
+/* 4. 首屏视差：滚动时标题层缓慢上移淡出，制造纵深 */
+@keyframes heroParallax {
+  to { transform: translateY(-64px); opacity: .18; }
+}
+@supports (animation-timeline: scroll()) {
+  .hero-text {
+    animation: heroParallax linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 78vh;
+  }
+}
+
+/* 5. 卡片 hover：阴影之外补一圈 accent 微光（不改变几何） */
+.hm-feature:hover, .hm-proj:hover, .hm-list a:hover {
+  box-shadow: var(--shadow-card), 0 0 0 1px color-mix(in srgb, var(--accent) 9%, transparent);
+}
+
+/* 6. 分区标题：进入时发丝线从左生长 */
+@supports (animation-timeline: view()) {
+  .hm-h::after {
+    transform-origin: left;
+    animation: lineGrow linear both;
+    animation-timeline: view();
+    animation-range: entry 10% entry 45%;
+  }
+}
+
+/* 无障碍：系统偏好"减少动态"时全部停用 */
+@media (prefers-reduced-motion: reduce) {
+  .hero-name, .hero-role, .hero-statement, .hero-actions,
+  .hero-rail > div, .hero-band::after, .hm-sec, .hero-text, .hm-h::after {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+/* 首屏标题：逐字入场（替换父级整体动画） */
+.hero-name { animation: none; }
+.hero-name > span {
+  display: inline-block;
+  animation: letterRise .72s cubic-bezier(.16, 1, .3, 1) both;
+}
+@keyframes letterRise {
+  0%   { opacity: 0; transform: translateY(62%); filter: blur(11px); }
+  100% { opacity: 1; transform: translateY(0);   filter: blur(0); }
+}
+.hero-name > span:nth-child(1) { animation-delay: .04s; }
+.hero-name > span:nth-child(2) { animation-delay: .072s; }
+.hero-name > span:nth-child(3) { animation-delay: .104s; }
+.hero-name > span:nth-child(4) { animation-delay: .136s; }
+.hero-name > span:nth-child(5) { animation-delay: .168s; }
+.hero-name > span:nth-child(6) { animation-delay: .2s; }
+.hero-name > span:nth-child(7) { animation-delay: .232s; }
+.hero-name > span:nth-child(8) { animation-delay: .264s; }
+.hero-name > span:nth-child(9) { animation-delay: .296s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-name > span { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+}

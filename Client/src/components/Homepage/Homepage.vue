@@ -38,7 +38,7 @@
       </svg>
       <div class="hero-in">
         <div class="hero-text">
-          <h1 class="hero-name">WoodWhite</h1>
+          <h1 class="hero-name" aria-label="WoodWhite"><span>W</span><span>o</span><span>o</span><span>d</span><span>W</span><span>h</span><span>i</span><span>t</span><span>e</span></h1>
           <p class="hero-role">应届毕业生 · Web 全栈开发</p>
           <p class="hero-statement">写代码、做系统、记录踩过的坑。这里是我关于全栈开发、系统架构与开源实践的手记。</p>
           <div class="hero-actions">
