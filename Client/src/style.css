@@ -1185,11 +1185,25 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .ed-hero-title a:hover { color: var(--accent); }
 .ed-hero-excerpt { font-size: 19px; line-height: 1.85; color: var(--text-secondary); max-width: 560px; margin: 0 0 14px; }
 /* 文章列表条目（2026-10-19 卡片化 + 首篇突出，替代朴素下划线列表） */
+/* 文章条目：与首页一致的 Double-Bezel 双层壳体 */
 .ed-entry {
-  display: block; padding: 24px 26px; margin-bottom: 12px;
+  display: block; padding: 5px; margin-bottom: 12px;
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--text) 3%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
+  transition: border-color .45s cubic-bezier(.32,.72,0,1),
+              transform .55s cubic-bezier(.32,.72,0,1),
+              box-shadow .55s cubic-bezier(.32,.72,0,1);
+}
+.ed-entry-body {
   background: var(--bg-elevated);
-  border: 1px solid var(--border); border-radius: var(--radius-md);
-  transition: border-color .15s, transform .15s, box-shadow .15s;
+  border: 1px solid var(--border);
+  border-radius: 19px;
+  box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 55%, transparent);
+  padding: 24px 26px;
+}
+html[data-theme="midnight"] .ed-entry-body {
+  box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 8%, transparent);
 }
 .ed-entry:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: var(--shadow-card); }
 .ed-entry .deco-idx { display: none; }
@@ -1201,7 +1215,8 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .ed-entry-meta { font-size: 13px; color: var(--text-dim); margin: 0; font-variant-numeric: tabular-nums; }
 
 /* 首篇：放大建立视觉焦点（仅默认视图） */
-.ed-entry.is-featured { padding: 36px 40px; margin-bottom: 16px; }
+.ed-entry.is-featured { margin-bottom: 16px; }
+.ed-entry.is-featured .ed-entry-body { padding: 34px 38px; }
 .ed-entry.is-featured .ed-entry-title { font-size: clamp(24px, 2.4vw, 31px); line-height: 1.24; letter-spacing: -0.028em; margin-bottom: 14px; }
 .ed-entry.is-featured .ed-entry-excerpt { font-size: 16.5px; line-height: 1.8; margin-bottom: 14px; }
 /* 文章页编辑式两栏 + 加载按钮 */

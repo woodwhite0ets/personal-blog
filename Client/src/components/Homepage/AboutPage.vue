@@ -52,7 +52,6 @@
         <div class="panel-body">
           <div class="project-item">
             <div class="project-head">
-              <span class="deco-idx">01</span>
               <span class="project-name">woodwhite@blog</span>
               <span class="project-status">进行中</span>
             </div>
@@ -207,7 +206,7 @@ onMounted(async () => {
   border-bottom: 1px solid var(--border);
 }
 .avatar-box { flex-shrink: 0; }
-.hero-name { font-size: 24px; color: var(--text-bright); margin-bottom: 6px; }
+.hero-name { font-size: 32px; font-weight: 650; letter-spacing: -0.028em; color: var(--text-bright); margin: 0 0 8px; line-height: 1.1; }
 .hero-tagline { font-size: 13px; color: var(--accent); margin-bottom: 12px; }
 .hero-desc { font-size: 13px; line-height: 1.8; color: var(--text-secondary); margin: 0; }
 
@@ -230,7 +229,7 @@ onMounted(async () => {
 .markdown-body li { margin: 4px 0; }
 .markdown-body strong { color: var(--text-bright); }
 .stack-line { font-size: 12px; color: var(--text-dim); margin-top: 16px; }
-.c-accent { color: var(--accent); } .c-ok { color: var(--ok); } .c-warn { color: var(--warn); } .c-purple { color: var(--purple); }
+.c-accent, .c-ok, .c-warn, .c-purple { color: var(--text-dim); }
 
 /* 项目 */
 .project-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
@@ -264,5 +263,6 @@ a.contact-val:hover { color: var(--accent); }
 }
 
 .info-key { color: var(--text-dim); }
-.hero-name { font-family: var(--font-hand); font-size: clamp(40px, 5vw, 64px); font-weight: 400; color: var(--text-bright); margin: 0 0 12px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+/* 项目编号下线：与首页保持一致，编号不编码任何信息 */
+.deco-idx { display: none; }
 </style>

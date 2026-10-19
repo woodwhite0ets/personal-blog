@@ -685,14 +685,16 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .tag {
-  font-size: 11px; padding: 4px 10px;
-  background: var(--overlay-a3);
-  border: 1px solid var(--border); border-radius: 4px;
-  color: var(--text-dim); cursor: pointer; transition: all 0.2s;
+  font-size: 11px; padding: 4px 11px;
+  background: var(--pale-blue-bg);
+  border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent);
+  border-radius: 999px;
+  color: var(--pale-blue-fg); cursor: pointer;
+  transition: border-color .3s cubic-bezier(.32,.72,0,1), background-color .3s cubic-bezier(.32,.72,0,1);
   text-decoration: none;
 }
 
-.tag:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-a4); }
+.tag:hover { border-color: color-mix(in srgb, var(--pale-blue-fg) 36%, transparent); }
 .tag.router-link-active { border-color: var(--accent); color: var(--accent); }
 .tag.lg { font-size: 13px; font-weight: 600; }
 .tag.md { font-size: 12px; }
