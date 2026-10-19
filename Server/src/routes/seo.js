@@ -11,6 +11,30 @@ function cdata(text) {
   return String(text || '').replace(/\]\]>/g, ']]]]><![CDATA[>');
 }
 
+// Markdown 源码 → 纯文本摘要（RSS/SEO description 用，避免 ## ** 裸露）
+function stripMd(src) {
+  return String(src || '')
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/~~~[\s\S]*?~~~/g, ' ')
+    .replace(/`[^`]*`/g, ' ')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/!\[[^\]]*\]?/g, ' ')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/^[ \t]{0,3}#{1,6}[ \t]+/gm, '')
+    .replace(/^[ \t]{0,3}>[ \t]?/gm, '')
+    .replace(/^[ \t]{0,3}[-*+][ \t]+/gm, '')
+    .replace(/^[ \t]{0,3}\d+[.)][ \t]+/gm, '')
+    .replace(/(\*{1,3})([^*]+)\1/g, '$2')
+    .replace(/(_{1,3})([^_]+)\1/g, '$2')
+    .replace(/~~([^~]+)~~/g, '$1')
+    .replace(/[ \t]*\|[ \t]*/g, ' ')
+    .replace(/(^|\s)[#*_~`]+(?=\s|$)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 // ====== GET /feed.xml — RSS 2.0 ======
 router.get('/feed.xml', async (req, res) => {
   try {
@@ -25,7 +49,7 @@ router.get('/feed.xml', async (req, res) => {
     const items = rows.map(p => {
       const link = `${SITE_URL}/post/${p.slug}`;
       const pubDate = p.published_at ? new Date(p.published_at).toUTCString() : new Date().toUTCString();
-      const desc = (p.excerpt || p.content || '').slice(0, 300).replace(/<[^>]*>/g, '');
+      const desc = stripMd(p.excerpt || p.content || '').slice(0, 300);
       return `    <item>
       <title><![CDATA[${cdata(p.title)}]]></title>
       <link>${link}</link>

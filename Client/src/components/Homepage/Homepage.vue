@@ -61,7 +61,7 @@
         <h2 class="hm-h">置顶</h2>
         <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`" class="hm-feature">
           <h3 class="hm-feature-title">{{ pinnedPost.title }}</h3>
-          <p class="hm-feature-excerpt">{{ pinnedPost.excerpt }}</p>
+          <p class="hm-feature-excerpt">{{ cleanExcerpt(pinnedPost.excerpt) }}</p>
           <p class="hm-meta">{{ pinnedPost.date }} · {{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次阅读</p>
         </router-link>
       </section>
@@ -131,6 +131,7 @@
 <script setup>
 import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { stripMarkdown } from '../../utils/excerpt.js'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 import UserAvatar from '../common/UserAvatar.vue'
@@ -165,6 +166,9 @@ const {
   clearTagLink, clearSearchLink,
   switchSort, loadMore, fetchPosts,
 } = usePosts()
+
+// 摘要纯文本化（数据库存量 excerpt 含 markdown 标记，渲染时剥离）
+const cleanExcerpt = (txt) => stripMarkdown(txt, 180)
 
 // ====== 用户菜单 ======
 const showUserMenu = ref(false)

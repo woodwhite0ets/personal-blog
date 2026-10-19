@@ -166,6 +166,7 @@
 import { ref, reactive, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import { renderMarkdown } from '../../utils/markdown.js'
+import { stripMarkdown } from '../../utils/excerpt.js'
 import { useAuth, getToken } from '../../stores/auth.js'
 import SiteFooter from '../common/SiteFooter.vue'
 
@@ -502,7 +503,7 @@ async function savePost() {
     const payload = {
       title: form.title.trim(),
       slug: formSlug.value || undefined,
-      excerpt: form.excerpt.trim() || form.content.trim().slice(0, 150),
+      excerpt: form.excerpt.trim() || stripMarkdown(form.content, 150),
       content: form.content,
       tags: formTags.value,
       status: form.status,

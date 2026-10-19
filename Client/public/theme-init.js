@@ -6,7 +6,7 @@
       localStorage.setItem('blog-theme-migrated', '1');
     }
     var t = localStorage.getItem('blog-theme');
-    var ok = ['paper', 'midnight', 'terminal', 'solar'].indexOf(t) >= 0;
+    var ok = ['paper', 'midnight'].indexOf(t) >= 0;
     document.documentElement.setAttribute('data-theme', ok ? t : 'paper');
   } catch (e) {}
 })();

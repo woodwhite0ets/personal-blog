@@ -151,7 +151,7 @@
   --text-bright: #14120c;
   --text-dim: #6b665a;
   --text-muted: #726d65;
-  --text-faint: #8e9095;
+  --text-faint: #6b6f74;
   --text-secondary: #736d62;
   --text-hint: #6a6e74;
 
@@ -256,7 +256,7 @@
   --text-bright: #f0f4fb;
   --text-dim: #7d89a1;
   --text-muted: #80889d;
-  --text-faint: #565f74;
+  --text-faint: #7a7f88;
   --text-secondary: #9ba8c0;
   --text-hint: #7d899e;
 
@@ -455,7 +455,7 @@
 /* ===== 设计令牌（跨主题共享，与配色解耦） ===== */
 :root {
   /* 字体：阅读层比例 / 代码层自托管 JetBrains Mono / 标题层 Space Grotesk */
-  --font-sans: "EB Garamond Variable", "Noto Serif SC", Georgia, "Songti SC", "SimSun", "Source Han Serif SC", "Times New Roman", serif;
+  --font-sans: "Inter Variable", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
   --font-display: var(--font-sans);
   /* 古典衬线：西文 EB Garamond + 中文思源宋体 */
@@ -465,16 +465,16 @@
   --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* 字号（基础 14px） */
-  --fs-2xs: 10px; --fs-xs: 12px; --fs-sm: 13px; --fs-base: 14px;
-  --fs-md: 15px; --fs-lg: 17px; --fs-xl: 20px; --fs-2xl: 26px;
+  /* 字号：流体缩放（2026-10-19 商业极简改版） */
+  --fs-2xs: clamp(10px, 0.62vw, 11px); --fs-xs: clamp(11px, 0.72vw, 12px); --fs-sm: clamp(13px, 0.8vw, 14px); --fs-base: clamp(14px, 0.88vw, 16px);
+  --fs-md: clamp(15px, 0.95vw, 17px); --fs-lg: clamp(17px, 1.1vw, 19px); --fs-xl: clamp(20px, 1.4vw, 24px); --fs-2xl: clamp(26px, 2vw, 32px);
 
   /* 间距（4px 基准） */
   --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
   --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px;
 
-  /* 圆角 */
-  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px; --radius-xl: 26px; --radius-full: 9999px;
+  /* 圆角：收敛（2026-10-19 商业极简，弃药丸） */
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px; --radius-xl: 18px; --radius-full: 9999px;
 
   /* 悬浮层半透明底（hover 高亮用，替代旧 --surface-2 命名） */
   --surface-2: rgba(127, 127, 127, 0.08);
@@ -1062,16 +1062,12 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 }
 
 /* ============================================================
-   欧美古典风格（2026-10-11）：正文+标题用古典衬线（EB Garamond + 思源宋体）
+   商业极简（2026-10-19）：框架层无衬线，阅读层保留古典衬线
    ============================================================ */
 .markdown-body {
   font-family: var(--font-serif);
 }
-h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
-  font-family: var(--font-serif);
-  letter-spacing: 0;
-}
-.hero-title { letter-spacing: -0.01em; }
+.hero-title { letter-spacing: -0.025em; }
 
 /* 古典衬线：提高优先级覆盖 .markdown-body h1..h6 的无衬线 */
 .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
@@ -1083,7 +1079,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
    手写标题（2026-10-11）：英文 Homemade Apple + 中文 龙藏
    仅用于文章标题；正文/UI/首页 hero 保持可读字体
    ============================================================ */
-:root { --font-hand: 'Caveat Variable', 'LXGW WenKai Screen', cursive; } /* 家族名须与 @fontsource-variable/caveat 声明一致，否则 Caveat 永不加载 */
+:root { --font-hand: 'Inter Variable', -apple-system, sans-serif; } /* 2026-10-19 商业极简：弃手写体，全面转无衬线 */
 .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
   font-family: var(--font-hand);
   font-weight: 400;
@@ -1171,7 +1167,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .post-excerpt, .recent-link, .popular-title { overflow-wrap: anywhere; }
 
 /* ===== 首页 杂志编辑式（方向 A）===== */
-.ed-hero { max-width: 1000px; margin: 0 auto; padding: 72px 24px 44px; border-bottom: 1px solid var(--border); }
+.ed-hero { max-width: 1200px; margin: 0 auto; padding: 72px 24px 44px; border-bottom: 1px solid var(--border); }
 .ed-hero-title { font-family: var(--font-hand); font-size: clamp(40px, 5vw, 64px); line-height: 1.1; margin: 10px 0 16px; max-width: 780px; }
 .ed-hero-title a { color: var(--text-bright); text-decoration: none; }
 .ed-hero-title a:hover { color: var(--accent); }
@@ -1193,8 +1189,8 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
    若在此处硬编码纸色文字（如 rgba(250,249,245)），深色主题下会变成浅字压浅底 → 文字不可见。
    一律用 color-mix(in srgb, var(--bg) X%, transparent)。 */
 .hero-band { background: var(--text-bright); color: var(--bg); }
-.hero-in { max-width: 1000px; margin: 0 auto; padding: 104px 24px 96px; }
-.hero-name { font-family: var(--font-hand); font-size: clamp(52px, 7.4vw, 92px); line-height: 1; font-weight: 400; letter-spacing: .07em; margin: 0; color: var(--bg); }
+.hero-in { max-width: 1200px; margin: 0 auto; padding: 104px 24px 96px; }
+.hero-name { font-family: var(--font-hand); font-size: clamp(46px, 6.2vw, 76px); line-height: 1.02; font-weight: 650; letter-spacing: -0.035em; margin: 0; color: var(--bg); }
 .hero-role { margin: 22px 0 0; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, var(--bg) 72%, transparent); }
 .hero-statement { margin: 20px 0 0; font-size: 21px; line-height: 1.72; max-width: 540px; color: color-mix(in srgb, var(--bg) 82%, transparent); text-wrap: pretty; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px; }
@@ -1203,25 +1199,44 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hero-btn-solid:hover { opacity: .86; }
 .hero-btn-ghost { border: 1px solid color-mix(in srgb, var(--bg) 28%, transparent); color: color-mix(in srgb, var(--bg) 90%, transparent); }
 .hero-btn-ghost:hover { border-color: color-mix(in srgb, var(--bg) 70%, transparent); }
-.hm { max-width: 1000px; margin: 0 auto; padding: 0 24px 112px; }
+.hm { max-width: 1200px; margin: 0 auto; padding: 0 24px 112px; }
 .hm-sec { padding: 64px 0; border-bottom: 1px solid var(--border); }
 .hm-sec-last { border-bottom: none; padding-bottom: 0; }
 .hm-h { display: flex; align-items: center; gap: 18px; margin: 0 0 26px; font-size: 15px; font-weight: 600; letter-spacing: .06em; color: var(--text-bright); }
 .hm-h::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 .hm-2up { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
-.hm-feature { display: block; text-decoration: none; }
-.hm-feature-title { font-family: var(--font-hand); font-size: clamp(32px, 3.6vw, 46px); line-height: 1.16; font-weight: 400; color: var(--text-bright); margin: 0 0 14px; text-wrap: balance; }
+/* 卡片：置顶 / 项目 / 列表项（2026-10-19 商业极简） */
+.hm-feature {
+  display: block; text-decoration: none;
+  padding: 32px 36px; background: var(--bg-elevated);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+.hm-feature:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: 0 4px 12px var(--shadow); }
+.hm-feature-title { font-family: var(--font-sans); font-size: clamp(26px, 2.6vw, 36px); line-height: 1.22; font-weight: 650; letter-spacing: -0.025em; color: var(--text-bright); margin: 0 0 14px; text-wrap: balance; }
 .hm-feature:hover .hm-feature-title { color: var(--accent); }
-.hm-feature-excerpt { font-size: 18px; line-height: 1.85; color: var(--text-secondary); max-width: 620px; margin: 0 0 14px; text-wrap: pretty; }
+.hm-feature-excerpt { font-size: 17px; line-height: 1.8; color: var(--text-secondary); max-width: 68ch; margin: 0 0 14px; text-wrap: pretty; }
 .hm-meta { font-size: 13.5px; color: var(--text-dim); margin: 0; font-variant-numeric: tabular-nums; }
 .hm-about { display: flex; gap: 14px; align-items: flex-start; }
 .hm-text { font-size: 15.5px; line-height: 1.82; color: var(--text-secondary); margin: 0; text-wrap: pretty; }
-.hm-proj { display: block; text-decoration: none; }
-.hm-proj-title { font-size: 20px; font-weight: 600; color: var(--text-bright); margin: 0 0 10px; }
+.hm-proj {
+  display: block; text-decoration: none;
+  padding: 26px 28px; background: var(--bg-elevated);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+.hm-proj:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: 0 4px 12px var(--shadow); }
+.hm-proj-title { font-size: 19px; font-weight: 650; letter-spacing: -0.015em; color: var(--text-bright); margin: 0 0 10px; }
 .hm-proj:hover .hm-proj-title { color: var(--accent); }
-.hm-list { list-style: none; margin: 0; padding: 0; }
-.hm-list a { display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; text-decoration: none; font-size: 15.5px; color: var(--text-secondary); border-bottom: 1px solid var(--border-faint, var(--border)); }
-.hm-list li:last-child a { border-bottom: none; }
+.hm-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.hm-list a {
+  display: flex; justify-content: space-between; gap: 14px; padding: 14px 18px;
+  text-decoration: none; font-size: 15px; color: var(--text-secondary);
+  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-md);
+  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+.hm-list a:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: 0 2px 8px var(--shadow); }
+.hm-list li:last-child a { border-bottom: 1px solid var(--border); }
 .hm-list a:hover .hm-li-t { color: var(--accent); }
 .hm-li-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .hm-li-d { color: var(--text-dim); font-size: 13px; white-space: nowrap; font-variant-numeric: tabular-nums; }
@@ -1251,30 +1266,17 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* ===== 首页装饰系统（统一：网格 / 字母水印 / 点阵 / 分区方块 / 序号）===== */
 /* 1. 首屏：细网格 + 手写字母水印 */
 .hero-band { position: relative; overflow: hidden; }
-.hero-band::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
-  background-image:
-    linear-gradient(color-mix(in srgb, var(--bg) 5.5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--bg) 5.5%, transparent) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-.hero-band::after {
-  content: 'woodwhite'; position: absolute; right: -3%; bottom: -14%;
-  font-family: var(--font-hand); font-size: clamp(140px, 22vw, 260px); line-height: .8;
-  color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--bg) 7.5%, transparent);
-  pointer-events: none; user-select: none; white-space: nowrap; z-index: 0;
-}
+.hero-band::before { content: none; }
+.hero-band::after { content: none; }
 .hero-in { position: relative; z-index: 1; }
 
-/* 2. 分区标题前的强调小方块 */
-.hm-h::before { content: ''; flex: none; width: 7px; height: 7px; background: var(--accent); }
+/* 2. 分区标题（2026-10-19 去掉强调小方块） */
+.hm-h::before { content: none; }
 .hm-h { gap: 14px; }
 
-/* 3. 色带：点阵底纹 */
+/* 3. 色带（2026-10-19 去掉点阵底纹） */
 .band-tint {
   background-color: var(--bg-deeper);
-  background-image: radial-gradient(var(--border) 1px, transparent 1px);
-  background-size: 22px 22px;
   border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
 }
 
@@ -1302,19 +1304,11 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 }
 
 /* ===== 装饰加强 ===== */
-/* 首屏几何线稿（同心弧） */
-.hero-band .hero-orn { position: absolute; top: -18px; right: -26px; width: clamp(200px, 26vw, 320px); color: var(--bg); opacity: .2; pointer-events: none; z-index: 0; }
-@media (max-width: 860px) { .hero-band .hero-orn { display: none; } }
+/* 首屏装饰（2026-10-19 商业极简：同心弧已下线） */
+.hero-band .hero-orn { display: none; }
 
-/* 左边缘竖向标签（杂志页码感） */
-.edge-label {
-  position: fixed; left: 16px; top: 50%; z-index: 40;
-  writing-mode: vertical-rl; transform: translateY(-50%) rotate(180deg);
-  font-size: 11px; letter-spacing: .3em; color: var(--text-muted);
-  padding-left: 10px; border-left: 1px solid var(--border);
-  pointer-events: none; user-select: none;
-}
-@media (max-width: 1280px) { .edge-label { display: none; } }
+/* 左边缘竖向标签（2026-10-19 商业极简：已下线） */
+.edge-label { display: none; }
 
 /* 分区规则线：发丝线 + 末端双刻度 */
 .hm-h::after {
@@ -1341,13 +1335,9 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   font-family: var(--font-hand); font-size: 15px; line-height: 1; color: var(--text-dim);
 }
 
-/* 关于：装饰引号 */
+/* 关于：装饰引号（2026-10-19 已下线） */
 .hm-about { position: relative; }
-.hm-about .hm-text-lead { position: relative; padding-left: 42px; }
-.hm-about .hm-text-lead::before {
-  content: '\201C'; position: absolute; left: 0; top: -22px;
-  font-family: var(--font-hand); font-size: 74px; line-height: 1; color: var(--border);
-}
+.hm-about .hm-text-lead { position: relative; }
 @media (max-width: 860px) { .hm-about .hm-text-lead::before { display: none; } .hm-about .hm-text-lead { padding-left: 0; } }
 
 /* 文章页主内容容器（必须存在，否则条目会被 2 列网格交替塞进侧栏）
