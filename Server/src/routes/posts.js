@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const pool = require('../config/db');
 const { authRequired, authOptional, authNoGuest } = require('../middleware/auth');
+const { postCreateLimiter, commentLimiter } = require('../config/rateLimit');
 
 const router = express.Router();
 
@@ -331,7 +332,7 @@ router.get('/:slug/related', authOptional, async (req, res) => {
 });
 
 // ====== POST /api/posts — 创建文章 ======
-router.post('/', authRequired, authNoGuest, async (req, res) => {
+router.post('/', authRequired, authNoGuest, postCreateLimiter, async (req, res) => {
   const conn = await pool.getConnection();
   try {
     const title = sanitizeText(req.body.title, 200);
@@ -607,7 +608,8 @@ router.delete('/:slug', authRequired, authNoGuest, async (req, res) => {
 
     res.json({ message: 'post deleted', slug });
   } catch (err) {
-    await conn.rollback();
+    // 与 438/560 行保持一致：rollback 自身抛错不应变成 unhandledRejection
+    try { await conn.rollback(); } catch {}
     console.error('delete post error:', err);
     res.status(500).json({ message: 'internal server error' });
   } finally {
@@ -717,7 +719,7 @@ router.get('/:slug/comments', authOptional, async (req, res) => {
 });
 
 // ====== POST /api/posts/:slug/comments — 发表评论 ======
-router.post('/:slug/comments', authRequired, authNoGuest, async (req, res) => {
+router.post('/:slug/comments', authRequired, authNoGuest, commentLimiter, async (req, res) => {
   try {
     const { slug } = req.params;
     const content = req.body.content || '';
@@ -728,10 +730,7 @@ router.post('/:slug/comments', authRequired, authNoGuest, async (req, res) => {
     }
 
     // 内容清洗
-    const cleaned = content.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
-      .replace(/<[^>]*>/g, '')
-      .slice(0, 2000)
-      .trim();
+    const cleaned = sanitizeText(content, 2000);
 
     if (!cleaned) {
       return res.status(400).json({ message: 'comment content is empty after sanitization' });

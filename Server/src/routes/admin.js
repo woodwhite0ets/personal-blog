@@ -4,7 +4,14 @@ const pool = require('../config/db');
 const { authRequired, authAdmin } = require('../middleware/auth');
 const { getLogs, clearLogs } = require('../config/logger');
 
+const { sanitizeText } = require('../utils/sanitize');
+
 const router = express.Router();
+
+// LIKE 通配符转义（与 posts.js 保持一致；此前 admin.js 抄写时漏掉了）
+function escapeLike(str) {
+  return String(str).replace(/[\\%_]/g, '\\$&').slice(0, 100);
+}
 
 // ====== Caddy 访问日志路径（服务器环境为 /var/log/caddy/blog-access.log） ======
 const CADDY_LOG_PATH = process.env.CADDY_LOG_PATH || '/var/log/caddy/blog-access.log';
@@ -105,8 +112,9 @@ router.get('/posts', async (req, res) => {
       params.push(status);
     }
     if (search) {
+      const like = `%${escapeLike(search)}%`;
       conditions.push('(p.title LIKE ? OR u.username LIKE ?)');
-      params.push(`%${search}%`, `%${search}%`);
+      params.push(like, like);
     }
     if (conditions.length > 0) {
       const where = ' WHERE ' + conditions.join(' AND ');
@@ -177,7 +185,8 @@ router.get('/users', async (req, res) => {
     if (search) {
       countSql += ' AND (u.username LIKE ? OR u.email LIKE ? OR u.nickname LIKE ?)';
       dataSql += ' AND (u.username LIKE ? OR u.email LIKE ? OR u.nickname LIKE ?)';
-      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+      const like = `%${escapeLike(search)}%`;
+      params.push(like, like, like);
     }
 
     dataSql += ' ORDER BY u.created_at DESC LIMIT ? OFFSET ?';
@@ -230,7 +239,7 @@ router.put('/users/:id', async (req, res) => {
 
     const fields = {};
     if (role !== undefined) fields.role = role;
-    if (nickname !== undefined) fields.nickname = nickname.replace(/<[^>]*>/g, '').slice(0, 50).trim();
+    if (nickname !== undefined) fields.nickname = sanitizeText(nickname, 50);
     if (is_verified !== undefined) fields.is_verified = is_verified ? 1 : 0;
 
     if (Object.keys(fields).length === 0) {

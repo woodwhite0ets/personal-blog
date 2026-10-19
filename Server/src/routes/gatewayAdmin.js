@@ -13,6 +13,14 @@ const GW_ADMIN_TOKEN = process.env.GW_ADMIN_TOKEN;
 const GW_BASE = process.env.GW_TUNNEL_BASE || 'https://127.0.0.1:18081';
 const GW_HOST = process.env.GW_TUNNEL_HOST || 'mcp.woodwhite.top';
 // 仅回环反向 SSH 隧道：跳过 TLS 校验 + Host 钉死 + Bearer 三重防护。
+// rejectUnauthorized:false 的安全性完全依赖 GW_TUNNEL_BASE 指向回环，
+// 因此启动即断言，避免将来被误配成非回环地址而变成可 MITM。
+const LOOPBACK = /^https:\/\/(127\.0\.0\.1|localhost|\[::1\])(:\d+)?$/;
+if (!LOOPBACK.test(GW_BASE)) {
+  throw new Error(
+    `GW_TUNNEL_BASE 必须指向回环地址（当前 ${GW_BASE}）：该代理关闭了 TLS 校验，仅可用于回环隧道。`
+  );
+}
 const tunnelAgent = new https.Agent({ rejectUnauthorized: false });
 
 function gw(path, { method = 'GET', body } = {}) {
@@ -117,9 +125,20 @@ router.post('/users', async (req, res, next) => {
 });
 
 // ====== PATCH /users/:id — 更新网关权限（role/项目/服务器/display_name） ======
+// 允许透传给网关的字段白名单（此前整体透传 req.body，客户端可注入任意属性）
+const GATEWAY_PATCH_FIELDS = ['role', 'display_name', 'projects', 'servers'];
+
 router.patch('/users/:id', async (req, res, next) => {
   try {
-    const result = await gw(`/api/users/${encodeURIComponent(req.params.id)}`, { method: 'PATCH', body: req.body || {} });
+    const body = req.body || {};
+    const payload = {};
+    for (const key of GATEWAY_PATCH_FIELDS) {
+      if (Object.prototype.hasOwnProperty.call(body, key)) payload[key] = body[key];
+    }
+    if (Object.keys(payload).length === 0) {
+      return res.status(400).json({ message: 'no updatable field provided' });
+    }
+    const result = await gw(`/api/users/${encodeURIComponent(req.params.id)}`, { method: 'PATCH', body: payload });
     res.json(result);
   } catch (e) { next(e); }
 });
@@ -140,9 +159,14 @@ router.delete('/users/:id', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// 错误处理：透出网关/上游的状态码，避免被博客全局 500 吞掉
+// 错误处理：只透出网关的状态码，不透出 err.message
+// （err.message 可能包含上游响应片段、隧道地址等内部拓扑信息）
 router.use((err, req, res, next) => {
-  res.status(err.statusCode || 500).json({ error: err.message });
+  const status = err.statusCode || 500;
+  if (status >= 500) console.error('[gatewayAdmin]', err);
+  res.status(status).json({
+    error: status >= 500 ? 'gateway unavailable' : err.message,
+  });
 });
 
 module.exports = router;

@@ -58,11 +58,19 @@ function validateCoverImage(url) {
 }
 
 // 密码强度校验（注册 / 改密 / 重置共用）
+// 密码规则单一来源：各处校验引用常量，错误文案仍由调用方决定
+// （register / change-password / reset-password 三处消息不同，不应强行统一）
+const PASSWORD_RULES = {
+  min: 8,
+  max: 128,
+  pattern: /(?=.*[a-zA-Z])(?=.*\d)/,
+};
+
 function validatePassword(password) {
   if (typeof password !== 'string') return 'password is required';
-  if (password.length < 8) return 'password must be at least 8 characters';
-  if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(password)) return 'password must contain both letters and numbers';
-  if (password.length > 128) return 'password too long';
+  if (password.length < PASSWORD_RULES.min) return 'password must be at least 8 characters';
+  if (!PASSWORD_RULES.pattern.test(password)) return 'password must contain both letters and numbers';
+  if (password.length > PASSWORD_RULES.max) return 'password too long';
   return null; // 通过
 }
 
@@ -77,6 +85,7 @@ function validateUsername(username) {
 }
 
 module.exports = {
+  PASSWORD_RULES,
   sanitizeText,
   sanitizeContent,
   sanitizeTag,

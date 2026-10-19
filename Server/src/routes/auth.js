@@ -1,5 +1,10 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const { sanitizeText, PASSWORD_RULES } = require('../utils/sanitize');
+
+// 用户名不存在时也跑一次 bcrypt，拉平与「密码错误」分支的耗时，
+// 防用户名枚举时序侧信道（注册接口此前已做同样处理）。
+const DUMMY_HASH = bcrypt.hashSync('__no_such_user__', 12);
 const crypto = require('crypto');
 const pool = require('../config/db');
 const { signToken, authRequired, authNoGuest } = require('../middleware/auth');
@@ -70,14 +75,14 @@ router.post('/register', registerLimiter, async (req, res) => {
       return res.status(400).json({ message: 'this username is reserved and cannot be used' });
     }
     // 密码强度：至少 8 位，包含字母和数字
-    if (password.length < 8) {
+    if (password.length < PASSWORD_RULES.min) {
       return res.status(400).json({ message: 'password must be at least 8 characters' });
     }
-    if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(password)) {
+    if (!PASSWORD_RULES.pattern.test(password)) {
       return res.status(400).json({ message: 'password must contain both letters and numbers' });
     }
     // 长度上限（防超长密码攻击）
-    if (password.length > 128) {
+    if (password.length > PASSWORD_RULES.max) {
       return res.status(400).json({ message: 'password too long' });
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -250,6 +255,8 @@ router.post('/login', loginLimiter, async (req, res) => {
     );
 
     if (rows.length === 0) {
+      // 空跑一次 bcrypt.compare，使两条失败路径耗时一致
+      await bcrypt.compare(password, DUMMY_HASH).catch(() => {});
       return res.status(401).json({ message: 'invalid username or password' });
     }
 
@@ -300,13 +307,13 @@ router.put('/change-password', authRequired, authNoGuest, async (req, res) => {
     if (!oldPassword || !newPassword) {
       return res.status(400).json({ message: 'old and new password are required' });
     }
-    if (newPassword.length < 8) {
+    if (newPassword.length < PASSWORD_RULES.min) {
       return res.status(400).json({ message: 'new password must be at least 8 characters' });
     }
-    if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(newPassword)) {
+    if (!PASSWORD_RULES.pattern.test(newPassword)) {
       return res.status(400).json({ message: 'new password must contain both letters and numbers' });
     }
-    if (newPassword.length > 128) {
+    if (newPassword.length > PASSWORD_RULES.max) {
       return res.status(400).json({ message: 'new password too long' });
     }
 
@@ -385,7 +392,7 @@ router.post('/reset-password', registerLimiter, async (req, res) => {
     if (!token || !newPassword) {
       return res.status(400).json({ message: 'token and new password are required' });
     }
-    if (newPassword.length < 8 || !/(?=.*[a-zA-Z])(?=.*\d)/.test(newPassword)) {
+    if (newPassword.length < PASSWORD_RULES.min || !PASSWORD_RULES.pattern.test(newPassword)) {
       return res.status(400).json({ message: 'password must be at least 8 chars with letters and numbers' });
     }
     if (newPassword.length > 128) {
@@ -434,7 +441,7 @@ router.put('/profile', authRequired, authNoGuest, async (req, res) => {
       if (typeof nickname !== 'string' || nickname.trim().length === 0 || nickname.trim().length > 50) {
         return res.status(400).json({ message: 'nickname must be 1-50 characters' });
       }
-      newNickname = nickname.trim().replace(/<[^>]*>/g, '').slice(0, 50);
+      newNickname = sanitizeText(nickname, 50);
       // 违禁词检查
       if (containsBannedWord(newNickname)) {
         return res.status(400).json({ message: 'nickname contains inappropriate words' });
@@ -447,7 +454,7 @@ router.put('/profile', authRequired, authNoGuest, async (req, res) => {
       if (typeof bio !== 'string' || bio.length > 300) {
         return res.status(400).json({ message: 'bio too long (max 300 chars)' });
       }
-      newBio = bio.trim().replace(/<[^>]*>/g, '').slice(0, 300);
+      newBio = sanitizeText(bio, 300);
       // 违禁词检查
       if (containsBannedWord(newBio)) {
         return res.status(400).json({ message: 'bio contains inappropriate words' });

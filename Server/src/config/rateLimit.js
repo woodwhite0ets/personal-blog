@@ -58,8 +58,28 @@ const emailResetLimiter = rateLimit({
   message: { message: 'too many email requests for this address — try again later' },
 });
 
+// ====== 发帖（已登录用户防刷帖）======
+const postCreateLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,              // 每分钟最多 10 篇（此前仅受全局 600/min 约束）
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'too many posts — try again in 1 minute' },
+});
+
+// ====== 评论（已登录用户防刷评）======
+const commentLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,              // 每分钟最多 30 条
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'too many comments — try again in 1 minute' },
+});
+
 module.exports = {
   globalLimiter,
+  postCreateLimiter,
+  commentLimiter,
   loginLimiter,
   registerLimiter,
   resendVerifyLimiter,
