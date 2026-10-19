@@ -1265,11 +1265,15 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hm-h::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 .hm-2up { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
 /* 卡片：置顶 / 项目 / 列表项（2026-10-19 商业极简） */
+/* Double-Bezel：外层壳体（铝槽）*/
 .hm-feature {
   display: block; text-decoration: none;
-  padding: 32px 36px; background: var(--bg-elevated);
-  border: 1px solid var(--border); border-radius: var(--radius-lg);
-  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  padding: 5px; border-radius: 24px;
+  background: color-mix(in srgb, var(--text) 3%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
+  transition: border-color .45s cubic-bezier(.32,.72,0,1),
+              transform .55s cubic-bezier(.32,.72,0,1),
+              box-shadow .55s cubic-bezier(.32,.72,0,1);
 }
 .hm-feature:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: var(--shadow-card); }
 .hm-feature-title { font-family: var(--font-sans); font-size: clamp(26px, 2.6vw, 36px); line-height: 1.22; font-weight: 650; letter-spacing: -0.025em; color: var(--text-bright); margin: 0 0 14px; text-wrap: balance; }
@@ -1280,22 +1284,29 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hm-text { font-size: 15.5px; line-height: 1.82; color: var(--text-secondary); margin: 0; text-wrap: pretty; }
 .hm-proj {
   display: block; text-decoration: none;
-  padding: 26px 28px; background: var(--bg-elevated);
-  border: 1px solid var(--border); border-radius: var(--radius-lg);
-  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  padding: 5px; border-radius: 24px;
+  background: color-mix(in srgb, var(--text) 3%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
+  transition: border-color .45s cubic-bezier(.32,.72,0,1),
+              transform .55s cubic-bezier(.32,.72,0,1),
+              box-shadow .55s cubic-bezier(.32,.72,0,1);
 }
 .hm-proj:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: var(--shadow-card); }
 .hm-proj-title { font-size: 19px; font-weight: 650; letter-spacing: -0.015em; color: var(--text-bright); margin: 0 0 10px; }
 .hm-proj:hover .hm-proj-title { color: var(--accent); }
 .hm-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .hm-list a {
-  display: flex; justify-content: space-between; gap: 14px; padding: 14px 18px;
+  display: block; padding: 3px;
   text-decoration: none; font-size: 15px; color: var(--text-secondary);
-  background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-md);
-  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  background: color-mix(in srgb, var(--text) 2.5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 6%, transparent);
+  border-radius: 16px;
+  transition: border-color .45s cubic-bezier(.32,.72,0,1),
+              transform .55s cubic-bezier(.32,.72,0,1),
+              box-shadow .55s cubic-bezier(.32,.72,0,1);
 }
 .hm-list a:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: var(--shadow-card); }
-.hm-list li:last-child a { border-bottom: 1px solid var(--border); }
+
 .hm-list a:hover .hm-li-t { color: var(--accent); }
 .hm-li-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .hm-li-d { color: var(--text-dim); font-size: 13px; white-space: nowrap; font-variant-numeric: tabular-nums; }
@@ -1735,3 +1746,77 @@ html[data-theme="midnight"] {
   .hg-rings, .hg-spokes, .hg-nodes, .hg-ping { animation: none !important; }
   .hg-ping { opacity: 0; }
 }
+
+/* ============================================================
+   high-end-visual-design 对齐（2026-10-19）
+   §4.B 药丸 CTA + §4.C Eyebrow 微标签 + §5.B 磁吸按压
+   ============================================================ */
+
+/* Eyebrow：大标题前的微型胶囊标签（替代裸文字 role） */
+.hero-role {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 26px 0 0; padding: 7px 15px 7px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--text-dim); line-height: 1;
+}
+.hero-role::before {
+  content: ''; width: 5px; height: 5px; border-radius: 999px;
+  background: var(--accent); flex: none;
+  animation: eyebrowPulse 2.6s ease-in-out infinite;
+}
+@keyframes eyebrowPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .35; transform: scale(.75); }
+}
+
+/* 药丸 CTA + 磁吸按压 */
+.hero-btn {
+  border-radius: 999px;
+  padding: 14px 30px;
+  transition: transform .5s cubic-bezier(.32, .72, 0, 1),
+              background-color .4s cubic-bezier(.32, .72, 0, 1),
+              border-color .4s cubic-bezier(.32, .72, 0, 1),
+              color .4s cubic-bezier(.32, .72, 0, 1),
+              opacity .4s cubic-bezier(.32, .72, 0, 1);
+}
+.hero-btn-solid::after { border-radius: 999px; }
+.hero-btn:active { transform: scale(.975); }
+.hero-btn-ghost:hover { transform: translateY(-1px); }
+
+/* 卡片过渡统一到弹簧曲线（替换 .15s ease） */
+.hm-feature, .hm-proj, .hm-list a, .ed-entry {
+  transition: border-color .45s cubic-bezier(.32, .72, 0, 1),
+              transform .55s cubic-bezier(.32, .72, 0, 1),
+              box-shadow .55s cubic-bezier(.32, .72, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-role::before { animation: none; }
+  .hero-btn:active, .hero-btn-ghost:hover { transform: none; }
+}
+
+/* Double-Bezel 内层核心（玻璃板）：独立底色 + 内嵌高光 + 同心圆角 */
+.bezel-core {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 19px;
+  box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 55%, transparent);
+  padding: 32px 36px;
+  height: 100%;
+}
+.hm-proj .bezel-core { padding: 26px 28px; }
+.hm-list a .bezel-core {
+  border-radius: 13px; padding: 13px 16px;
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 40%, transparent);
+}
+html[data-theme="midnight"] .bezel-core {
+  box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 8%, transparent);
+}
+
+/* 项目卡编号下线：双层壳体已经足够承载视觉重量，外挂 01/02 反而脱节 */
+.band-tint .hm-proj { padding-left: 5px !important; }
+.band-tint .hm-proj::before { content: none !important; }

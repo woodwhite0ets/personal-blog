@@ -88,9 +88,11 @@
       <section class="hm-sec" v-if="pinnedPost">
         <h2 class="hm-h">置顶</h2>
         <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`" class="hm-feature">
-          <h3 class="hm-feature-title">{{ pinnedPost.title }}</h3>
-          <p class="hm-feature-excerpt">{{ cleanExcerpt(pinnedPost.excerpt) }}</p>
-          <p class="hm-meta">{{ pinnedPost.date }} · {{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次阅读</p>
+          <div class="bezel-core">
+            <h3 class="hm-feature-title">{{ pinnedPost.title }}</h3>
+            <p class="hm-feature-excerpt">{{ cleanExcerpt(pinnedPost.excerpt) }}</p>
+            <p class="hm-meta">{{ pinnedPost.date }} · {{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次阅读</p>
+          </div>
         </router-link>
       </section>
 
@@ -111,14 +113,18 @@
           <h2 class="hm-h">项目</h2>
           <div class="hm-2up">
             <router-link to="/about" class="hm-proj">
-              <h3 class="hm-proj-title">mcp-gateway</h3>
-              <p class="hm-text">面向知识库与服务器管理的 MCP 网关，把检索与运维能力统一提供给 AI 客户端。</p>
-              <span class="hm-tag">Node.js · MCP</span>
+              <div class="bezel-core">
+                <h3 class="hm-proj-title">mcp-gateway</h3>
+                <p class="hm-text">面向知识库与服务器管理的 MCP 网关，把检索与运维能力统一提供给 AI 客户端。</p>
+                <span class="hm-tag">Node.js · MCP</span>
+              </div>
             </router-link>
             <router-link to="/about" class="hm-proj">
-              <h3 class="hm-proj-title">乐清市充电桩分布图</h3>
-              <p class="hm-text">充电桩空间分布可视化，从 SQLite 升级到 Docker + PostGIS 架构。</p>
-              <span class="hm-tag">PostGIS · Docker</span>
+              <div class="bezel-core">
+                <h3 class="hm-proj-title">乐清市充电桩分布图</h3>
+                <p class="hm-text">充电桩空间分布可视化，从 SQLite 升级到 Docker + PostGIS 架构。</p>
+                <span class="hm-tag">PostGIS · Docker</span>
+              </div>
             </router-link>
           </div>
         </div>
@@ -134,7 +140,9 @@
             <ul class="hm-list">
               <li v-for="p in posts.slice(0, 4)" :key="p.id">
                 <router-link :to="`/post/${p.slug || p.id}`">
-                  <span class="hm-li-t">{{ p.title }}</span><span class="hm-li-d">{{ p.date?.slice(5) }}</span>
+                  <div class="bezel-core">
+                    <span class="hm-li-t">{{ p.title }}</span><span class="hm-li-d">{{ p.date?.slice(5) }}</span>
+                  </div>
                 </router-link>
               </li>
             </ul>
@@ -144,7 +152,9 @@
             <ul class="hm-list">
               <li v-for="p in popular" :key="p.id">
                 <router-link :to="`/post/${p.slug || p.id}`">
-                  <span class="hm-li-t">{{ p.title }}</span><span class="hm-li-d">{{ p.views }}</span>
+                  <div class="bezel-core">
+                    <span class="hm-li-t">{{ p.title }}</span><span class="hm-li-d">{{ p.views }}</span>
+                  </div>
                 </router-link>
               </li>
             </ul>
