@@ -131,8 +131,12 @@ onMounted(async () => {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .year-group { padding: 16px 0 8px; }
-.year-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-.year-num { font-size: 15px; font-weight: 700; color: var(--text-bright); }
+.year-head { display: flex; align-items: baseline; gap: 14px; margin: 34px 0 14px; }
+.year-num {
+  font-size: clamp(30px, 3.4vw, 48px); font-weight: 650;
+  letter-spacing: -0.045em; line-height: 1;
+  color: var(--text-bright); font-variant-numeric: tabular-nums;
+}
 .year-count { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
 
 .year-posts { display: flex; flex-direction: column; margin-top: 8px; }

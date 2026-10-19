@@ -240,7 +240,12 @@ onMounted(async () => {
 .dim-status { color: var(--text-dim); }
 .project-desc { font-size: 12px; line-height: 1.7; color: var(--text-secondary); margin: 0 0 10px; }
 .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.ptag { font-size: 12px; color: var(--text-dim); }
+.ptag {
+  display: inline-block; font-size: 11.5px; padding: 3px 10px;
+  color: var(--pale-blue-fg); background: var(--pale-blue-bg);
+  border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent);
+  border-radius: 999px;
+}
 .ptag + .ptag::before { content: ' · '; color: var(--border-strong); }
 
 /* 联系方式 */
