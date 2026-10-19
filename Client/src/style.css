@@ -1226,7 +1226,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 }
 .hero-name {
   font-family: var(--font-sans);
-  font-size: clamp(56px, 9.2vw, 132px);
+  font-size: clamp(52px, 7.4vw, 108px);
   line-height: 0.92; font-weight: 650;
   letter-spacing: -0.048em;
   margin: 0; color: var(--text-bright);
@@ -1684,4 +1684,54 @@ html[data-theme="midnight"] {
 @media (prefers-reduced-motion: reduce) {
   .hero-scroll-hint { animation: none; opacity: .75; }
   .hero-scroll-hint::after { animation: none; }
+}
+
+/* ============================================================
+   首屏视觉：节点网络图（2026-10-19）
+   呼应「知识库 / 网关」主题，纯 SVG + CSS，无外部图片依赖
+   ============================================================ */
+.hero-in { grid-template-columns: minmax(0, 1fr) 380px; gap: 72px; }
+
+.hero-rail {
+  flex-direction: row; flex-wrap: wrap; gap: 20px 44px;
+  border-left: none; padding-left: 0;
+  border-top: 1px solid var(--border);
+  padding-top: 22px; margin-top: 46px;
+}
+.hero-rail > div { min-width: 0; }
+.hero-rail dt { font-size: 10px; letter-spacing: .14em; }
+.hero-rail dd { font-size: 14px; }
+
+.hero-visual { position: relative; display: flex; align-items: center; justify-content: center; }
+.hero-graph { width: 100%; height: auto; max-height: 520px; overflow: visible; }
+
+.hg-rings circle { fill: none; stroke: var(--text-faint); stroke-width: .8; opacity: .55; }
+.hg-spokes line { stroke: var(--text-faint); stroke-width: .7; opacity: .3; }
+.hg-nodes circle { fill: var(--text-dim); opacity: .8; }
+.hg-core { fill: var(--accent); }
+.hg-ping {
+  fill: none; stroke: var(--accent); stroke-width: 1;
+  transform-origin: 200px 200px;
+  animation: hgPing 4.2s cubic-bezier(.2, 0, .4, 1) infinite;
+}
+@keyframes hgPing {
+  0%   { transform: scale(1);  opacity: .5; }
+  100% { transform: scale(17); opacity: 0; }
+}
+.hg-rings, .hg-spokes, .hg-nodes {
+  transform-origin: 200px 200px;
+  animation: hgDrift 30s ease-in-out infinite alternate;
+}
+@keyframes hgDrift {
+  from { transform: rotate(0deg) scale(1); }
+  to   { transform: rotate(3.2deg) scale(1.03); }
+}
+
+@media (max-width: 980px) {
+  .hero-in { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hg-rings, .hg-spokes, .hg-nodes, .hg-ping { animation: none !important; }
+  .hg-ping { opacity: 0; }
 }

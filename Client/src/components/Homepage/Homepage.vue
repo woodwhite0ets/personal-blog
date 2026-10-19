@@ -29,13 +29,6 @@
 
     <!-- ====== 首屏 Hero 带（非对称：左文 + 右信息栏）====== -->
     <section class="hero-band">
-      <svg class="hero-orn" viewBox="0 0 260 170" aria-hidden="true" focusable="false">
-        <path d="M10 158 A120 120 0 0 1 250 158" fill="none" stroke="currentColor" stroke-width="1"/>
-        <path d="M55 158 A75 75 0 0 1 205 158" fill="none" stroke="currentColor" stroke-width="1"/>
-        <path d="M95 158 A35 35 0 0 1 165 158" fill="none" stroke="currentColor" stroke-width="1"/>
-        <line x1="0" y1="158" x2="260" y2="158" stroke="currentColor" stroke-width="1"/>
-        <circle cx="130" cy="123" r="3.5" fill="currentColor"/>
-      </svg>
       <div class="hero-in">
         <div class="hero-text">
           <h1 class="hero-name" aria-label="WoodWhite"><span>W</span><span>o</span><span>o</span><span>d</span><span>W</span><span>h</span><span>i</span><span>t</span><span>e</span></h1>
@@ -45,13 +38,47 @@
             <router-link to="/forum" class="hero-btn hero-btn-solid">阅读文章</router-link>
             <a href="https://github.com" target="_blank" rel="noopener" class="hero-btn hero-btn-ghost">GitHub</a>
           </div>
+          <dl class="hero-rail">
+            <div><dt>现在</dt><dd>分布式系统与 AI 工程化</dd></div>
+            <div><dt>已发布</dt><dd>{{ totalPublished }} 篇</dd></div>
+            <div><dt>阅读</dt><dd>{{ stats.views }}</dd></div>
+            <div><dt>分类</dt><dd>{{ tags.length }}</dd></div>
+          </dl>
         </div>
-        <dl class="hero-rail">
-          <div><dt>现在</dt><dd>分布式系统与 AI 工程化</dd></div>
-          <div><dt>已发布</dt><dd>{{ totalPublished }} 篇</dd></div>
-          <div><dt>阅读</dt><dd>{{ stats.views }}</dd></div>
-          <div><dt>分类</dt><dd>{{ tags.length }}</dd></div>
-        </dl>
+        <div class="hero-visual">
+<svg class="hero-graph" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+        <g class="hg-rings">
+          <circle cx="200" cy="200" r="46" />
+          <circle cx="200" cy="200" r="92" />
+          <circle cx="200" cy="200" r="138" />
+          <circle cx="200" cy="200" r="184" />
+        </g>
+        <g class="hg-spokes">
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(0 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(30 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(60 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(90 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(120 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(150 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(180 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(210 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(240 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(270 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(300 200 200)" />
+          <line x1="200" y1="200" x2="200" y2="16" transform="rotate(330 200 200)" />
+        </g>
+        <g class="hg-nodes">
+          <circle cx="314.4" cy="277.2" r="3.2" />
+          <circle cx="123.7" cy="251.4" r="2.6" />
+          <circle cx="102.5" cy="44.0" r="2.6" />
+          <circle cx="273.1" cy="83.0" r="3.2" />
+          <circle cx="238.3" cy="380.0" r="2.2" />
+          <circle cx="155.8" cy="187.3" r="2.2" />
+        </g>
+        <circle class="hg-core" cx="200" cy="200" r="4" />
+        <circle class="hg-ping" cx="200" cy="200" r="4" />
+      </svg>
+        </div>
       </div>
       <div class="hero-scroll-hint" aria-hidden="true">Scroll</div>
     </section>
