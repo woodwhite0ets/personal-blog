@@ -54,24 +54,27 @@
 
       <!-- 排序切换 -->
       <div class="sort-bar">
-        <span class="sort-label">排序:</span>
-        <button
-          class="sort-btn"
-          :class="{ active: sortMode === 'latest' }"
-          @click="switchSort('latest')"
-        >最新</button>
-        <button
-          class="sort-btn"
-          :class="{ active: sortMode === 'popular' }"
-          @click="switchSort('popular')"
-        >热门</button>
+        <span class="sort-count">共 {{ totalPosts }} 篇</span>
+        <div class="sort-group">
+          <span class="sort-label">排序</span>
+          <button
+            class="sort-btn"
+            :class="{ active: sortMode === 'latest' }"
+            @click="switchSort('latest')"
+          >最新</button>
+          <button
+            class="sort-btn"
+            :class="{ active: sortMode === 'popular' }"
+            @click="switchSort('popular')"
+          >热门</button>
+        </div>
       </div>
         <!-- 编辑式条目列表 -->
       <div v-if="loading" class="state-box" role="status" aria-live="polite">正在加载…</div>
       <div v-else-if="error" class="state-box error" role="alert">{{ error }}</div>
       <div v-else-if="!posts.length" class="state-box" aria-live="polite">暂无文章。</div>
       <template v-else>
-        <article v-for="(p, i) in posts" :key="p.id" class="ed-entry">
+        <article v-for="(p, i) in posts" :key="p.id" class="ed-entry" :class="{ 'is-featured': i === 0 && isDefaultView }">
           <span class="deco-idx">{{ String(i + 1).padStart(2, '0') }}</span>
           <div class="ed-entry-body">
             <h3 class="ed-entry-title"><router-link :to="`/post/${p.slug || p.id}`" class="deco-link">{{ p.title }}</router-link></h3>
@@ -249,6 +252,8 @@ async function fetchContributors() {
 const hasMore = computed(() => currentPage.value < totalPages.value)
 const activeTag = computed(() => route.query.tag || '')
 const activeSearch = computed(() => route.query.search || '')
+// 默认视图（无筛选无搜索、按最新排序）才突出首篇
+const isDefaultView = computed(() => sortMode.value === 'latest' && !activeTag.value && !activeSearch.value)
 
 const clearTagLink = computed(() => {
   const query = { ...route.query }
@@ -760,4 +765,13 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 /* 统一：页面标题手写 40px */
 .hero-title { font-family: var(--font-hand); font-size: 40px; font-weight: 400; }
+/* 排序工具栏：左侧计数 + 右侧排序组（2026-10-19） */
+.sort-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 0 16px; margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.sort-count { font-size: 13px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.sort-group { display: flex; align-items: center; gap: 8px; }
+
 </style>
