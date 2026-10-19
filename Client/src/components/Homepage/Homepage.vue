@@ -34,6 +34,13 @@
           <h1 class="hero-name" aria-label="WoodWhite"><span>W</span><span>o</span><span>o</span><span>d</span><span>W</span><span>h</span><span>i</span><span>t</span><span>e</span></h1>
           <p class="hero-role">应届毕业生 · Web 全栈开发</p>
           <p class="hero-statement">写代码、做系统、记录踩过的坑。这里是我关于全栈开发、系统架构与开源实践的手记。</p>
+          <div class="hero-topics" v-if="topTags.length">
+            <router-link
+              v-for="t in topTags" :key="t.name"
+              :to="`/forum?tag=${encodeURIComponent(t.name)}`"
+              class="hero-topic"
+            >{{ t.name }}<span class="hero-topic-n">{{ t.post_count }}</span></router-link>
+          </div>
           <div class="hero-actions">
             <router-link to="/forum" class="hero-btn hero-btn-solid">阅读文章</router-link>
             <a href="https://github.com" target="_blank" rel="noopener" class="hero-btn hero-btn-ghost">GitHub</a>
@@ -99,9 +106,19 @@
       <!-- 关于 -->
       <section class="hm-sec">
         <h2 class="hm-h">关于</h2>
-        <div class="hm-about">
-          <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
-          <p class="hm-text hm-text-lead">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。喜欢把复杂的东西做简单，也喜欢把做过的事写下来。</p>
+        <div class="hm-about-grid">
+          <div class="hm-about">
+            <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
+            <p class="hm-text hm-text-lead">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。喜欢把复杂的东西做简单，也喜欢把做过的事写下来。</p>
+          </div>
+          <div class="hm-bars" v-if="tags.length">
+            <div class="bm-head">写过的方向</div>
+            <div class="hm-bar" v-for="t in topTags6" :key="t.name">
+              <span class="hm-bar-name">{{ t.name }}</span>
+              <span class="hm-bar-track"><i :style="{ width: Math.max(6, (Number(t.post_count) / maxTagCount) * 100) + '%' }"></i></span>
+              <span class="hm-bar-num">{{ t.post_count }}</span>
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -278,6 +295,10 @@ const {
 
 // 摘要纯文本化（数据库存量 excerpt 含 markdown 标记，渲染时剥离）
 const cleanExcerpt = (txt) => stripMarkdown(txt, 180)
+// 主题标签（首屏"这里写什么" + 关于区块分布图）
+const topTags = computed(() => [...tags.value].sort((a, b) => Number(b.post_count) - Number(a.post_count)).slice(0, 5))
+const topTags6 = computed(() => [...tags.value].sort((a, b) => Number(b.post_count) - Number(a.post_count)).slice(0, 6))
+const maxTagCount = computed(() => Math.max(1, ...tags.value.map(t => Number(t.post_count) || 0)))
 
 // ====== 用户菜单 ======
 const showUserMenu = ref(false)

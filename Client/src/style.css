@@ -1968,3 +1968,69 @@ html[data-theme="midnight"] .bezel-core {
   fill: var(--text-faint);
 }
 @media (prefers-reduced-motion: reduce) { .proj-svg { animation: none; } }
+
+/* ============================================================
+   首屏主题标签 + 关于区块分布图（2026-10-19）
+   目的：访客进来 3 秒内知道「这里写什么」和「写了多少」
+   ============================================================ */
+.hero-topics {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 26px 0 0;
+}
+.hero-topic {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 12px;
+  font-size: 12px; letter-spacing: -0.005em;
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--text) 3.5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: border-color .35s cubic-bezier(.32,.72,0,1),
+              color .35s cubic-bezier(.32,.72,0,1);
+}
+.hero-topic:hover { border-color: var(--text-bright); color: var(--text-bright); }
+.hero-topic-n {
+  font-size: 10.5px; font-weight: 600; color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 关于区块：左文案 + 右分布图 */
+.hm-about-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+  gap: 64px; align-items: start;
+}
+.hm-bars { display: flex; flex-direction: column; gap: 11px; }
+.bm-head {
+  font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-faint); margin-bottom: 6px;
+}
+.hm-bar {
+  display: grid; grid-template-columns: 108px 1fr 22px;
+  align-items: center; gap: 12px;
+}
+.hm-bar-name {
+  font-size: 12px; color: var(--text-secondary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.hm-bar-track {
+  height: 3px; background: color-mix(in srgb, var(--text) 7%, transparent);
+  border-radius: 999px; overflow: hidden;
+}
+.hm-bar-track i {
+  display: block; height: 100%; border-radius: 999px;
+  background: var(--text-bright);
+  animation: barGrow .8s cubic-bezier(.16,1,.3,1) both;
+}
+.hm-bar-num {
+  font-size: 11px; color: var(--text-faint); text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+@keyframes barGrow { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); } }
+
+@media (max-width: 900px) {
+  .hm-about-grid { grid-template-columns: 1fr; gap: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hm-bar-track i { animation: none; }
+}

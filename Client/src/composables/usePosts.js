@@ -76,6 +76,9 @@ export function usePosts() {
         const data = await res.json()
         tags.value = (data.tags || []).map(t => ({
           name: t.name,
+          // post_count 必须保留：首页的分布图与标签排序都依赖它（此前只映射了 size，
+          // 导致 Number(undefined) → NaN → 条形宽度失效，全部拉满）
+          post_count: Number(t.post_count) || 0,
           size: t.post_count >= 5 ? 'lg' : t.post_count >= 3 ? 'md' : t.post_count >= 2 ? 'sm' : 'xs',
         }))
       }
