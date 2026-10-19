@@ -1164,4 +1164,15 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .btn-comment-submit { position: static !important; overflow: visible !important; box-shadow: none !important; }
 .btn-comment-submit::after, .btn-comment-submit::before { display: none !important; animation: none !important; }
 .post-detail-page .btn-primary, .post-detail-page .btn { box-shadow: none !important; }
+
+/* 标签：柔和 pastel 底（minimalist-ui 规范，覆盖上面 3 处历史定义） */
+.post-tag, .post-badge {
+  display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  text-transform: none; color: var(--pale-blue-fg); background: var(--pale-blue-bg);
+  border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent);
+  border-radius: 6px; padding: 3px 10px;
+  transition: border-color .15s;
+}
+.post-tag:hover, .post-badge:hover { border-color: color-mix(in srgb, var(--pale-blue-fg) 34%, transparent); }
+
 </style>

@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import '@fontsource-variable/inter'
+import '@fontsource-variable/geist'
 import '@fontsource-variable/eb-garamond'
 import '@fontsource/noto-serif-sc/400.css'
 // 说明：未引入 noto-serif-sc/700。CJK 粗体仅少量 UI 小字使用，代价 237KB，改由浏览器合成粗体

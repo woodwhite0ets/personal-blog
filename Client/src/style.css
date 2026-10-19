@@ -455,7 +455,7 @@
 /* ===== 设计令牌（跨主题共享，与配色解耦） ===== */
 :root {
   /* 字体：阅读层比例 / 代码层自托管 JetBrains Mono / 标题层 Space Grotesk */
-  --font-sans: "Inter Variable", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-sans: "Geist Variable", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
   --font-display: var(--font-sans);
   /* 古典衬线：西文 EB Garamond + 中文思源宋体 */
@@ -478,6 +478,15 @@
 
   /* 悬浮层半透明底（hover 高亮用，替代旧 --surface-2 命名） */
   --surface-2: rgba(127, 127, 127, 0.08);
+
+  /* 标签柔和底色（minimalist-ui：强调色只用于标签/行内代码，用褪色 pastel） */
+  --pale-red-bg: #FDEBEC;    --pale-red-fg: #9F2F2D;
+  --pale-blue-bg: #E1F3FE;   --pale-blue-fg: #1F6C9F;
+  --pale-green-bg: #EDF3EC;  --pale-green-fg: #346538;
+  --pale-yellow-bg: #FBF3DB; --pale-yellow-fg: #956400;
+
+  /* 卡片 hover 阴影（minimalist-ui：opacity < 0.05，几乎不可见） */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 /* ===== 基础重置 ===== */
@@ -716,9 +725,12 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
 
 .tag {
   display: inline-block; padding: var(--sp-1) var(--sp-2); font-size: var(--fs-xs); line-height: 1.6;
-  color: var(--text-dim); background: var(--overlay-a4);
-  border: 1px solid var(--border-strong); border-radius: 4px;
+  color: var(--pale-blue-fg); background: var(--pale-blue-bg);
+  border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent); border-radius: 4px;
 }
+.tag:nth-child(4n+2) { color: var(--pale-green-fg); background: var(--pale-green-bg); border-color: color-mix(in srgb, var(--pale-green-fg) 14%, transparent); }
+.tag:nth-child(4n+3) { color: var(--pale-yellow-fg); background: var(--pale-yellow-bg); border-color: color-mix(in srgb, var(--pale-yellow-fg) 14%, transparent); }
+.tag:nth-child(4n+4) { color: var(--pale-red-fg); background: var(--pale-red-bg); border-color: color-mix(in srgb, var(--pale-red-fg) 14%, transparent); }
 
 /* ============================================================
    共享 Markdown 正文排版（文章详情 / 知识库 / 编辑器预览 / 网关指南共用）
@@ -1200,7 +1212,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hero-btn-ghost { border: 1px solid color-mix(in srgb, var(--bg) 28%, transparent); color: color-mix(in srgb, var(--bg) 90%, transparent); }
 .hero-btn-ghost:hover { border-color: color-mix(in srgb, var(--bg) 70%, transparent); }
 .hm { max-width: 1200px; margin: 0 auto; padding: 0 24px 112px; }
-.hm-sec { padding: 64px 0; border-bottom: 1px solid var(--border); }
+.hm-sec { padding: 96px 0; border-bottom: 1px solid var(--border); }
 .hm-sec-last { border-bottom: none; padding-bottom: 0; }
 .hm-h { display: flex; align-items: center; gap: 18px; margin: 0 0 26px; font-size: 15px; font-weight: 600; letter-spacing: .06em; color: var(--text-bright); }
 .hm-h::after { content: ''; flex: 1; height: 1px; background: var(--border); }
@@ -1212,7 +1224,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   border: 1px solid var(--border); border-radius: var(--radius-lg);
   transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
-.hm-feature:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: 0 4px 12px var(--shadow); }
+.hm-feature:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: var(--shadow-card); }
 .hm-feature-title { font-family: var(--font-sans); font-size: clamp(26px, 2.6vw, 36px); line-height: 1.22; font-weight: 650; letter-spacing: -0.025em; color: var(--text-bright); margin: 0 0 14px; text-wrap: balance; }
 .hm-feature:hover .hm-feature-title { color: var(--accent); }
 .hm-feature-excerpt { font-size: 17px; line-height: 1.8; color: var(--text-secondary); max-width: 68ch; margin: 0 0 14px; text-wrap: pretty; }
@@ -1225,7 +1237,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   border: 1px solid var(--border); border-radius: var(--radius-lg);
   transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
-.hm-proj:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: 0 4px 12px var(--shadow); }
+.hm-proj:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: var(--shadow-card); }
 .hm-proj-title { font-size: 19px; font-weight: 650; letter-spacing: -0.015em; color: var(--text-bright); margin: 0 0 10px; }
 .hm-proj:hover .hm-proj-title { color: var(--accent); }
 .hm-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
@@ -1235,7 +1247,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-md);
   transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
-.hm-list a:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: 0 2px 8px var(--shadow); }
+.hm-list a:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: var(--shadow-card); }
 .hm-list li:last-child a { border-bottom: 1px solid var(--border); }
 .hm-list a:hover .hm-li-t { color: var(--accent); }
 .hm-li-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
@@ -1409,3 +1421,29 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 
 /* 窄容器（认证卡片）装饰缩小，避免拥挤 */
 .deco-hero-sm::after { width: clamp(110px, 34%, 190px); height: 120px; right: -14px; top: -12px; }
+
+/* ============================================================
+   标签柔和底色 · 深色主题覆盖（minimalist-ui）
+   html[data-theme] 特异性 (0,1,1) > :root (0,1,0)，保证不被 489 行的浅色默认值盖掉
+   ============================================================ */
+html[data-theme="midnight"] {
+  --pale-red-bg: #2a1517;    --pale-red-fg: #e0a3a3;
+  --pale-blue-bg: #0f2436;   --pale-blue-fg: #8ec8ea;
+  --pale-green-bg: #14251a;  --pale-green-fg: #93c9a0;
+  --pale-yellow-bg: #2a2214; --pale-yellow-fg: #d9b975;
+}
+
+/* ============================================================
+   2026-10-19 商业极简：子页面装饰统一下线
+   （首页 .hero-band 已单独处理；这里覆盖 tags/archive/about/forum 共用的 .deco-* 系统）
+   ============================================================ */
+.deco-hero::before,
+.deco-hero::after,
+.deco-end::after,
+.deco-rule::before { content: none !important; }
+
+/* 分区标题保留一条发丝线，去掉末端双刻度装饰 */
+.deco-rule::after {
+  content: '' !important; flex: 1; height: 1px !important;
+  background: var(--border) !important;
+}
