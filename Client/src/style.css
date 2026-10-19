@@ -2034,3 +2034,78 @@ html[data-theme="midnight"] .bezel-core {
 @media (prefers-reduced-motion: reduce) {
   .hm-bar-track i { animation: none; }
 }
+
+/* ============================================================
+   首屏重排（2026-10-19 第二轮）
+   标题降到 140px（不再压场），右侧让位给「最新三篇」真实内容
+   ============================================================ */
+.hero-band { min-height: min(100dvh, 780px); }
+
+.hero-in {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 64px;
+  align-items: center;
+  padding: 72px 24px 56px;
+}
+.hero-name {
+  font-size: clamp(62px, 8.8vw, 138px);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  margin: 0 0 0 -0.03em;
+  white-space: nowrap;
+}
+.hero-role { margin-top: 30px; }
+.hero-statement { margin-top: 16px; font-size: 16px; max-width: 44ch; }
+.hero-topics { margin-top: 22px; }
+.hero-actions { margin-top: 28px; }
+.hero-rail { margin-top: 36px; padding-top: 18px; }
+
+/* 右侧：最新三篇 */
+.hero-recent {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  border-left: 1px solid var(--border);
+  padding-left: 32px;
+}
+.hr-head {
+  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--text-faint); margin-bottom: 18px;
+}
+.hr-item {
+  display: flex; flex-direction: column; gap: 5px;
+  padding: 14px 0; text-decoration: none;
+  border-top: 1px solid var(--border);
+}
+.hr-item:last-of-type { border-bottom: 1px solid var(--border); }
+.hr-title {
+  font-size: 14.5px; line-height: 1.45; color: var(--text-secondary);
+  overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
+  -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  transition: color .35s cubic-bezier(.32,.72,0,1);
+}
+.hr-item:hover .hr-title { color: var(--text-bright); }
+.hr-date {
+  font-size: 11px; color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.hr-more {
+  margin-top: 18px; font-size: 12px; color: var(--text-dim);
+  text-decoration: none; letter-spacing: .02em;
+  transition: color .35s cubic-bezier(.32,.72,0,1);
+}
+.hr-more:hover { color: var(--text-bright); }
+
+/* 雷达图退到最底层，不与最新列表争 */
+.hero-visual { opacity: .09; right: -80px; width: clamp(320px, 34vw, 460px); }
+
+@media (max-width: 1080px) {
+  .hero-in { grid-template-columns: 1fr; gap: 44px; }
+  .hero-recent { border-left: none; padding-left: 0; }
+  .hero-visual { display: none; }
+}
+
+/* 收尾微调：首屏高度与分布图标签列 */
+.hero-band { min-height: min(100dvh, 752px); }
+.hm-bar { grid-template-columns: 128px 1fr 20px; }
+.hm-bar-name { font-size: 11.5px; }

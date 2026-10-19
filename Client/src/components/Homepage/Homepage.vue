@@ -52,6 +52,17 @@
             <div><dt>分类</dt><dd>{{ tags.length }}</dd></div>
           </dl>
         </div>
+        <aside class="hero-recent" v-if="posts.length">
+          <div class="hr-head">最新</div>
+          <router-link
+            v-for="p in posts.slice(0, 3)" :key="p.id"
+            :to="`/post/${p.slug || p.id}`" class="hr-item"
+          >
+            <span class="hr-title">{{ p.title }}</span>
+            <span class="hr-date">{{ (p.date || '').slice(5) }}</span>
+          </router-link>
+          <router-link to="/forum" class="hr-more">全部 {{ totalPublished }} 篇</router-link>
+        </aside>
         <div class="hero-visual">
 <svg class="hero-graph" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
         <g class="hg-rings">
