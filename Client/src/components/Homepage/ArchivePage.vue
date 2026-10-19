@@ -105,21 +105,21 @@ onMounted(async () => {
 
 /* 容器：契约 1000px / 左右 24px */
 .archive-main {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
 .archive-header { padding: 64px 0 28px; }
 .archive-title {
-  font-family: var(--font-hand);
-  font-size: clamp(40px, 5vw, 64px);
-  font-weight: 400;
+  font-family: var(--font-sans);
+  font-size: clamp(44px, 5.2vw, 72px);
+  font-weight: 650;
+  letter-spacing: -0.038em;
+  line-height: 1.05;
   color: var(--text-bright);
   margin: 0;
   text-wrap: balance;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 16px;
 }
 .archive-sub { margin: 12px 0 0; font-size: 15px; color: var(--text-secondary); }
 .archive-tags-link { color: var(--accent); text-decoration: none; }
