@@ -1408,13 +1408,7 @@ html[data-theme="midnight"] .ed-entry-body {
 @media (max-width: 860px) { .band-tint .hm-proj { padding: 18px; } .band-tint .hm-proj::before { left: 18px; top: 18px; } }
 
 /* 最近 / 热门 列表：序号 */
-.hm-list { counter-reset: li; }
-.hm-list a { padding-left: 30px; }
-.hm-list li { counter-increment: li; position: relative; }
-.hm-list li::before {
-  content: counter(li, decimal-leading-zero); position: absolute; left: 0; top: 12px;
-  font-family: var(--font-hand); font-size: 15px; line-height: 1; color: var(--text-dim);
-}
+/* 列表编号：统一由 .hm-list a::before 在卡片内渲染（旧的 li::before 已下线，避免双号） */
 
 /* 关于：装饰引号（2026-10-19 已下线） */
 .hm-about { position: relative; }
@@ -1835,3 +1829,116 @@ html[data-theme="midnight"] .bezel-core {
 /* 项目卡编号下线：双层壳体已经足够承载视觉重量，外挂 01/02 反而脱节 */
 .band-tint .hm-proj { padding-left: 5px !important; }
 .band-tint .hm-proj::before { content: none !important; }
+
+/* ============================================================
+   方案 A · 极端排版（2026-10-19）
+   把标题从「放大一点的标题」变成「撑满视口的图形」
+   ============================================================ */
+.hero-in {
+  display: block;
+  padding: 88px 24px 52px;
+  position: relative;
+  max-width: 1200px;
+}
+
+/* 雷达图退为背景层，被标题压住 */
+.hero-visual {
+  position: absolute;
+  right: -56px; top: 50%;
+  transform: translateY(-50%);
+  width: clamp(360px, 42vw, 560px);
+  opacity: .14;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+}
+.hero-text { position: relative; z-index: 1; }
+
+/* 标题：撑满，行高压到 0.85，光学负缩进 */
+.hero-name {
+  font-size: clamp(80px, 15vw, 240px);
+  line-height: 0.85;
+  letter-spacing: -0.055em;
+  margin: 0 0 0 -0.035em;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+
+/* 极端对比：标题 240px → 身份 11px，比例 1:22 */
+.hero-role {
+  margin: 34px 0 0;
+  font-size: 11px;
+  letter-spacing: .18em;
+}
+.hero-statement {
+  margin: 18px 0 0;
+  font-size: 17px;
+  line-height: 1.65;
+  max-width: 46ch;
+}
+.hero-actions { margin-top: 32px; gap: 10px; }
+.hero-btn { padding: 12px 24px; font-size: 13.5px; }
+
+/* 数据条：数字放大成第二视觉层 */
+.hero-rail {
+  margin-top: 44px; padding-top: 20px;
+  gap: 16px 40px;
+}
+.hero-rail dt { font-size: 9.5px; letter-spacing: .16em; }
+.hero-rail dd {
+  font-size: 22px; font-weight: 600; letter-spacing: -0.03em;
+  line-height: 1.15; margin-top: 4px;
+}
+
+@media (max-width: 980px) {
+  .hero-name { font-size: clamp(56px, 13vw, 96px); }
+  .hero-visual { display: none; }
+}
+
+/* 极端排版微调：文字型数据保持小号，只有数字放大 */
+.hero-rail > div:first-child dd { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+.hero-role { margin-top: 44px; }
+
+/* 标题出血：与视口边缘对齐，制造"撑破"感 */
+.hero-name { margin-left: calc(-1 * clamp(0px, 0.9vw, 12px)); }
+
+/* ============================================================
+   极端排版下沉：区块标题与置顶卡也拉到同一节奏
+   ============================================================ */
+.hm-h {
+  font-size: clamp(26px, 2.8vw, 38px);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: var(--text-bright);
+  margin: 0 0 30px;
+  gap: 20px;
+}
+.hm-feature-title {
+  font-size: clamp(28px, 3.4vw, 46px);
+  line-height: 1.16;
+  letter-spacing: -0.038em;
+}
+.hm-feature-excerpt {
+  font-size: 16px;
+  max-width: 62ch;
+}
+.hm-proj-title {
+  font-size: clamp(20px, 1.8vw, 24px);
+  letter-spacing: -0.03em;
+}
+
+/* 列表序号放大成视觉节奏（01 02 03 04） */
+.hm-list { counter-reset: listno; }
+.hm-list li { counter-increment: listno; }
+.hm-list a { position: relative; }
+.hm-list a .bezel-core { padding-left: 42px; position: relative; }
+.hm-list a .bezel-core::before {
+  content: counter(listno, decimal-leading-zero);
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 11px; font-weight: 600; letter-spacing: .04em;
+  color: var(--text-faint); font-variant-numeric: tabular-nums;
+}
+
+/* 首屏高度封顶：超高/超宽视口下不出现大片空白（2400px 高时内容会浮在中间） */
+.hero-band { min-height: min(100dvh, 960px); }
