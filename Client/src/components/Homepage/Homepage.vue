@@ -53,6 +53,7 @@
           <div><dt>分类</dt><dd>{{ tags.length }}</dd></div>
         </dl>
       </div>
+      <div class="hero-scroll-hint" aria-hidden="true">Scroll</div>
     </section>
 
     <div class="hm">
@@ -194,8 +195,31 @@ function scrollToPosts() {
   document.querySelector('.main-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-onMounted(() => { document.addEventListener('click', handleClickOutside); loadExtra() })
-onUnmounted(() => document.removeEventListener('click', handleClickOutside))
+// ====== 首屏光标跟随光晕（仅精确指针设备，且尊重减少动效偏好）======
+let heroBand = null
+const onHeroMove = (e) => {
+  if (!heroBand) return
+  const r = heroBand.getBoundingClientRect()
+  if (!r.width || !r.height) return
+  heroBand.style.setProperty('--mx', (((e.clientX - r.left) / r.width) * 100).toFixed(1) + '%')
+  heroBand.style.setProperty('--my', (((e.clientY - r.top) / r.height) * 100).toFixed(1) + '%')
+  if (!heroBand.classList.contains('glow-on')) heroBand.classList.add('glow-on')
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+  loadExtra()
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (fine && !calm) {
+    heroBand = document.querySelector('.hero-band')
+    if (heroBand) heroBand.addEventListener('pointermove', onHeroMove, { passive: true })
+  }
+})
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+  if (heroBand) heroBand.removeEventListener('pointermove', onHeroMove)
+})
 
 // ====== 搜索 ======
 function toggleSearch() {
