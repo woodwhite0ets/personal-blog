@@ -114,6 +114,31 @@
           <div class="hm-2up">
             <router-link to="/about" class="hm-proj">
               <div class="bezel-core">
+      <svg class="proj-svg" viewBox="0 0 420 150" aria-hidden="true" focusable="false">
+        <g class="pv-line">
+          <rect x="14" y="52" width="86" height="46" rx="8" />
+          <rect x="150" y="38" width="120" height="74" rx="10" />
+          <rect x="320" y="14" width="86" height="32" rx="6" />
+          <rect x="320" y="59" width="86" height="32" rx="6" />
+          <rect x="320" y="104" width="86" height="32" rx="6" />
+          <path d="M100 75 H146" />
+          <path d="M270 75 C295 75 295 30 316 30" />
+          <path d="M270 75 H316" />
+          <path d="M270 75 C295 75 295 120 316 120" />
+        </g>
+        <g class="pv-dot">
+          <circle cx="270" cy="75" r="2.5" />
+          <circle cx="100" cy="75" r="2.5" />
+        </g>
+        <g class="pv-label">
+          <text x="57" y="80" text-anchor="middle">AI 客户端</text>
+          <text x="210" y="72" text-anchor="middle">mcp-gateway</text>
+          <text x="210" y="90" text-anchor="middle" class="pv-sub">鉴权 · 路由 · 审计</text>
+          <text x="363" y="34" text-anchor="middle">知识库</text>
+          <text x="363" y="79" text-anchor="middle">服务器</text>
+          <text x="363" y="124" text-anchor="middle">工具链</text>
+        </g>
+      </svg>
                 <h3 class="hm-proj-title">mcp-gateway</h3>
                 <p class="hm-text">面向知识库与服务器管理的 MCP 网关，把检索与运维能力统一提供给 AI 客户端。</p>
                 <span class="hm-tag">Node.js · MCP</span>
@@ -121,6 +146,52 @@
             </router-link>
             <router-link to="/about" class="hm-proj">
               <div class="bezel-core">
+      <svg class="proj-svg" viewBox="0 0 420 150" aria-hidden="true" focusable="false">
+        <g class="pv-grid">
+          <path d="M0 30 H420 M0 60 H420 M0 90 H420 M0 120 H420" />
+          <path d="M60 0 V150 M140 0 V150 M220 0 V150 M300 0 V150 M380 0 V150" />
+        </g>
+        <g class="pv-dots">
+          <circle cx="196" cy="94" r="2.6" />
+          <circle cx="67" cy="45" r="1.8" />
+          <circle cx="246" cy="81" r="1.8" />
+          <circle cx="216" cy="90" r="1.8" />
+          <circle cx="300" cy="85" r="1.8" />
+          <circle cx="116" cy="88" r="1.8" />
+          <circle cx="190" cy="92" r="1.8" />
+          <circle cx="277" cy="95" r="2.6" />
+          <circle cx="106" cy="48" r="1.8" />
+          <circle cx="222" cy="100" r="1.8" />
+          <circle cx="215" cy="28" r="1.8" />
+          <circle cx="153" cy="81" r="1.8" />
+          <circle cx="229" cy="87" r="1.8" />
+          <circle cx="238" cy="23" r="1.8" />
+          <circle cx="286" cy="60" r="2.6" />
+          <circle cx="203" cy="77" r="1.8" />
+          <circle cx="72" cy="76" r="1.8" />
+          <circle cx="300" cy="86" r="1.8" />
+          <circle cx="173" cy="74" r="1.8" />
+          <circle cx="363" cy="73" r="1.8" />
+          <circle cx="216" cy="23" r="1.8" />
+          <circle cx="154" cy="87" r="2.6" />
+          <circle cx="349" cy="31" r="1.8" />
+          <circle cx="254" cy="72" r="1.8" />
+          <circle cx="230" cy="83" r="1.8" />
+          <circle cx="194" cy="72" r="1.8" />
+          <circle cx="365" cy="129" r="1.8" />
+          <circle cx="210" cy="69" r="1.8" />
+          <circle cx="318" cy="75" r="2.6" />
+          <circle cx="202" cy="117" r="1.8" />
+          <circle cx="174" cy="56" r="1.8" />
+          <circle cx="266" cy="86" r="1.8" />
+          <circle cx="195" cy="78" r="1.8" />
+          <circle cx="173" cy="77" r="1.8" />
+        </g>
+        <g class="pv-label">
+          <text x="16" y="134">乐清市 · 34 站点</text>
+          <text x="404" y="134" text-anchor="end" class="pv-sub">PostGIS</text>
+        </g>
+      </svg>
                 <h3 class="hm-proj-title">乐清市充电桩分布图</h3>
                 <p class="hm-text">充电桩空间分布可视化，从 SQLite 升级到 Docker + PostGIS 架构。</p>
                 <span class="hm-tag">PostGIS · Docker</span>

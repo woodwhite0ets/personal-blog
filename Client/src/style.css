@@ -1942,3 +1942,29 @@ html[data-theme="midnight"] .bezel-core {
 
 /* 首屏高度封顶：超高/超宽视口下不出现大片空白（2400px 高时内容会浮在中间） */
 .hero-band { min-height: min(100dvh, 960px); }
+
+/* ============================================================
+   项目卡视觉（2026-10-19 方案 B：真实结构图替代纯文字）
+   ============================================================ */
+.proj-svg {
+  display: block; width: 100%; height: auto;
+  margin: 0 0 22px;
+  color: var(--text-dim);
+}
+.pv-line rect, .pv-line path {
+  fill: none; stroke: var(--border-strong); stroke-width: 1;
+}
+.pv-dot circle { fill: var(--accent); }
+.pv-grid path { stroke: var(--border); stroke-width: .8; opacity: .7; }
+.pv-dots circle { fill: var(--text-faint); }
+.pv-dots circle:nth-child(7n) { fill: var(--accent); }
+.pv-label text {
+  font-family: var(--font-sans);
+  font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
+  fill: var(--text-secondary);
+}
+.pv-label .pv-sub {
+  font-size: 11px; font-weight: 500; letter-spacing: .06em;
+  fill: var(--text-faint);
+}
+@media (prefers-reduced-motion: reduce) { .proj-svg { animation: none; } }
