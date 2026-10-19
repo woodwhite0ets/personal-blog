@@ -234,7 +234,7 @@
       <!-- 最近 / 热门 -->
       <section class="hm-sec hm-sec-last">
         <div class="hm-2up">
-          <div>
+          <div class="hm-sec--pair">
             <h2 class="hm-h">最近更新</h2>
             <ul class="hm-list">
               <li v-for="p in posts.slice(0, 4)" :key="p.id">
@@ -246,7 +246,7 @@
               </li>
             </ul>
           </div>
-          <div>
+          <div class="hm-sec--pair">
             <h2 class="hm-h">热门</h2>
             <ul class="hm-list">
               <li v-for="p in popular" :key="p.id">

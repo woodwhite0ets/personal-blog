@@ -2109,3 +2109,56 @@ html[data-theme="midnight"] .bezel-core {
 .hero-band { min-height: min(100dvh, 752px); }
 .hm-bar { grid-template-columns: 128px 1fr 20px; }
 .hm-bar-name { font-size: 11.5px; }
+
+/* ============================================================
+   打破单调（2026-10-19）
+   全站统一白底 → 每屏长得一样。加两个节奏手段：
+   ① 项目区反相为深色区块（白→白→黑→白 的段落节奏）
+   ② 区块标题前置巨大序号（结构信息，不是装饰）
+   ============================================================ */
+
+/* ① 项目区反相：直接翻转该区块内的语义 token，内部元素无需逐个改 */
+.band-tint {
+  --bg: #0B0B0B;
+  --bg-elevated: #161616;
+  --bg-deeper: #000000;
+  --text-bright: #FAFAFA;
+  --text: #E4E4E4;
+  --text-secondary: #A1A1A1;
+  --text-dim: #8A8A8A;
+  --text-muted: #7A7A7A;
+  --text-faint: #6B6B6B;
+  --border: #262626;
+  --border-strong: #3E3E3E;
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.55);
+  --pale-blue-bg: #10243a;
+  --pale-blue-fg: #9BC9EF;
+  background: var(--bg);
+  border-top: none;
+  border-bottom: none;
+}
+.band-tint .bezel-core {
+  box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 7%, transparent);
+}
+.band-tint .hm-bar-track { background: color-mix(in srgb, #fff 10%, transparent); }
+.band-tint .hm-bar-track i { background: var(--text-bright); }
+
+/* ② 区块序号：01 02 03 04，编码阅读顺序 */
+.hm { counter-reset: hmsec; }
+.hm-sec { counter-increment: hmsec; }
+.hm-h::before {
+  content: counter(hmsec, decimal-leading-zero);
+  font-size: 11px; font-weight: 600; letter-spacing: .12em;
+  color: var(--text-faint); font-variant-numeric: tabular-nums;
+  margin-right: 2px; align-self: center;
+}
+
+/* /forum 标题对齐内页体系 */
+.ed-hero-title { font-size: clamp(44px, 5.2vw, 72px); font-weight: 650; letter-spacing: -0.038em; }
+
+/* 序号修正：counter 在页面级统一，避免每个 .hm 容器各自从 01 重数 */
+.home-page { counter-reset: hmsec; }
+.hm { counter-reset: none; }
+/* 「最近更新 / 热门」是同一屏的并列两栏，不各自占一个序号 */
+.hm-sec--pair { counter-increment: none; }
+.hm-sec--pair .hm-h::before { content: none; }
