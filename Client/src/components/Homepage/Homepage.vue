@@ -109,7 +109,7 @@
           <div class="bezel-core">
             <h3 class="hm-feature-title">{{ pinnedPost.title }}</h3>
             <p class="hm-feature-excerpt">{{ cleanExcerpt(pinnedPost.excerpt) }}</p>
-            <p class="hm-meta">{{ pinnedPost.date }} · {{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次阅读</p>
+            <p class="hm-meta"><time>{{ pinnedPost.date }}</time><span class="meta-minor">{{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次</span></p>
           </div>
         </router-link>
       </section>

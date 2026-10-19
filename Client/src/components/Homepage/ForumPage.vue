@@ -79,7 +79,7 @@
           <div class="ed-entry-body">
             <h3 class="ed-entry-title"><router-link :to="`/post/${p.slug || p.id}`" class="deco-link">{{ p.title }}</router-link></h3>
             <p class="ed-entry-excerpt">{{ stripMarkdown(p.excerpt, 160) }}</p>
-            <p class="ed-entry-meta">{{ p.date }} · {{ p.read_time }} · {{ p.views || 0 }} 次阅读</p>
+            <p class="ed-entry-meta"><time>{{ p.date }}</time><span class="meta-minor">{{ p.read_time }} · {{ p.views || 0 }} 次</span></p>
           </div>
         </article>
         <button v-if="hasMore" class="ed-more-btn" :disabled="loadingMore" @click="loadMore">
