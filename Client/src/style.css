@@ -2203,3 +2203,129 @@ body::after {
     radial-gradient(1150px 680px at 86% -14%, rgba(47, 74, 115, 0.16), transparent 62%),
     radial-gradient(900px 600px at -8% 30%, rgba(160, 140, 100, 0.13), transparent 60%);
 }
+
+/* ============================================================
+   修正（2026-10-19）
+   ① Double-Bezel 去掉：浅色低对比场景下，外层壳看起来就是「卡片套卡片」，
+      显得笨重。改回单层卡片（1px 边框 + 圆角 + hover 阴影）。
+   ② 首屏反相为深色：全站唯二的两个深色段（首屏 + 项目区）形成
+      黑 → 白 → 黑 → 白 的强节奏，而不是一条白到底。
+   ============================================================ */
+
+/* ① 单层卡片 */
+.hm-feature, .hm-proj, .hm-list a, .ed-entry {
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+.bezel-core,
+.ed-entry-body {
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  border: 1px solid var(--border);
+}
+.hm-feature .bezel-core { padding: 32px 36px; }
+.hm-proj .bezel-core { padding: 26px 28px; }
+.hm-list a .bezel-core { padding: 13px 16px 13px 42px; border-radius: var(--radius-sm); }
+.ed-entry-body { padding: 26px 30px; }
+.ed-entry.is-featured .ed-entry-body { padding: 34px 38px; }
+.hm-feature:hover .bezel-core,
+.hm-proj:hover .bezel-core,
+.hm-list a:hover .bezel-core,
+.ed-entry:hover .ed-entry-body {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-card);
+}
+.hm-list a .bezel-core::before { left: 15px; }
+
+/* ② 首屏深色段 */
+.hero-band {
+  --bg: #0B0B0B;
+  --bg-elevated: #161616;
+  --text-bright: #FAFAFA;
+  --text: #E4E4E4;
+  --text-secondary: #A1A1A1;
+  --text-dim: #8A8A8A;
+  --text-faint: #6B6B6B;
+  --border: #262626;
+  --border-strong: #3E3E3E;
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.55);
+  background: var(--bg);
+  border-bottom: none;
+}
+.hero-band::after { background: var(--border); }
+.hero .hero-name, .hero-name { color: var(--text-bright); }
+.hr-item, .hr-item:last-of-type { border-color: var(--border); }
+.hr-title { color: var(--text-secondary); }
+.hr-item:hover .hr-title { color: #FFF; }
+.hero-topic {
+  background: color-mix(in srgb, #fff 5%, transparent);
+  border-color: color-mix(in srgb, #fff 11%, transparent);
+  color: var(--text-secondary);
+}
+.hero-topic:hover { border-color: #FFF; color: #FFF; }
+.hero-visual { opacity: .16; color: #FFF; }
+.hg-rings circle { stroke: #FFF; opacity: .18; }
+.hg-spokes line { stroke: #FFF; opacity: .1; }
+.hg-nodes circle { fill: #FFF; opacity: .35; }
+.hg-core { fill: #FFF; }
+.hg-ping { stroke: #FFF; }
+
+/* ============================================================
+   双主题对齐（2026-10-19）
+   问题：首屏与项目区的「深浅对比段」是按 paper 硬编码成深色的。
+   切到 midnight（本身就是深站）后，深色段与背景同色，节奏消失。
+   解决：把对比段做成「反相段」—— paper 下为深色，midnight 下翻为浅色，
+   两个主题各自都有黑/白段落节奏，方向相反。
+   ============================================================ */
+
+/* 对比段统一入口（原先散在 .hero-band / .band-tint 上） */
+.hero-band, .band-tint {
+  --bg: #0B0B0B;
+  --bg-elevated: #161616;
+  --bg-deeper: #000000;
+  --text-bright: #FAFAFA;
+  --text: #E4E4E4;
+  --text-secondary: #A1A1A1;
+  --text-dim: #8A8A8A;
+  --text-muted: #7A7A7A;
+  --text-faint: #6B6B6B;
+  --border: #262626;
+  --border-strong: #3E3E3E;
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, .55);
+  --pale-blue-bg: #10243a;
+  --pale-blue-fg: #9BC9EF;
+  --ink: #FFFFFF;            /* 图形描边色（雷达图等） */
+  background: var(--bg);
+}
+
+/* midnight：反相为浅色段 */
+[data-theme="midnight"] .hero-band,
+[data-theme="midnight"] .band-tint {
+  --bg: #F4F4F2;
+  --bg-elevated: #FFFFFF;
+  --bg-deeper: #EDEDEA;
+  --text-bright: #0A0A0A;
+  --text: #262626;
+  --text-secondary: #4F4F4F;
+  --text-dim: #6F6F6F;
+  --text-muted: #7C7C7C;
+  --text-faint: #9A9A9A;
+  --border: #E2E2DE;
+  --border-strong: #CFCFC9;
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, .07);
+  --pale-blue-bg: #E1F3FE;
+  --pale-blue-fg: #1F6C9F;
+  --ink: #0A0A0A;
+}
+
+/* 图形与按钮改用 --ink，两个主题自动跟随 */
+.hero-band .hg-rings circle { stroke: var(--ink); opacity: .2; }
+.hero-band .hg-spokes line { stroke: var(--ink); opacity: .11; }
+.hero-band .hg-nodes circle { fill: var(--ink); opacity: .4; }
+.hero-band .hg-core { fill: var(--ink); }
+.hero-band .hg-ping { stroke: var(--ink); }
+.hero-band .hr-item:hover .hr-title { color: var(--ink); }
+.hero-band .hero-topic { border-color: color-mix(in srgb, var(--ink) 14%, transparent); }
+.hero-band .hero-topic:hover { border-color: var(--ink); color: var(--ink); }
