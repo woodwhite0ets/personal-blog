@@ -2162,3 +2162,44 @@ html[data-theme="midnight"] .bezel-core {
 /* 「最近更新 / 热门」是同一屏的并列两栏，不各自占一个序号 */
 .hm-sec--pair { counter-increment: none; }
 .hm-sec--pair .hm-h::before { content: none; }
+
+/* ============================================================
+   纸张颗粒（2026-10-19）
+   站点早有 body::after 噪点，但 opacity .035 在 LCD 上几乎不可见，
+   且 body::before 的极光光斑被各页面容器的 background 遮住了。
+   这里加强颗粒并把光斑下沉到页面容器上。
+   ============================================================ */
+body::after {
+  opacity: 0.06;
+  background-size: 120px 120px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[data-theme='paper'] body::after { opacity: 0.065; }
+[data-theme='midnight'] body::after { opacity: 0.045; }
+
+/* 极光光斑：直接铺在页面容器上，避免被容器 background 遮挡 */
+.home-page, .forum-page, .tags-page, .archive-page, .about-page {
+  background-image:
+    radial-gradient(1100px 640px at 84% -12%, var(--aurora-1), transparent 60%),
+    radial-gradient(820px 560px at -6% 34%, var(--aurora-2), transparent 58%);
+}
+
+/* 颗粒可见度：纯叠加在白底上几乎看不出，改用 multiply 压暗 */
+body::after {
+  opacity: 0.17;
+  mix-blend-mode: multiply;
+}
+[data-theme='midnight'] body::after {
+  opacity: 0.09;
+  mix-blend-mode: screen;
+}
+/* 极光光斑加强：0.10 的深蓝在纸底上过于含蓄 */
+[data-theme='paper'] .home-page,
+[data-theme='paper'] .forum-page,
+[data-theme='paper'] .tags-page,
+[data-theme='paper'] .archive-page,
+[data-theme='paper'] .about-page {
+  background-image:
+    radial-gradient(1150px 680px at 86% -14%, rgba(47, 74, 115, 0.16), transparent 62%),
+    radial-gradient(900px 600px at -8% 30%, rgba(160, 140, 100, 0.13), transparent 60%);
+}
