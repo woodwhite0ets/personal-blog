@@ -50,6 +50,35 @@ const QUERIES = [
   `topic:agent created:>${daysAgo(120)} stars:>${MIN_STARS}`,
 ];
 
+// ====== 极客向：门槛更低、主题更硬核，单独标记，供「极客榜」使用 ======
+const GEEK_MIN_STARS = 120;
+const GEEK_MAX_STARS = 8000;   // 上界：把巨无霸排除在极客池之外
+const GEEK_MAX = 80;
+const GEEK_TOPICS = [
+  'homelab', 'selfhosted', 'self-hosted', 'cli', 'tui', 'terminal', 'neovim', 'dotfiles',
+  'reverse-engineering', 'low-level', 'emulator', 'retrocomputing', 'emulation',
+  'embedded', 'firmware', 'kernel', 'compiler', 'zig', 'nixos', 'wasm', 'keyboard',
+  'raspberry-pi', 'esp32', 'arduino', 'fpga', 'home-assistant', 'self-hosting', 'tinylm',
+];
+const GEEK_QUERIES = [
+  `topic:homelab stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
+  `topic:selfhosted stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
+  `topic:cli stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(60)}`,
+  `topic:tui stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
+  `topic:terminal stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
+  `topic:neovim stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(60)}`,
+  `topic:reverse-engineering stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
+  `topic:emulator stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
+  `topic:embedded stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
+  `topic:compiler stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
+  `topic:zig stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
+  `topic:nixos stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
+  `topic:wasm stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
+  `topic:esp32 stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
+  `topic:fpga stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
+  `language:zig stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
+];
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function ghSearch(q, attempt = 0) {
@@ -160,13 +189,18 @@ async function main() {
   console.log(`[collect] 目标日期 ${stamp}，${QUERIES.length} 个查询`);
   const map = new Map();
 
-  for (const q of QUERIES) {
+  const jobs = [
+    ...QUERIES.map((q) => ({ q, min: MIN_STARS, geek: false })),
+    ...GEEK_QUERIES.map((q) => ({ q, min: GEEK_MIN_STARS, geek: true })),
+  ];
+  for (const job of jobs) {
+    const q = job.q;
     try {
       const items = await ghSearch(q);
       let added = 0;
       for (const r of items) {
         if (!r || r.fork || r.archived) continue;
-        if ((r.stargazers_count || 0) < MIN_STARS) continue;
+        if ((r.stargazers_count || 0) < job.min) continue;
         if (r.owner?.login === 'renovate') continue;
         if (map.has(r.full_name)) continue;
         map.set(r.full_name, {
@@ -180,6 +214,7 @@ async function main() {
           repo_created: r.created_at || null,
           topics: (r.topics || []).slice(0, 6).join(','),
           pushed_at: r.pushed_at || null,
+          is_geek: job.geek ? 1 : 0,
         });
         added += 1;
       }
@@ -190,7 +225,13 @@ async function main() {
     await sleep(GH_TOKEN ? 1500 : 6500);
   }
 
-  let repos = [...map.values()].sort((a, b) => b.stars - a.stars).slice(0, MAX_CANDIDATES);
+  const all = [...map.values()];
+  const geekAll = all.filter((r) => r.is_geek).sort((a, b) => b.stars - a.stars);
+  const mainAll = all.filter((r) => !r.is_geek).sort((a, b) => b.stars - a.stars);
+  let repos = [
+    ...mainAll.slice(0, MAX_CANDIDATES),
+    ...geekAll.slice(0, GEEK_MAX),
+  ];
   console.log(`[collect] 候选 ${repos.length} 个`);
 
   if (!noLlm) {

@@ -286,5 +286,225 @@ router.get('/analysis', async (req, res) => {
     res.status(500).json({ message: 'internal server error' });
   }
 });
+// ====== GET /api/ai-daily/insights — 榜单侧写（语言/主题/新鲜度/异动）======
+// 全部基于观察窗口内的快照，不引入外部数据源。
+router.get('/insights', async (req, res) => {
+  try {
+    const parsed = parseInt(req.query.days, 10);
+    const days = Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, ANALYSIS_MAX_DAYS) : 7;
+    const date = await resolveDate(null);
+    if (!date) return res.json({ date: null, days, message: '榜单尚未生成' });
+
+    const [rows] = await pool.query(
+      `SELECT snapshot_date, rank_no, repo, language, topics, stars, star_gain, first_seen
+       FROM ai_daily_items
+       WHERE snapshot_date > DATE_SUB(?, INTERVAL ? DAY) AND snapshot_date <= ?
+       ORDER BY snapshot_date ASC`,
+      [date, days, date]
+    );
+
+    const dayOf = (v) => (v instanceof Date ? v.toISOString().slice(0, 10) : String(v).slice(0, 10));
+    const repos = new Map();
+    const perDay = new Map();
+
+    for (const r of rows) {
+      const d = dayOf(r.snapshot_date);
+      if (!perDay.has(d)) perDay.set(d, { date: d, items: 0, gain: 0, repos: new Set() });
+      const day = perDay.get(d);
+      day.items += 1;
+      day.gain += Number(r.star_gain) || 0;
+      day.repos.add(r.repo);
+
+      const cur = repos.get(r.repo) || {
+        repo: r.repo, language: r.language || '', topics: r.topics || '',
+        stars: 0, gain: 0, appearances: 0, firstRank: null, lastRank: null,
+        bestDayGain: 0, bestDayDate: d, firstSeen: r.first_seen ? dayOf(r.first_seen) : null,
+      };
+      cur.stars = Math.max(cur.stars, Number(r.stars) || 0);
+      cur.gain += Number(r.star_gain) || 0;
+      cur.appearances += 1;
+      if (cur.firstRank === null) cur.firstRank = r.rank_no;
+      cur.lastRank = r.rank_no;
+      const g = Number(r.star_gain) || 0;
+      if (g > cur.bestDayGain) { cur.bestDayGain = g; cur.bestDayDate = d; }
+      if (!cur.language && r.language) cur.language = r.language;
+      repos.set(r.repo, cur);
+    }
+
+    const list = [...repos.values()].map((it) => ({
+      ...it,
+      momentumPct: it.stars > 0 ? Number(((it.gain / it.stars) * 100).toFixed(2)) : 0,
+      rankDelta: it.firstRank !== null && it.lastRank !== null ? it.firstRank - it.lastRank : 0,
+    }));
+
+    // 语言分布
+    const langMap = new Map();
+    for (const it of list) {
+      const key = it.language || '未标注';
+      const cur = langMap.get(key) || { language: key, count: 0, gain: 0, momentumSum: 0 };
+      cur.count += 1;
+      cur.gain += it.gain;
+      cur.momentumSum += it.momentumPct;
+      langMap.set(key, cur);
+    }
+    const languages = [...langMap.values()]
+      .map((l) => ({ ...l, avgMomentumPct: Number((l.momentumSum / l.count).toFixed(2)), momentumSum: undefined }))
+      .sort((a, b) => b.count - a.count || b.gain - a.gain)
+      .slice(0, 8);
+
+    // 主题标签
+    const topicMap = new Map();
+    for (const it of list) {
+      for (const t of (it.topics || '').split(',').map((x) => x.trim()).filter(Boolean)) {
+        const cur = topicMap.get(t) || { topic: t, count: 0, gain: 0 };
+        cur.count += 1;
+        cur.gain += it.gain;
+        topicMap.set(t, cur);
+      }
+    }
+    const topics = [...topicMap.values()]
+      .sort((a, b) => b.count - a.count || b.gain - a.gain)
+      .slice(0, 10);
+
+    // 新鲜度：按「首次出现日期」分组统计，避免早期数据不足时出现 100% 的误导
+    const windowStart = new Date(new Date(date + 'T00:00:00Z').getTime() - days * 86400000)
+      .toISOString().slice(0, 10);
+    const freshMap = new Map();
+    for (const it of list) {
+      if (!it.firstSeen) continue;
+      freshMap.set(it.firstSeen, (freshMap.get(it.firstSeen) || 0) + 1);
+    }
+    const firstSeenDaily = [...freshMap.entries()]
+      .map(([d, count]) => ({ date: d, count }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+    const freshRepos = list.filter((it) => it.firstSeen && it.firstSeen >= windowStart);
+    const [[archiveRow]] = await pool.query('SELECT MIN(snapshot_date) AS d FROM ai_daily_items');
+    const archiveStart = archiveRow && archiveRow.d
+      ? (archiveRow.d instanceof Date ? archiveRow.d.toISOString().slice(0, 10) : String(archiveRow.d).slice(0, 10))
+      : null;
+    const daily = [...perDay.values()]
+      .map((d) => ({ date: d.date, items: d.items, gain: d.gain, repos: d.repos.size }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    const risers = [...list]
+      .filter((it) => it.rankDelta !== 0)
+      .sort((a, b) => b.rankDelta - a.rankDelta)
+      .slice(0, 5)
+      .map((it) => ({ repo: it.repo, from: it.firstRank, to: it.lastRank, delta: it.rankDelta }));
+
+    const fastGainers = [...list]
+      .sort((a, b) => b.momentumPct - a.momentumPct)
+      .slice(0, 5)
+      .map((it) => ({ repo: it.repo, momentumPct: it.momentumPct, gain: it.gain, stars: it.stars }));
+
+    const slowest = [...list]
+      .filter((it) => it.appearances >= 2)
+      .sort((a, b) => a.momentumPct - b.momentumPct)
+      .slice(0, 5)
+      .map((it) => ({ repo: it.repo, momentumPct: it.momentumPct, gain: it.gain, stars: it.stars }));
+
+    const streaks = [...list]
+      .sort((a, b) => b.appearances - a.appearances || b.gain - a.gain)
+      .slice(0, 5)
+      .map((it) => ({ repo: it.repo, appearances: it.appearances, gain: it.gain }));
+
+    const biggestDay = list.reduce(
+      (best, it) => (it.bestDayGain > (best?.bestDayGain || 0) ? it : best),
+      null
+    );
+
+    res.json({
+      date,
+      days,
+      archiveStart,
+      windowStart,
+      totals: {
+        snapshots: daily.length,
+        distinctRepos: list.length,
+        freshRepos: freshRepos.length,
+        freshRatioPct: list.length ? Number(((freshRepos.length / list.length) * 100).toFixed(1)) : 0,
+        totalGain: list.reduce((s, it) => s + it.gain, 0),
+      },
+      daily,
+      firstSeenDaily,
+      languages,
+      topics,
+      risers,
+      fastGainers,
+      slowest,
+      streaks,
+      biggestDay: biggestDay
+        ? { repo: biggestDay.repo, gain: biggestDay.bestDayGain, date: biggestDay.bestDayDate }
+        : null,
+    });
+  } catch (err) {
+    console.error('ai-daily insights error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+// ====== GET /api/ai-daily/geek — 极客项目池 ======
+// 数据来自观察池（ai_repo_seen）：极客向查询（homelab/tui/embedded/zig/fpga…）收集，
+// 星数限制在 GEEK 区间内，按最近一次采集的日增速排序。
+const GEEK_MIN = 120;
+const GEEK_MAX = 8000;
+const GEEK_LIMIT = 15;
+
+router.get('/geek', async (req, res) => {
+  try {
+    const parsed = parseInt(req.query.limit, 10);
+    const limit = Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, 40) : GEEK_LIMIT;
+
+    const [[latest]] = await pool.query(
+      'SELECT MAX(last_seen) AS d FROM ai_repo_seen WHERE is_geek = 1'
+    );
+    if (!latest || !latest.d) {
+      return res.json({ date: null, items: [], message: '极客池还没有数据（等采集任务跑一次）' });
+    }
+    const lastSeen = latest.d instanceof Date
+      ? latest.d.toISOString().slice(0, 10)
+      : String(latest.d).slice(0, 10);
+
+    const [rows] = await pool.query(
+      `SELECT repo, name, url, desc_zh, desc_en, language, topics, stars, prev_stars,
+              forks, repo_created, first_seen, last_seen
+       FROM ai_repo_seen
+       WHERE is_geek = 1 AND stars BETWEEN ? AND ? AND last_seen >= DATE_SUB(?, INTERVAL 7 DAY)`,
+      [GEEK_MIN, GEEK_MAX, lastSeen]
+    );
+
+    const today = new Date(lastSeen + 'T00:00:00Z');
+    const items = rows.map((r) => {
+      const stars = Number(r.stars) || 0;
+      const gain = Math.max(0, stars - (Number(r.prev_stars) || 0));
+      const ageDays = r.repo_created
+        ? Math.max(0, Math.round((today - new Date(String(r.repo_created).slice(0, 10) + 'T00:00:00Z')) / 86400000))
+        : null;
+      return {
+        repo: r.repo,
+        name: r.name || r.repo.split('/')[1] || r.repo,
+        url: r.url || ('https://github.com/' + r.repo),
+        desc: r.desc_zh || r.desc_en || '',
+        language: r.language || '',
+        topics: r.topics || '',
+        stars,
+        gain,
+        forks: Number(r.forks) || 0,
+        momentumPct: stars > 0 ? Number(((gain / stars) * 100).toFixed(2)) : 0,
+        ageDays,
+        firstSeen: r.first_seen ? String(r.first_seen).slice(0, 10) : null,
+      };
+    }).sort((a, b) => b.momentumPct - a.momentumPct || b.gain - a.gain || b.stars - a.stars);
+
+    res.json({
+      date: lastSeen,
+      range: { minStars: GEEK_MIN, maxStars: GEEK_MAX },
+      poolSize: rows.length,
+      items: items.slice(0, limit),
+    });
+  } catch (err) {
+    console.error('ai-daily geek error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
 
 module.exports = router;

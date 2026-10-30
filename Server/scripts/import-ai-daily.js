@@ -147,11 +147,18 @@ async function main() {
     // 4) 更新观察池
     for (const r of enriched) {
       await conn.query(
-        `INSERT INTO ai_repo_seen (repo, stars, prev_stars, first_seen, last_seen, repo_created)
-         VALUES (?, ?, ?, ?, ?, ?)
+        `INSERT INTO ai_repo_seen
+           (repo, stars, prev_stars, first_seen, last_seen, repo_created,
+            name, url, desc_en, desc_zh, language, topics, forks, is_geek)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE stars = VALUES(stars), prev_stars = VALUES(prev_stars), last_seen = VALUES(last_seen),
-           repo_created = COALESCE(ai_repo_seen.repo_created, VALUES(repo_created))`,
-        [r.repo, r.stars, r.prev_stars, r.first_seen, snapshotDate, r.repo_created || null]
+           repo_created = COALESCE(ai_repo_seen.repo_created, VALUES(repo_created)),
+           name = VALUES(name), url = VALUES(url), desc_en = VALUES(desc_en), desc_zh = VALUES(desc_zh),
+           language = VALUES(language), topics = VALUES(topics), forks = VALUES(forks), is_geek = VALUES(is_geek)`,
+        [
+          r.repo, r.stars, r.prev_stars, r.first_seen, snapshotDate, r.repo_created || null,
+          r.name, r.url, r.desc_en, r.desc_zh, r.language, r.topics, r.forks || 0, r.is_geek ? 1 : 0,
+        ]
       );
     }
 

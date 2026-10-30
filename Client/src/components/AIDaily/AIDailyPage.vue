@@ -24,6 +24,14 @@
             type="button" role="tab" class="ad-view" :class="{ active: view === 'analysis' }"
             :aria-selected="view === 'analysis'" @click="switchView('analysis')"
           >潜力与成熟</button>
+          <button
+            type="button" role="tab" class="ad-view" :class="{ active: view === 'insights' }"
+            :aria-selected="view === 'insights'" @click="switchView('insights')"
+          >榜单侧写</button>
+          <button
+            type="button" role="tab" class="ad-view" :class="{ active: view === 'geek' }"
+            :aria-selected="view === 'geek'" @click="switchView('geek')"
+          >极客池</button>
         </div>
 
         <div v-if="view === 'today'" class="ad-meta">
@@ -43,6 +51,116 @@
           <span v-if="updatedAtText" class="ad-updated">更新于 {{ updatedAtText }}</span>
         </div>
       </header>
+
+      <!-- 极客池 -->
+      <section v-if="view === 'geek'" class="ad-analysis">
+        <p class="ad-analysis-note">
+          极客池走的是另一套采集：homelab / tui / embedded / zig / fpga / reverse-engineering 这类硬核主题，
+          星数限制在 {{ geek.range ? formatNumber(geek.range.minStars) + '–' + formatNumber(geek.range.maxStars) : '120–8,000' }} 之间（把巨无霸挡在外面），
+          按最近一次采集的日增速排序。当前池内 {{ geek.poolSize || 0 }} 个，采集日期 {{ geek.date || '—' }}。
+        </p>
+
+        <div v-if="geekLoading" class="ad-state"><p class="ad-state-body">极客池加载中…</p></div>
+        <div v-else-if="geekError" class="ad-state">
+          <p class="ad-state-title">极客池没有加载出来</p>
+          <button class="ad-retry" type="button" @click="loadGeek(true)">重新加载</button>
+        </div>
+        <template v-else>
+          <ol v-if="geek.items.length" class="ad-list">
+            <li v-for="(item, i) in geek.items" :key="'g-' + item.repo" class="ad-row">
+              <span class="ad-rank" aria-hidden="true">{{ String(i + 1).padStart(2, '0') }}</span>
+              <div class="ad-body">
+                <div class="ad-line">
+                  <a class="ad-name" :href="item.url" target="_blank" rel="noopener noreferrer">{{ item.repo }}</a>
+                  <span v-if="item.language" class="ad-lang">{{ item.language }}</span>
+                  <span class="ad-stats">
+                    <span class="ad-momentum">+{{ item.momentumPct }}%</span>
+                    <span class="ad-stars">★ {{ formatNumber(item.stars) }}</span>
+                    <span class="ad-gain">+{{ formatNumber(item.gain) }}</span>
+                  </span>
+                </div>
+                <p class="ad-summary">{{ item.desc || '这个项目还没有描述。' }}</p>
+                <p class="ad-topics">
+                  <template v-if="item.topics">{{ item.topics.split(',').slice(0, 4).join(' · ') }}</template>
+                  <template v-if="item.ageDays !== null && item.ageDays !== undefined"> · 仓库 {{ item.ageDays }} 天</template>
+                  <template v-if="item.forks"> · fork {{ formatNumber(item.forks) }}</template>
+                </p>
+              </div>
+            </li>
+          </ol>
+          <p v-else class="ad-state-body">
+            极客池还是空的。采集脚本已经加了极客查询，跑过一次采集后这里会有数据。
+          </p>
+        </template>
+      </section>
+
+      <!-- 榜单侧写 -->
+      <section v-if="view === 'insights'" class="ad-analysis">
+        <p class="ad-analysis-note">
+          基于最近 {{ insights.days || 7 }} 天的快照统计：语言与主题分布、名次异动、每日增星。
+          观察窗口自 {{ insights.windowStart || '—' }} 起，榜单数据从 {{ insights.archiveStart || '—' }} 开始积累。
+        </p>
+
+        <div v-if="insightsLoading" class="ad-state"><p class="ad-state-body">侧写加载中…</p></div>
+        <div v-else-if="insightsError" class="ad-state">
+          <p class="ad-state-title">侧写没有加载出来</p>
+          <button class="ad-retry" type="button" @click="loadInsights(true)">重新加载</button>
+        </div>
+        <template v-else>
+          <div class="ad-cards">
+            <div class="ad-card"><span class="ad-card-num">{{ insights.totals.distinctRepos || 0 }}</span><span class="ad-card-label">去重仓库</span></div>
+            <div class="ad-card"><span class="ad-card-num">{{ formatNumber(insights.totals.totalGain) }}</span><span class="ad-card-label">窗口总增星</span></div>
+            <div class="ad-card"><span class="ad-card-num">{{ formatNumber(dailyAvgGain) }}</span><span class="ad-card-label">日均增星</span></div>
+            <div class="ad-card"><span class="ad-card-num">{{ insights.totals.snapshots || 0 }}</span><span class="ad-card-label">快照天数</span></div>
+          </div>
+
+          <h2 class="ad-analysis-title">语言分布<span class="ad-analysis-sub">按出现次数</span></h2>
+          <ul class="ad-bars">
+            <li v-for="l in insights.languages" :key="l.language" class="ad-bar-row">
+              <span class="ad-bar-name">{{ l.language }}</span>
+              <span class="ad-bar-track"><span class="ad-bar-fill" :style="{ width: barWidth(l.count, languagesMax) }"></span></span>
+              <span class="ad-bar-value">{{ l.count }} 个 · +{{ formatNumber(l.gain) }} · 均速 {{ l.avgMomentumPct }}%</span>
+            </li>
+          </ul>
+
+          <h2 class="ad-analysis-title">主题标签<span class="ad-analysis-sub">出现次数 / 累计增星</span></h2>
+          <p class="ad-pills">
+            <span v-for="t in insights.topics" :key="t.topic" class="ad-pill">
+              {{ t.topic }} <em>{{ t.count }}</em>
+            </span>
+          </p>
+
+          <h2 class="ad-analysis-title">名次跃升<span class="ad-analysis-sub">窗口首日 → 最新</span></h2>
+          <ul v-if="insights.risers.length" class="ad-bars">
+            <li v-for="r in insights.risers" :key="'r-' + r.repo" class="ad-bar-row">
+              <span class="ad-bar-name">{{ r.repo }}</span>
+              <span class="ad-bar-value">{{ r.from }} → {{ r.to }} · 上升 {{ r.delta }} 位</span>
+            </li>
+          </ul>
+          <p v-else class="ad-state-body">窗口内名次没有变化。</p>
+
+          <h2 class="ad-analysis-title">每日增星<span class="ad-analysis-sub">窗口内的日增总量</span></h2>
+          <ul class="ad-bars">
+            <li v-for="d in insights.daily" :key="d.date" class="ad-bar-row">
+              <span class="ad-bar-name">{{ d.date.slice(5) }}</span>
+              <span class="ad-bar-track"><span class="ad-bar-fill" :style="{ width: barWidth(d.gain, dailyMaxGain) }"></span></span>
+              <span class="ad-bar-value">+{{ formatNumber(d.gain) }} · {{ d.repos }} 个项目</span>
+            </li>
+          </ul>
+
+          <h2 class="ad-analysis-title">其他信号</h2>
+          <ul class="ad-bars">
+            <li v-for="x in insights.streaks" :key="'s-' + x.repo" class="ad-bar-row">
+              <span class="ad-bar-name">{{ x.repo }}</span>
+              <span class="ad-bar-value">连续在榜 {{ x.appearances }} 天 · +{{ formatNumber(x.gain) }}</span>
+            </li>
+            <li v-if="insights.biggestDay" class="ad-bar-row">
+              <span class="ad-bar-name">{{ insights.biggestDay.repo }}</span>
+              <span class="ad-bar-value">单日最大涨幅 +{{ formatNumber(insights.biggestDay.gain) }}（{{ insights.biggestDay.date }}）</span>
+            </li>
+          </ul>
+        </template>
+      </section>
 
       <!-- 潜力 / 成熟分析 -->
       <section v-if="view === 'analysis'" class="ad-analysis">
@@ -220,6 +338,25 @@ const criteria = computed(() => analysis.value.criteria || {})
 const analysisLoading = ref(false)
 const analysisError = ref(false)
 let analysisLoaded = false
+const insights = ref({ days: 7, totals: {}, daily: [], languages: [], topics: [], risers: [], streaks: [], biggestDay: null })
+const insightsLoading = ref(false)
+const insightsError = ref(false)
+let insightsLoaded = false
+const geek = ref({ date: null, range: null, poolSize: 0, items: [] })
+const geekLoading = ref(false)
+const geekError = ref(false)
+let geekLoaded = false
+const dailyAvgGain = computed(() => {
+  const d = insights.value.daily || []
+  if (!d.length) return 0
+  return Math.round(d.reduce((s, x) => s + x.gain, 0) / d.length)
+})
+const dailyMaxGain = computed(() => Math.max(1, ...(insights.value.daily || []).map((d) => d.gain)))
+const languagesMax = computed(() => Math.max(1, ...(insights.value.languages || []).map((l) => l.count)))
+function barWidth(value, max) {
+  const pct = Math.max(2, Math.round(((Number(value) || 0) / (max || 1)) * 100))
+  return `${Math.min(pct, 100)}%`
+}
 
 const updatedAtText = computed(() => {
   if (!updatedAt.value) return ''
@@ -304,10 +441,64 @@ async function loadAnalysis(force = false) {
   }
 }
 
+async function loadInsights(force = false) {
+  if (insightsLoaded && !force) return
+  insightsLoading.value = true
+  insightsError.value = false
+  try {
+    const res = await fetch('/api/ai-daily/insights?days=7')
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const data = await res.json()
+    insights.value = {
+      days: data.days || 7,
+      windowStart: data.windowStart || null,
+      archiveStart: data.archiveStart || null,
+      totals: data.totals || {},
+      daily: data.daily || [],
+      languages: data.languages || [],
+      topics: data.topics || [],
+      risers: data.risers || [],
+      streaks: data.streaks || [],
+      biggestDay: data.biggestDay || null,
+    }
+    insightsLoaded = true
+  } catch (err) {
+    console.error('加载榜单侧写失败:', err)
+    insightsError.value = true
+  } finally {
+    insightsLoading.value = false
+  }
+}
+
+async function loadGeek(force = false) {
+  if (geekLoaded && !force) return
+  geekLoading.value = true
+  geekError.value = false
+  try {
+    const res = await fetch('/api/ai-daily/geek?limit=15')
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const data = await res.json()
+    geek.value = {
+      date: data.date || null,
+      range: data.range || null,
+      poolSize: data.poolSize || 0,
+      items: data.items || [],
+    }
+    geekLoaded = true
+  } catch (err) {
+    console.error('加载极客池失败:', err)
+    geekError.value = true
+  } finally {
+    geekLoading.value = false
+  }
+}
+
 async function switchView(next) {
   view.value = next
   if (next === 'week') await loadWeekly()
   if (next === 'analysis') await loadAnalysis()
+  if (next === 'insights') await loadInsights()
+  if (next === 'geek') await loadGeek()
 }
 
 onMounted(async () => {
@@ -333,6 +524,44 @@ onMounted(async () => {
 .ad-momentum {
   font-variant-numeric: tabular-nums; font-weight: 600;
   color: var(--accent, #2563eb);
+}
+
+/* 侧写：数字卡与条状分布 */
+.ad-cards {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px; margin-bottom: 8px;
+}
+.ad-card {
+  border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 6px; background: transparent;
+}
+.ad-card-num {
+  font-size: 22px; font-weight: 600; letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+}
+.ad-card-label { font-size: 12px; color: var(--text-dim); letter-spacing: .04em; }
+
+.ad-bars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.ad-bar-row {
+  display: grid; grid-template-columns: 180px 1fr auto; align-items: center; gap: 14px;
+  font-size: 13px; padding: 2px 0;
+}
+.ad-bar-name { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ad-bar-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.ad-bar-fill { display: block; height: 100%; background: var(--text-dim); border-radius: 2px; }
+.ad-bar-value {
+  color: var(--text-dim); font-variant-numeric: tabular-nums; font-size: 12px;
+  white-space: nowrap;
+}
+.ad-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.ad-pill {
+  font-size: 12px; padding: 4px 10px; border: 1px solid var(--border); border-radius: 999px;
+  color: var(--text-dim);
+}
+.ad-pill em { font-style: normal; color: var(--text); margin-left: 4px; font-variant-numeric: tabular-nums; }
+@media (max-width: 720px) {
+  .ad-bar-row { grid-template-columns: 1fr; gap: 4px; }
+  .ad-bar-track { display: none; }
 }
 .ad-main { max-width: 1200px; margin: 0 auto; padding: 72px 24px 112px; }
 

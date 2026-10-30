@@ -249,6 +249,14 @@ async function runMigrations(conn) {
         \`first_seen\`   DATE          NOT NULL,
         \`last_seen\`    DATE          NOT NULL,
         \`repo_created\` DATE          DEFAULT NULL,
+        \`name\`         VARCHAR(160)  DEFAULT NULL,
+        \`url\`          VARCHAR(300)  DEFAULT NULL,
+        \`desc_en\`      VARCHAR(500)  DEFAULT NULL,
+        \`desc_zh\`      VARCHAR(300)  DEFAULT NULL,
+        \`language\`     VARCHAR(40)   DEFAULT NULL,
+        \`topics\`       VARCHAR(300)  DEFAULT NULL,
+        \`forks\`        INT UNSIGNED  NOT NULL DEFAULT 0,
+        \`is_geek\`      TINYINT(1)    NOT NULL DEFAULT 0,
         PRIMARY KEY (\`repo\`),
         KEY \`idx_last_seen\` (\`last_seen\`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
@@ -314,6 +322,14 @@ async function runMigrations(conn) {
   await addColumnIfMissing('ai_daily_items', 'repo_created', 'DATE DEFAULT NULL');
   await addColumnIfMissing('ai_daily_items', 'forks', 'INT UNSIGNED NOT NULL DEFAULT 0');
   await addColumnIfMissing('ai_repo_seen', 'repo_created', 'DATE DEFAULT NULL');
+  await addColumnIfMissing('ai_repo_seen', 'name', 'VARCHAR(160) DEFAULT NULL');
+  await addColumnIfMissing('ai_repo_seen', 'url', 'VARCHAR(300) DEFAULT NULL');
+  await addColumnIfMissing('ai_repo_seen', 'desc_en', 'VARCHAR(500) DEFAULT NULL');
+  await addColumnIfMissing('ai_repo_seen', 'desc_zh', 'VARCHAR(300) DEFAULT NULL');
+  await addColumnIfMissing('ai_repo_seen', 'language', 'VARCHAR(40) DEFAULT NULL');
+  await addColumnIfMissing('ai_repo_seen', 'topics', 'VARCHAR(300) DEFAULT NULL');
+  await addColumnIfMissing('ai_repo_seen', 'forks', 'INT UNSIGNED NOT NULL DEFAULT 0');
+  await addColumnIfMissing('ai_repo_seen', 'is_geek', 'TINYINT(1) NOT NULL DEFAULT 0');
 }
 
 // ====== 创建连接池 ======
