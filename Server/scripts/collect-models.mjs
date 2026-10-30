@@ -13,9 +13,11 @@ const stamp = new Date().toISOString().slice(0, 10);
 const OUT = outIdx >= 0 && args[outIdx + 1] ? args[outIdx + 1] : `/tmp/ai-models-${stamp}.json`;
 const API = 'https://openrouter.ai/api/v1/models';
 
+// OpenRouter 用 -1 表示「路由类/可变定价」，这类不是真实单价，统一记 null
 const perMillion = (v) => {
   const n = Number(v);
-  return Number.isFinite(n) ? Number((n * 1e6).toFixed(4)) : null;
+  if (!Number.isFinite(n) || n < 0) return null;
+  return Number((n * 1e6).toFixed(4));
 };
 
 const res = await fetch(API, { headers: { 'User-Agent': 'woodwhite-blog-model-catalog/1.0' } });

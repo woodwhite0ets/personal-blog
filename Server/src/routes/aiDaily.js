@@ -549,7 +549,7 @@ router.get('/models', async (req, res) => {
     );
     const [longest] = await pool.query(
       `SELECT ${fields} FROM ai_model_catalog
-       WHERE snapshot_date = ?
+       WHERE snapshot_date = ? AND price_completion_per_m IS NOT NULL
        ORDER BY context_length DESC, price_completion_per_m ASC LIMIT ?`,
       [date, limit]
     );
