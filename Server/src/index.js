@@ -171,6 +171,8 @@ app.get('/api/stats', async (req, res) => {
 });
 
 app.use('/api/posts',  require('./routes/posts'));
+app.use('/api/ai-daily', require('./routes/aiDaily'));
+app.use('/api/notes', require('./routes/notes'));
 app.use('/api/users',  require('./routes/users'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/admin',  require('./routes/admin'));
