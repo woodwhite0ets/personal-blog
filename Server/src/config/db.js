@@ -148,7 +148,10 @@ async function ensureDatabase() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
+  // 初次建库后同样跑一遍增量迁移，保证新表（如 AI 项目榜）不只在已有库上创建
+  await runMigrations(initConn);
   await initConn.end();
+
   console.log('[db] tables created successfully');
   console.log('[db] create your admin account via the registration page');
 }
@@ -233,6 +236,84 @@ async function runMigrations(conn) {
     console.log('[db] migration: adding users.register_ip');
     await conn.query("ALTER TABLE `users` ADD COLUMN `register_ip` VARCHAR(45) DEFAULT NULL");
   }
+
+  // ====== AI 项目榜（每日榜单）======
+  // ai_repo_seen：观察池，保存每个仓库最近一次看到的 star，用来算日增
+  if (!existing.includes('ai_repo_seen')) {
+    console.log('[db] migration: creating ai_repo_seen table');
+    await conn.query(`
+      CREATE TABLE \`ai_repo_seen\` (
+        \`repo\`         VARCHAR(160)  NOT NULL,
+        \`stars\`        INT UNSIGNED  NOT NULL DEFAULT 0,
+        \`prev_stars\`   INT UNSIGNED  NOT NULL DEFAULT 0,
+        \`first_seen\`   DATE          NOT NULL,
+        \`last_seen\`    DATE          NOT NULL,
+        \`repo_created\` DATE          DEFAULT NULL,
+        PRIMARY KEY (\`repo\`),
+        KEY \`idx_last_seen\` (\`last_seen\`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  }
+
+  // post_related：语义相关文章（工作站算好推过来，替代标签重叠的粗糙推荐）
+  if (!existing.includes('post_related')) {
+    console.log('[db] migration: creating post_related table');
+    await conn.query(`
+      CREATE TABLE \`post_related\` (
+        \`post_slug\`     VARCHAR(200)  NOT NULL,
+        \`related_slug\`  VARCHAR(200)  NOT NULL,
+        \`rank_no\`       TINYINT       NOT NULL DEFAULT 1,
+        \`score\`         DECIMAL(6,4)  DEFAULT NULL,
+        \`updated_at\`    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (\`post_slug\`, \`related_slug\`),
+        KEY \`idx_post_rank\` (\`post_slug\`, \`rank_no\`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  }
+
+  // ai_daily_items：每日榜单快照（date + rank 唯一）
+  if (!existing.includes('ai_daily_items')) {
+    console.log('[db] migration: creating ai_daily_items table');
+    await conn.query(`
+      CREATE TABLE \`ai_daily_items\` (
+        \`id\`             INT UNSIGNED      NOT NULL AUTO_INCREMENT,
+        \`snapshot_date\`  DATE              NOT NULL,
+        \`rank_no\`        TINYINT UNSIGNED  NOT NULL,
+        \`repo\`           VARCHAR(160)      NOT NULL,
+        \`name\`           VARCHAR(160)      NOT NULL,
+        \`url\`            VARCHAR(300)      NOT NULL,
+        \`desc_en\`        VARCHAR(500)      DEFAULT '',
+        \`desc_zh\`        VARCHAR(300)      DEFAULT '',
+        \`language\`       VARCHAR(40)       DEFAULT '',
+        \`stars\`          INT UNSIGNED      NOT NULL DEFAULT 0,
+        \`star_gain\`      INT               NOT NULL DEFAULT 0,
+        \`topics\`         VARCHAR(300)      DEFAULT '',
+        \`first_seen\`     DATE              DEFAULT NULL,
+        \`pushed_at\`      DATETIME          DEFAULT NULL,
+        \`repo_created\`   DATE              DEFAULT NULL,
+        \`forks\`          INT UNSIGNED      NOT NULL DEFAULT 0,
+        \`created_at\`     DATETIME          NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (\`id\`),
+        UNIQUE KEY \`uk_date_repo\` (\`snapshot_date\`, \`repo\`),
+        KEY \`idx_date_rank\` (\`snapshot_date\`, \`rank_no\`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  }
+
+  // ====== 增量补列：仓库年龄/分叉数（潜力榜与成熟榜需要）======
+  const addColumnIfMissing = async (table, column, definition) => {
+    const [cols] = await conn.query(
+      'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?',
+      [table, column]
+    );
+    if (cols.length === 0) {
+      console.log(`[db] migration: ${table}.${column} added`);
+      await conn.query(`ALTER TABLE \`${table}\` ADD COLUMN \`${column}\` ${definition}`);
+    }
+  };
+  await addColumnIfMissing('ai_daily_items', 'repo_created', 'DATE DEFAULT NULL');
+  await addColumnIfMissing('ai_daily_items', 'forks', 'INT UNSIGNED NOT NULL DEFAULT 0');
+  await addColumnIfMissing('ai_repo_seen', 'repo_created', 'DATE DEFAULT NULL');
 }
 
 // ====== 创建连接池 ======
@@ -246,6 +327,8 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   charset: 'utf8mb4',
+  // DATE 按字符串返回，避免 Date 对象在 UTC+8 下被 toISOString 折算成前一天
+  dateStrings: ['DATE'],
 });
 
 module.exports = pool;
