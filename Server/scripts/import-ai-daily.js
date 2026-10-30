@@ -159,7 +159,7 @@ async function main() {
            name = VALUES(name), url = VALUES(url), desc_en = VALUES(desc_en), desc_zh = VALUES(desc_zh),
            language = VALUES(language), topics = VALUES(topics), forks = VALUES(forks), is_geek = VALUES(is_geek)`,
         [
-          r.repo, r.stars, r.prev_stars, r.first_seen, snapshotDate, r.repo_created || null,
+          r.repo, r.stars, r.prev_stars, r.first_seen, snapshotDate, toDateOnly(r.repo_created),
           r.name, r.url, r.desc_en, r.desc_zh, r.language, r.topics, r.forks || 0, r.is_geek ? 1 : 0,
         ]
       );
