@@ -70,7 +70,7 @@
           <button class="ad-retry" type="button" @click="loadModels(true)">重新加载</button>
         </div>
         <template v-else>
-          <h2 class="ad-analysis-title">最便宜的十个<span class="ad-analysis-sub">$/百万输出 tokens</span></h2>
+          <h2 class="ad-analysis-title">最便宜的付费模型<span class="ad-analysis-sub">$/百万输出 tokens</span></h2>
           <ul class="ad-bars">
             <li v-for="m in models.groups.cheap" :key="'c-' + m.model_id" class="ad-bar-row">
               <span class="ad-bar-name">{{ m.name }}</span>
