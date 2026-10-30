@@ -1,0 +1,11 @@
+[Unit]
+Description=每天 08:30 刷新博客派生数据
+
+[Timer]
+OnCalendar=*-*-* 08:30:00
+Persistent=true
+RandomizedDelaySec=180
+Unit=blog-derived.service
+
+[Install]
+WantedBy=timers.target

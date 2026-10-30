@@ -144,15 +144,41 @@ router.post('/', authRequired, authNoGuest, uploadLimiter, upload.single('file')
       }
     }
 
+    // ====== 转 webp：多数截图能省一半以上体积 ======
+    // GIF 保持原样（动画会被压掉）；sharp 不可用或失败时保留原图，不影响上传
+    let finalName = req.file.filename;
+    let finalSize = req.file.size;
+    if (path.extname(req.file.filename).toLowerCase() !== '.gif') {
+      try {
+        const sharp = require('sharp');
+        const dir = path.dirname(req.file.path);
+        const base = path.basename(req.file.filename, path.extname(req.file.filename));
+        const outPath = path.join(dir, `${base}.webp`);
+        await sharp(req.file.path)
+          .rotate()                                        // 按 EXIF 摆正
+          .resize({ width: 1600, withoutEnlargement: true }) // 超过 1600 才缩
+          .webp({ quality: 82 })
+          .toFile(outPath);
+        const st = fs.statSync(outPath);
+        if (st.size > 0) {
+          if (outPath !== req.file.path) { try { fs.unlinkSync(req.file.path); } catch {} }
+          finalName = `${base}.webp`;
+          finalSize = st.size;
+        }
+      } catch (e) {
+        console.error('webp convert skipped:', e.message);
+      }
+    }
+
     // 构建访问 URL（相对于 uploads 目录）
     let url;
     if (type === 'avatar') {
-      url = `/uploads/avatars/${req.file.filename}`;
+      url = `/uploads/avatars/${finalName}`;
     } else {
-      url = `/uploads/posts/${slug}/${req.file.filename}`;
+      url = `/uploads/posts/${slug}/${finalName}`;
     }
 
-    res.json({ url, filename: req.file.filename, size: req.file.size });
+    res.json({ url, filename: finalName, size: finalSize });
   } catch (err) {
     console.error('upload error:', err);
     // 出错时清理已上传文件

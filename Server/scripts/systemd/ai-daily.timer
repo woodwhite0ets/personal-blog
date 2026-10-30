@@ -1,0 +1,11 @@
+[Unit]
+Description=每天 08:00 更新博客 AI 项目榜
+
+[Timer]
+OnCalendar=*-*-* 08:00:00
+Persistent=true
+RandomizedDelaySec=300
+Unit=ai-daily.service
+
+[Install]
+WantedBy=timers.target

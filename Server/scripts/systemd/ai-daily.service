@@ -1,0 +1,8 @@
+[Unit]
+Description=Blog AI 项目榜每日采集与导入（工作站采集 + 本地模型生成中文 + 服务器写库）
+
+[Service]
+Type=oneshot
+WorkingDirectory=/data/project/blog
+ExecStart=/data/project/blog/Server/scripts/run-ai-daily.sh
+TimeoutStartSec=1800

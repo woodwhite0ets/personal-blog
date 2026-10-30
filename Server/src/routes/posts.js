@@ -26,6 +26,7 @@ router.get('/', authOptional, async (req, res) => {
     const search   = req.query.search || '';
     const sort     = req.query.sort || 'latest';
     const postType = req.query.type || '';  // 'blog' | 'forum' | '' (all)
+    const series   = req.query.series || '';
 
     // status 校验
     if (status !== 'published' && status !== 'draft' && status !== 'archived' && status !== 'all') {
@@ -95,12 +96,24 @@ router.get('/', authOptional, async (req, res) => {
       params.push(tag, tag);
     }
 
-    // search: match title, excerpt, or content（转义 LIKE 通配符 + 长度限制）
+    if (series) {
+      conditions.push('p.series = ?');
+      params.push(series);
+    }
+
+    // search: 标题 / 摘要 / 标签三处命中（正文是 LONGTEXT，不做全表 LIKE）
+    let orderParams = [];
+    let searchRank = '';
     if (search) {
       const escaped = search.replace(/[\\%_]/g, '\\$&').slice(0, 100);
-      // 只搜 title/excerpt（避免对 LONGTEXT content 做全表 LIKE 慢查询）
-      conditions.push('(p.title LIKE ? OR p.excerpt LIKE ?)');
-      params.push(`%${escaped}%`, `%${escaped}%`);
+      const like = `%${escaped}%`;
+      conditions.push(`(p.title LIKE ? OR p.excerpt LIKE ?
+        OR EXISTS (SELECT 1 FROM post_tags pt JOIN tags t ON t.id = pt.tag_id
+                   WHERE pt.post_id = p.id AND t.name LIKE ?))`);
+      params.push(like, like, like);
+      // 命中位置决定排序：标题 > 标签 > 摘要，同分再按时间
+      searchRank = 'CASE WHEN p.title LIKE ? THEN 0 WHEN EXISTS (SELECT 1 FROM post_tags pt2 JOIN tags t2 ON t2.id = pt2.tag_id WHERE pt2.post_id = p.id AND t2.name LIKE ?) THEN 1 ELSE 2 END ASC, ';
+      orderParams = [like, like];
     }
 
     if (conditions.length > 0) {
@@ -111,15 +124,15 @@ router.get('/', authOptional, async (req, res) => {
 
     // 排序：latest（默认）按发布时间，popular 按浏览量
     if (sort === 'popular') {
-      dataSql += ' ORDER BY p.is_pinned DESC, p.views DESC, p.published_at DESC LIMIT ? OFFSET ?';
+      dataSql += ` ORDER BY p.is_pinned DESC, ${searchRank}p.views DESC, p.published_at DESC LIMIT ? OFFSET ?`;
     } else {
-      dataSql += ' ORDER BY p.is_pinned DESC, p.published_at DESC LIMIT ? OFFSET ?';
+      dataSql += ` ORDER BY p.is_pinned DESC, ${searchRank}p.published_at DESC LIMIT ? OFFSET ?`;
     }
 
     // 并行查询
     const [countResult, [rows]] = await Promise.all([
       pool.query(countSql, params),
-      pool.query(dataSql, [...params, perPage, offset]),
+      pool.query(dataSql, [...params, ...orderParams, perPage, offset]),
     ]);
     const total = countResult[0][0]?.total || 0;
 
@@ -303,6 +316,28 @@ router.get('/:slug/neighbors', authOptional, async (req, res) => {
 router.get('/:slug/related', authOptional, async (req, res) => {
   try {
     const { slug } = req.params;
+
+    // 优先用语义相关（工作站每天算好写入 post_related），没有则回落共享标签
+    const [semantic] = await pool.query(
+      `SELECT p.slug, p.title, p.excerpt, p.published_at, r.score
+         FROM post_related r JOIN posts p ON p.slug = r.related_slug
+        WHERE r.post_slug = ? AND p.status = 'published'
+        ORDER BY r.rank_no ASC LIMIT 4`,
+      [slug]
+    );
+    if (semantic.length) {
+      return res.json({
+        source: 'semantic',
+        related: semantic.map((r) => ({
+          slug: r.slug,
+          title: r.title,
+          excerpt: r.excerpt,
+          date: r.published_at ? r.published_at.toISOString().split('T')[0] : '',
+          score: Number(r.score || 0),
+        })),
+      });
+    }
+
     const [cur] = await pool.query('SELECT id FROM posts WHERE slug = ?', [slug]);
     if (cur.length === 0) return res.status(404).json({ message: 'post not found' });
     const id = cur[0].id;

@@ -517,5 +517,63 @@ router.get('/geek', async (req, res) => {
     res.status(500).json({ message: 'internal server error' });
   }
 });
+// ====== GET /api/ai-daily/models — 模型目录（OpenRouter 快照）======
+const MODEL_LIMIT = 10;
+
+router.get('/models', async (req, res) => {
+  try {
+    const [[latest]] = await pool.query('SELECT MAX(snapshot_date) AS d FROM ai_model_catalog');
+    if (!latest || !latest.d) {
+      return res.json({ date: null, groups: {}, message: '模型目录还没有数据（等采集任务跑一次）' });
+    }
+    const date = latest.d instanceof Date ? latest.d.toISOString().slice(0, 10) : String(latest.d).slice(0, 10);
+    const parsed = parseInt(req.query.limit, 10);
+    const limit = Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, 30) : MODEL_LIMIT;
+
+    const fields = `model_id, name, context_length, price_prompt_per_m, price_completion_per_m, modality, released_on`;
+
+    const [[stats]] = await pool.query(
+      `SELECT COUNT(*) AS total,
+              SUM(price_completion_per_m = 0) AS free_count,
+              MAX(context_length) AS max_context,
+              MIN(CASE WHEN price_completion_per_m > 0 THEN price_completion_per_m END) AS min_paid
+       FROM ai_model_catalog WHERE snapshot_date = ?`,
+      [date]
+    );
+
+    const [cheap] = await pool.query(
+      `SELECT ${fields} FROM ai_model_catalog
+       WHERE snapshot_date = ? AND price_completion_per_m IS NOT NULL
+       ORDER BY price_completion_per_m ASC, context_length DESC LIMIT ?`,
+      [date, limit]
+    );
+    const [longest] = await pool.query(
+      `SELECT ${fields} FROM ai_model_catalog
+       WHERE snapshot_date = ?
+       ORDER BY context_length DESC, price_completion_per_m ASC LIMIT ?`,
+      [date, limit]
+    );
+    const [fresh] = await pool.query(
+      `SELECT ${fields} FROM ai_model_catalog
+       WHERE snapshot_date = ? AND released_on IS NOT NULL
+       ORDER BY released_on DESC, context_length DESC LIMIT ?`,
+      [date, limit]
+    );
+
+    res.json({
+      date,
+      stats: {
+        total: Number(stats.total) || 0,
+        freeCount: Number(stats.free_count) || 0,
+        maxContext: Number(stats.max_context) || 0,
+        minPaidCompletionPerM: stats.min_paid === null ? null : Number(stats.min_paid),
+      },
+      groups: { cheap, longest, fresh },
+    });
+  } catch (err) {
+    console.error('ai-daily models error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
 
 module.exports = router;

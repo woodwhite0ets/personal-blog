@@ -32,6 +32,10 @@
             type="button" role="tab" class="ad-view" :class="{ active: view === 'geek' }"
             :aria-selected="view === 'geek'" @click="switchView('geek')"
           >极客池</button>
+          <button
+            type="button" role="tab" class="ad-view" :class="{ active: view === 'models' }"
+            :aria-selected="view === 'models'" @click="switchView('models')"
+          >模型目录</button>
         </div>
 
         <div v-if="view === 'today'" class="ad-meta">
@@ -51,6 +55,48 @@
           <span v-if="updatedAtText" class="ad-updated">更新于 {{ updatedAtText }}</span>
         </div>
       </header>
+
+      <!-- 模型目录 -->
+      <section v-if="view === 'models'" class="ad-analysis">
+        <p class="ad-analysis-note">
+          数据来自 OpenRouter 的公开模型目录（快照日期 {{ models.date || '—' }}）：共 {{ formatNumber(models.stats.total) }} 个模型，
+          其中 {{ formatNumber(models.stats.freeCount) }} 个可免费调用，最长上下文 {{ formatNumber(models.stats.maxContext) }} tokens，
+          付费最低约 ${{ models.stats.minPaidCompletionPerM ?? '—' }} / 百万输出 tokens。
+        </p>
+
+        <div v-if="modelsLoading" class="ad-state"><p class="ad-state-body">模型目录加载中…</p></div>
+        <div v-else-if="modelsError" class="ad-state">
+          <p class="ad-state-title">模型目录没有加载出来</p>
+          <button class="ad-retry" type="button" @click="loadModels(true)">重新加载</button>
+        </div>
+        <template v-else>
+          <h2 class="ad-analysis-title">最便宜的十个<span class="ad-analysis-sub">$/百万输出 tokens</span></h2>
+          <ul class="ad-bars">
+            <li v-for="m in models.groups.cheap" :key="'c-' + m.model_id" class="ad-bar-row">
+              <span class="ad-bar-name">{{ m.name }}</span>
+              <span class="ad-bar-track"><span class="ad-bar-fill" :style="{ width: priceWidth(m.price_completion_per_m) }"></span></span>
+              <span class="ad-bar-value">${{ m.price_completion_per_m ?? '—' }} · {{ formatContext(m.context_length) }}</span>
+            </li>
+          </ul>
+
+          <h2 class="ad-analysis-title">超长上下文<span class="ad-analysis-sub">按 tokens 排</span></h2>
+          <ul class="ad-bars">
+            <li v-for="m in models.groups.longest" :key="'l-' + m.model_id" class="ad-bar-row">
+              <span class="ad-bar-name">{{ m.name }}</span>
+              <span class="ad-bar-track"><span class="ad-bar-fill" :style="{ width: contextWidth(m.context_length) }"></span></span>
+              <span class="ad-bar-value">{{ formatContext(m.context_length) }} · ${{ m.price_completion_per_m ?? '—' }}</span>
+            </li>
+          </ul>
+
+          <h2 class="ad-analysis-title">最近上架<span class="ad-analysis-sub">按发布时间</span></h2>
+          <ul class="ad-bars">
+            <li v-for="m in models.groups.fresh" :key="'f-' + m.model_id" class="ad-bar-row">
+              <span class="ad-bar-name">{{ m.name }}</span>
+              <span class="ad-bar-value">{{ m.released_on }} · {{ formatContext(m.context_length) }} · ${{ m.price_completion_per_m ?? '—' }}</span>
+            </li>
+          </ul>
+        </template>
+      </section>
 
       <!-- 极客池 -->
       <section v-if="view === 'geek'" class="ad-analysis">
@@ -346,6 +392,26 @@ const geek = ref({ date: null, range: null, poolSize: 0, items: [] })
 const geekLoading = ref(false)
 const geekError = ref(false)
 let geekLoaded = false
+const models = ref({ date: null, stats: {}, groups: { cheap: [], longest: [], fresh: [] } })
+const modelsLoading = ref(false)
+const modelsError = ref(false)
+let modelsLoaded = false
+const maxContextLen = computed(() => Math.max(1, ...(models.value.groups.longest || []).map((m) => m.context_length || 0)))
+const maxPrice = computed(() => Math.max(1, ...(models.value.groups.cheap || []).map((m) => m.price_completion_per_m || 0)))
+function priceWidth(v) {
+  const pct = Math.max(2, Math.round(((Number(v) || 0) / maxPrice.value) * 100))
+  return `${Math.min(pct, 100)}%`
+}
+function contextWidth(v) {
+  const pct = Math.max(2, Math.round(((Number(v) || 0) / maxContextLen.value) * 100))
+  return `${Math.min(pct, 100)}%`
+}
+function formatContext(n) {
+  const v = Number(n) || 0
+  if (v >= 1048576) return `${(v / 1048576).toFixed(v % 1048576 === 0 ? 0 : 1)}M`
+  if (v >= 1024) return `${Math.round(v / 1024)}K`
+  return String(v)
+}
 const dailyAvgGain = computed(() => {
   const d = insights.value.daily || []
   if (!d.length) return 0
@@ -493,12 +559,35 @@ async function loadGeek(force = false) {
   }
 }
 
+async function loadModels(force = false) {
+  if (modelsLoaded && !force) return
+  modelsLoading.value = true
+  modelsError.value = false
+  try {
+    const res = await fetch('/api/ai-daily/models?limit=10')
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const data = await res.json()
+    models.value = {
+      date: data.date || null,
+      stats: data.stats || {},
+      groups: data.groups || { cheap: [], longest: [], fresh: [] },
+    }
+    modelsLoaded = true
+  } catch (err) {
+    console.error('加载模型目录失败:', err)
+    modelsError.value = true
+  } finally {
+    modelsLoading.value = false
+  }
+}
+
 async function switchView(next) {
   view.value = next
   if (next === 'week') await loadWeekly()
   if (next === 'analysis') await loadAnalysis()
   if (next === 'insights') await loadInsights()
   if (next === 'geek') await loadGeek()
+  if (next === 'models') await loadModels()
 }
 
 onMounted(async () => {

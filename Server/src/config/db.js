@@ -308,6 +308,28 @@ async function runMigrations(conn) {
     `);
   }
 
+  // ai_model_catalog：模型目录快照（OpenRouter），每日覆盖
+  if (!existing.includes('ai_model_catalog')) {
+    console.log('[db] migration: creating ai_model_catalog table');
+    await conn.query(`
+      CREATE TABLE \`ai_model_catalog\` (
+        \`id\`                       INT UNSIGNED   NOT NULL AUTO_INCREMENT,
+        \`snapshot_date\`            DATE           NOT NULL,
+        \`model_id\`                 VARCHAR(160)   NOT NULL,
+        \`name\`                     VARCHAR(200)   NOT NULL DEFAULT '',
+        \`context_length\`           INT UNSIGNED   NOT NULL DEFAULT 0,
+        \`price_prompt_per_m\`       DECIMAL(12,4)  DEFAULT NULL,
+        \`price_completion_per_m\`   DECIMAL(12,4)  DEFAULT NULL,
+        \`modality\`                 VARCHAR(80)    DEFAULT '',
+        \`released_on\`              DATE           DEFAULT NULL,
+        \`created_at\`               DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (\`id\`),
+        UNIQUE KEY \`uk_date_model\` (\`snapshot_date\`, \`model_id\`),
+        KEY \`idx_date_price\` (\`snapshot_date\`, \`price_completion_per_m\`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  }
+
   // ====== 增量补列：仓库年龄/分叉数（潜力榜与成熟榜需要）======
   const addColumnIfMissing = async (table, column, definition) => {
     const [cols] = await conn.query(

@@ -1,0 +1,8 @@
+[Unit]
+Description=刷新博客派生数据（语义相关文章 + 笔记索引）
+
+[Service]
+Type=oneshot
+WorkingDirectory=/data/project/blog
+ExecStart=/data/project/blog/Server/scripts/refresh-blog-derived.sh
+TimeoutStartSec=1200
