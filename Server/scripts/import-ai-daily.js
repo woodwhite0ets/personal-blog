@@ -106,6 +106,8 @@ async function main() {
     });
 
     // 3) 排榜：升星榜 + 新上榜 + 兜底补齐
+    //    主榜只用非极客候选；极客候选单独进极客池，避免两类项目在同一份榜单里重复出现
+    const mainPool = enriched.filter((r) => !r.is_geek);
     const picked = [];
     const taken = new Set();
     const take = (list, slots) => {
@@ -119,14 +121,14 @@ async function main() {
       }
     };
 
-    const risers = enriched.filter((r) => r.star_gain > 0).sort((a, b) => b.star_gain - a.star_gain || b.stars - a.stars);
+    const risers = mainPool.filter((r) => r.star_gain > 0).sort((a, b) => b.star_gain - a.star_gain || b.stars - a.stars);
     take(risers, RISER_SLOTS);
 
-    const newcomers = enriched.filter((r) => r.is_new).sort((a, b) => b.stars - a.stars);
+    const newcomers = mainPool.filter((r) => r.is_new).sort((a, b) => b.stars - a.stars);
     take(newcomers, NEWCOMER_SLOTS);
 
     if (picked.length < DAILY_SIZE) {
-      const rest = enriched
+      const rest = mainPool
         .filter((r) => !taken.has(r.repo))
         .sort((a, b) => b.star_gain - a.star_gain || b.stars - a.stars);
       take(rest, DAILY_SIZE - picked.length);

@@ -464,12 +464,23 @@ router.get('/geek', async (req, res) => {
       ? latest.d.toISOString().slice(0, 10)
       : String(latest.d).slice(0, 10);
 
+    const [[todayRow]] = await pool.query('SELECT MAX(snapshot_date) AS d FROM ai_daily_items');
+    const todaySnapshot = todayRow && todayRow.d
+      ? (todayRow.d instanceof Date ? todayRow.d.toISOString().slice(0, 10) : String(todayRow.d).slice(0, 10))
+      : null;
+
+    // 与今日榜重叠的项目不再在极客池重复出现
     const [rows] = await pool.query(
-      `SELECT repo, name, url, desc_zh, desc_en, language, topics, stars, prev_stars,
-              forks, repo_created, first_seen, last_seen
-       FROM ai_repo_seen
-       WHERE is_geek = 1 AND stars BETWEEN ? AND ? AND last_seen >= DATE_SUB(?, INTERVAL 7 DAY)`,
-      [GEEK_MIN, GEEK_MAX, lastSeen]
+      `SELECT s.repo, s.name, s.url, s.desc_zh, s.desc_en, s.language, s.topics,
+              s.stars, s.prev_stars, s.forks, s.repo_created, s.first_seen, s.last_seen
+       FROM ai_repo_seen s
+       WHERE s.is_geek = 1 AND s.stars BETWEEN ? AND ?
+         AND s.last_seen >= DATE_SUB(?, INTERVAL 7 DAY)
+         AND NOT EXISTS (
+           SELECT 1 FROM ai_daily_items i
+           WHERE i.snapshot_date = ? AND i.repo = s.repo
+         )`,
+      [GEEK_MIN, GEEK_MAX, lastSeen, todaySnapshot]
     );
 
     const today = new Date(lastSeen + 'T00:00:00Z');
