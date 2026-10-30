@@ -15,7 +15,7 @@
             <dd>{{ todayLoaded ? items.length : '—' }}</dd>
           </div>
           <div class="ad-stat">
-            <dt>近 7 日新进</dt>
+            <dt>近 7 日项目</dt>
             <dd>{{ overview.fresh ?? '—' }}</dd>
           </div>
           <div class="ad-stat">
@@ -115,7 +115,7 @@
                   </span>
                 </div>
                 <p class="ad-summary">{{ item.desc_zh || item.desc_en || '这个项目还没有描述。' }}</p>
-                <p class="ad-topics">本周上榜 {{ item.hits }} 次 · 首次 {{ item.firstSeen }}</p>
+                <p class="ad-topics">窗口内上榜 {{ item.hits }} 次 · 首次收录 {{ item.firstSeen }}</p>
               </div>
             </li>
           </ol>
@@ -279,9 +279,11 @@
 
           <h2 class="ad-h2">最近上架<em>按发布时间</em></h2>
           <ul class="ad-bars">
-            <li v-for="m in models.groups.fresh" :key="'f-' + m.model_id" class="ad-bar-row single">
+            <li v-for="m in models.groups.fresh" :key="'f-' + m.model_id" class="ad-bar-row fresh">
               <span class="ad-bar-name">{{ m.name }}</span>
-              <span class="ad-bar-value">{{ m.released_on }} · {{ formatContext(m.context_length) }} · ${{ m.price_completion_per_m ?? '—' }}</span>
+              <span class="ad-bar-value">{{ m.released_on }}</span>
+              <span class="ad-bar-value">{{ formatContext(m.context_length) }}</span>
+              <span class="ad-bar-value">${{ m.price_completion_per_m ?? '—' }}</span>
             </li>
           </ul>
         </template>
@@ -363,8 +365,8 @@ function formatNumber(n) {
 
 function formatContext(n) {
   const v = Number(n) || 0
-  if (v >= 1048576) return `${(v / 1048576).toFixed(v % 1048576 === 0 ? 0 : 1)}M`
-  if (v >= 1024) return `${Math.round(v / 1024)}K`
+  if (v >= 1000000) return `${Number((v / 1000000).toFixed(v % 1000000 === 0 ? 0 : 1))}M`
+  if (v >= 1000) return `${Math.round(v / 1000)}K`
   return String(v)
 }
 
@@ -616,6 +618,8 @@ onMounted(async () => {
   font-size: 13px;
 }
 .ad-bar-row.single { grid-template-columns: minmax(120px, 1.1fr) auto; }
+.ad-bar-row.fresh { grid-template-columns: minmax(160px, 1.4fr) 92px 56px 72px; }
+.ad-bar-row.fresh .ad-bar-value:last-child { text-align: right; }
 .ad-bar-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ad-bar-track { height: 4px; border-radius: 2px; background: var(--border); overflow: hidden; }
 .ad-bar-fill { display: block; height: 100%; border-radius: 2px; background: var(--text-dim); }
