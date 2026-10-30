@@ -54,29 +54,17 @@ const QUERIES = [
 const GEEK_MIN_STARS = 120;
 const GEEK_MAX_STARS = 8000;   // 上界：把巨无霸排除在极客池之外
 const GEEK_MAX = 80;
-const GEEK_TOPICS = [
-  'homelab', 'selfhosted', 'self-hosted', 'cli', 'tui', 'terminal', 'neovim', 'dotfiles',
-  'reverse-engineering', 'low-level', 'emulator', 'retrocomputing', 'emulation',
-  'embedded', 'firmware', 'kernel', 'compiler', 'zig', 'nixos', 'wasm', 'keyboard',
-  'raspberry-pi', 'esp32', 'arduino', 'fpga', 'home-assistant', 'self-hosting', 'tinylm',
+const GEEK_TOPIC_LIST = [
+  'homelab', 'selfhosted', 'tui', 'neovim', 'embedded',
+  'fpga', 'reverse-engineering', 'emulator', 'zig', 'nixos',
 ];
+// 分两档取：小体量冷门（120–1,500）与中体量（1,500–8,000），避免整池都是同一星段
+const GEEK_BANDS = [[GEEK_MIN_STARS, 1500], [1500, GEEK_MAX_STARS]];
 const GEEK_QUERIES = [
-  `topic:homelab stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
-  `topic:selfhosted stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
-  `topic:cli stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(60)}`,
-  `topic:tui stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
-  `topic:terminal stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
-  `topic:neovim stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(60)}`,
-  `topic:reverse-engineering stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
-  `topic:emulator stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
-  `topic:embedded stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
-  `topic:compiler stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
-  `topic:zig stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
-  `topic:nixos stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
-  `topic:wasm stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
-  `topic:esp32 stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
-  `topic:fpga stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(120)}`,
-  `language:zig stars:${GEEK_MIN_STARS}..${GEEK_MAX_STARS} pushed:>${daysAgo(90)}`,
+  ...GEEK_TOPIC_LIST.flatMap((t) =>
+    GEEK_BANDS.map(([lo, hi]) => `topic:${t} stars:${lo}..${hi} pushed:>${daysAgo(90)}`)
+  ),
+  `language:zig stars:${GEEK_MIN_STARS}..${1000} pushed:>${daysAgo(120)}`,
 ];
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -226,11 +214,21 @@ async function main() {
   }
 
   const all = [...map.values()];
-  const geekAll = all.filter((r) => r.is_geek).sort((a, b) => b.stars - a.stars);
+  const geekAll = all.filter((r) => r.is_geek);
   const mainAll = all.filter((r) => !r.is_geek).sort((a, b) => b.stars - a.stars);
+  // 极客池按星段分层取样，避免低星冷门被高星项目挤掉
+  const geekLow = geekAll
+    .filter((r) => r.stars <= 1500)
+    .sort((a, b) => b.stars - a.stars)
+    .slice(0, Math.floor(GEEK_MAX / 2));
+  const geekMid = geekAll
+    .filter((r) => r.stars > 1500)
+    .sort((a, b) => b.stars - a.stars)
+    .slice(0, GEEK_MAX - Math.floor(GEEK_MAX / 2));
   let repos = [
     ...mainAll.slice(0, MAX_CANDIDATES),
-    ...geekAll.slice(0, GEEK_MAX),
+    ...geekLow,
+    ...geekMid,
   ];
   console.log(`[collect] 候选 ${repos.length} 个`);
 
