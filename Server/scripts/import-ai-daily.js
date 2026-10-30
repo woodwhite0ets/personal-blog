@@ -99,6 +99,9 @@ async function main() {
         first_seen: firstSeen,
         pushed_at: toDateTime(r.pushed_at),
         is_new: firstSeen === snapshotDate,
+        repo_created: r.repo_created || null,
+        forks: Number(r.forks) || 0,
+        is_geek: r.is_geek ? 1 : 0,
       };
     });
 
