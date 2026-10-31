@@ -2385,3 +2385,54 @@ body::after {
   width: 12px; height: 1px; background: var(--border-strong);
   vertical-align: middle; margin-right: 12px;
 }
+
+/* ============================================================
+   视觉精修（2026-10-19 · 第二轮）
+   只修浏览器实测可验证的问题，不改变既有设计方向。
+   ============================================================ */
+
+/* ① --font-hand 指向未引入的 Inter Variable，浏览器回退到系统无衬线，
+      与正文 Geist 不一致。统一回正文字族，层级交给字号/字重。 */
+:root { --font-hand: var(--font-sans); }
+
+/* ② 反相段（首屏/项目区）的 --text-faint 在深底和浅底上都低于 4.5:1。
+      只提升最弱一档，保持层级不被拉平。 */
+.hero-band, .band-tint { --text-faint: #7a7a7a; }
+[data-theme="midnight"] .hero-band,
+[data-theme="midnight"] .band-tint { --text-faint: #6f6f6f; }
+
+/* 首屏「最新」列表：栏目标题与日期是要读的元信息，不用最弱一档 */
+.hr-head { color: var(--text-dim); font-size: 11px; }
+.hr-date { color: var(--text-dim); }
+
+/* ③ 雷达图原本压在「最新」列表文字下方，线条穿过行间形成噪声。
+      右移并再降一档，只保留右缘的几何纹理。 */
+.hero-visual { right: -140px; opacity: .11; }
+
+/* ④ 移动端「最近更新 / 热门」：网格子项 min-width:auto 被最长标题撑到 407px，
+      超出 390px 视口后日期被裁掉。允许收缩后由 .hm-li-t 自己省略。 */
+.hm-2up > * { min-width: 0; }
+.hm-list, .hm-list li, .hm-list a, .hm-list a .bezel-core { min-width: 0; max-width: 100%; }
+.hm-list a .bezel-core { width: 100%; }
+
+/* ⑤ 移动端首屏指标栏：第一项文案较长，独占一行；其余三项等分，
+      避免 2×2 网格里第一格折成两行、行高参差。 */
+@media (max-width: 860px) {
+  .hero-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 16px; }
+  .hero-rail > div:first-child { grid-column: 1 / -1; }
+  .hero-rail dd { line-height: 1.45; }
+}
+
+/* ⑥ 极窄屏的搜索让位写在 SiteNav.vue 的 scoped 样式里
+      （slot 内容需要 :deep 才能命中），这里不再重复。 */
+
+/* ⑦ midnight 的 --text-faint (#7a7f88) 在 12px 元信息上只有 4.41:1，
+      提一档到 4.9:1；反相段已在 ② 中单独处理，不受影响。 */
+[data-theme="midnight"] { --text-faint: #858b95; }
+
+/* ⑧ 分类页分布条：窄屏下名称列 128px 太宽，挤得条形只剩一半；
+      收紧名称列与数字列，让长度编码重新可读。 */
+@media (max-width: 600px) {
+  .hm-bar { grid-template-columns: 92px minmax(0, 1fr) 24px; }
+  .hm-bar-name { font-size: 12px; }
+}

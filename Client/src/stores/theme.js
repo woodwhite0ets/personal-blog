@@ -4,6 +4,8 @@ const THEME_KEY = 'blog-theme'
 const THEMES = [
   { id: 'paper', label: 'Paper', hint: '亮色纸面' },
   { id: 'midnight', label: 'Midnight', hint: '深蓝夜色' },
+  { id: 'terminal', label: 'Terminal', hint: '终端黑绿' },
+  { id: 'solar', label: 'Solar', hint: '暖阳米色' },
 ]
 
 // 恢复上次主题（默认 paper 信纸）
