@@ -69,3 +69,14 @@ MAIL_PASS=SMTP授权码
 MAIL_FROM=你的QQ邮箱
 SITE_URL=http://localhost:3027
 ```
+
+## AI 项目榜（每日更新）
+
+`/ai-daily` 页面 + 首页「AI 项目榜」简讯，每天 08:00 自动更新。
+
+- **采集**：`Server/scripts/collect-ai-daily.mjs`（在工作站跑）— GitHub Search API 抓 6 组 AI 相关 topic，合并去重后取 120 个候选；用本地 llama.cpp（`127.0.0.1:8092`，qwen2.5-coder-7b）生成中文一句话，再由 `tightenZh()` 收敛成长度、术语统一的一句话
+- **排榜**：`Server/scripts/import-ai-daily.js`（在服务器跑）— 与 `ai_repo_seen` 里上一次的 star 对比算出日增，按「升星榜 8 + 新上榜 4 + 总 star 兜底」排出当日 12 条，幂等可重复导入
+- **接口**：`GET /api/ai-daily`（`?date=&limit=`）、`/api/ai-daily/latest?limit=3`（首页简讯）、`/api/ai-daily/dates`
+- **定时**：工作站 systemd user timer `ai-daily.timer` → `Server/scripts/run-ai-daily.sh`（采集 → scp → 服务器导入）。单元文件在 `Server/scripts/systemd/`，手工触发：`systemctl --user start ai-daily.service`
+- **数据表**：`ai_repo_seen`（观察池，存每个仓库最近 star）、`ai_daily_items`（每日榜单快照），启动时自动 migrate
+- **注意**：`DATE` 字段在连接池里配置了 `dateStrings: ['DATE']`，否则 UTC+8 下会被 `toISOString()` 折成前一天
