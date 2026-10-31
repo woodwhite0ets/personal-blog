@@ -1,0 +1,8 @@
+# 项目声明（唯一真源）。改这里，然后跑 `proj sync` 重新生成 AGENTS.md / projects.yaml
+name: blog
+status: active
+repo: https://github.com/woodwhite0ets/personal-blog.git
+stack: [node]
+services: [ai-daily, blog-derived]
+ports: []
+knowledge: true

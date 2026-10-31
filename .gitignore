@@ -52,3 +52,6 @@ Client/dist/
 *.bak2
 *.bak.*
 *.previous*
+
+# 本地 serena 工具缓存
+.serena/
