@@ -3,6 +3,9 @@
 
     <span class="edge-label" aria-hidden="true">文章 · woodwhite@blog</span>
 
+    <!-- ====== 阅读进度 ====== -->
+    <div class="read-progress" aria-hidden="true"><i :style="{ width: readProgress + '%' }"></i></div>
+
     <!-- ====== 导航栏 ====== -->
     <SiteNav />
 
@@ -76,7 +79,9 @@
 
         <!-- 标题 -->
         <h1 class="post-title">{{ post.title }}</h1>
-        <p class="post-series" v-if="post.series">系列 · {{ post.series }}</p>
+        <p class="post-series" v-if="post.series">
+          系列 · <router-link :to="`/series/${encodeURIComponent(post.series)}`">{{ post.series }}</router-link>
+        </p>
 
         <!-- 元信息 -->
         <div class="post-meta-line">
@@ -101,7 +106,23 @@
         </header>
 
         <!-- 正文 -->
-        <div class="post-content markdown-body" v-html="renderedContent"></div>
+        <div class="font-tools" role="group" aria-label="正文字号">
+          <span class="font-tools-label">字号</span>
+          <button
+            v-for="s in fontSteps" :key="s.size" type="button"
+            class="font-btn" :class="{ active: fontSize === s.size }"
+            :aria-pressed="fontSize === s.size"
+            @click="setFontSize(s.size)"
+          >{{ s.label }}</button>
+        </div>
+
+        <div class="post-content markdown-body" v-html="renderedContent" :style="{ fontSize: fontSize + 'px' }"></div>
+
+        <!-- 图片灯箱 -->
+        <div v-if="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="图片预览" @click="lightbox = ''">
+          <img :src="lightbox" alt="" />
+          <button class="lightbox-close" type="button" aria-label="关闭预览" @click.stop="lightbox = ''">×</button>
+        </div>
 
         <!-- 底部操作 -->
         <div class="post-actions">
@@ -391,6 +412,64 @@ const tocOpen = ref(false)
 const activeHeading = ref('')
 let tocObserver = null
 
+// ====== 阅读进度 / 字号 / 代码复制 / 图片灯箱 ======
+const readProgress = ref(0)
+const lightbox = ref('')
+const FONT_KEY = 'blog-post-font-size'
+const fontSteps = [{ size: 15, label: '小' }, { size: 17, label: '中' }, { size: 19, label: '大' }]
+const fontSize = ref(Number(localStorage.getItem(FONT_KEY)) || 17)
+
+function setFontSize(size) {
+  fontSize.value = size
+  localStorage.setItem(FONT_KEY, String(size))
+}
+
+function onScrollProgress() {
+  const doc = document.documentElement
+  const total = doc.scrollHeight - window.innerHeight
+  readProgress.value = total > 24 ? Math.min(100, Math.max(0, (window.scrollY / total) * 100)) : 0
+}
+
+// 给正文里的代码块补「复制」按钮（v-html 出来的 DOM 只能在这里动）
+function enhanceCodeBlocks() {
+  const content = document.querySelector('.post-content')
+  if (!content) return
+  content.querySelectorAll('pre').forEach((pre) => {
+    if (pre.querySelector('.code-copy')) return
+    const btn = document.createElement('button')
+    btn.type = 'button'
+    btn.className = 'code-copy'
+    btn.textContent = '复制'
+    btn.setAttribute('aria-label', '复制代码')
+    btn.addEventListener('click', async () => {
+      const code = pre.querySelector('code')?.innerText || pre.innerText || ''
+      try {
+        await navigator.clipboard.writeText(code.replace(/\n$/, ''))
+        btn.textContent = '已复制'
+      } catch {
+        btn.textContent = '复制失败'
+      }
+      setTimeout(() => { btn.textContent = '复制' }, 1600)
+    })
+    pre.appendChild(btn)
+  })
+}
+
+function enhanceImages() {
+  const content = document.querySelector('.post-content')
+  if (!content) return
+  content.querySelectorAll('img').forEach((img) => {
+    if (img.dataset.zoomBound) return
+    img.dataset.zoomBound = '1'
+    img.classList.add('zoomable')
+    img.addEventListener('click', () => { lightbox.value = img.src })
+  })
+}
+
+function onKeydown(e) {
+  if (e.key === 'Escape' && lightbox.value) lightbox.value = ''
+}
+
 function refreshToc() {
   const content = document.querySelector('.post-content')
   if (!content) { toc.value = []; return }
@@ -426,7 +505,12 @@ function scrollToHeading(id) {
   activeHeading.value = id
 }
 
-watch(renderedContent, async () => { await nextTick(); refreshToc() })
+watch(renderedContent, async () => {
+  await nextTick()
+  refreshToc()
+  enhanceCodeBlocks()
+  enhanceImages()
+})
 
 // ====== 标签归一化（兼容新旧格式） ======
 const normalizedTags = computed(() => {
@@ -555,8 +639,20 @@ function resetSeoMeta() {
 }
 
 // ====== 生命周期 ======
-onMounted(() => { fetchPost(); fetchComments() })
+onMounted(() => {
+  fetchPost()
+  fetchComments()
+  onScrollProgress()
+  window.addEventListener('scroll', onScrollProgress, { passive: true })
+  window.addEventListener('resize', onScrollProgress)
+  window.addEventListener('keydown', onKeydown)
+})
 watch(slug, () => { fetchPost(); fetchComments() })
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScrollProgress)
+  window.removeEventListener('resize', onScrollProgress)
+  window.removeEventListener('keydown', onKeydown)
+})
 onBeforeUnmount(() => { resetSeoMeta() })
 </script>
 
@@ -1176,4 +1272,76 @@ onBeforeUnmount(() => { resetSeoMeta() })
 }
 .post-tag:hover, .post-badge:hover { border-color: color-mix(in srgb, var(--pale-blue-fg) 34%, transparent); }
 
+/* 目录常驻（≥1200）时给标题让位：
+   1200–1366 宽度下，1000px 文章容器会伸进右侧 240px 固定目录，
+   长标题文字会压到目录面板上。把标题盒宽限制到「目录左缘 - 24px 间距」。 */
+@media (min-width: 1200px) {
+  /* 4.3vw：1200–1366 常见笔记本宽度下让 14 字标题保持单行，
+     不必在「分 / 布式」这种词中间折行。 */
+  .post-title { font-size: clamp(40px, 4.3vw, 64px); max-width: min(100%, calc(50vw + 194px)); }
+}
+
+
+/* ====== 阅读进度 / 字号 / 代码复制 / 图片灯箱（2026-10-23）====== */
+.read-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 300;
+  background: transparent; pointer-events: none;
+}
+.read-progress i {
+  display: block; height: 100%; width: 0;
+  background: var(--accent); transition: width .08s linear;
+}
+
+.font-tools {
+  display: flex; align-items: center; gap: 6px;
+  margin: 0 0 14px; justify-content: flex-end;
+}
+.font-tools-label { font-size: 12px; color: var(--text-faint); margin-right: 2px; }
+.font-btn {
+  border: 1px solid var(--border-strong); background: transparent;
+  color: var(--text-dim); font-size: 12px; line-height: 1;
+  padding: 5px 9px; border-radius: 6px; cursor: pointer;
+}
+.font-btn:hover { color: var(--text); border-color: var(--text-dim); }
+.font-btn.active { color: var(--accent); border-color: var(--accent); }
+.font-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.post-content pre { position: relative; }
+.post-content pre .code-copy {
+  position: absolute; top: 8px; right: 8px; z-index: 2;
+  font-size: 11px; line-height: 1; padding: 5px 9px;
+  border-radius: 5px; cursor: pointer;
+  color: var(--text-dim); background: var(--bg-float, var(--bg-elevated));
+  border: 1px solid var(--border-strong);
+  opacity: 0; transition: opacity .15s ease, color .15s ease, border-color .15s ease;
+}
+.post-content pre:hover .code-copy,
+.post-content pre:focus-within .code-copy { opacity: 1; }
+.post-content pre .code-copy:hover { color: var(--accent); border-color: var(--accent); }
+.post-content pre .code-copy:focus-visible { opacity: 1; outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (hover: none) { .post-content pre .code-copy { opacity: 1; } }
+
+.post-content img.zoomable { cursor: zoom-in; }
+.lightbox {
+  position: fixed; inset: 0; z-index: 400;
+  display: flex; align-items: center; justify-content: center;
+  padding: 4vmin; background: rgba(0, 0, 0, .82); cursor: zoom-out;
+}
+.lightbox img {
+  max-width: 100%; max-height: 100%; object-fit: contain;
+  border-radius: 6px; box-shadow: 0 12px 40px rgba(0, 0, 0, .5);
+}
+.lightbox-close {
+  position: fixed; top: 18px; right: 22px;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .28); background: rgba(0, 0, 0, .4);
+  color: #fff; font-size: 20px; line-height: 1; cursor: pointer;
+}
+.lightbox-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.post-series a { color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; }
+.post-series a:hover { color: var(--accent); }
+
+@media (max-width: 720px) {
+  .font-tools { justify-content: flex-start; }
+}
 </style>
