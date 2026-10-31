@@ -54,8 +54,11 @@ const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
 const navLinks = [
   { to: '/HomePage', label: '首页' },
   { to: '/forum', label: '文章' },
+  { to: '/ai-daily', label: 'AI 榜' },
   { to: '/tags', label: '分类' },
+  { to: '/projects', label: '项目' },
   { to: '/archive', label: '归档' },
+  { to: '/now', label: '现在' },
   { to: '/about', label: '关于' },
 ]
 
@@ -146,14 +149,30 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 }
 
 @media (max-width: 800px) {
-  .navbar-inner { padding: 0 16px; gap: 16px; }
+  .navbar-inner { padding: 0 16px; gap: 12px; }
   .brand-path { display: none; }
   .nav-links { display: none; }
-  .nav-toggle { display: flex; }
-  .nav-actions { gap: 8px; }
+  .nav-toggle { display: flex; flex: 0 0 34px; }
+  /* 导航链接隐藏后失去 flex:1 的占位，动作区需要自己靠右 */
+  .nav-actions { gap: 8px; margin-left: auto; }
   .user-name, .user-caret { display: none; }
   .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
   .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
   .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
+}
+
+/* 窄屏收紧：品牌与登录按钮各让一档，给汉堡按钮留出完整 34px */
+@media (max-width: 480px) {
+  .brand-text { font-size: 18px; }
+  .nav-actions { gap: 6px; }
+  .btn-login { padding: 7px 12px; font-size: 13px; }
+}
+
+/* 320–380：搜索图标让位（:deep 才能作用到父组件投递的 slot 内容），
+   再收紧内边距，保证 320px 下汉堡按钮仍在视口内。 */
+@media (max-width: 380px) {
+  .navbar-inner { padding: 0 12px; gap: 8px; }
+  .brand-text { font-size: 17px; }
+  .nav-actions :deep(.search-wrap) { display: none; }
 }
 </style>

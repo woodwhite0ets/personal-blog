@@ -5,8 +5,11 @@
       <span class="footer-tagline">技术博客 · 全栈开发 · 开源分享</span>
     </div>
     <div class="footer-links">
-      <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/woodwhite0ets" target="_blank" rel="noopener noreferrer">GitHub</a>
       <span class="footer-link-sep">·</span>
+      <router-link to="/now">现在</router-link>
+      <router-link to="/projects">项目</router-link>
+      <router-link to="/notes">笔记</router-link>
       <router-link to="/about">关于</router-link>
       <span class="footer-link-sep">·</span>
       <a href="/feed.xml" type="application/rss+xml">RSS 订阅</a>

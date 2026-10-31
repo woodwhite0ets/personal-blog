@@ -49,6 +49,36 @@ const routes = [
     component: () => import('../components/Homepage/ForumPage.vue'),
   },
   {
+    path: '/ai-daily',
+    name: 'AIDaily',
+    component: () => import('../components/AIDaily/AIDailyPage.vue'),
+  },
+  {
+    path: '/now',
+    name: 'Now',
+    component: () => import('../components/Homepage/NowPage.vue'),
+  },
+  {
+    path: '/projects',
+    name: 'Projects',
+    component: () => import('../components/Projects/ProjectsPage.vue'),
+  },
+  {
+    path: '/projects/:slug',
+    name: 'ProjectDetail',
+    component: () => import('../components/Projects/ProjectDetail.vue'),
+  },
+  {
+    path: '/notes',
+    name: 'Notes',
+    component: () => import('../components/Homepage/NotesPage.vue'),
+  },
+  {
+    path: '/series/:name',
+    name: 'Series',
+    component: () => import('../components/Homepage/SeriesPage.vue'),
+  },
+  {
     path: '/archive',
     name: 'Archive',
     component: () => import('../components/Homepage/ArchivePage.vue'),
@@ -135,7 +165,10 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    return savedPosition || { top: 0 };
+    if (savedPosition) return savedPosition;
+    // 带 #锚点 时滚到目标元素，留出固定导航栏高度
+    if (to.hash) return { el: to.hash, top: 84, behavior: 'smooth' };
+    return { top: 0 };
   },
 });
 

@@ -52,7 +52,7 @@
         <div class="panel-body">
           <div class="project-item">
             <div class="project-head">
-              <span class="project-name">woodwhite@blog</span>
+              <router-link class="project-name" to="/projects/blog">woodwhite@blog</router-link>
               <span class="project-status">进行中</span>
             </div>
             <p class="project-desc">本站 —— 一个基于 Vue 3 + Express + MySQL 的全栈技术博客，包含完整的认证、文章、评论、点赞、管理后台系统。</p>
@@ -61,15 +61,15 @@
             </div>
           </div>
 
-          <div class="project-item">
+          <div class="project-item" id="workspace">
             <div class="project-head">
               <span class="deco-idx">02</span>
-              <span class="project-name">mcp-gateway</span>
-              <span class="project-status">进行中</span>
+              <router-link class="project-name" to="/projects/workstation">个人 AI 工作站</router-link>
+              <span class="project-status">长期运行</span>
             </div>
-            <p class="project-desc">面向个人知识库和服务器管理的 MCP 网关，将知识检索、文档读取和基础运维能力统一提供给 AI 客户端，支持 PostgreSQL + pgvector、embedding、TEI rerank、权限控制和审计日志。</p>
+            <p class="project-desc">一台自建 Ubuntu 服务器，用 systemd 与定时器长期托管本地模型（llama.cpp 三实例）、知识库检索（pgvector + rerank）、MCP 网关、自建 Git 与 CI、共享盘与反向代理；对外服务只经出站隧道暴露。原先独立的 mcp-gateway 项目已经并进这台机器。</p>
             <div class="project-tags">
-              <span class="ptag">MCP</span><span class="ptag">Node.js</span><span class="ptag">pgvector</span><span class="ptag">TEI rerank</span><span class="ptag">Docker</span>
+              <span class="ptag">Ubuntu</span><span class="ptag">systemd</span><span class="ptag">llama.cpp</span><span class="ptag">pgvector</span><span class="ptag">MCP</span>
             </div>
           </div>
 
@@ -88,7 +88,7 @@
           <div class="project-item">
             <div class="project-head">
               <span class="deco-idx">04</span>
-              <span class="project-name">乐清市充电桩分布图</span>
+              <router-link class="project-name" to="/projects/charging-map">乐清市充电桩分布图</router-link>
               <span class="project-status dim-status">检定监管平台</span>
             </div>
             <p class="project-desc">充电桩分布与检定监管系统，经历过从单体 SQLite 到 Docker + PostGIS 的架构升级，涉及地理信息可视化与数据管理。</p>
@@ -100,7 +100,7 @@
           <div class="project-item">
             <div class="project-head">
               <span class="deco-idx">05</span>
-              <span class="project-name">AI 工具链实践</span>
+              <router-link class="project-name" to="/projects/notes">AI 工具链实践</router-link>
               <span class="project-status dim-status">Claude Code 生态</span>
             </div>
             <p class="project-desc">围绕 Claude Code / CC Switch / Router / DeepSeek 等 AI 开发工具的使用与排障，分享配置方法与实战经验。</p>
@@ -157,6 +157,18 @@ onMounted(async () => {
       profile.value = data.user || null
     }
   } catch { /* 头像获取失败则显示首字符占位 */ }
+
+  // 带 #锚点 进来时，等头像/内容撑开后校正一次滚动位置
+  // （路由的 scrollBehavior 在内容未稳定时算的偏移会偏，实测能偏 200px+）
+  if (location.hash) {
+    const target = document.querySelector(location.hash)
+    if (target) {
+      setTimeout(() => {
+        const y = target.getBoundingClientRect().top + window.scrollY - 84
+        window.scrollTo({ top: y, behavior: 'smooth' })
+      }, 320)
+    }
+  }
 })
 </script>
 

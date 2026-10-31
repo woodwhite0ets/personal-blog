@@ -43,7 +43,7 @@
           </div>
           <div class="hero-actions">
             <router-link to="/forum" class="hero-btn hero-btn-solid">阅读文章</router-link>
-            <a href="https://github.com" target="_blank" rel="noopener" class="hero-btn hero-btn-ghost">GitHub</a>
+            <a href="https://github.com/woodwhite0ets" target="_blank" rel="noopener" class="hero-btn hero-btn-ghost">GitHub</a>
           </div>
           <dl class="hero-rail">
             <div><dt>现在</dt><dd>分布式系统与 AI 工程化</dd></div>
@@ -101,78 +101,25 @@
       <div class="hero-scroll-hint" aria-hidden="true">Scroll</div>
     </section>
 
+    <!-- AI 项目榜（每日更新）-->
     <div class="hm">
-      <!-- 置顶 -->
-      <section class="hm-sec" v-if="pinnedPost">
-        <h2 class="hm-h">置顶</h2>
-        <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`" class="hm-feature">
-          <div class="bezel-core">
-            <h3 class="hm-feature-title">{{ pinnedPost.title }}</h3>
-            <p class="hm-feature-excerpt">{{ cleanExcerpt(pinnedPost.excerpt) }}</p>
-            <p class="hm-meta"><time>{{ pinnedPost.date }}</time><span class="meta-minor">{{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次</span></p>
-          </div>
-        </router-link>
-      </section>
-
-      <!-- 关于 -->
-      <section class="hm-sec">
-        <h2 class="hm-h">关于</h2>
-        <div class="hm-about-grid">
-          <div class="hm-about">
-            <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
-            <p class="hm-text hm-text-lead">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。喜欢把复杂的东西做简单，也喜欢把做过的事写下来。</p>
-          </div>
-          <div class="hm-bars" v-if="tags.length">
-            <div class="bm-head">写过的方向</div>
-            <div class="hm-bar" v-for="t in topTags6" :key="t.name">
-              <span class="hm-bar-name">{{ t.name }}</span>
-              <span class="hm-bar-track"><i :style="{ width: Math.max(6, (Number(t.post_count) / maxTagCount) * 100) + '%' }"></i></span>
-              <span class="hm-bar-num">{{ t.post_count }}</span>
-            </div>
-          </div>
-        </div>
+      <section class="hm-sec ai-snip-sec">
+        <AiDailySnippet />
       </section>
     </div>
 
     <!-- 项目（色带，打破纵向单调）-->
     <section class="band-tint">
       <div class="hm">
+        <!-- 工作站：在用的项目 -->
+        <section class="hm-sec ws-sec">
+          <WorkspaceSnippet />
+        </section>
+
         <div class="hm-sec hm-sec-last">
           <h2 class="hm-h">项目</h2>
           <div class="hm-2up">
-            <router-link to="/about" class="hm-proj">
-              <div class="bezel-core">
-      <svg class="proj-svg" viewBox="0 0 420 150" aria-hidden="true" focusable="false">
-        <g class="pv-line">
-          <rect x="14" y="52" width="86" height="46" rx="8" />
-          <rect x="150" y="38" width="120" height="74" rx="10" />
-          <rect x="320" y="14" width="86" height="32" rx="6" />
-          <rect x="320" y="59" width="86" height="32" rx="6" />
-          <rect x="320" y="104" width="86" height="32" rx="6" />
-          <path d="M100 75 H146" />
-          <path d="M270 75 C295 75 295 30 316 30" />
-          <path d="M270 75 H316" />
-          <path d="M270 75 C295 75 295 120 316 120" />
-        </g>
-        <g class="pv-dot">
-          <circle cx="270" cy="75" r="2.5" />
-          <circle cx="100" cy="75" r="2.5" />
-        </g>
-        <g class="pv-label">
-          <text x="57" y="80" text-anchor="middle">AI 客户端</text>
-          <text x="210" y="72" text-anchor="middle">mcp-gateway</text>
-          <text x="210" y="90" text-anchor="middle" class="pv-sub">鉴权 · 路由 · 审计</text>
-          <text x="363" y="34" text-anchor="middle">知识库</text>
-          <text x="363" y="79" text-anchor="middle">服务器</text>
-          <text x="363" y="124" text-anchor="middle">工具链</text>
-        </g>
-      </svg>
-                <h3 class="hm-proj-title">mcp-gateway</h3>
-                <p class="hm-text">面向知识库与服务器管理的 MCP 网关，把检索与运维能力统一提供给 AI 客户端。</p>
-                <span class="hm-tag">Node.js · MCP</span>
-              </div>
-            </router-link>
-            <router-link to="/about" class="hm-proj">
+            <router-link to="/projects/charging-map" class="hm-proj">
               <div class="bezel-core">
       <svg class="proj-svg" viewBox="0 0 420 150" aria-hidden="true" focusable="false">
         <g class="pv-grid">
@@ -225,10 +172,75 @@
                 <span class="hm-tag">PostGIS · Docker</span>
               </div>
             </router-link>
+            <router-link to="/projects/workstation" class="hm-proj">
+              <div class="bezel-core">
+      <svg class="proj-svg" viewBox="0 0 420 150" aria-hidden="true" focusable="false">
+        <g class="pv-line">
+          <rect x="150" y="20" width="120" height="110" rx="10" />
+          <path d="M150 50 H270 M150 80 H270 M150 110 H270" />
+          <rect x="18" y="42" width="70" height="26" rx="5" />
+          <rect x="18" y="84" width="70" height="26" rx="5" />
+          <rect x="332" y="42" width="70" height="26" rx="5" />
+          <rect x="332" y="84" width="70" height="26" rx="5" />
+          <path d="M88 55 H146 M88 97 H146 M274 55 H328 M274 97 H328" />
+        </g>
+        <g class="pv-dot">
+          <circle cx="165" cy="35" r="2.5" />
+          <circle cx="88" cy="55" r="2.5" />
+          <circle cx="328" cy="97" r="2.5" />
+        </g>
+        <g class="pv-label">
+          <text x="210" y="72" text-anchor="middle">工作站</text>
+          <text x="210" y="90" text-anchor="middle" class="pv-sub">24 核 · 62G · Ubuntu</text>
+          <text x="53" y="59" text-anchor="middle">模型</text>
+          <text x="53" y="101" text-anchor="middle">检索</text>
+          <text x="367" y="59" text-anchor="middle">Git / CI</text>
+          <text x="367" y="101" text-anchor="middle">网关</text>
+        </g>
+      </svg>
+                <h3 class="hm-proj-title">个人 AI 工作站</h3>
+                <p class="hm-text">单机托管本地模型、检索服务与自建 CI，systemd 定时器承担日常巡检与同步。</p>
+                <span class="hm-tag">Ubuntu · systemd</span>
+              </div>
+            </router-link>
           </div>
         </div>
+
       </div>
     </section>
+
+    <div class="hm">
+      <!-- 关于 -->
+      <section class="hm-sec">
+        <h2 class="hm-h">关于</h2>
+        <div class="hm-about-grid">
+          <div class="hm-about">
+            <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
+            <p class="hm-text hm-text-lead">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。喜欢把复杂的东西做简单，也喜欢把做过的事写下来。</p>
+          </div>
+          <div class="hm-bars" v-if="tags.length">
+            <div class="bm-head">写过的方向</div>
+            <div class="hm-bar" v-for="t in topTags6" :key="t.name">
+              <span class="hm-bar-name">{{ t.name }}</span>
+              <span class="hm-bar-track"><i :style="{ width: Math.max(6, (Number(t.post_count) / maxTagCount) * 100) + '%' }"></i></span>
+              <span class="hm-bar-num">{{ t.post_count }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 置顶 -->
+      <section class="hm-sec" v-if="pinnedPost">
+        <h2 class="hm-h">置顶</h2>
+        <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`" class="hm-feature">
+          <div class="bezel-core">
+            <h3 class="hm-feature-title">{{ pinnedPost.title }}</h3>
+            <p class="hm-feature-excerpt">{{ cleanExcerpt(pinnedPost.excerpt) }}</p>
+            <p class="hm-meta"><time>{{ pinnedPost.date }}</time><span class="meta-minor">{{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次</span></p>
+          </div>
+        </router-link>
+      </section>
+    </div>
 
     <div class="hm">
       <!-- 最近 / 热门 -->
@@ -271,6 +283,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { stripMarkdown } from '../../utils/excerpt.js'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
+import AiDailySnippet from './AiDailySnippet.vue'
+import WorkspaceSnippet from './WorkspaceSnippet.vue'
 import UserAvatar from '../common/UserAvatar.vue'
 import { useAuth } from '../../stores/auth.js'
 import { usePosts } from '../../composables/usePosts.js'
@@ -402,6 +416,24 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 
 <!-- ====== 样式：只保留 home-page 独有的，PostList 的样式已随组件带走 ====== -->
 <style scoped>
+/* 首页留白节奏：大板块间距 64px，内容短的板块再收紧 */
+.hm-sec { padding: 56px 0; }
+.hm-h { margin-bottom: 18px; }
+.hm-proj .bezel-core { padding: 26px 28px; }
+.hm-proj .proj-svg { margin-bottom: 16px; }
+.hm-text { font-size: 14.5px; line-height: 1.7; }
+.ai-snip-sec { padding: 40px 0 30px; }
+/* .hm 默认带 112px 底部 padding；首页拆成多个 .hm 容器后每段都会多出来，统一去掉，
+   底部留白交给最后一个板块自己控制 */
+.hm { padding-bottom: 0; }
+.hm-sec-last { padding-bottom: 56px; }
+.ws-sec { padding: 48px 0 56px; }
+@media (max-width: 900px) {
+  .hm-sec { padding: 40px 0; }
+  .ai-snip-sec { padding: 32px 0 24px; }
+  .ws-sec { padding: 40px 0 44px; }
+}
+.hm-proj { min-width: 0; }
 :root { color-scheme: dark; }
 
 .home-page {
