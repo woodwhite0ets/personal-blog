@@ -77,8 +77,14 @@
         <article v-for="(p, i) in posts" :key="p.id" class="ed-entry" :class="{ 'is-featured': i === 0 && isDefaultView }">
           <span class="deco-idx">{{ String(i + 1).padStart(2, '0') }}</span>
           <div class="ed-entry-body">
-            <h3 class="ed-entry-title"><router-link :to="`/post/${p.slug || p.id}`" class="deco-link">{{ p.title }}</router-link></h3>
-            <p class="ed-entry-excerpt">{{ stripMarkdown(p.excerpt, 160) }}</p>
+            <h3 class="ed-entry-title">
+              <router-link :to="`/post/${p.slug || p.id}`" class="deco-link"><template
+                v-for="(seg, k) in hl(p.title)" :key="`t${k}`"
+              ><mark v-if="seg.m" class="hl-hit">{{ seg.t }}</mark><template v-else>{{ seg.t }}</template></template></router-link>
+            </h3>
+            <p class="ed-entry-excerpt"><template
+              v-for="(seg, k) in hl(stripMarkdown(p.excerpt, 160))" :key="`e${k}`"
+            ><mark v-if="seg.m" class="hl-hit">{{ seg.t }}</mark><template v-else>{{ seg.t }}</template></template></p>
             <p class="ed-entry-meta"><time>{{ p.date }}</time><span class="meta-minor">{{ p.read_time }} · {{ p.views || 0 }} 次</span></p>
           </div>
         </article>
@@ -190,6 +196,25 @@ const userMenuRef = ref(null)
 // ====== 搜索状态 ======
 const searchActive = ref(false)
 const searchQuery = ref('')
+
+// 搜索结果里把命中的词标出来（后端已在排序上让标题命中靠前，这里补可见性）
+function hl(text) {
+  const term = searchQuery.value.trim()
+  const src = String(text || '')
+  if (!term) return [{ t: src, m: false }]
+  const lower = src.toLowerCase()
+  const lt = term.toLowerCase()
+  const out = []
+  let i = 0
+  while (i < src.length) {
+    const j = lower.indexOf(lt, i)
+    if (j < 0) { out.push({ t: src.slice(i), m: false }); break }
+    if (j > i) out.push({ t: src.slice(i, j), m: false })
+    out.push({ t: src.slice(j, j + term.length), m: true })
+    i = j + term.length
+  }
+  return out.filter((x) => x.t)
+}
 const searchInput = ref(null)
 
 function handleLogout() {
@@ -762,8 +787,15 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .sort-bar { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 0 0 14px; margin-bottom: 24px; }
 .tag-filter-bar { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 0 0 12px; margin-bottom: 20px; }
 
-/* 统一：列表页容器 1000（与首页 hero/网格左边缘对齐）*/
-.main-layout { max-width: 1000px; padding: 48px 24px 96px; grid-template-columns: 1fr 288px; gap: 56px; }
+/* 列表页容器 1200：与 .ed-hero 同宽，标题与列表左边缘对齐 */
+.main-layout { max-width: 1200px; padding: 48px 24px 96px; grid-template-columns: minmax(0, 1fr) 288px; gap: 56px; }
+
+/* 单栏断点必须写在本规则之后：此前的同名媒体查询被它覆盖，
+   导致 ≤800px 仍是「118px 正文 + 288px 侧栏」的两栏布局。 */
+@media (max-width: 800px) {
+  .main-layout { grid-template-columns: minmax(0, 1fr); gap: 40px; padding: 40px 24px 72px; }
+  .deco-end { display: none; }
+}
 
 /* 统一：页面标题手写 40px */
 .hero-title { font-family: var(--font-hand); font-size: 40px; font-weight: 400; }
@@ -776,4 +808,12 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .sort-count { font-size: 13px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
 .sort-group { display: flex; align-items: center; gap: 8px; }
 
+
+/* 搜索命中高亮 */
+.hl-hit {
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+  color: inherit;
+  padding: 0 1px;
+  border-radius: 2px;
+}
 </style>
