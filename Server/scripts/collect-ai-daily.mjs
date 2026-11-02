@@ -13,20 +13,23 @@
  * 环境变量：
  *   GITHUB_TOKEN   可选，提升 API 限额（未认证 10 次/分钟）
  *   LLM_ENDPOINT   默认 http://127.0.0.1:8092/v1/chat/completions
- *   LLM_MODEL      默认 qwen2.5-coder-7b
+ *   LLM_MODEL      默认 qwen3-4b（8092 上实际加载的模型）
  */
 import fs from 'node:fs';
 import path from 'node:path';
 
 const GH_TOKEN = process.env.GITHUB_TOKEN || '';
 const LLM_ENDPOINT = process.env.LLM_ENDPOINT || 'http://127.0.0.1:8092/v1/chat/completions';
-const LLM_MODEL = process.env.LLM_MODEL || 'qwen2.5-coder-7b';
+const LLM_MODEL = process.env.LLM_MODEL || 'qwen3-4b';
 const UA = 'woodwhite-blog-ai-daily/1.0';
 
 const args = process.argv.slice(2);
 const outArgIdx = args.indexOf('--out');
 const noLlm = args.includes('--no-llm');
-const stamp = new Date().toISOString().slice(0, 10);
+// 本地日期（Asia/Shanghai），不要用 UTC：08:00 以外触发时 UTC 日期会跨天，写错快照
+const stamp = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit',
+}).format(new Date());
 const OUT = outArgIdx >= 0 && args[outArgIdx + 1]
   ? args[outArgIdx + 1]
   : `/tmp/ai-daily-${stamp}.json`;
@@ -48,6 +51,9 @@ const QUERIES = [
   `topic:generative-ai stars:>${MIN_STARS * 2} pushed:>${daysAgo(60)}`,
   `topic:llm created:>${daysAgo(120)} stars:>${MIN_STARS}`,
   `topic:agent created:>${daysAgo(120)} stars:>${MIN_STARS}`,
+  // 工具库方向也扫两把：让「工具池」和「日榜池」有交集，收录的工具才能进榜
+  `topic:ai-tools stars:>${MIN_STARS} pushed:>${daysAgo(60)}`,
+  `topic:mcp stars:>${MIN_STARS} pushed:>${daysAgo(60)}`,
 ];
 
 // ====== 极客向：门槛更低、主题更硬核，单独标记，供「极客榜」使用 ======
@@ -112,8 +118,11 @@ async function zhSummary(repo, desc) {
       { role: 'user', content: `项目：${repo}\n英文：${desc}` },
     ],
     temperature: 0.2,
-    max_tokens: 150,
+    max_tokens: 200,
     stream: false,
+    // 8092 上跑的是 Qwen3 思考模型：不关思考时答案落在 reasoning_content，
+    // content 为空且 finish_reason=length，脚本会拿到空串却不报错（2026-10-31 起中文全空）。
+    chat_template_kwargs: { enable_thinking: false },
   };
   const res = await fetch(LLM_ENDPOINT, {
     method: 'POST',
