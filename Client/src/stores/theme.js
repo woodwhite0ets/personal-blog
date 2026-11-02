@@ -6,11 +6,15 @@ const THEMES = [
   { id: 'midnight', label: 'Midnight', hint: '深蓝夜色' },
   { id: 'terminal', label: 'Terminal', hint: '终端黑绿' },
   { id: 'solar', label: 'Solar', hint: '暖阳米色' },
+  { id: 'editorial', label: 'Editorial', hint: '编辑排版' },
+  { id: 'swiss', label: 'Swiss', hint: '瑞士网格' },
 ]
 
-// 恢复上次主题（默认 paper 信纸）
+// 优先 URL ?theme=（方便分享某个主题的预览链接），其次本地记忆，最后默认 paper
+const fromUrl = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('theme') : null
 const saved = typeof localStorage !== 'undefined' ? localStorage.getItem(THEME_KEY) : null
-const current = ref(THEMES.some(t => t.id === saved) ? saved : 'paper')
+const initial = [fromUrl, saved].find(id => id && THEMES.some(t => t.id === id))
+const current = ref(initial || 'paper')
 
 // 主题切换平滑过渡：给 <html> 打上短暂 class，让 CSS 变量驱动颜色平滑过渡
 let switchTimer = null

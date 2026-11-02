@@ -2436,3 +2436,316 @@ body::after {
   .hm-bar { grid-template-columns: 92px minmax(0, 1fr) 24px; }
   .hm-bar-name { font-size: 12px; }
 }
+
+
+/* ============================================================
+   主题: editorial（编辑排版） / swiss（瑞士网格） — 2026-11-02 新增
+   两套都从 paper 派生：完整变量集 + 半径/字体覆盖，组件不用改。
+   ============================================================ */
+html[data-theme="editorial"] {
+  color-scheme: light;
+
+  --bg: #fbfaf6;
+  --bg-elevated: #ffffff;
+  --bg-float: #fffdf8;
+  --bg-deeper: #f3f1e9;
+  --bg-code: #f2efe4;
+
+  --text: #1c1917;
+  --text-bright: #0e0c0a;
+  --text-dim: #5d574d;
+  --text-muted: #635d54;
+  --text-faint: #6b6862;
+  --text-secondary: #645d53;
+  --text-hint: #6a6761;
+
+  --accent: #9c3327;
+  --accent-hover: #7f281e;
+  --on-accent: #ffffff;
+  --accent-a2: rgba(156, 51, 39, 0.02);
+  --accent-a2: color-mix(in srgb, var(--accent) 2%, transparent);
+  --accent-a3: rgba(156, 51, 39, 0.03);
+  --accent-a3: color-mix(in srgb, var(--accent) 3%, transparent);
+  --accent-a4: rgba(156, 51, 39, 0.04);
+  --accent-a4: color-mix(in srgb, var(--accent) 4%, transparent);
+  --accent-a5: rgba(156, 51, 39, 0.05);
+  --accent-a5: color-mix(in srgb, var(--accent) 5%, transparent);
+  --accent-a6: rgba(156, 51, 39, 0.06);
+  --accent-a6: color-mix(in srgb, var(--accent) 6%, transparent);
+  --accent-a8: rgba(156, 51, 39, 0.08);
+  --accent-a8: color-mix(in srgb, var(--accent) 8%, transparent);
+  --accent-a10: rgba(156, 51, 39, 0.1);
+  --accent-a10: color-mix(in srgb, var(--accent) 10%, transparent);
+  --accent-a12: rgba(156, 51, 39, 0.16);
+  --accent-a12: color-mix(in srgb, var(--accent) 16%, transparent);
+  --accent-a15: rgba(156, 51, 39, 0.15);
+  --accent-a15: color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-a20: rgba(156, 51, 39, 0.2);
+  --accent-a20: color-mix(in srgb, var(--accent) 20%, transparent);
+  --accent-a25: rgba(156, 51, 39, 0.25);
+  --accent-a25: color-mix(in srgb, var(--accent) 25%, transparent);
+  --accent-a30: rgba(156, 51, 39, 0.3);
+  --accent-a30: color-mix(in srgb, var(--accent) 30%, transparent);
+  --accent-a50: rgba(156, 51, 39, 0.5);
+  --accent-a50: color-mix(in srgb, var(--accent) 50%, transparent);
+
+  --ok: #2f6b46;
+  --ok-hover: #2b5f3e;
+  --ok-a6: rgba(56, 158, 109, 0.06);
+  --ok-a8: rgba(56, 158, 109, 0.08);
+  --ok-a10: rgba(56, 158, 109, 0.1);
+  --ok-a12: rgba(56, 158, 109, 0.12);
+  --ok-a20: rgba(56, 158, 109, 0.2);
+  --ok-a30: rgba(56, 158, 109, 0.3);
+  --ok-a40: rgba(56, 158, 109, 0.4);
+
+  --warn: #8d6724;
+  --warn-a8: rgba(192, 138, 46, 0.08);
+  --warn-a20: rgba(192, 138, 46, 0.2);
+
+  --err: #c65656;
+  --err-hover: #b24747;
+  --err-a6: rgba(198, 86, 86, 0.06);
+  --err-a8: rgba(198, 86, 86, 0.08);
+  --err-a12: rgba(198, 86, 86, 0.12);
+  --err-a15: rgba(198, 86, 86, 0.15);
+  --err-a20: rgba(198, 86, 86, 0.2);
+  --err-a25: rgba(198, 86, 86, 0.25);
+  --err-a30: rgba(198, 86, 86, 0.3);
+
+  --purple: #6f5fbe;
+
+  --border: #e2dcd0;
+  --border-strong: #cdc4b4;
+  --border-a30: rgba(0,0,0,0.08);
+  --border-a50: rgba(0,0,0,0.12);
+  --divider: #e7e0d2;
+
+  --overlay-a1: rgba(0, 0, 0, 0.01);
+  --overlay-a15: rgba(0, 0, 0, 0.015);
+  --overlay-a2: rgba(0, 0, 0, 0.02);
+  --overlay-a3: rgba(0, 0, 0, 0.03);
+  --overlay-a4: rgba(0, 0, 0, 0.04);
+  --overlay-a5: rgba(0, 0, 0, 0.05);
+  --overlay-a8: rgba(0, 0, 0, 0.08);
+  --overlay-a10: rgba(0, 0, 0, 0.1);
+  --overlay-a20: rgba(0, 0, 0, 0.2);
+
+  --text-secondary-a8: rgba(132, 138, 150, 0.08);
+  --text-secondary-a20: rgba(132, 138, 150, 0.2);
+
+  --navbar-bg: rgba(251,250,246,0.88);
+
+  --aurora-1: rgba(156, 51, 39, 0.10);
+  --aurora-2: rgba(176, 148, 96, 0.12);
+  --aurora-3: rgba(150, 128, 96, 0.09);
+  --scanline: rgba(0,0,0,0);
+  --shadow: rgba(70, 52, 34, 0.10);
+  --shadow-deep: rgba(70, 52, 34, 0.16);
+  --modal-overlay: rgba(0,0,0,0.40);
+  --white: #ffffff;
+
+  /* Editorial：标题走衬线，正文保持无衬线；圆角收紧到近乎直角 */
+  --font-display: var(--font-serif);
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+}
+
+html[data-theme="swiss"] {
+  color-scheme: light;
+
+  --bg: #fcfcfb;
+  --bg-elevated: #ffffff;
+  --bg-float: #ffffff;
+  --bg-deeper: #f1f1ef;
+  --bg-code: #f4f4f2;
+
+  --text: #161616;
+  --text-bright: #000000;
+  --text-dim: #585858;
+  --text-muted: #5c5c5c;
+  --text-faint: #666666;
+  --text-secondary: #4f4f4f;
+  --text-hint: #636363;
+
+  --accent: #111111;
+  --accent-hover: #000000;
+  --on-accent: #ffffff;
+  --accent-a2: rgba(17, 17, 17, 0.02);
+  --accent-a2: color-mix(in srgb, var(--accent) 2%, transparent);
+  --accent-a3: rgba(17, 17, 17, 0.03);
+  --accent-a3: color-mix(in srgb, var(--accent) 3%, transparent);
+  --accent-a4: rgba(17, 17, 17, 0.04);
+  --accent-a4: color-mix(in srgb, var(--accent) 4%, transparent);
+  --accent-a5: rgba(17, 17, 17, 0.05);
+  --accent-a5: color-mix(in srgb, var(--accent) 5%, transparent);
+  --accent-a6: rgba(17, 17, 17, 0.06);
+  --accent-a6: color-mix(in srgb, var(--accent) 6%, transparent);
+  --accent-a8: rgba(17, 17, 17, 0.08);
+  --accent-a8: color-mix(in srgb, var(--accent) 8%, transparent);
+  --accent-a10: rgba(17, 17, 17, 0.1);
+  --accent-a10: color-mix(in srgb, var(--accent) 10%, transparent);
+  --accent-a12: rgba(17, 17, 17, 0.16);
+  --accent-a12: color-mix(in srgb, var(--accent) 16%, transparent);
+  --accent-a15: rgba(17, 17, 17, 0.15);
+  --accent-a15: color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-a20: rgba(17, 17, 17, 0.2);
+  --accent-a20: color-mix(in srgb, var(--accent) 20%, transparent);
+  --accent-a25: rgba(17, 17, 17, 0.25);
+  --accent-a25: color-mix(in srgb, var(--accent) 25%, transparent);
+  --accent-a30: rgba(17, 17, 17, 0.3);
+  --accent-a30: color-mix(in srgb, var(--accent) 30%, transparent);
+  --accent-a50: rgba(17, 17, 17, 0.5);
+  --accent-a50: color-mix(in srgb, var(--accent) 50%, transparent);
+
+  --ok: #0a6b3f;
+  --ok-hover: #085a35;
+  --ok-a6: rgba(56, 158, 109, 0.06);
+  --ok-a8: rgba(56, 158, 109, 0.08);
+  --ok-a10: rgba(56, 158, 109, 0.1);
+  --ok-a12: rgba(56, 158, 109, 0.12);
+  --ok-a20: rgba(56, 158, 109, 0.2);
+  --ok-a30: rgba(56, 158, 109, 0.3);
+  --ok-a40: rgba(56, 158, 109, 0.4);
+
+  --warn: #7a5300;
+  --warn-a8: rgba(192, 138, 46, 0.08);
+  --warn-a20: rgba(192, 138, 46, 0.2);
+
+  --err: #c0261a;
+  --err-hover: #b24747;
+  --err-a6: rgba(198, 86, 86, 0.06);
+  --err-a8: rgba(198, 86, 86, 0.08);
+  --err-a12: rgba(198, 86, 86, 0.12);
+  --err-a15: rgba(198, 86, 86, 0.15);
+  --err-a20: rgba(198, 86, 86, 0.2);
+  --err-a25: rgba(198, 86, 86, 0.25);
+  --err-a30: rgba(198, 86, 86, 0.3);
+
+  --purple: #6f5fbe;
+
+  --border: #dedddb;
+  --border-strong: #c4c3c1;
+  --border-a30: rgba(0,0,0,0.08);
+  --border-a50: rgba(0,0,0,0.12);
+  --divider: #e8e7e5;
+
+  --overlay-a1: rgba(0, 0, 0, 0.01);
+  --overlay-a15: rgba(0, 0, 0, 0.015);
+  --overlay-a2: rgba(0, 0, 0, 0.02);
+  --overlay-a3: rgba(0, 0, 0, 0.03);
+  --overlay-a4: rgba(0, 0, 0, 0.04);
+  --overlay-a5: rgba(0, 0, 0, 0.05);
+  --overlay-a8: rgba(0, 0, 0, 0.08);
+  --overlay-a10: rgba(0, 0, 0, 0.1);
+  --overlay-a20: rgba(0, 0, 0, 0.2);
+
+  --text-secondary-a8: rgba(132, 138, 150, 0.08);
+  --text-secondary-a20: rgba(132, 138, 150, 0.2);
+
+  --navbar-bg: rgba(252,252,251,0.9);
+
+  --aurora-1: rgba(17, 17, 17, 0.05);
+  --aurora-2: rgba(17, 17, 17, 0.035);
+  --aurora-3: rgba(17, 17, 17, 0.03);
+  --scanline: rgba(0,0,0,0);
+  --shadow: rgba(0, 0, 0, 0.06);
+  --shadow-deep: rgba(0, 0, 0, 0.10);
+  --modal-overlay: rgba(0,0,0,0.40);
+  --white: #ffffff;
+
+  /* Swiss：全直角、无衬线、字体换成更中性的 Grotesk 取向 */
+  --font-sans: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-display: var(--font-sans);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+}
+
+/* ===== 新增主题的浅色配套（代码高亮 / 颗粒 / 光斑） ===== */
+html[data-theme="editorial"] .code-block .shiki span,
+html[data-theme="swiss"] .code-block .shiki span { color: var(--shiki-light); }
+
+html[data-theme="editorial"] body::after,
+html[data-theme="swiss"] body::after { opacity: 0.05; mix-blend-mode: multiply; }
+
+html[data-theme="editorial"] .home-page,
+html[data-theme="editorial"] .forum-page,
+html[data-theme="editorial"] .tags-page,
+html[data-theme="editorial"] .archive-page,
+html[data-theme="editorial"] .about-page {
+  background-image:
+    radial-gradient(1100px 660px at 86% -14%, rgba(156, 51, 39, 0.10), transparent 62%),
+    radial-gradient(880px 580px at -8% 30%, rgba(176, 148, 96, 0.10), transparent 60%);
+}
+
+html[data-theme="swiss"] .home-page,
+html[data-theme="swiss"] .forum-page,
+html[data-theme="swiss"] .tags-page,
+html[data-theme="swiss"] .archive-page,
+html[data-theme="swiss"] .about-page {
+  background-image: none;
+}
+
+/* ===== thematic 细节：让两套新主题真的"有性格"（不碰组件结构） ===== */
+/* Editorial：标题走衬线，正文行高放松一点，读起来更像杂志 */
+html[data-theme="editorial"] h1,
+html[data-theme="editorial"] h2,
+html[data-theme="editorial"] h3,
+html[data-theme="editorial"] .tl-title,
+html[data-theme="editorial"] .ad-title,
+html[data-theme="editorial"] .section-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+html[data-theme="editorial"] body { line-height: 1.75; }
+
+/* Swiss：等宽数字 + 紧字距 + 更轻的阴影，直角靠线而不是靠投影分层 */
+html[data-theme="swiss"] body {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.004em;
+}
+html[data-theme="swiss"] h1,
+html[data-theme="swiss"] h2,
+html[data-theme="swiss"] h3 {
+  font-weight: 700;
+  letter-spacing: -0.024em;
+}
+html[data-theme="swiss"] {
+  --shadow: rgba(0, 0, 0, 0.04);
+  --shadow-deep: rgba(0, 0, 0, 0.07);
+}
+
+/* ===== 反相段（首屏/项目区）按主题微调 =====
+   浅色主题本来就该保留黑段落节奏（paper 也是），这里只调"黑"的色相：
+   Editorial 用暖黑配暖纸，Swiss 用纯中性黑。 */
+html[data-theme="editorial"] .hero-band,
+html[data-theme="editorial"] .band-tint {
+  --bg: #14110f;
+  --bg-elevated: #1e1a17;
+  --bg-deeper: #0a0807;
+  --border: #2f2925;
+  --border-strong: #453d37;
+}
+html[data-theme="swiss"] .hero-band,
+html[data-theme="swiss"] .band-tint {
+  --bg: #0a0a0a;
+  --bg-elevated: #141414;
+  --bg-deeper: #000000;
+  --border: #242424;
+  --border-strong: #3a3a3a;
+}
+
+/* 标签底色（--pale-blue-*）按主题改配色：默认那抹冷蓝在两套新主题里都突兀 */
+html[data-theme="editorial"] {
+  --pale-blue-bg: color-mix(in srgb, var(--accent) 8%, #fff);
+  --pale-blue-fg: #8d2f24;
+}
+html[data-theme="swiss"] {
+  --pale-blue-bg: #ededeb;
+  --pale-blue-fg: #111111;
+}

@@ -38,6 +38,8 @@ const swatchColor = (id) => ({
   paper: '#2f4a73',
   midnight: '#8fb0ff',
   solar: '#e0a96d',
+  editorial: '#9c3327',
+  swiss: '#111111',
 })[id]
 
 function pick(id) {
