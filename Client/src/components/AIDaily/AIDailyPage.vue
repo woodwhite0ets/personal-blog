@@ -79,6 +79,7 @@
             <div class="ad-body">
               <div class="ad-line">
                 <a class="ad-name" :href="item.url" target="_blank" rel="noopener noreferrer">{{ item.repo }}</a>
+                <RouterLink v-if="item.tool_slug" class="ad-tool-link" :to="`/tools/${item.tool_slug}`">工具详情</RouterLink>
                 <span v-if="item.language" class="ad-lang">{{ item.language }}</span>
                 <span class="ad-stats">
                   <span class="ad-stars" :title="`总 Star ${formatNumber(item.stars)}`">★ {{ formatNumber(item.stars) }}</span>
@@ -108,6 +109,7 @@
               <div class="ad-body">
                 <div class="ad-line">
                   <a class="ad-name" :href="item.url" target="_blank" rel="noopener noreferrer">{{ item.repo }}</a>
+                <RouterLink v-if="item.tool_slug" class="ad-tool-link" :to="`/tools/${item.tool_slug}`">工具详情</RouterLink>
                   <span v-if="item.language" class="ad-lang">{{ item.language }}</span>
                   <span class="ad-stats">
                     <span class="ad-stars">★ {{ formatNumber(item.stars) }}</span>
@@ -190,6 +192,7 @@
                   <div class="ad-body">
                     <div class="ad-line">
                       <a class="ad-name" :href="item.url" target="_blank" rel="noopener noreferrer">{{ item.repo }}</a>
+                <RouterLink v-if="item.tool_slug" class="ad-tool-link" :to="`/tools/${item.tool_slug}`">工具详情</RouterLink>
                       <span class="ad-stats">
                         <span class="ad-momentum">+{{ item.momentumPct }}%</span>
                         <span class="ad-stars">★ {{ formatNumber(item.stars) }}</span>
@@ -222,6 +225,7 @@
                   <div class="ad-body">
                     <div class="ad-line">
                       <a class="ad-name" :href="item.url" target="_blank" rel="noopener noreferrer">{{ item.repo }}</a>
+                <RouterLink v-if="item.tool_slug" class="ad-tool-link" :to="`/tools/${item.tool_slug}`">工具详情</RouterLink>
                       <span class="ad-stats">
                         <span class="ad-stars">★ {{ formatNumber(item.stars) }}</span>
                         <span v-if="item.gain > 0" class="ad-gain">+{{ formatNumber(item.gain) }}</span>
@@ -296,6 +300,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 
@@ -544,6 +549,9 @@ onMounted(async () => {
 .ad-tab:hover { color: var(--text); }
 .ad-tab.active { color: var(--text); border-color: var(--border); }
 .ad-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ad-tool-link { font-size: 12px; color: var(--text-faint); text-decoration: none; border-bottom: 1px dotted var(--border-strong); }
+.ad-tool-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.ad-tool-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .ad-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
 .ad-date-label { font-size: 12px; color: var(--text-dim); }

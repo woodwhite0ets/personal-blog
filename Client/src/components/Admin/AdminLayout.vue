@@ -39,6 +39,8 @@
             </router-link>
             <router-link to="/admin/users" class="nav-item" active-class="active"> 用户
             </router-link>
+            <router-link to="/admin/tools" class="nav-item" active-class="active"> 工具库
+            </router-link>
             <router-link to="/admin/logs" class="nav-item" active-class="active"> 日志
             </router-link>
           </div>

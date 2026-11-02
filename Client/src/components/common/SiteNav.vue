@@ -55,6 +55,7 @@ const navLinks = [
   { to: '/HomePage', label: '首页' },
   { to: '/forum', label: '文章' },
   { to: '/ai-daily', label: 'AI 榜' },
+  { to: '/tools', label: '工具' },
   { to: '/tags', label: '分类' },
   { to: '/projects', label: '项目' },
   { to: '/archive', label: '归档' },

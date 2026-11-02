@@ -54,6 +54,16 @@ const routes = [
     component: () => import('../components/AIDaily/AIDailyPage.vue'),
   },
   {
+    path: '/tools',
+    name: 'Tools',
+    component: () => import('../components/Tools/ToolsPage.vue'),
+  },
+  {
+    path: '/tools/:slug',
+    name: 'ToolDetail',
+    component: () => import('../components/Tools/ToolDetail.vue'),
+  },
+  {
     path: '/now',
     name: 'Now',
     component: () => import('../components/Homepage/NowPage.vue'),
@@ -146,6 +156,11 @@ const routes = [
         path: 'users',
         name: 'AdminUsers',
         component: () => import('../components/Admin/UsersManager.vue'),
+      },
+      {
+        path: 'tools',
+        name: 'AdminTools',
+        component: () => import('../components/Admin/ToolsManager.vue'),
       },
       {
         path: 'logs',
