@@ -330,6 +330,61 @@ async function runMigrations(conn) {
     `);
   }
 
+  // ai_tools：AI 工具库台账（长期索引）
+  // 与 ai_daily_items 的区别：榜单是「每天覆盖的快照」，工具库是「一条工具一行」的长期台账，
+  // 采集只更新指标，人工字段（note_zh / status / weight / category）不被自动流程覆盖。
+  if (!existing.includes('ai_tools')) {
+    console.log('[db] migration: creating ai_tools table');
+    await conn.query(`
+      CREATE TABLE \`ai_tools\` (
+        \`id\`           INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+        \`slug\`         VARCHAR(120)  NOT NULL,
+        \`repo\`         VARCHAR(160)  DEFAULT NULL,
+        \`name\`         VARCHAR(160)  NOT NULL,
+        \`homepage\`     VARCHAR(300)  DEFAULT NULL,
+        \`docs_url\`     VARCHAR(300)  DEFAULT NULL,
+        \`desc_en\`      VARCHAR(500)  DEFAULT '',
+        \`tagline_zh\`   VARCHAR(120)  DEFAULT '',
+        \`note_zh\`      VARCHAR(300)  DEFAULT NULL,
+        \`category\`     VARCHAR(40)   NOT NULL DEFAULT 'other',
+        \`tags\`         VARCHAR(300)  DEFAULT '',
+        \`form\`         VARCHAR(20)   NOT NULL DEFAULT 'web',
+        \`open_source\`  TINYINT(1)    NOT NULL DEFAULT 0,
+        \`pricing\`      VARCHAR(20)   NOT NULL DEFAULT 'free',
+        \`needs_key\`    TINYINT(1)    NOT NULL DEFAULT 0,
+        \`zh_ui\`        TINYINT(1)    NOT NULL DEFAULT 0,
+        \`platforms\`    VARCHAR(40)   DEFAULT '',
+        \`stars\`        INT UNSIGNED  NOT NULL DEFAULT 0,
+        \`star_gain_7d\` INT           NOT NULL DEFAULT 0,
+        \`last_commit\`  DATE          DEFAULT NULL,
+        \`status\`       VARCHAR(16)   NOT NULL DEFAULT 'candidate',
+        \`weight\`       SMALLINT      NOT NULL DEFAULT 0,
+        \`source\`       VARCHAR(40)   DEFAULT '',
+        \`reviewed_at\`  DATETIME      DEFAULT NULL,
+        \`added_at\`     DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        \`updated_at\`   DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (\`id\`),
+        UNIQUE KEY \`uk_slug\` (\`slug\`),
+        UNIQUE KEY \`uk_repo\` (\`repo\`),
+        KEY \`idx_pick\` (\`status\`, \`category\`, \`weight\`),
+        KEY \`idx_stars\` (\`stars\`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  }
+
+  // ai_tool_daily：工具星数日快照，用于算 7 日涨幅（也留给后续趋势图）
+  if (!existing.includes('ai_tool_daily')) {
+    console.log('[db] migration: creating ai_tool_daily table');
+    await conn.query(`
+      CREATE TABLE \`ai_tool_daily\` (
+        \`repo\`    VARCHAR(160)  NOT NULL,
+        \`day\`     DATE          NOT NULL,
+        \`stars\`   INT UNSIGNED  NOT NULL DEFAULT 0,
+        PRIMARY KEY (\`repo\`, \`day\`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  }
+
   // ====== 增量补列：仓库年龄/分叉数（潜力榜与成熟榜需要）======
   const addColumnIfMissing = async (table, column, definition) => {
     const [cols] = await conn.query(

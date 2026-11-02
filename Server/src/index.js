@@ -172,9 +172,11 @@ app.get('/api/stats', async (req, res) => {
 
 app.use('/api/posts',  require('./routes/posts'));
 app.use('/api/ai-daily', require('./routes/aiDaily'));
+app.use('/api/ai-tools', require('./routes/aiTools'));
 app.use('/api/notes', require('./routes/notes'));
 app.use('/api/users',  require('./routes/users'));
 app.use('/api/upload', require('./routes/upload'));
+app.use('/api/admin/tools', require('./routes/adminTools'));
 app.use('/api/admin',  require('./routes/admin'));
 
 // ====== SEO 路由（feed.xml / sitemap.xml，需在 SPA fallback 之前） ======

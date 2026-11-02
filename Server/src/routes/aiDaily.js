@@ -26,7 +26,8 @@ const ITEM_FIELDS = `
   star_gain,
   topics,
   first_seen,
-  pushed_at
+  pushed_at,
+  (SELECT t.slug FROM ai_tools t WHERE t.repo = ai_daily_items.repo AND t.status <> 'hidden' LIMIT 1) AS tool_slug
 `;
 
 function clampLimit(raw, fallback = DEFAULT_LIMIT) {
@@ -83,7 +84,8 @@ router.get('/latest', async (req, res) => {
     if (!date) return res.json({ date: null, items: [] });
     const limit = clampLimit(req.query.limit, 3);
     const [items] = await pool.query(
-      `SELECT rank_no AS \`rank\`, name, repo, url, desc_zh, desc_en, language, star_gain, stars
+      `SELECT rank_no AS \`rank\`, name, repo, url, desc_zh, desc_en, language, star_gain, stars,
+              (SELECT t.slug FROM ai_tools t WHERE t.repo = ai_daily_items.repo AND t.status <> 'hidden' LIMIT 1) AS tool_slug
        FROM ai_daily_items WHERE snapshot_date = ? ORDER BY rank_no ASC LIMIT ?`,
       [date, limit]
     );
