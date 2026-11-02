@@ -9,7 +9,10 @@ import fs from 'node:fs';
 
 const args = process.argv.slice(2);
 const outIdx = args.indexOf('--out');
-const stamp = new Date().toISOString().slice(0, 10);
+// 本地日期（Asia/Shanghai），不要用 UTC：08:00 以外触发时 UTC 日期会跨天，写错快照
+const stamp = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit',
+}).format(new Date());
 const OUT = outIdx >= 0 && args[outIdx + 1] ? args[outIdx + 1] : `/tmp/ai-models-${stamp}.json`;
 const API = 'https://openrouter.ai/api/v1/models';
 

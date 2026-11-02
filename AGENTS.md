@@ -7,6 +7,6 @@
 
 ## 约定
 
-- 知识条目写 `/data/knowledge/blog/`，别写进项目目录
+- 知识条目写 `/data/kb/claims/blog/`，别写进项目目录
 - 会话由 `ai` 索引，不需要手动归档
 - 长期不做了跑 `proj freeze blog`
