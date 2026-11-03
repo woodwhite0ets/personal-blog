@@ -13,7 +13,7 @@
         </div>
         <div class="hero-info">
           <h1 class="hero-name">WoodWhite</h1>
-          <p class="hero-tagline">应届毕业生 · Web 全栈开发</p>
+          <p class="hero-tagline">应届毕业生，Web 全栈开发</p>
           <p class="hero-desc">
             本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL 等技术栈。
             持续学习、乐于分享，希望在实践中不断成长。
@@ -27,7 +27,7 @@
           <span class="panel-title deco-rule">关于本站</span>
         </div>
         <div class="panel-body markdown-body">
-          <p>这里是 <strong>woodwhite@blog</strong> —— 一个记录全栈开发与工程实践的技术博客。</p>
+          <p>这里是 <strong>woodwhite@blog</strong>，一个记录全栈开发与工程实践的技术博客。</p>
           <ul>
             <li>用 <strong>Markdown</strong> 分享技术知识</li>
             <li>用 <strong>Markdown</strong> 记录项目、踩坑与思考</li>
@@ -55,7 +55,7 @@
               <router-link class="project-name" to="/projects/blog">woodwhite@blog</router-link>
               <span class="project-status">进行中</span>
             </div>
-            <p class="project-desc">本站 —— 一个基于 Vue 3 + Express + MySQL 的全栈技术博客，包含完整的认证、文章、评论、点赞、管理后台系统。</p>
+            <p class="project-desc">本站，一个基于 Vue 3 + Express + MySQL 的全栈技术博客，包含完整的认证、文章、评论、点赞、管理后台系统。</p>
             <div class="project-tags">
               <span class="ptag">Vue 3</span><span class="ptag">Express</span><span class="ptag">MySQL</span><span class="ptag">Docker 部署</span>
             </div>
@@ -215,22 +215,22 @@ onMounted(async () => {
 .about-hero {
   display: flex; align-items: center; gap: 24px;
   padding: 0 0 28px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px dotted var(--rule-dot-ink);
 }
 .avatar-box { flex-shrink: 0; }
-.hero-name { font-size: 2rem; font-weight: 650; letter-spacing: -0.028em; color: var(--text-bright); margin: 0 0 8px; line-height: 1.1; }
-.hero-tagline { font-size: 0.8125rem; color: var(--accent); margin-bottom: 12px; }
+.hero-name { font-family: "Noto Serif SC", var(--font-serif); font-size: clamp(2rem, 3.2vw, 2.6rem); font-weight: 500; letter-spacing: -0.025em; color: var(--text-bright); margin: 0 0 8px; line-height: 1.15; }
+.hero-tagline { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .06em; color: var(--text-faint); margin-bottom: 12px; }
 .hero-desc { font-size: 0.8125rem; line-height: 1.8; color: var(--text-secondary); margin: 0; }
 
 /* 通用面板 */
-.about-panel { border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-.panel-bar { display: flex; align-items: center; gap: 7px; padding: 0 0 10px; }
+.about-panel { border-bottom: 1px dotted var(--rule-dot-ink); padding-bottom: 8px; }
+.panel-bar { display: flex; align-items: center; gap: 7px; padding: 0 0 10px; border-bottom: 1px dotted var(--rule-dot-ink); margin-bottom: 14px; }
 .panel-dot { width: 8px; height: 8px; border-radius: 50%; }
 .dot-cyan   { background: var(--accent); }
 .dot-yellow { background: var(--warn); }
 .dot-green  { background: var(--ok); }
 .dim { opacity: 0.3; }
-.panel-title { flex: 1; font-family: var(--font-hand); font-size: 1.375rem; font-weight: 400; color: var(--text-bright); }
+.panel-title { flex: 1; font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; letter-spacing: .1em; color: var(--text-secondary); }
 .section-block { width: 7px; height: 7px; background: var(--accent); flex-shrink: 0; }
 .panel-rule { flex: 1; height: 1px; background: var(--border); }
 .panel-body { padding: 20px 24px; }
@@ -244,7 +244,7 @@ onMounted(async () => {
 .c-accent, .c-ok, .c-warn, .c-purple { color: var(--text-dim); }
 
 /* 项目 */
-.project-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
+.project-item { padding: 14px 0; border-bottom: 1px dotted var(--rule-dot-ink); }
 .project-item:last-child { border-bottom: none; padding-bottom: 0; }
 .project-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .project-name { font-size: 0.875rem; font-weight: 600; color: var(--text-bright); }
@@ -261,7 +261,7 @@ onMounted(async () => {
 .ptag + .ptag::before { content: ' · '; color: var(--border-strong); }
 
 /* 联系方式 */
-.contact-line { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.contact-line { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px dotted var(--rule-dot-ink); }
 .contact-line:last-child { border-bottom: none; }
 .contact-label { font-size: 0.8125rem; color: var(--text-muted); width: 56px; flex-shrink: 0; }
 .contact-val { font-size: 0.8125rem; color: var(--text); text-decoration: none; transition: color 0.2s; }

@@ -2282,3 +2282,63 @@ a:hover { text-decoration-color: var(--accent); }
   color: var(--text-faint);
   font-variant-numeric: tabular-nums;
 }
+
+
+/* ============================================================
+   全站视觉重建（第二批）：表单、表格、后台
+   同一套语言：等宽标签、可见细线、点线分隔、赤陶只做指路
+   ============================================================ */
+
+/* ① 表头：等宽小字 + 点线下划；单元格点线分隔 */
+:where(.data-table, .post-table, .user-table, .tool-table) thead th {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 8px;
+}
+:where(.data-table, .post-table, .user-table, .tool-table) tbody td {
+  border-bottom: 1px dotted var(--rule-dot-ink);
+  font-size: 0.8125rem;
+}
+:where(.data-table, .post-table, .user-table, .tool-table) tbody tr:last-child td {
+  border-bottom: none;
+}
+:where(.data-table, .post-table, .user-table, .tool-table) tbody tr:hover {
+  background: var(--overlay-a2);
+}
+
+/* ② 表单控件：统一高度、边框、焦点环 */
+:where(.field input[type='text'], .field input[type='password'], .field input[type='email'],
+       .field input[type='number'], .field textarea, .field select) {
+  width: 100%;
+  padding: 11px 13px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--text-bright);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+:where(.field input, .field textarea, .field select):focus-visible {
+  border-color: var(--text-bright);
+  outline: none;
+}
+:where(.field label) {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: .06em;
+  color: var(--text-faint);
+}
+
+/* ③ 后台面板：去掉厚阴影，改用细线 + 等宽小节标题 */
+:where(.panel, .card, .admin-panel) {
+  box-shadow: none;
+}
+:where(.panel-bar, .card-head) {
+  border-bottom: 1px dotted var(--rule-dot-ink);
+}

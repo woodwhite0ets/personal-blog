@@ -109,7 +109,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 }
 .brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; text-decoration: none; font-size: 0.875rem; font-weight: 600; }
 .brand-bracket { color: var(--text-muted); }
-.brand-text { font-family: var(--font-hand); font-size: 1.3125rem; color: var(--text-bright); white-space: nowrap; }
+.brand-text { font-family: "EB Garamond Variable", "Noto Serif SC", Georgia, serif; font-size: 1.375rem; letter-spacing: -0.01em; color: var(--text-bright); white-space: nowrap; }
 .brand-caret { color: var(--accent); font-size: 0.75rem; margin-left: 1px; }
 .brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
 .nav-links { display: flex; gap: 28px; flex: 1; }

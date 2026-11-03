@@ -233,11 +233,12 @@ async function handleGuestLogin() {
 }
  
 .field label {
+  font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 600;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+  color: var(--text-faint);
+  text-transform: none;
+  letter-spacing: .08em;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -365,19 +366,20 @@ async function handleGuestLogin() {
   width: 100%;
   padding: 13px 0;
   font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: var(--text);
+  background: transparent;
   border: 1px solid var(--border-strong);
   gap: 10px;
 }
 
 .btn-guest:hover:not(:disabled) {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-a4);
-  box-shadow: 0 0 24px var(--accent-a12);
-  transform: translateY(-1px);
+  color: var(--text-bright);
+  border-color: var(--text-bright);
+  background: var(--overlay-a2);
+  box-shadow: none;
+  transform: none;
 }
 
 .btn-guest:active:not(:disabled) { transform: translateY(0) scale(0.99); }
@@ -389,6 +391,10 @@ async function handleGuestLogin() {
 .guest-hint {
   text-align: center;
   margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: .04em;
+  color: var(--text-faint);
 }
 
 .spinner-guest {
@@ -455,10 +461,10 @@ async function handleGuestLogin() {
 }
 
 /* 信笺风登录页（2026-10-11） */
-.login-title { font-family: var(--font-hand); font-size: 2.125rem; font-weight: 400; color: var(--text-bright); margin: 0 0 6px; }
-.login-card { border-radius: 4px; box-shadow: 0 18px 50px var(--shadow-soft); }
+.login-title { font-family: "Noto Serif SC", var(--font-serif); font-size: 1.75rem; font-weight: 500; letter-spacing: -0.02em; color: var(--text-bright); margin: 0 0 6px; }
+.login-card { border-radius: 4px; box-shadow: none; border: 1px solid var(--border-strong); }
 .card-body { padding: 40px 36px; }
-.subtitle { font-size: 0.9375rem; color: var(--text-dim); }
+.subtitle { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .06em; color: var(--text-faint); }
 
 /* 统一：auth 卡片宽度 420 */
 .login-card, .register-card, .verify-card, .card { max-width: 420px; margin: 0 auto; }
@@ -469,7 +475,7 @@ async function handleGuestLogin() {
 .login-page { min-height: 100dvh; display:block; padding:72px 24px; background:var(--bg); }
 .login-card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
 .card-body { max-width:560px; margin:0 auto; padding:0; }
-.login-title, .auth-title { font-family:var(--font-hand); font-size: clamp(2.5rem,5vw,4rem); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
+.login-title, .auth-title { font-family: "Noto Serif SC", var(--font-serif); font-weight: 500; letter-spacing: -0.025em; font-size: clamp(2rem,3.4vw,2.6rem); text-align:left; padding-bottom:16px; margin: 0 0 4px; }
 .terminal-status { display:none; }
 
 /* ===== 父级收口：清掉终端风残留（渐变/光晕/卡片阴影/装饰符号）===== */
