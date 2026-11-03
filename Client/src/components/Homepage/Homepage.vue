@@ -361,16 +361,33 @@ function scrollToPosts() {
   document.querySelector('.main-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-// ====== 首屏光标跟随光晕（仅精确指针设备，且尊重减少动效偏好）======
+// ====== 首屏光标跟随光晕 ======
+// 只写两个 px 变量去 translate 一个固定的渐变层（走合成器），
+// 而且 pointermove 用 rAF 合并，避免每帧重绘整块首屏。
 let heroBand = null
+let heroRect = null
+let glowX = 0
+let glowY = 0
+let glowRaf = 0
+let heroObserver = null
+
+const applyGlow = () => {
+  glowRaf = 0
+  if (!heroBand) return
+  heroBand.style.setProperty('--gx', `${glowX}px`)
+  heroBand.style.setProperty('--gy', `${glowY}px`)
+}
+
 const onHeroMove = (e) => {
   if (!heroBand) return
-  const r = heroBand.getBoundingClientRect()
-  if (!r.width || !r.height) return
-  heroBand.style.setProperty('--mx', (((e.clientX - r.left) / r.width) * 100).toFixed(1) + '%')
-  heroBand.style.setProperty('--my', (((e.clientY - r.top) / r.height) * 100).toFixed(1) + '%')
+  if (!heroRect) heroRect = heroBand.getBoundingClientRect()
+  glowX = e.clientX - heroRect.left
+  glowY = e.clientY - heroRect.top
+  if (!glowRaf) glowRaf = requestAnimationFrame(applyGlow)
   if (!heroBand.classList.contains('glow-on')) heroBand.classList.add('glow-on')
 }
+
+const refreshHeroRect = () => { heroRect = heroBand ? heroBand.getBoundingClientRect() : null }
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
@@ -379,12 +396,22 @@ onMounted(() => {
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (fine && !calm) {
     heroBand = document.querySelector('.hero-band')
-    if (heroBand) heroBand.addEventListener('pointermove', onHeroMove, { passive: true })
+    if (heroBand) {
+      heroBand.addEventListener('pointermove', onHeroMove, { passive: true })
+      heroBand.addEventListener('pointerenter', refreshHeroRect, { passive: true })
+      heroObserver = new ResizeObserver(refreshHeroRect)
+      heroObserver.observe(heroBand)
+    }
   }
 })
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
-  if (heroBand) heroBand.removeEventListener('pointermove', onHeroMove)
+  if (heroBand) {
+    heroBand.removeEventListener('pointermove', onHeroMove)
+    heroBand.removeEventListener('pointerenter', refreshHeroRect)
+  }
+  if (heroObserver) heroObserver.disconnect()
+  if (glowRaf) cancelAnimationFrame(glowRaf)
 })
 
 // ====== 搜索 ======

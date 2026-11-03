@@ -73,7 +73,8 @@
           <p class="ad-state-body">采集任务每天上午运行一次，完成后这里会出现当天的 12 个项目。</p>
         </div>
 
-        <ol v-else class="ad-list">
+        <Transition v-else name="adfade" mode="out-in">
+        <ol :key="date" class="ad-list">
           <li v-for="item in items" :key="item.repo" class="ad-row">
             <span class="ad-rank" aria-hidden="true">{{ String(item.rank).padStart(2, '0') }}</span>
             <div class="ad-body">
@@ -92,6 +93,7 @@
             </div>
           </li>
         </ol>
+        </Transition>
       </section>
 
       <!-- ==================== 趋势 ==================== -->
@@ -552,6 +554,10 @@ onMounted(async () => {
 .ad-tool-link { font-size: 0.75rem; color: var(--text-faint); text-decoration: none; border-bottom: 1px dotted var(--border-strong); }
 .ad-tool-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .ad-tool-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.adfade-enter-active { transition: opacity var(--dur-pop) var(--ease-out); }
+.adfade-leave-active { transition: opacity var(--dur-press) var(--ease-out); }
+.adfade-enter-from, .adfade-leave-to { opacity: 0; }
 
 .ad-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
 .ad-date-label { font-size: 0.75rem; color: var(--text-dim); }

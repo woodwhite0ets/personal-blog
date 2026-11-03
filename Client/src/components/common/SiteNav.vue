@@ -113,7 +113,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 .brand-caret { color: var(--accent); font-size: 0.75rem; margin-left: 1px; }
 .brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
 .nav-links { display: flex; gap: 28px; flex: 1; }
-.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 0.9375rem; font-weight: 400; color: var(--text-secondary); transition: color .25s var(--ease-spring); position: relative; white-space: nowrap; }
+.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 0.9375rem; font-weight: 400; color: var(--text-secondary); transition: color var(--dur-hover) var(--ease-out); position: relative; white-space: nowrap; }
 .nav-num { color: var(--text-faint); font-size: 0.625rem; font-weight: 700; }
 .nav-links a:hover, .nav-links a.router-link-active { color: var(--text-bright); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }

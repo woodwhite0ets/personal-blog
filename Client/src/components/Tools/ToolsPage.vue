@@ -77,8 +77,8 @@
         </button>
       </div>
 
-      <ul v-else class="tl-grid">
-        <li v-for="it in items" :key="it.slug" class="tl-card">
+      <ul v-else class="tl-grid" :class="{ 'is-first': animateGrid }">
+        <li v-for="(it, idx) in items" :key="it.slug" class="tl-card" :style="{ '--i': idx }">
           <div class="tl-card-top">
             <RouterLink class="tl-name" :to="`/tools/${it.slug}`">{{ it.name }}</RouterLink>
             <span v-if="it.featured" class="tl-badge on">站长精选</span>
@@ -141,6 +141,7 @@ const freeOnly = ref(route.query.free === '1')
 const noKey = ref(route.query.no_key === '1')
 const zhUi = ref(route.query.zh_ui === '1')
 const page = ref(1)
+const animateGrid = ref(true)   // 只在首屏编排，加载更多时不再重播
 const LIMIT = 24
 
 const FORMS = { web: '网页', desktop: '桌面', cli: '命令行', library: '开发库', model: '模型', plugin: '插件' }
@@ -203,6 +204,7 @@ function reload() {
 
 function loadMore() {
   page.value += 1
+  animateGrid.value = false
   load(true)
 }
 
@@ -298,6 +300,13 @@ onMounted(reload)
   transition: background-color .12s ease;
 }
 .tl-card:hover { background: var(--bg-elevated); }
+
+/* 首屏卡片编排：45ms 一张、最多延迟到第 12 张，总时长压在 0.8s 内 */
+.tl-grid.is-first .tl-card {
+  animation: tlCardIn .3s var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 11) * 45ms);
+}
+@keyframes tlCardIn { from { opacity: 0; transform: translateY(6px); } }
 
 .tl-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
 .tl-name {

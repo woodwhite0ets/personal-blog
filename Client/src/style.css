@@ -462,8 +462,14 @@
   --font-serif: "EB Garamond Variable", "Noto Serif SC", Georgia, "Songti SC", "SimSun", "Source Han Serif SC", serif;
 
   /* 缓动：弹簧质感（非默认 linear/ease-in-out）*/
-  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);   /* 位移/抽屉 */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* 进入/退出，界面默认 */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* 屏内位移/变形 */
+  --dur-press: 120ms;
+  --dur-hover: 160ms;
+  --dur-pop: 200ms;
+  --dur-page: 260ms;
 
   /* 字号：流体缩放（2026-10-19 商业极简改版） */
   --fs-2xs: clamp(10px, 0.62vw, 11px); --fs-xs: clamp(11px, 0.72vw, 12px); --fs-sm: clamp(13px, 0.8vw, 14px); --fs-base: clamp(14px, 0.88vw, 16px);
@@ -519,7 +525,6 @@ body::before {
     radial-gradient(820px 820px at 28% 118%, var(--aurora-3), transparent 62%),
     radial-gradient(620px 430px at 74% 46%, var(--aurora-1), transparent 56%),
     repeating-linear-gradient(0deg, transparent 0 2px, var(--scanline) 2px 3px);
-  animation: auroraDrift 26s ease-in-out infinite alternate;
 }
 
 #app {
@@ -570,18 +575,6 @@ button {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes floatY {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
-}
 @keyframes pulseGlow {
   0%, 100% { opacity: 0.6; }
   50%      { opacity: 1; }
@@ -593,42 +586,19 @@ button {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-@keyframes auroraDrift {
-  0%, 100% { background-position: 0% 0%, 100% 0%, 50% 100%, 50% 50%, 0 0; }
-  50%      { background-position: 42% 0%, 58% 28%, 38% 100%, 68% 66%, 0 0; }
-}
-@keyframes gridFade {
-  0%, 100% { opacity: 0.4; }
-  50%      { opacity: 0.85; }
-}
 @keyframes glowPulse {
   0%, 100% { opacity: 0.55; transform: scale(1); }
   50%      { opacity: 1; transform: scale(1.05); }
 }
-@keyframes tiltCard {
-  0%, 100% { transform: perspective(900px) rotateX(0deg) rotateY(0deg); }
-  50%      { transform: perspective(900px) rotateX(1.2deg) rotateY(-1.2deg); }
-}
-@keyframes staggerIn {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes borderFlow {
-  0%   { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-@keyframes scrollHint {
-  0%, 100% { transform: translateY(0); opacity: 0.6; }
-  50%      { transform: translateY(6px); opacity: 1; }
-}
 
 /* 页面根容器过渡 */
-.router-fade-enter-active { transition: opacity 0.25s ease; }
-.router-fade-leave-active { transition: opacity 0.15s ease; }
-.router-fade-enter-from, .router-fade-leave-to { opacity: 0; }
+.router-fade-enter-active { transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
+.router-fade-leave-active { transition: opacity var(--dur-press) var(--ease-out); }
+.router-fade-enter-from { opacity: 0; transform: translateY(4px); }
+.router-fade-leave-to { opacity: 0; }
 
 /* 通用动画工具类 */
-.anim-fade-up { animation: fadeInUp 0.5s ease backwards; }
+.anim-fade-up { animation: fadeInUp 0.35s var(--ease-out) backwards; }
 
 /* 骨架屏加载动画 */
 .skeleton {
@@ -825,13 +795,8 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
    ============================================================ */
 @keyframes caretBlink { 0%, 45% { opacity: 1; } 50%, 100% { opacity: 0; } }
 @keyframes shine { 0% { transform: translateX(-120%) skewX(-20deg); } 60%, 100% { transform: translateX(260%) skewX(-20deg); } }
-@keyframes gradientShift { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-@keyframes bounceIn { 0% { opacity: 0; transform: scale(0.82); } 60% { opacity: 1; transform: scale(1.05); } 100% { opacity: 1; transform: none; } }
-@keyframes spinSlow { to { transform: rotate(360deg); } }
 @keyframes pulseRing { 0% { box-shadow: 0 0 0 0 var(--accent-a50); } 70% { box-shadow: 0 0 0 9px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
 @keyframes lineGrow { from { transform: scaleX(0); opacity: 0; } to { transform: none; opacity: 1; } }
-@keyframes fillBar { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
 /* 顶部滚动进度条 */
 .scroll-progress {
@@ -859,12 +824,7 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
 /* ============================================================
    动效增强 · 第二波（2026-08-31）— 滚动揭示 & 微交互
    ============================================================ */
-@keyframes blinkStep { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
-@keyframes modalPop { 0% { opacity: 0; transform: scale(.94) translateY(10px); } 100% { opacity: 1; transform: none; } }
-@keyframes toastIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes ripple { to { transform: scale(4); opacity: 0; } }
-@keyframes floatCaret { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
-@keyframes ledBlink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
 
 /* 滚动揭示（配合 v-reveal 指令使用） */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1); will-change: opacity, transform; }
@@ -883,21 +843,26 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
 @keyframes ping { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(2.6); opacity: 0; } }
 @keyframes shimText { 0%,100% { background-position: -200% 0; } 50% { background-position: 200% 0; } }
 @keyframes popIn { 0% { opacity: 0; transform: scale(.86); } 70% { opacity: 1; transform: scale(1.04); } 100% { opacity: 1; transform: none; } }
-@keyframes ripple { from { transform: scale(0); opacity: .5; } to { transform: scale(4); opacity: 0; } }
+@keyframes ripple { from { transform: scale(.9); opacity: .45; } to { transform: scale(4); opacity: 0; } }
 
 /* 主题切换平滑过渡（theme.js 在切换时给 <html> 加 .theme-switching） */
 html.theme-switching *,
 html.theme-switching *::before,
 html.theme-switching *::after {
-  transition: background-color .45s ease, color .45s ease, border-color .45s ease,
-              fill .45s ease, stroke .45s ease, box-shadow .45s ease;
+  /* 颜色/边框走 ease-out；这里不放弹簧曲线（弹簧是给位移的） */
+  transition: background-color .32s var(--ease-out), color .32s var(--ease-out),
+              border-color .32s var(--ease-out), fill .32s var(--ease-out),
+              stroke .32s var(--ease-out), box-shadow .32s var(--ease-out);
 }
+/* 切换主题时整页轻微淡入，读起来像「换了一张纸」而不是逐元素跳色 */
+html.theme-switching #app { animation: themePaper .32s var(--ease-out) both; }
+@keyframes themePaper { from { opacity: .93; } to { opacity: 1; } }
 
 /* 按钮涟漪（配合 main.js 全局委托） */
 .ripple-ink {
   position: absolute; border-radius: 50%;
   background: radial-gradient(circle, var(--accent-a25) 0%, transparent 70%);
-  transform: scale(0); opacity: .5;
+  transform: scale(.9); opacity: .45;
   animation: ripple .65s ease-out forwards;
   pointer-events: none; z-index: 1;
 }
@@ -1625,7 +1590,7 @@ html[data-theme="midnight"] {
   animation: letterRise .72s cubic-bezier(.16, 1, .3, 1) both;
 }
 @keyframes letterRise {
-  0%   { opacity: 0; transform: translateY(62%); filter: blur(11px); }
+  0%   { opacity: 0; transform: translateY(62%); filter: blur(6px); }
   100% { opacity: 1; transform: translateY(0);   filter: blur(0); }
 }
 .hero-name > span:nth-child(1) { animation-delay: .04s; }
@@ -1658,13 +1623,18 @@ html[data-theme="midnight"] {
 
 /* 2. 光标跟随光晕（仅精确指针设备，触屏不启用） */
 .hero-band::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  /* 固定尺寸的渐变层，用 translate 跟随指针：只动合成器，不重绘背景 */
+  content: ''; position: absolute; left: 0; top: 0;
+  width: 920px; height: 920px; margin: -460px 0 0 -460px;
+  pointer-events: none; z-index: 0;
   background: radial-gradient(
-    460px circle at var(--mx, 68%) var(--my, 32%),
-    color-mix(in srgb, var(--accent) 5.5%, transparent),
-    transparent 62%
+    closest-side circle,
+    color-mix(in srgb, var(--accent) 6%, transparent),
+    transparent 100%
   );
-  opacity: 0; transition: opacity .5s ease;
+  transform: translate3d(var(--gx, 68vw), var(--gy, 32vh), 0);
+  will-change: transform;
+  opacity: 0; transition: opacity .45s var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
   .hero-band::before { opacity: 1; }
@@ -1695,11 +1665,6 @@ html[data-theme="midnight"] {
 @media (hover: none), (pointer: coarse) { .hero-band::before { display: none !important; } }
 
 /* 滚动提示：首屏满视口后需要告诉用户下面还有内容 */
-@keyframes hintIn { to { opacity: .75; } }
-@keyframes hintPulse {
-  0%, 100% { transform: scaleY(.35); opacity: .35; }
-  50%      { transform: scaleY(1);   opacity: .9; }
-}
 @media (prefers-reduced-motion: reduce) {
 }
 
@@ -1737,11 +1702,6 @@ html[data-theme="midnight"] {
 }
 .hg-rings, .hg-spokes, .hg-nodes {
   transform-origin: 200px 200px;
-  animation: hgDrift 30s ease-in-out infinite alternate;
-}
-@keyframes hgDrift {
-  from { transform: rotate(0deg) scale(1); }
-  to   { transform: rotate(3.2deg) scale(1.03); }
 }
 
 @media (max-width: 980px) {
@@ -2001,27 +1961,16 @@ html[data-theme="midnight"] .bezel-core {
   font-size: 0.75rem; color: var(--text-secondary);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.hm-bar-track {
-  height: 3px; background: color-mix(in srgb, var(--text) 7%, transparent);
-  border-radius: 999px; overflow: hidden;
-}
-.hm-bar-track i {
-  display: block; height: 100%; border-radius: 999px;
-  background: var(--text-bright);
-  animation: barGrow .8s cubic-bezier(.16,1,.3,1) both;
-}
 .hm-bar-num {
   font-size: 0.6875rem; color: var(--text-faint); text-align: right;
   font-variant-numeric: tabular-nums;
 }
-@keyframes barGrow { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); } }
 
 @media (max-width: 900px) {
   .hm-about-grid { grid-template-columns: 1fr; gap: 36px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hm-bar-track i { animation: none; }
-}
+  }
 
 /* ============================================================
    首屏重排（2026-10-19 第二轮）
@@ -2128,9 +2077,7 @@ html[data-theme="midnight"] .bezel-core {
 .band-tint .bezel-core {
   box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 7%, transparent);
 }
-.band-tint .hm-bar-track { background: color-mix(in srgb, #fff 10%, transparent); }
-.band-tint .hm-bar-track i { background: var(--text-bright); }
-
+.band-tint .band-tint 
 /* ② 区块序号已移除（design-taste 审计：section-number eyebrow 是模板味）。
    阅读顺序交给版面本身，标题前不再挂 01/02/03。 */
 
@@ -2915,4 +2862,3 @@ html[data-theme="swiss"] {
 /* 标签计数：去掉填充轨道，靠对齐全宽的两列来读数量差 */
 .hm-bar { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 5px 0; }
 .hm-bar-num { color: var(--text-dim); font-variant-numeric: tabular-nums; }
-.hm-bar-track { display: none; }

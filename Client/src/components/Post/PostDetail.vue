@@ -432,17 +432,26 @@ function enhanceCodeBlocks() {
     const btn = document.createElement('button')
     btn.type = 'button'
     btn.className = 'code-copy'
-    btn.textContent = '复制'
+    btn.innerHTML = '<span class="copy-label">复制</span>'
+      + '<svg class="copy-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.6l3 3 6-6.6"/></svg>'
     btn.setAttribute('aria-label', '复制代码')
     btn.addEventListener('click', async () => {
       const code = pre.querySelector('code')?.innerText || pre.innerText || ''
       try {
         await navigator.clipboard.writeText(code.replace(/\n$/, ''))
-        btn.textContent = '已复制'
+        btn.classList.add('copied')
+        const label = btn.querySelector('.copy-label')
+        if (label) label.textContent = '已复制'
       } catch {
-        btn.textContent = '复制失败'
+        btn.classList.add('copy-failed')
+        const label = btn.querySelector('.copy-label')
+        if (label) label.textContent = '复制失败'
       }
-      setTimeout(() => { btn.textContent = '复制' }, 1600)
+      setTimeout(() => {
+        btn.classList.remove('copied', 'copy-failed')
+        const label = btn.querySelector('.copy-label')
+        if (label) label.textContent = '复制'
+      }, 1600)
     })
     pre.appendChild(btn)
   })
@@ -1299,6 +1308,17 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .font-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .post-content pre { position: relative; }
+.copy-label { transition: opacity var(--dur-press) var(--ease-out); }
+.copy-check {
+  width: 11px; height: 11px; margin-left: 4px; vertical-align: -1px;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0; transform: scale(.6);
+  transition: opacity var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out);
+}
+.code-copy.copied, .code-copy.copy-failed { color: var(--ok); border-color: var(--ok-a40); }
+.code-copy.copy-failed { color: var(--err); border-color: var(--err-a30); }
+.code-copy.copied .copy-check { opacity: 1; transform: scale(1); }
+
 .post-content pre .code-copy {
   position: absolute; top: 8px; right: 8px; z-index: 2;
   font-size: 0.6875rem; line-height: 1; padding: 5px 9px;
@@ -1311,7 +1331,18 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .post-content pre:focus-within .code-copy { opacity: 1; }
 .post-content pre .code-copy:hover { color: var(--accent); border-color: var(--accent); }
 .post-content pre .code-copy:focus-visible { opacity: 1; outline: 2px solid var(--accent); outline-offset: 2px; }
-@media (hover: none) { .post-content pre .code-copy { opacity: 1; } }
+@media (hover: none) { .copy-label { transition: opacity var(--dur-press) var(--ease-out); }
+.copy-check {
+  width: 11px; height: 11px; margin-left: 4px; vertical-align: -1px;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0; transform: scale(.6);
+  transition: opacity var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out);
+}
+.code-copy.copied, .code-copy.copy-failed { color: var(--ok); border-color: var(--ok-a40); }
+.code-copy.copy-failed { color: var(--err); border-color: var(--err-a30); }
+.code-copy.copied .copy-check { opacity: 1; transform: scale(1); }
+
+.post-content pre .code-copy { opacity: 1; } }
 
 .post-content img.zoomable { cursor: zoom-in; }
 .lightbox {
