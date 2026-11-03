@@ -3010,3 +3010,20 @@ html[data-theme="swiss"] {
 .hero-art[data-art="5"] { --h1: #5a4a38; --h2: #4a3640; --h3: #2e394d; }
 [data-theme="midnight"] .hero-art[data-art="3"], [data-theme="terminal"] .hero-art[data-art="3"], [data-theme="solar"] .hero-art[data-art="3"] { --h1: #7a5cc0; --h2: #2f9b9b; --h3: #c98b5a; }
 [data-theme="midnight"] .hero-art[data-art="5"], [data-theme="terminal"] .hero-art[data-art="5"], [data-theme="solar"] .hero-art[data-art="5"] { --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; }
+
+
+/* 窄屏收缝宽，避免内容区被挤太窄 */
+@media (max-width: 640px) {
+  .hero-band { margin: 10px 12px 0; border-radius: 14px; }
+}
+
+/* 首屏底图不横向贯穿：左右留缝 + 圆角，像贴在页面上的一张画（参考 teamorouter 的 heroBand） */
+.hero-band {
+  margin: 16px 24px 0;
+  border-radius: 18px;
+  /* 一圈极细的内描边：浅色主题下奶油底压在页面白底上也有边界 */
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 9%, transparent);
+}
+@media (max-width: 640px) {
+  .hero-band { margin: 10px 12px 0; border-radius: 14px; }
+}
