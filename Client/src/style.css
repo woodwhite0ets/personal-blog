@@ -787,7 +787,22 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* 重头戏：工作站在用的项目 */
 .ws-sec .hm-h { font-size: clamp(2rem, 3.2vw, 2.9rem); }
 .hm-h::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.hm-2up { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+.hm-2up {
+  /* 两张项目卡改成通栏大字报：插画通顶、文字在下，给全页唯一的图形资产用足版面 */
+  display: flex; flex-direction: column; gap: 26px;
+}
+.hm-2up .hm-proj .bezel-core {
+  display: block; padding: 0; overflow: hidden;
+}
+.hm-2up .hm-proj .proj-svg {
+  display: block; width: 100%; height: auto;
+  border-bottom: 1px dotted var(--rule-dot-ink);
+  background: color-mix(in srgb, var(--text) 2%, transparent);
+}
+.hm-2up .hm-proj-title { padding: 22px 26px 0; font-size: 1.4375rem; }
+.hm-2up .hm-proj .hm-text { padding: 8px 26px 0; max-width: 78ch; }
+.hm-2up .hm-proj .hm-tag { margin: 18px 0 24px 26px; }
+.hm-2up .hm-proj .hm-tag + .hm-tag { margin-left: 8px; }
 /* 卡片：置顶 / 项目 / 列表项（2026-10-19 商业极简） */
 /* Double-Bezel：外层壳体（铝槽）*/
 .hm-feature {
@@ -835,7 +850,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hm-li-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .hm-li-d { color: var(--text-dim); font-size: 0.8125rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
 @media (max-width: 860px) {
-  .hero-in { padding: 72px 24px 64px; }.hm-2up { grid-template-columns: 1fr; gap: 34px; }
+  .hero-in { padding: 72px 24px 64px; }.hm-2up { gap: 20px; }
   .hm-sec { padding: 48px 0; }
 }
 
@@ -2379,3 +2394,26 @@ html {
 /* ④ 图片占位，避免加载后跳版 */
 .avatar-img, .cover-img, .cover-preview { display: block; }
 .avatar-img { object-fit: cover; }
+
+
+/* ===== 运行事实窄带（2026-11-04）=====
+   一排等宽键值，上下点线框住；只做节奏断点，不抢内容。 */
+.status-band {
+  display: flex; flex-wrap: wrap; gap: 8px 40px;
+  margin: 8px 0 0;
+  padding: 14px 0;
+  border-top: 1px dotted var(--rule-dot-ink);
+  border-bottom: 1px dotted var(--rule-dot-ink);
+}
+.sb-item { display: inline-flex; align-items: baseline; gap: 10px; }
+.sb-k {
+  font-family: var(--font-mono); font-size: 0.625rem;
+  letter-spacing: .1em; color: var(--text-faint);
+}
+.sb-v {
+  font-family: var(--font-mono); font-size: 0.8125rem;
+  color: var(--text-bright); font-variant-numeric: tabular-nums;
+}
+@media (max-width: 680px) {
+  .status-band { gap: 8px 20px; }
+}

@@ -121,6 +121,17 @@
       </section>
     </div>
 
+    <!-- 运行事实：一条窄带，打断“纯列表”的节奏（数据全部来自 /api/stats） -->
+    <div class="hm">
+      <div class="status-band" v-if="stats.posts">
+        <span class="sb-item"><span class="sb-k">已运行</span><span class="sb-v">{{ stats.uptimeDays }} 天</span></span>
+        <span class="sb-item"><span class="sb-k">文章</span><span class="sb-v">{{ stats.posts }}</span></span>
+        <span class="sb-item"><span class="sb-k">模型收录</span><span class="sb-v">{{ stats.models }}</span></span>
+        <span class="sb-item"><span class="sb-k">工具收录</span><span class="sb-v">{{ stats.tools }}</span></span>
+        <span class="sb-item"><span class="sb-k">上次采集</span><span class="sb-v">{{ stats.lastDaily || '—' }}</span></span>
+      </div>
+    </div>
+
     <!-- 项目（色带，打破纵向单调）-->
     <section class="band-tint">
       <div class="hm">

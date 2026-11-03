@@ -163,7 +163,17 @@ app.get('/api/stats', async (req, res) => {
     const [byMonth] = await pool.query(
       "SELECT DATE_FORMAT(published_at,'%Y-%m') AS m, COUNT(*) AS c FROM posts WHERE status='published' GROUP BY m ORDER BY m"
     );
-    res.json({ posts: posts.c, views: views.v, comments: comments.c, tags: tags.c, byMonth });
+    // 运行事实：主机已运行天数、最近一次榜单采集日期、模型与工具收录量
+    const [[daily]] = await pool.query('SELECT MAX(snapshot_date) AS d FROM ai_daily_items');
+    const [[models]] = await pool.query('SELECT COUNT(DISTINCT model_id) AS c FROM ai_model_catalog');
+    const [[tools]] = await pool.query("SELECT COUNT(*) AS c FROM ai_tools WHERE status <> 'hidden'").catch(() => [[{ c: 0 }]]);
+    res.json({
+      posts: posts.c, views: views.v, comments: comments.c, tags: tags.c, byMonth,
+      uptimeDays: Math.floor(require('os').uptime() / 86400),
+      lastDaily: daily.d || null,
+      models: models.c,
+      tools: tools.c,
+    });
   } catch (err) {
     console.error('stats error:', err);
     res.status(500).json({ message: 'internal server error' });
