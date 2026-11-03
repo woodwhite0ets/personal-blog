@@ -45,12 +45,6 @@
             <router-link to="/forum" class="hero-btn hero-btn-solid">阅读文章</router-link>
             <a href="https://github.com/woodwhite0ets" target="_blank" rel="noopener" class="hero-btn hero-btn-ghost">GitHub</a>
           </div>
-          <dl class="hero-rail">
-            <div><dt>现在</dt><dd>分布式系统与 AI 工程化</dd></div>
-            <div><dt>已发布</dt><dd>{{ loading ? '—' : `${totalPublished} 篇` }}</dd></div>
-            <div><dt>阅读</dt><dd>{{ loading ? '—' : stats.views }}</dd></div>
-            <div><dt>分类</dt><dd>{{ loading ? '—' : tags.length }}</dd></div>
-          </dl>
         </div>
         <aside class="hero-recent" v-if="posts.length">
           <div class="hr-head">最新</div>
@@ -112,7 +106,6 @@
       </svg>
         </div>
       </div>
-      <div class="hero-scroll-hint" aria-hidden="true">Scroll</div>
     </section>
 
     <!-- AI 项目榜（每日更新）-->
@@ -231,12 +224,17 @@
           <div class="hm-about">
             <UserAvatar src="/uploads/avatars/msa76e9z-taqz.jpg" alt="WoodWhite" size="md" />
             <p class="hm-text hm-text-lead">本科应届生，主修 Web 前端与全栈开发，熟悉 Vue 3、Node.js、MySQL。喜欢把复杂的东西做简单，也喜欢把做过的事写下来。</p>
+            <dl class="hm-stats">
+              <div><dt>现在</dt><dd>分布式系统与 AI 工程化</dd></div>
+              <div><dt>已发布</dt><dd>{{ loading ? '…' : `${totalPublished} 篇` }}</dd></div>
+              <div><dt>阅读</dt><dd>{{ loading ? '…' : stats.views }}</dd></div>
+              <div><dt>分类</dt><dd>{{ loading ? '…' : tags.length }}</dd></div>
+            </dl>
           </div>
           <div class="hm-bars" v-if="tags.length">
             <div class="bm-head">写过的方向</div>
             <div class="hm-bar" v-for="t in topTags6" :key="t.name">
               <span class="hm-bar-name">{{ t.name }}</span>
-              <span class="hm-bar-track"><i :style="{ width: Math.max(6, (Number(t.post_count) / maxTagCount) * 100) + '%' }"></i></span>
               <span class="hm-bar-num">{{ t.post_count }}</span>
             </div>
           </div>
@@ -287,7 +285,7 @@
         </div>
       </section>
     </div>
-    <SiteFooter command='echo "© 2026 woodwhite@blog — 技术论坛"' />
+    <SiteFooter command='echo "© 2026 woodwhite@blog"' />
   </div>
 </template>
 

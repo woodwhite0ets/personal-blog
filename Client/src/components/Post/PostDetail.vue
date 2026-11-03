@@ -4,7 +4,7 @@
     <span class="edge-label" aria-hidden="true">文章 · woodwhite@blog</span>
 
     <!-- ====== 阅读进度 ====== -->
-    <div class="read-progress" aria-hidden="true"><i :style="{ width: readProgress + '%' }"></i></div>
+    <div class="read-progress" aria-hidden="true"><i></i></div>
 
     <!-- ====== 导航栏 ====== -->
     <SiteNav />
@@ -413,7 +413,6 @@ const activeHeading = ref('')
 let tocObserver = null
 
 // ====== 阅读进度 / 字号 / 代码复制 / 图片灯箱 ======
-const readProgress = ref(0)
 const lightbox = ref('')
 const FONT_KEY = 'blog-post-font-size'
 const fontSteps = [{ size: 15, label: '小' }, { size: 17, label: '中' }, { size: 19, label: '大' }]
@@ -422,12 +421,6 @@ const fontSize = ref(Number(localStorage.getItem(FONT_KEY)) || 17)
 function setFontSize(size) {
   fontSize.value = size
   localStorage.setItem(FONT_KEY, String(size))
-}
-
-function onScrollProgress() {
-  const doc = document.documentElement
-  const total = doc.scrollHeight - window.innerHeight
-  readProgress.value = total > 24 ? Math.min(100, Math.max(0, (window.scrollY / total) * 100)) : 0
 }
 
 // 给正文里的代码块补「复制」按钮（v-html 出来的 DOM 只能在这里动）
@@ -642,15 +635,10 @@ function resetSeoMeta() {
 onMounted(() => {
   fetchPost()
   fetchComments()
-  onScrollProgress()
-  window.addEventListener('scroll', onScrollProgress, { passive: true })
-  window.addEventListener('resize', onScrollProgress)
   window.addEventListener('keydown', onKeydown)
 })
 watch(slug, () => { fetchPost(); fetchComments() })
 onBeforeUnmount(() => {
-  window.removeEventListener('scroll', onScrollProgress)
-  window.removeEventListener('resize', onScrollProgress)
   window.removeEventListener('keydown', onKeydown)
 })
 onBeforeUnmount(() => { resetSeoMeta() })
@@ -1288,9 +1276,13 @@ onBeforeUnmount(() => { resetSeoMeta() })
   background: transparent; pointer-events: none;
 }
 .read-progress i {
-  display: block; height: 100%; width: 0;
-  background: var(--accent); transition: width .08s linear;
+  display: block; height: 100%; width: 100%;
+  background: var(--accent);
+  transform: scaleX(0); transform-origin: 0 50%;
+  animation: scrollProgress linear both;
+  animation-timeline: scroll(root);
 }
+@supports not (animation-timeline: scroll()) { .read-progress { display: none; } }
 
 .font-tools {
   display: flex; align-items: center; gap: 6px;

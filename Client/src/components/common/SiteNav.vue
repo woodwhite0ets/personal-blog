@@ -27,13 +27,13 @@
             <Transition name="pop">
             <div v-if="showUserMenu" class="user-dropdown">
               <router-link v-if="isAdmin" to="/admin/dashboard" class="dropdown-item admin-link" @click="showUserMenu = false">
-                <span class="dropdown-icon">⚙</span> 管理面板
+                管理面板
               </router-link>
               <router-link :to="`/user/${currentUser?.username}`" class="dropdown-item" @click="showUserMenu = false">
-                <span class="dropdown-icon">🏠</span> 我的页面
+                我的页面
               </router-link>
               <button class="dropdown-item logout" @click="handleLogout">
-                <span class="dropdown-icon">⏻</span> 退出登录
+                退出登录
               </button>
             </div>
             </Transition>

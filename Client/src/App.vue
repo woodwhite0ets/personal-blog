@@ -6,16 +6,10 @@ import { useTheme } from './stores/theme.js'
 const { fetchMe } = useAuth()
 useTheme() // 实例化主题 store，确保 data-theme 被应用（默认 paper）
 
-const progress = ref(0)
+// 滚动进度线由 CSS scroll-driven 动画驱动（见 style.css .scroll-progress）；
+// 「回到顶部」按钮的显隐用 IntersectionObserver 观察顶部哨兵，不再监听 scroll。
 const showTop = ref(false)
-
-function onScroll() {
-  const doc = document.documentElement
-  const scrollTop = window.scrollY || doc.scrollTop
-  const height = doc.scrollHeight - doc.clientHeight
-  progress.value = height > 0 ? Math.min(100, (scrollTop / height) * 100) : 0
-  showTop.value = scrollTop > 400
-}
+let topObserver = null
 
 function backToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -23,16 +17,20 @@ function backToTop() {
 
 onMounted(() => {
   fetchMe()
-  window.addEventListener('scroll', onScroll, { passive: true })
-  onScroll()
+  const sentinel = document.getElementById('scroll-sentinel')
+  if (sentinel) {
+    topObserver = new IntersectionObserver(([entry]) => { showTop.value = !entry.isIntersecting })
+    topObserver.observe(sentinel)
+  }
 })
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+onUnmounted(() => { if (topObserver) topObserver.disconnect() })
 </script>
 
 <template>
   <div id="app">
     <a href="#main-content" class="skip-link">跳到主内容</a>
-    <div class="scroll-progress" :style="{ width: progress + '%' }"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div id="scroll-sentinel" aria-hidden="true"></div>
     <main id="main-content" tabindex="-1">
       <router-view v-slot="{ Component }">
         <transition name="router-fade" mode="out-in">

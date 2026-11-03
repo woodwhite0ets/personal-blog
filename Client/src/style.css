@@ -834,7 +834,17 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
 @keyframes fillBar { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
 /* 顶部滚动进度条 */
-.scroll-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--accent); z-index: 999; transition: width 0.08s linear; }
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 100%;
+  background: var(--accent); z-index: 999;
+  transform: scaleX(0); transform-origin: 0 50%;
+  animation: scrollProgress linear both;
+  animation-timeline: scroll(root);
+}
+@keyframes scrollProgress { to { transform: scaleX(1); } }
+/* 不支持滚动驱动动画的浏览器直接不显示这条进度线，不留一条死线 */
+@supports not (animation-timeline: scroll()) { .scroll-progress { display: none; } }
+
 
 /* 回到顶部按钮 */
 .back-to-top { position: fixed; right: 24px; bottom: 24px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 1.0625rem; color: var(--text-secondary); background: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 4px; cursor: pointer; z-index: 900; box-shadow: 0 6px 20px var(--shadow-soft); opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.2s, color 0.2s; }
@@ -1104,7 +1114,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 
 .status-dot, .badge-dot { box-shadow: none; }
 /* 去掉发光型阴影（浅色纸面不需要） */
-.btn-write:hover, .hero-scroll-hint:hover { box-shadow: none; }
+.btn-write:hover { box-shadow: none; }
 
 /* 信笺统一：隐藏终端装饰（登录/后台等页面的残留）*/
 .bg-grid, .bg-glow, .bg-scanline,
@@ -1685,25 +1695,12 @@ html[data-theme="midnight"] {
 @media (hover: none), (pointer: coarse) { .hero-band::before { display: none !important; } }
 
 /* 滚动提示：首屏满视口后需要告诉用户下面还有内容 */
-.hero-scroll-hint {
-  position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%);
-  font-size: 0.625rem; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--text-dim); pointer-events: none;
-  opacity: 0; animation: hintIn .9s ease 1.5s forwards;
-}
-.hero-scroll-hint::after {
-  content: ''; display: block; width: 1px; height: 30px; margin: 12px auto 0;
-  background: var(--border-strong); transform-origin: top;
-  animation: hintPulse 2.6s cubic-bezier(.4, 0, .2, 1) infinite;
-}
 @keyframes hintIn { to { opacity: .75; } }
 @keyframes hintPulse {
   0%, 100% { transform: scaleY(.35); opacity: .35; }
   50%      { transform: scaleY(1);   opacity: .9; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-scroll-hint { animation: none; opacity: .75; }
-  .hero-scroll-hint::after { animation: none; }
 }
 
 /* ============================================================
@@ -1770,15 +1767,6 @@ html[data-theme="midnight"] {
   background: none; border: none; border-radius: 0;
   font-size: 0.8438rem; letter-spacing: 0; text-transform: none;
   color: var(--text-dim); line-height: 1.4;
-}
-.hero-role::before {
-  content: ''; width: 5px; height: 5px; border-radius: 999px;
-  background: var(--accent); flex: none;
-  animation: eyebrowPulse 2.6s ease-in-out infinite;
-}
-@keyframes eyebrowPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%      { opacity: .35; transform: scale(.75); }
 }
 
 /* 药丸 CTA + 磁吸按压 */
@@ -1941,7 +1929,7 @@ html[data-theme="midnight"] .bezel-core {
 }
 
 /* 首屏高度封顶：超高/超宽视口下不出现大片空白（2400px 高时内容会浮在中间） */
-.hero-band { min-height: min(100dvh, 960px); }
+.hero-band { min-height: min(78dvh, 760px); }
 
 /* ============================================================
    项目卡视觉（2026-10-19 方案 B：真实结构图替代纯文字）
@@ -2039,7 +2027,7 @@ html[data-theme="midnight"] .bezel-core {
    首屏重排（2026-10-19 第二轮）
    标题降到 140px（不再压场），右侧让位给「最新三篇」真实内容
    ============================================================ */
-.hero-band { min-height: min(100dvh, 780px); }
+.hero-band { min-height: min(72dvh, 620px); }
 
 .hero-in {
   display: grid;
@@ -2106,7 +2094,7 @@ html[data-theme="midnight"] .bezel-core {
 }
 
 /* 收尾微调：首屏高度与分布图标签列 */
-.hero-band { min-height: min(100dvh, 752px); }
+.hero-band { min-height: min(70dvh, 600px); }
 .hm-bar { grid-template-columns: 128px 1fr 20px; }
 .hm-bar-name { font-size: 0.7188rem; }
 
@@ -2143,15 +2131,8 @@ html[data-theme="midnight"] .bezel-core {
 .band-tint .hm-bar-track { background: color-mix(in srgb, #fff 10%, transparent); }
 .band-tint .hm-bar-track i { background: var(--text-bright); }
 
-/* ② 区块序号：01 02 03 04，编码阅读顺序 */
-.hm { counter-reset: hmsec; }
-.hm-sec { counter-increment: hmsec; }
-.hm-h::before {
-  content: counter(hmsec, decimal-leading-zero);
-  font-size: 0.6875rem; font-weight: 600; letter-spacing: .12em;
-  color: var(--text-faint); font-variant-numeric: tabular-nums;
-  margin-right: 2px; align-self: center;
-}
+/* ② 区块序号已移除（design-taste 审计：section-number eyebrow 是模板味）。
+   阅读顺序交给版面本身，标题前不再挂 01/02/03。 */
 
 /* /forum 标题对齐内页体系 */
 .ed-hero-title { font-size: clamp(2.75rem, 5.2vw, 4.5rem); font-weight: 650; letter-spacing: -0.038em; }
@@ -2402,7 +2383,6 @@ body::after {
   letter-spacing: 0.02em;
 }
 /* 英文标签保留（SCROLL 等），但收紧字距 */
-.hero-scroll-hint { letter-spacing: 0.16em; }
 
 /* 元信息结构化：日期为正常色，阅读量/浏览量降为弱色次要信息
    （缓解 frontend-design §二.5 点名的「元信息用 · 连接」模板感） */
@@ -2921,3 +2901,18 @@ html[data-theme="swiss"] {
 .markdown-body pre,
 .tool-table,
 .table-wrap { overscroll-behavior: contain; }
+
+
+/* ===== 关于区：数据条与标签计数（2026-11-02 按 design-taste 审计后） ===== */
+.hm-stats {
+  display: flex; flex-wrap: wrap; gap: 10px 34px;
+  margin: 18px 0 0; padding-top: 14px; border-top: 1px solid var(--border);
+}
+.hm-stats > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.hm-stats dt { font-size: 0.6875rem; color: var(--text-faint); letter-spacing: .04em; }
+.hm-stats dd { margin: 0; font-size: 0.9375rem; color: var(--text); font-variant-numeric: tabular-nums; }
+
+/* 标签计数：去掉填充轨道，靠对齐全宽的两列来读数量差 */
+.hm-bar { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 5px 0; }
+.hm-bar-num { color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.hm-bar-track { display: none; }
