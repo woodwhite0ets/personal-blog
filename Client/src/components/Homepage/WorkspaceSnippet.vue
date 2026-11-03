@@ -10,8 +10,11 @@
     </div>
 
     <div class="ws-groups">
-      <section v-for="group in groups" :key="group.title" class="ws-group">
-        <h3 class="ws-group-title">{{ group.title }}</h3>
+      <section v-for="(group, gi) in groups" :key="group.title" class="ws-group">
+        <h3 class="ws-group-title">
+          <span class="ws-group-idx" aria-hidden="true">{{ String(gi + 1).padStart(2, '0') }}</span>
+          {{ group.title }}
+        </h3>
         <dl class="ws-list">
           <div v-for="item in group.items" :key="item.name" class="ws-item">
             <dt class="ws-name">
@@ -195,34 +198,42 @@ const groups = [
 }
 
 .ws-groups {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 44px;
+  /* 四组四栏：一组一栏，不会出现第 4 组单独换行留下的空档 */
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 36px;
 }
+@media (max-width: 1180px) { .ws-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) { .ws-groups { grid-template-columns: 1fr; } }
 .ws-group { min-width: 0; }
 .ws-group-title {
-  margin: 0 0 10px; padding-bottom: 7px; font-size: 0.7812rem; font-weight: 650;
-  letter-spacing: .03em; color: var(--text-dim);
-  border-bottom: 1px solid var(--border);
+  display: flex; align-items: baseline; gap: 8px;
+  margin: 0 0 10px; padding-bottom: 7px;
+  font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600;
+  letter-spacing: .08em; color: var(--text-secondary);
+  border-bottom: 1px dotted var(--rule-dot-ink);
 }
+.ws-group-idx { color: var(--text-faint); font-weight: 400; }
 .ws-list { margin: 0; padding: 0; }
 .ws-item {
-  display: grid; grid-template-columns: 118px 1fr; gap: 10px;
-  padding: 7px 0; align-items: baseline;
+  display: grid; grid-template-columns: 1fr; gap: 2px;
+  padding: 8px 0; align-items: baseline;
+  border-bottom: 1px dotted color-mix(in srgb, var(--rule-dot-ink) 55%, transparent);
 }
+.ws-item:last-child { border-bottom: none; }
 .ws-name {
   font-family: ui-monospace, "Noto Sans Mono CJK SC", monospace;
   font-size: 0.7812rem; font-weight: 600; line-height: 1.45;
   word-break: break-word;
 }
 .ws-name a {
+  /* 去掉满屏下划线，改用悬停变色 */
   color: var(--text-bright); text-decoration: none;
-  border-bottom: 1px solid var(--border-strong);
-  transition: color .15s ease, border-color .15s ease;
+  transition: color var(--dur-hover) var(--ease-out);
 }
-.ws-name a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.ws-name a:hover { color: var(--accent); }
 .ws-name a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
 .ws-name-plain { color: var(--text-dim); }
 .ws-use {
-  margin: 0; font-size: 0.7812rem; line-height: 1.6; color: var(--text-secondary);
+  margin: 0; font-size: 0.75rem; line-height: 1.65; color: var(--text-secondary);
   min-width: 0; text-wrap: pretty;
 }
 .ws-note {

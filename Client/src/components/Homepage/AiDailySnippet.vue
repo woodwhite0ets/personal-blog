@@ -7,7 +7,10 @@
     <p class="ai-snip-sub">按 24 小时 Star 增量排榜，中文介绍由本机模型生成。{{ date ? `最新一期 ${date}` : '' }}</p>
 
     <ol class="ai-snip-list">
-      <li v-for="item in items" :key="item.repo" class="ai-snip-item">
+      <li
+        v-for="(item, i) in items" :key="item.repo"
+        class="ai-snip-item" :class="{ lead: i === 0 }"
+      >
         <span class="ai-snip-rank" aria-hidden="true">{{ String(item.rank).padStart(2, '0') }}</span>
         <div class="ai-snip-body">
           <a class="ai-snip-name" :href="item.url" target="_blank" rel="noopener noreferrer">{{ item.repo }}</a>
@@ -55,25 +58,55 @@ onMounted(async () => {
   border-bottom: 1px solid var(--border-strong); padding-bottom: 1px;
   white-space: nowrap;
 }
-.ai-snip-more:hover { color: var(--accent); border-color: var(--accent); }
+.ai-snip-more:hover { color: var(--text-bright); border-color: var(--text-bright); }
 .ai-snip-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
 .ai-snip-sub { margin: 0 0 10px; font-size: 0.7812rem; color: var(--text-dim); }
 
 .ai-snip-list { list-style: none; margin: 0; padding: 0; }
 .ai-snip-item {
   display: grid; grid-template-columns: 30px 1fr auto; gap: 0 14px;
-  align-items: baseline; padding: 10px 2px; border-top: 1px solid var(--border);
+  align-items: baseline; padding: 10px 2px; border-top: 1px dotted var(--rule-dot-ink);
 }
 .ai-snip-item:last-child { border-bottom: none; }
 .ai-snip-rank {
-  font-size: 0.8125rem; color: var(--text-faint); font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem; letter-spacing: .06em; color: var(--text-faint); font-variant-numeric: tabular-nums;
+}
+
+/* 第一名：整段唯一的峰值，字号与间距都拉开，其余四行保持安静 */
+.ai-snip-item.lead {
+  grid-template-columns: 1fr auto;
+  gap: 0 16px;
+  padding: 6px 2px 20px;
+  border-top: none;
+  margin-bottom: 4px;
+}
+.ai-snip-item.lead .ai-snip-rank {
+  display: none;
+}
+.ai-snip-item.lead .ai-snip-name {
+  font-family: "Noto Serif SC", var(--font-serif);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+.ai-snip-item.lead .ai-snip-desc {
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  -webkit-line-clamp: 2; line-clamp: 2;
+  color: var(--text-secondary);
+}
+.ai-snip-item.lead .ai-snip-stat {
+  font-size: 0.9375rem;
 }
 .ai-snip-body { min-width: 0; }
 .ai-snip-name {
   display: block; font-size: 0.875rem; font-weight: 650; color: var(--text-bright);
   text-decoration: none; word-break: break-word;
 }
-.ai-snip-name:hover { color: var(--accent); }
+.ai-snip-name:hover { color: var(--text-secondary); }
 .ai-snip-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
 .ai-snip-desc {
   margin: 3px 0 0; font-size: 0.7812rem; line-height: 1.55; color: var(--text-secondary);
@@ -81,8 +114,9 @@ onMounted(async () => {
   overflow: hidden;
 }
 .ai-snip-stat {
-  font-size: 0.75rem; color: var(--accent); font-variant-numeric: tabular-nums;
-  font-weight: 600; white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.75rem; color: var(--ok); font-variant-numeric: tabular-nums;
+  font-weight: 600; white-space: nowrap; letter-spacing: .02em;
 }
 
 @media (max-width: 720px) {

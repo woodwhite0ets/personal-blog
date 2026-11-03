@@ -778,7 +778,14 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hm { max-width: 1200px; margin: 0 auto; padding: 0 24px 112px; }
 .hm-sec { padding: 96px 0; border-bottom: 1px solid var(--border); }
 .hm-sec-last { border-bottom: none; padding-bottom: 0; }
-.hm-h { display: flex; align-items: center; gap: 18px; margin: 0 0 26px; font-size: 0.9375rem; font-weight: 600; letter-spacing: .06em; color: var(--text-bright); }
+.hm-h {
+  display: flex; align-items: center; gap: 18px; margin: 0 0 26px;
+  font-family: "Noto Serif SC", var(--font-serif);
+  font-size: clamp(1.75rem, 2.6vw, 2.35rem); font-weight: 600;
+  letter-spacing: -0.025em; color: var(--text-bright);
+}
+/* 重头戏：工作站在用的项目 */
+.ws-sec .hm-h { font-size: clamp(2rem, 3.2vw, 2.9rem); }
 .hm-h::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 .hm-2up { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
 /* 卡片：置顶 / 项目 / 列表项（2026-10-19 商业极简） */
