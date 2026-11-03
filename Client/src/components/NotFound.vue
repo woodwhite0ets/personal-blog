@@ -27,7 +27,7 @@
   margin: 0 0 12px;
   color: var(--accent);
   font-family: var(--font-hand);
-  font-size: clamp(64px, 12vw, 120px);
+  font-size: clamp(4rem, 12vw, 7.5rem);
   line-height: .9;
 }
 .nf-title {
@@ -36,15 +36,15 @@
   border-bottom: 1px solid var(--border);
   color: var(--text-bright);
   font-family: var(--font-hand);
-  font-size: clamp(40px, 5vw, 64px);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 400;
   line-height: 1.15;
 }
-.nf-text { margin: 20px 0 28px; color: var(--text-dim); font-size: 16px; }
+.nf-text { margin: 20px 0 28px; color: var(--text-dim); font-size: 1rem; }
 .nf-link {
   color: var(--accent);
   text-decoration: none;
-  font-size: 16px;
+  font-size: 1rem;
   border-bottom: 1px solid var(--accent);
   padding-bottom: 3px;
 }

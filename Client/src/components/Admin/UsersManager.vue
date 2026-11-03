@@ -254,8 +254,8 @@ onMounted(() => fetchUsers())
   margin-bottom: 20px; padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
-.section-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
-.section-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+.section-title { font-family: var(--font-hand); font-size: 1.375rem; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
+.section-count { font-size: 0.6875rem; color: var(--text-muted); margin-left: auto; }
 
 .filters {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
@@ -263,7 +263,7 @@ onMounted(() => fetchUsers())
 }
 .status-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); }
 .tab {
-  padding: 6px 14px; font-family: inherit; font-size: 11px; font-weight: 600;
+  padding: 6px 14px; font-family: inherit; font-size: 0.6875rem; font-weight: 600;
   color: var(--text-dim); background: none; border: none;
   border-bottom: 2px solid transparent; margin-bottom: -1px;
   cursor: pointer; transition: color 0.2s; letter-spacing: 0.5px;
@@ -279,7 +279,7 @@ onMounted(() => fetchUsers())
 }
 .search-wrap:focus-within { border-bottom-color: var(--accent); }
 .search-input {
-  font-family: inherit; font-size: 12px; color: var(--text);
+  font-family: inherit; font-size: 0.75rem; color: var(--text);
   background: none; border: none; outline: none;
   min-width: 200px; caret-color: var(--accent);
 }
@@ -287,7 +287,7 @@ onMounted(() => fetchUsers())
 
 .state-box {
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted);
+  gap: 10px; padding: 48px 20px; font-size: 0.8125rem; color: var(--text-muted);
 }
 .state-box.error { color: var(--err); flex-direction: column; gap: 8px; }
 
@@ -302,13 +302,13 @@ onMounted(() => fetchUsers())
 
 .user-table { width: 100%; border-collapse: collapse; }
 .user-table th {
-  font-size: 10px; font-weight: 600; color: var(--text-muted);
+  font-size: 0.625rem; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px;
   text-align: left; padding: 10px 14px 10px 0;
   border-bottom: 1px solid var(--border);
 }
 .user-table td {
-  padding: 10px 14px 10px 0; font-size: 12px; color: var(--text-secondary);
+  padding: 10px 14px 10px 0; font-size: 0.75rem; color: var(--text-secondary);
   border-bottom: 1px solid var(--border-a50);
 }
 .user-table tbody tr:hover { background: var(--overlay-a15); }
@@ -321,28 +321,28 @@ onMounted(() => fetchUsers())
   width: 26px; height: 26px;
   display: flex; align-items: center; justify-content: center;
   background: var(--accent-a8); color: var(--accent);
-  border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  border-radius: 6px; font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
 }
 
 .user-link { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
 .user-link:hover { opacity: 0.8; }
 
 .self-tag {
-  font-size: 9px; font-weight: 700; color: var(--text-dim);
+  font-size: 0.5625rem; font-weight: 700; color: var(--text-dim);
   padding: 1px 6px; background: var(--overlay-a4);
   border: 1px solid var(--overlay-a8); border-radius: 3px;
   margin-left: 6px; vertical-align: middle;
 }
 
 .role-select {
-  font-family: inherit; font-size: 11px; font-weight: 600; color: var(--accent);
+  font-family: inherit; font-size: 0.6875rem; font-weight: 600; color: var(--accent);
   background: var(--accent-a6); border: 1px solid var(--accent-a20);
   border-radius: 4px; padding: 3px 8px; outline: none; cursor: pointer;
 }
 .role-select option { background: var(--bg-float); color: var(--text); }
 
 .role-badge {
-  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;
   padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
 }
 .role-badge.admin { color: var(--accent); background: var(--accent-a8); border: 1px solid var(--accent-a20); }
@@ -352,7 +352,7 @@ onMounted(() => fetchUsers())
 .verified { color: var(--text-muted); font-weight: 700; }
 .verified.yes { color: var(--ok); }
 
-.muted { font-size: 11px; color: var(--text-muted); }
+.muted { font-size: 0.6875rem; color: var(--text-muted); }
 
 
 .load-more { text-align: center; padding: 28px 0 12px; }

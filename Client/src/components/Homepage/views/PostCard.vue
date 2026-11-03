@@ -41,7 +41,7 @@ defineProps({
 }
 .post-title {
   font-family: var(--font-sans);
-  font-size: 23px;
+  font-size: 1.4375rem;
   font-weight: 600;
   line-height: 1.4;
   margin: 0 0 10px;
@@ -58,7 +58,7 @@ defineProps({
 }
 .post-title a:hover { color: var(--accent); background-size: 100% 1px; }
 .post-excerpt {
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.8;
   margin: 0 0 14px;
@@ -69,7 +69,7 @@ defineProps({
   align-items: center;
   flex-wrap: wrap;
   gap: 14px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--text-dim);
 }
 .post-date { font-variant-numeric: tabular-nums; letter-spacing: .01em; }
@@ -78,7 +78,7 @@ defineProps({
 .post-author a:hover { color: var(--accent); }
 .post-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-left: auto; }
 .post-tag {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--text-dim);
   text-decoration: none;
   transition: color .2s;
@@ -87,7 +87,7 @@ defineProps({
 
 @media (max-width: 800px) {
   .post-card { padding: 26px 0 22px; }
-  .post-title { font-size: 20px; }
+  .post-title { font-size: 1.25rem; }
   .post-tags { margin-left: 0; width: 100%; }
 }
 </style>

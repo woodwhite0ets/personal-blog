@@ -39,12 +39,12 @@ import { projects } from '../../data/projects.js'
 .pl-page { min-height: 100vh; background: var(--bg); color: var(--text); }
 .pl-main { max-width: 1080px; margin: 0 auto; padding: 64px 24px 104px; }
 .pl-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); }
-.pl-kicker { margin: 0 0 8px; font-size: 12px; letter-spacing: .08em; color: var(--text-dim); }
+.pl-kicker { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: .08em; color: var(--text-dim); }
 .pl-title {
-  margin: 0; font-size: clamp(32px, 4vw, 48px); font-weight: 700;
+  margin: 0; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
   letter-spacing: -0.025em; color: var(--text-bright);
 }
-.pl-lead { margin: 12px 0 0; max-width: 64ch; font-size: 14px; line-height: 1.75; color: var(--text-secondary); }
+.pl-lead { margin: 12px 0 0; max-width: 64ch; font-size: 0.875rem; line-height: 1.75; color: var(--text-secondary); }
 
 .pl-list { list-style: none; margin: 0; padding: 0; }
 .pl-item { border-bottom: 1px solid var(--border); }
@@ -52,15 +52,15 @@ import { projects } from '../../data/projects.js'
 .pl-link:hover .pl-name { color: var(--accent); }
 .pl-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 .pl-line { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.pl-name { font-size: 17px; font-weight: 650; color: var(--text-bright); }
+.pl-name { font-size: 1.0625rem; font-weight: 650; color: var(--text-bright); }
 .pl-status {
-  font-size: 11px; color: var(--text-dim); padding: 1px 8px;
+  font-size: 0.6875rem; color: var(--text-dim); padding: 1px 8px;
   border: 1px solid var(--border); border-radius: 999px;
 }
-.pl-period { margin-left: auto; font-size: 12px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
-.pl-sub { margin: 6px 0 0; font-size: 13.5px; color: var(--text-secondary); }
-.pl-summary { margin: 8px 0 0; font-size: 13.5px; line-height: 1.7; color: var(--text-secondary); max-width: 80ch; }
-.pl-stack { margin: 8px 0 0; font-size: 11px; color: var(--text-faint); font-family: ui-monospace, monospace; }
+.pl-period { margin-left: auto; font-size: 0.75rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.pl-sub { margin: 6px 0 0; font-size: 0.8438rem; color: var(--text-secondary); }
+.pl-summary { margin: 8px 0 0; font-size: 0.8438rem; line-height: 1.7; color: var(--text-secondary); max-width: 80ch; }
+.pl-stack { margin: 8px 0 0; font-size: 0.6875rem; color: var(--text-faint); font-family: ui-monospace, monospace; }
 
 @media (max-width: 720px) {
   .pl-main { padding: 40px 20px 72px; }

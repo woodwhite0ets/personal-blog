@@ -107,14 +107,14 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   max-width: 1120px; margin: 0 auto; padding: 0 28px;
   height: 74px; display: flex; align-items: center; gap: 38px;
 }
-.brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; text-decoration: none; font-size: 14px; font-weight: 600; }
+.brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 1; min-width: 0; text-decoration: none; font-size: 0.875rem; font-weight: 600; }
 .brand-bracket { color: var(--text-muted); }
-.brand-text { font-family: var(--font-hand); font-size: 21px; color: var(--text-bright); }
-.brand-caret { color: var(--accent); font-size: 12px; margin-left: 1px; }
-.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
+.brand-text { font-family: var(--font-hand); font-size: 1.3125rem; color: var(--text-bright); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.brand-caret { color: var(--accent); font-size: 0.75rem; margin-left: 1px; }
+.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
 .nav-links { display: flex; gap: 28px; flex: 1; }
-.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 15px; font-weight: 400; color: var(--text-secondary); transition: color .25s var(--ease-spring); position: relative; white-space: nowrap; }
-.nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; }
+.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 0.9375rem; font-weight: 400; color: var(--text-secondary); transition: color .25s var(--ease-spring); position: relative; white-space: nowrap; }
+.nav-num { color: var(--text-faint); font-size: 0.625rem; font-weight: 700; }
 .nav-links a:hover, .nav-links a.router-link-active { color: var(--text-bright); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 .nav-links a::after {
@@ -125,23 +125,23 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 }
 .nav-links a:hover::after, .nav-links a.router-link-active::after { transform: scaleX(1); }
 .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.btn-login { padding: 8px 18px; font: inherit; font-size: 14px; font-weight: 400; color: var(--text-bright); text-decoration: none; border: 1px solid var(--border-strong); border-radius: 4px; transition: color .25s, background-color .25s, border-color .25s, opacity .25s, transform .25s, box-shadow .25s(--ease-spring); }
+.btn-login { padding: 8px 18px; font: inherit; font-size: 0.875rem; font-weight: 400; color: var(--text-bright); text-decoration: none; border: 1px solid var(--border-strong); border-radius: 4px; transition: color .25s, background-color .25s, border-color .25s, opacity .25s, transform .25s, box-shadow .25s(--ease-spring); }
 .btn-login:hover { background: var(--text-bright); color: var(--bg); border-color: var(--text-bright); }
-.btn-write { display: flex; align-items: center; gap: 6px; padding: 9px 18px; font: inherit; font-size: 14px; font-weight: 400; color: var(--bg); background: var(--text-bright); border-radius: 4px; text-decoration: none; transition: color .25s, background-color .25s, border-color .25s, opacity .25s, transform .25s, box-shadow .25s(--ease-spring); }
+.btn-write { display: flex; align-items: center; gap: 6px; padding: 9px 18px; font: inherit; font-size: 0.875rem; font-weight: 400; color: var(--bg); background: var(--text-bright); border-radius: 4px; text-decoration: none; transition: color .25s, background-color .25s, border-color .25s, opacity .25s, transform .25s, box-shadow .25s(--ease-spring); }
 .btn-write:hover { background: var(--accent); color: var(--on-accent); }
-.btn-write-icon { font-size: 15px; font-weight: 700; }
+.btn-write-icon { font-size: 0.9375rem; font-weight: 700; }
 .user-menu-wrap { position: relative; }
-.btn-user { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; font: inherit; font-size: 12px; color: var(--text); background: var(--overlay-a4); border: 1px solid var(--border-strong); border-radius: 999px; cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s; }
+.btn-user { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; font: inherit; font-size: 0.75rem; color: var(--text); background: var(--overlay-a4); border: 1px solid var(--border-strong); border-radius: 999px; cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s; }
 .btn-user:hover { border-color: var(--accent); background: var(--accent-a6); }
 .user-name { font-weight: 500; color: var(--text-secondary); }
-.user-caret { font-size: 10px; color: var(--text-muted); transition: transform 0.2s; }
+.user-caret { font-size: 0.625rem; color: var(--text-muted); transition: transform 0.2s; }
 .user-caret.open { transform: rotate(180deg); }
 .user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; transform-origin: top right; min-width: 180px; background: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 8px; overflow: hidden; box-shadow: 0 12px 40px var(--shadow); z-index: 200; }
-.dropdown-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 500; color: var(--text-secondary); background: none; border: none; text-decoration: none; cursor: pointer; transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s; }
+.dropdown-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; font: inherit; font-size: 0.75rem; font-weight: 500; color: var(--text-secondary); background: none; border: none; text-decoration: none; cursor: pointer; transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s; }
 .dropdown-item.admin-link { color: var(--accent); border-bottom: 1px solid var(--border); }
 .dropdown-item.admin-link:hover { background: var(--accent-a6); }
 .dropdown-item.logout:hover { color: var(--err); }
-.dropdown-icon { font-size: 13px; }
+.dropdown-icon { font-size: 0.8125rem; }
 .nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
 .nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
@@ -176,7 +176,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   }
   .nav-links.open { transform: none; visibility: visible; }
   .nav-links.open::before { opacity: 1; }
-  .nav-links a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .nav-links a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   .nav-toggle { display: flex; flex: 0 0 34px; }
   /* 导航链接隐藏后失去 flex:1 的占位，动作区需要自己靠右 */
   .nav-actions { gap: 8px; margin-left: auto; }
@@ -185,20 +185,20 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 
 /* 窄屏收紧：品牌与登录按钮各让一档，给汉堡按钮留出完整 34px */
 @media (max-width: 480px) {
-  .brand-text { font-size: 18px; }
+  .brand-text { font-size: 1.125rem; }
   .nav-actions { gap: 6px; }
-  .btn-login { padding: 7px 12px; font-size: 13px; }
+  .btn-login { padding: 7px 12px; font-size: 0.8125rem; }
 }
 
 /* 320–380：超窄屏保住搜索（入口一旦藏掉手机上就搜不了文章），
    改把登录按钮挪进抽屉；同时收紧内边距与品牌字号。 */
 @media (max-width: 380px) {
   .navbar-inner { padding: 0 10px; gap: 6px; }
-  .brand-text { font-size: 16px; }
+  .brand-text { font-size: 1rem; }
   .btn-login { display: none; }
 }
 .nav-links .nav-drawer-auth { display: none; }
 @media (max-width: 768px) {
-  .nav-links .nav-drawer-auth { display: block; font-size: 14px; padding: 14px 6px 0; color: var(--accent); }
+  .nav-links .nav-drawer-auth { display: block; font-size: 0.875rem; padding: 14px 6px 0; color: var(--accent); }
 }
 </style>

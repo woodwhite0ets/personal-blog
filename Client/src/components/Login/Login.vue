@@ -212,7 +212,7 @@ async function handleGuestLogin() {
  
 .subtitle {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--text-muted);
   padding-left: 2px;
 }
@@ -233,7 +233,7 @@ async function handleGuestLogin() {
 }
  
 .field label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--text-dim);
   text-transform: uppercase;
@@ -250,7 +250,7 @@ async function handleGuestLogin() {
 }
 .pw-toggle {
   position: absolute; right: 8px;
-  font: inherit; font-size: 12px; padding: 4px 8px;
+  font: inherit; font-size: 0.75rem; padding: 4px 8px;
   border-radius: 5px; border: 1px solid transparent;
   background: none; color: var(--text-dim); cursor: pointer;
 }
@@ -262,7 +262,7 @@ async function handleGuestLogin() {
   width: 100%;
   padding: 12px 14px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--text-bright);
   background: var(--bg-elevated);
   border: 1px solid var(--border-strong);
@@ -287,7 +287,7 @@ async function handleGuestLogin() {
 }
  
 .field-error {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--err);
   display: flex;
   align-items: center;
@@ -314,7 +314,7 @@ async function handleGuestLogin() {
 }
  
 .check-text {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--text-dim);
 }
  
@@ -324,7 +324,7 @@ async function handleGuestLogin() {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--err);
   background: var(--err-a6);
   border: 1px solid var(--err-a15);
@@ -354,7 +354,7 @@ async function handleGuestLogin() {
 }
 
 .divider-text {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 400;
   color: var(--text-dim);
   letter-spacing: 0;
@@ -364,7 +364,7 @@ async function handleGuestLogin() {
 .btn-guest {
   width: 100%;
   padding: 13px 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 1px;
   color: var(--accent);
@@ -383,7 +383,7 @@ async function handleGuestLogin() {
 .btn-guest:active:not(:disabled) { transform: translateY(0) scale(0.99); }
 
 .guest-icon {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .guest-hint {
@@ -407,7 +407,7 @@ async function handleGuestLogin() {
 }
  
 .back-link a {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--text-muted);
   text-decoration: none;
   transition: color 0.2s;
@@ -450,15 +450,15 @@ async function handleGuestLogin() {
     padding: 28px 20px 22px;
   }
   .prompt-line {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 
 /* 信笺风登录页（2026-10-11） */
-.login-title { font-family: var(--font-hand); font-size: 34px; font-weight: 400; color: var(--text-bright); margin: 0 0 6px; }
+.login-title { font-family: var(--font-hand); font-size: 2.125rem; font-weight: 400; color: var(--text-bright); margin: 0 0 6px; }
 .login-card { border-radius: 4px; box-shadow: 0 18px 50px var(--shadow-soft); }
 .card-body { padding: 40px 36px; }
-.subtitle { font-size: 15px; color: var(--text-dim); }
+.subtitle { font-size: 0.9375rem; color: var(--text-dim); }
 
 /* 统一：auth 卡片宽度 420 */
 .login-card, .register-card, .verify-card, .card { max-width: 420px; margin: 0 auto; }
@@ -469,7 +469,7 @@ async function handleGuestLogin() {
 .login-page { min-height: 100dvh; display:block; padding:72px 24px; background:var(--bg); }
 .login-card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
 .card-body { max-width:560px; margin:0 auto; padding:0; }
-.login-title, .auth-title { font-family:var(--font-hand); font-size:clamp(40px,5vw,64px); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
+.login-title, .auth-title { font-family:var(--font-hand); font-size: clamp(2.5rem,5vw,4rem); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
 .terminal-status { display:none; }
 
 /* ===== 父级收口：清掉终端风残留（渐变/光晕/卡片阴影/装饰符号）===== */

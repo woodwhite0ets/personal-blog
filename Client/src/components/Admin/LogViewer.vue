@@ -187,13 +187,13 @@ onUnmounted(() => {
   border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
 }
-.section-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
-.section-count { font-size: 11px; color: var(--text-muted); }
+.section-title { font-family: var(--font-hand); font-size: 1.375rem; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
+.section-count { font-size: 0.6875rem; color: var(--text-muted); }
 
 /* 日志来源切换：发丝线 tab */
 .source-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); }
 .source-tab {
-  padding: 5px 14px; font-family: inherit; font-size: 11px; font-weight: 600;
+  padding: 5px 14px; font-family: inherit; font-size: 0.6875rem; font-weight: 600;
   color: var(--text-muted); background: none; border: none;
   border-bottom: 2px solid transparent; margin-bottom: -1px;
   cursor: pointer; transition: color 0.2s;
@@ -205,7 +205,7 @@ onUnmounted(() => {
 
 .btn-sm {
   display: inline-flex; align-items: center; gap: 4px;
-  padding: 4px 10px; font-family: inherit; font-size: 11px; font-weight: 600;
+  padding: 4px 10px; font-family: inherit; font-size: 0.6875rem; font-weight: 600;
   border-radius: 3px; cursor: pointer;
   transition: color 0.2s, border-color 0.2s, background-color 0.2s;
   border: 1px solid var(--border); background: none; color: var(--text-dim);
@@ -218,7 +218,7 @@ onUnmounted(() => {
 /* 显示管理员日志开关 */
 .toggle-admin {
   display: flex; align-items: center; gap: 5px;
-  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  font-size: 0.6875rem; font-weight: 600; color: var(--text-muted);
   cursor: pointer; padding: 4px 8px;
   border-bottom: 1px solid var(--border);
 }
@@ -229,7 +229,7 @@ onUnmounted(() => {
 .caddy-cols {
   display: grid; grid-template-columns: 150px 130px 60px 1fr 60px 60px;
   gap: 10px; padding: 7px 16px;
-  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;
   color: var(--text-muted); text-transform: uppercase;
   border-bottom: 1px solid var(--border);
 }
@@ -240,7 +240,7 @@ onUnmounted(() => {
   max-height: calc(100dvh - 280px); min-height: 400px;
   overflow-y: auto; padding: 16px 0;
   font-family: var(--font-mono);
-  font-size: 12px; line-height: 1.8;
+  font-size: 0.75rem; line-height: 1.8;
 }
 .log-panel:has(.caddy-line) { padding: 0; }
 
@@ -252,12 +252,12 @@ onUnmounted(() => {
 .log-line:last-child { border-bottom: none; }
 
 .log-ts {
-  color: var(--text-muted); font-size: 11px; flex-shrink: 0;
+  color: var(--text-muted); font-size: 0.6875rem; flex-shrink: 0;
   min-width: 148px;
 }
 
 .log-level {
-  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.5625rem; font-weight: 700; letter-spacing: 1px;
   padding: 1px 6px; border-radius: 3px; flex-shrink: 0;
   min-width: 48px; text-align: center;
 }
@@ -278,16 +278,16 @@ onUnmounted(() => {
   display: grid; grid-template-columns: 150px 130px 60px 1fr 60px 60px;
   gap: 10px; padding: 5px 16px; align-items: baseline;
   font-family: var(--font-mono);
-  font-size: 12px; line-height: 1.6;
+  font-size: 0.75rem; line-height: 1.6;
   border-bottom: 1px solid var(--border-a30);
 }
 .caddy-line:last-child { border-bottom: none; }
-.caddy-ts { color: var(--text-muted); font-size: 11px; }
+.caddy-ts { color: var(--text-muted); font-size: 0.6875rem; }
 .caddy-ip { color: var(--accent); font-weight: 600; }
 .caddy-method { color: var(--text-secondary); }
 .caddy-uri { color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .caddy-status { font-weight: 700; text-align: center; }
-.caddy-dur { color: var(--text-muted); font-size: 11px; }
+.caddy-dur { color: var(--text-muted); font-size: 0.6875rem; }
 .caddy-status-ok .caddy-status { color: var(--ok); }
 .caddy-status-warn .caddy-status { color: var(--warn); }
 .caddy-status-err .caddy-status { color: var(--err); }
@@ -295,7 +295,7 @@ onUnmounted(() => {
 /* 状态 */
 .state-box {
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted);
+  gap: 10px; padding: 48px 20px; font-size: 0.8125rem; color: var(--text-muted);
 }
 .state-box.error { color: var(--err); flex-direction: column; gap: 8px; }
 .state-text { color: inherit; }

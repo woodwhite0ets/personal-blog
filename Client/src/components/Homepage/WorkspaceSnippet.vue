@@ -190,7 +190,7 @@ const groups = [
 .ws { padding: 0; }
 .ws-head { max-width: 82ch; }
 .ws-lead {
-  margin: 0 0 26px; font-size: 14px; line-height: 1.72;
+  margin: 0 0 26px; font-size: 0.875rem; line-height: 1.72;
   color: var(--text-secondary); text-wrap: pretty;
 }
 
@@ -199,7 +199,7 @@ const groups = [
 }
 .ws-group { min-width: 0; }
 .ws-group-title {
-  margin: 0 0 10px; padding-bottom: 7px; font-size: 12.5px; font-weight: 650;
+  margin: 0 0 10px; padding-bottom: 7px; font-size: 0.7812rem; font-weight: 650;
   letter-spacing: .03em; color: var(--text-dim);
   border-bottom: 1px solid var(--border);
 }
@@ -210,7 +210,7 @@ const groups = [
 }
 .ws-name {
   font-family: ui-monospace, "Noto Sans Mono CJK SC", monospace;
-  font-size: 12.5px; font-weight: 600; line-height: 1.45;
+  font-size: 0.7812rem; font-weight: 600; line-height: 1.45;
   word-break: break-word;
 }
 .ws-name a {
@@ -222,12 +222,12 @@ const groups = [
 .ws-name a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
 .ws-name-plain { color: var(--text-dim); }
 .ws-use {
-  margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--text-secondary);
+  margin: 0; font-size: 0.7812rem; line-height: 1.6; color: var(--text-secondary);
   min-width: 0; text-wrap: pretty;
 }
 .ws-note {
   margin: 28px 0 0; padding-top: 16px; border-top: 1px solid var(--border);
-  font-size: 12.5px; line-height: 1.7; color: var(--text-dim); max-width: 84ch;
+  font-size: 0.7812rem; line-height: 1.7; color: var(--text-dim); max-width: 84ch;
 }
 
 @media (max-width: 900px) {

@@ -468,13 +468,13 @@ async function handleResend() {
   background: linear-gradient(135deg, var(--accent-a20) 0%, var(--accent-a5) 100%);
   border: 2px solid var(--accent-a25);
   border-radius: 12px;
-  font-size: 28px; font-weight: 800; color: var(--accent);
+  font-size: 1.75rem; font-weight: 800; color: var(--accent);
   text-transform: uppercase;
   transition: color 0.3s, background-color 0.3s, border-color 0.3s, opacity 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
 .avatar-hint {
-  font-size: 10px; color: var(--text-muted);
+  font-size: 0.625rem; color: var(--text-muted);
   letter-spacing: 1px; text-transform: lowercase;
 }
 
@@ -504,7 +504,7 @@ async function handleResend() {
  
 .terminal-title {
   flex: 1; text-align: center;
-  font-size: 11px; color: var(--text-hint); letter-spacing: 1px;
+  font-size: 0.6875rem; color: var(--text-hint); letter-spacing: 1px;
 }
  
 .card-body {
@@ -525,7 +525,7 @@ async function handleResend() {
   width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
-  font-size: 13px; font-weight: 700;
+  font-size: 0.8125rem; font-weight: 700;
   background: var(--bg-deeper); color: var(--text-dim);
   border: 2px solid var(--border-strong);
   transition: color 0.3s, background-color 0.3s, border-color 0.3s, opacity 0.3s, transform 0.3s, box-shadow 0.3s;
@@ -541,7 +541,7 @@ async function handleResend() {
 }
  
 .step-label {
-  font-size: 10px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase;
+  font-size: 0.625rem; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase;
 }
  
 .step.active .step-label { color: var(--accent); }
@@ -558,13 +558,13 @@ async function handleResend() {
  
 .prompt-line {
   display: flex; align-items: center; gap: 10px;
-  font-size: 16px; margin-bottom: 6px;
+  font-size: 1rem; margin-bottom: 6px;
 }
  
 .prompt-arrow { color: var(--accent); font-weight: 700; }
 .prompt-cmd { color: var(--text-bright); font-weight: 600; }
  
-.subtitle { margin: 0; font-size: 12px; color: var(--text-muted); }
+.subtitle { margin: 0; font-size: 0.75rem; color: var(--text-muted); }
 .comment { color: var(--text-muted); font-style: italic; }
  
 /* ====== 表单 ====== */
@@ -577,7 +577,7 @@ async function handleResend() {
 }
  
 .field label {
-  font-size: 10px; font-weight: 600; color: var(--text-dim);
+  font-size: 0.625rem; font-weight: 600; color: var(--text-dim);
   text-transform: uppercase; letter-spacing: 1.5px;
   display: flex; align-items: center; gap: 6px;
 }
@@ -589,7 +589,7 @@ async function handleResend() {
 .field input[type='password'] {
   width: 100%;
   padding: 10px 12px;
-  font-family: inherit; font-size: 13px;
+  font-family: inherit; font-size: 0.8125rem;
   color: var(--text-bright);
   background: var(--bg-elevated);
   border: 1px solid var(--border-strong);
@@ -609,7 +609,7 @@ async function handleResend() {
   box-shadow: 0 0 0 3px var(--err-a8);
 }
  
-.field input::placeholder { color: var(--text-faint); font-size: 12px; }
+.field input::placeholder { color: var(--text-faint); font-size: 0.75rem; }
  
 /* 密码可见切换 */
 .password-wrap {
@@ -620,7 +620,7 @@ async function handleResend() {
  
 .toggle-pw {
   position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-  font-family: inherit; font-size: 10px; font-weight: 600;
+  font-family: inherit; font-size: 0.625rem; font-weight: 600;
   color: var(--text-muted); background: none; border: none;
   cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
   transition: color 0.2s;
@@ -644,11 +644,11 @@ async function handleResend() {
 .strength-bar.bar-strong { background: var(--accent); }
  
 .strength-text {
-  font-size: 10px; margin-left: 6px; color: var(--text-muted); min-width: 24px;
+  font-size: 0.625rem; margin-left: 6px; color: var(--text-muted); min-width: 24px;
 }
  
 .field-error {
-  font-size: 11px; color: var(--err);
+  font-size: 0.6875rem; color: var(--err);
   display: flex; align-items: center; gap: 6px;
 }
  
@@ -658,7 +658,7 @@ async function handleResend() {
 .btn-glow {
   width: 100%;
   padding: 13px 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   letter-spacing: 1px;
   gap: 8px;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
@@ -686,11 +686,11 @@ async function handleResend() {
 
 .btn-glow:active:not(:disabled) { transform: translateY(0) scale(0.99); }
 
-.btn-arrow { font-size: 16px; }
+.btn-arrow { font-size: 1rem; }
  
 .server-error {
   display: flex; align-items: center; gap: 6px;
-  font-size: 12px; color: var(--err);
+  font-size: 0.75rem; color: var(--err);
   background: var(--err-a6);
   border: 1px solid var(--err-a15);
   padding: 10px 14px; border-radius: 6px; margin: 0;
@@ -702,7 +702,7 @@ async function handleResend() {
 }
  
 .verify-icon {
-  font-size: 48px; margin-bottom: 20px;
+  font-size: 3rem; margin-bottom: 20px;
   filter: grayscale(1);
   animation: float 3s ease-in-out infinite;
 }
@@ -713,7 +713,7 @@ async function handleResend() {
 }
  
 .verify-text {
-  font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin: 20px 0 16px;
+  font-size: 0.875rem; color: var(--text-secondary); line-height: 1.7; margin: 20px 0 16px;
 }
  
 .verify-text strong {
@@ -721,11 +721,11 @@ async function handleResend() {
 }
  
 .verify-hint {
-  font-size: 12px; color: var(--text-muted); line-height: 1.8;
+  font-size: 0.75rem; color: var(--text-muted); line-height: 1.8;
 }
  
 .link-btn {
-  font-family: inherit; font-size: 12px; font-weight: 600;
+  font-family: inherit; font-size: 0.75rem; font-weight: 600;
   color: var(--accent); background: none; border: none;
   cursor: pointer; text-decoration: underline;
   transition: color 0.2s;
@@ -758,7 +758,7 @@ async function handleResend() {
 .captcha-img:active { transform: scale(0.98); }
 .captcha-img.loading { cursor: wait; opacity: 0.7; }
 .captcha-img svg { width: 100%; height: 100%; display: block; }
-.captcha-loading { font-size: 10px; color: var(--text-muted); }
+.captcha-loading { font-size: 0.625rem; color: var(--text-muted); }
 
 /* ====== 底部 ====== */
 .back-link {
@@ -766,7 +766,7 @@ async function handleResend() {
 }
  
 .back-link a {
-  font-size: 12px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+  font-size: 0.75rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s;
 }
  
 .back-link a:hover { color: var(--accent); }
@@ -775,7 +775,7 @@ async function handleResend() {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 14px;
   background: var(--bg-elevated); border-top: 1px solid var(--border-strong);
-  font-size: 10px; color: var(--text-muted); letter-spacing: 1.5px;
+  font-size: 0.625rem; color: var(--text-muted); letter-spacing: 1.5px;
 }
  
 .status-dot {
@@ -811,7 +811,7 @@ async function handleResend() {
 .register-page { min-height:100dvh; display:block; padding:72px 24px; background:var(--bg); }
 .register-card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
 .card-body { max-width:560px; margin:0 auto; padding:0; }
-.auth-title { font-family:var(--font-hand); font-size:clamp(40px,5vw,64px); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
+.auth-title { font-family:var(--font-hand); font-size: clamp(2.5rem,5vw,4rem); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
 .terminal-status { display:none; }
 
 /* ===== 父级收口：清掉终端风残留（渐变/光晕/卡片阴影/装饰符号）===== */

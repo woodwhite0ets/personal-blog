@@ -192,13 +192,13 @@ onMounted(async () => {
   max-width: 1060px; margin: 0 auto; padding: 0 24px;
   height: 56px; display: flex; align-items: center; gap: 36px;
 }
-.brand { display: flex; align-items: baseline; gap: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
+.brand { display: flex; align-items: baseline; gap: 4px; text-decoration: none; font-size: 0.875rem; font-weight: 600; }
 .brand-bracket { color: var(--text-muted); }
 .brand-text { color: var(--accent); }
-.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
+.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
 .nav-links { display: flex; gap: 28px; flex: 1; }
-.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 12px; font-weight: 500; color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px; }
-.nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; }
+.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 0.75rem; font-weight: 500; color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px; }
+.nav-num { color: var(--text-faint); font-size: 0.625rem; font-weight: 700; }
 .nav-links a:hover, .nav-links a.router-link-active { color: var(--text); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 .nav-actions { display: flex; align-items: center; gap: 12px; }
@@ -218,9 +218,9 @@ onMounted(async () => {
   border-bottom: 1px solid var(--border);
 }
 .avatar-box { flex-shrink: 0; }
-.hero-name { font-size: 32px; font-weight: 650; letter-spacing: -0.028em; color: var(--text-bright); margin: 0 0 8px; line-height: 1.1; }
-.hero-tagline { font-size: 13px; color: var(--accent); margin-bottom: 12px; }
-.hero-desc { font-size: 13px; line-height: 1.8; color: var(--text-secondary); margin: 0; }
+.hero-name { font-size: 2rem; font-weight: 650; letter-spacing: -0.028em; color: var(--text-bright); margin: 0 0 8px; line-height: 1.1; }
+.hero-tagline { font-size: 0.8125rem; color: var(--accent); margin-bottom: 12px; }
+.hero-desc { font-size: 0.8125rem; line-height: 1.8; color: var(--text-secondary); margin: 0; }
 
 /* 通用面板 */
 .about-panel { border-bottom: 1px solid var(--border); padding-bottom: 8px; }
@@ -230,30 +230,30 @@ onMounted(async () => {
 .dot-yellow { background: var(--warn); }
 .dot-green  { background: var(--ok); }
 .dim { opacity: 0.3; }
-.panel-title { flex: 1; font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); }
+.panel-title { flex: 1; font-family: var(--font-hand); font-size: 1.375rem; font-weight: 400; color: var(--text-bright); }
 .section-block { width: 7px; height: 7px; background: var(--accent); flex-shrink: 0; }
 .panel-rule { flex: 1; height: 1px; background: var(--border); }
 .panel-body { padding: 20px 24px; }
 
-.markdown-body { font-size: 14px; line-height: 1.8; color: var(--text); }
+.markdown-body { font-size: 0.875rem; line-height: 1.8; color: var(--text); }
 .markdown-body p { margin: 0 0 12px; }
 .markdown-body ul { padding-left: 20px; margin: 0; }
 .markdown-body li { margin: 4px 0; }
 .markdown-body strong { color: var(--text-bright); }
-.stack-line { font-size: 12px; color: var(--text-dim); margin-top: 16px; }
+.stack-line { font-size: 0.75rem; color: var(--text-dim); margin-top: 16px; }
 .c-accent, .c-ok, .c-warn, .c-purple { color: var(--text-dim); }
 
 /* 项目 */
 .project-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
 .project-item:last-child { border-bottom: none; padding-bottom: 0; }
 .project-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.project-name { font-size: 14px; font-weight: 600; color: var(--text-bright); }
-.project-status { font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.project-name { font-size: 0.875rem; font-weight: 600; color: var(--text-bright); }
+.project-status { font-size: 0.75rem; color: var(--accent); font-variant-numeric: tabular-nums; }
 .dim-status { color: var(--text-dim); }
-.project-desc { font-size: 12px; line-height: 1.7; color: var(--text-secondary); margin: 0 0 10px; }
+.project-desc { font-size: 0.75rem; line-height: 1.7; color: var(--text-secondary); margin: 0 0 10px; }
 .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .ptag {
-  display: inline-block; font-size: 11.5px; padding: 3px 10px;
+  display: inline-block; font-size: 0.7188rem; padding: 3px 10px;
   color: var(--pale-blue-fg); background: var(--pale-blue-bg);
   border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent);
   border-radius: 999px;
@@ -263,8 +263,8 @@ onMounted(async () => {
 /* 联系方式 */
 .contact-line { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); }
 .contact-line:last-child { border-bottom: none; }
-.contact-label { font-size: 13px; color: var(--text-muted); width: 56px; flex-shrink: 0; }
-.contact-val { font-size: 13px; color: var(--text); text-decoration: none; transition: color 0.2s; }
+.contact-label { font-size: 0.8125rem; color: var(--text-muted); width: 56px; flex-shrink: 0; }
+.contact-val { font-size: 0.8125rem; color: var(--text); text-decoration: none; transition: color 0.2s; }
 a.contact-val:hover { color: var(--accent); }
 .dim-val { color: var(--text-dim); }
 
@@ -276,7 +276,7 @@ a.contact-val:hover { color: var(--accent); }
   .nav-actions { gap: 8px; }
   .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
   .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
-  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
 }
 
 .info-key { color: var(--text-dim); }

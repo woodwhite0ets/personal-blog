@@ -431,12 +431,12 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .brand {
   display: flex; align-items: baseline; gap: 4px;
-  text-decoration: none; font-size: 14px; font-weight: 600;
+  text-decoration: none; font-size: 0.875rem; font-weight: 600;
 }
 
 .brand-bracket { color: var(--text-muted); }
 .brand-text { color: var(--accent); }
-.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
+.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
 
 .nav-links {
   display: flex; gap: 28px; flex: 1;
@@ -444,11 +444,11 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .nav-links a {
   display: flex; align-items: center; gap: 6px;
-  text-decoration: none; font-size: 12px; font-weight: 500;
+  text-decoration: none; font-size: 0.75rem; font-weight: 500;
   color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px;
 }
 
-.nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; }
+.nav-num { color: var(--text-faint); font-size: 0.625rem; font-weight: 700; }
 
 .nav-links a:hover,
 .nav-links a.router-link-active { color: var(--text); }
@@ -485,7 +485,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   background: var(--bg-elevated); border: 1px solid var(--border-strong); border-left: none;
   border-radius: 0 6px 6px 0;
   color: var(--text);
-  font-family: inherit; font-size: 12px;
+  font-family: inherit; font-size: 0.75rem;
   caret-color: var(--accent);
   outline: none;
   animation: searchSlideIn 0.2s ease;
@@ -503,7 +503,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .btn-write {
   display: flex; align-items: center; gap: 6px;
   padding: 6px 16px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
+  font-family: inherit; font-size: 0.75rem; font-weight: 600;
   color: var(--on-accent); background: var(--accent); border-radius: 6px;
   text-decoration: none; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
@@ -514,7 +514,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   transform: translateY(-1px);
 }
 
-.btn-write-icon { font-size: 15px; font-weight: 700; }
+.btn-write-icon { font-size: 0.9375rem; font-weight: 700; }
 
 /* ====== 用户菜单 ====== */
 .user-menu-wrap { position: relative; }
@@ -522,7 +522,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .btn-user {
   display: flex; align-items: center; gap: 8px;
   padding: 4px 10px 4px 4px;
-  font-family: inherit; font-size: 12px;
+  font-family: inherit; font-size: 0.75rem;
   color: var(--text); background: var(--overlay-a4);
   border: 1px solid var(--border-strong); border-radius: 8px;
   cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
@@ -533,7 +533,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .user-name { font-weight: 500; color: var(--text-secondary); }
 
 .user-caret {
-  font-size: 10px; color: var(--text-muted); transition: transform 0.2s;
+  font-size: 0.625rem; color: var(--text-muted); transition: transform 0.2s;
 }
 
 .user-caret.open { transform: rotate(180deg); }
@@ -550,7 +550,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .dropdown-item {
   display: flex; align-items: center; gap: 10px;
   width: 100%; padding: 10px 14px;
-  font-family: inherit; font-size: 12px; font-weight: 500;
+  font-family: inherit; font-size: 0.75rem; font-weight: 500;
   color: var(--text-secondary); background: none; border: none;
   text-decoration: none; cursor: pointer;
   transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s;
@@ -564,7 +564,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   background: var(--accent-a6);
 }
 .dropdown-item.logout:hover { color: var(--err); }
-.dropdown-icon { font-size: 13px; }
+.dropdown-icon { font-size: 0.8125rem; }
 
 /* ====== Hero ====== */
 .hero {
@@ -583,7 +583,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 2px;
   color: var(--text-dim); margin-bottom: 16px; text-transform: uppercase;
 }
 
@@ -594,13 +594,13 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 }
 
 .hero-title {
-  font-size: 28px; font-weight: 800; line-height: 1.3;
+  font-size: 1.75rem; font-weight: 800; line-height: 1.3;
   margin: 0 0 12px; letter-spacing: -0.5px;
   color: var(--text-bright);
 }
 
 .hero-excerpt {
-  font-size: 14px; color: var(--text-dim); line-height: 1.7;
+  font-size: 0.875rem; color: var(--text-dim); line-height: 1.7;
   margin: 0 auto 24px; max-width: 500px;
 }
 
@@ -643,7 +643,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .dim { opacity: 0.3; }
 
 .panel-title {
-  flex: 1; font-size: 10px; font-weight: 600;
+  flex: 1; font-size: 0.625rem; font-weight: 600;
   color: var(--text-muted); text-align: center;
   letter-spacing: 1.5px; text-transform: lowercase;
 }
@@ -652,7 +652,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .info-line {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 5px 0; font-size: 11px;
+  padding: 5px 0; font-size: 0.6875rem;
 }
 
 .info-key {
@@ -668,7 +668,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   padding: 10px 16px; margin-bottom: 20px;
   background: var(--accent-a4);
   border: 1px solid var(--accent-a15);
-  border-radius: 6px; font-size: 12px;
+  border-radius: 6px; font-size: 0.75rem;
 }
 
 .sort-bar {
@@ -681,12 +681,12 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   border-radius: 6px;
 }
 .sort-label {
-  font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+  font-size: 0.625rem; text-transform: uppercase; letter-spacing: 1px;
   color: var(--text-muted);
 }
 .sort-btn {
   padding: 4px 12px;
-  font-family: inherit; font-size: 11px; font-weight: 600;
+  font-family: inherit; font-size: 0.6875rem; font-weight: 600;
   color: var(--text-secondary); background: var(--bg-elevated);
   border: 1px solid var(--border); border-radius: 4px;
   cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
@@ -698,7 +698,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 }
 
 .filter-prompt { color: var(--accent); font-weight: 700; }
-.filter-label { color: var(--text-muted); text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+.filter-label { color: var(--text-muted); text-transform: uppercase; font-size: 0.625rem; letter-spacing: 1px; }
 .filter-tag { color: var(--accent); font-weight: 600; }
 .filter-clear {
   margin-left: auto;
@@ -710,7 +710,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .tag {
-  font-size: 11px; padding: 4px 11px;
+  font-size: 0.6875rem; padding: 4px 11px;
   background: var(--pale-blue-bg);
   border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent);
   border-radius: 999px;
@@ -721,14 +721,14 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .tag:hover { border-color: color-mix(in srgb, var(--pale-blue-fg) 36%, transparent); }
 .tag.router-link-active { border-color: var(--accent); color: var(--accent); }
-.tag.lg { font-size: 13px; font-weight: 600; }
-.tag.md { font-size: 12px; }
-.tag.sm { font-size: 11px; }
-.tag.xs { font-size: 10px; opacity: 0.7; }
+.tag.lg { font-size: 0.8125rem; font-weight: 600; }
+.tag.md { font-size: 0.75rem; }
+.tag.sm { font-size: 0.6875rem; }
+.tag.xs { font-size: 0.625rem; opacity: 0.7; }
 
 .link-item {
   display: flex; align-items: center; gap: 8px;
-  padding: 6px 0; font-size: 11px;
+  padding: 6px 0; font-size: 0.6875rem;
   color: var(--text-dim); text-decoration: none; transition: color 0.2s;
 }
 
@@ -740,7 +740,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .contributor-item {
   display: flex; align-items: center; gap: 8px;
-  padding: 5px 0; font-size: 11px;
+  padding: 5px 0; font-size: 0.6875rem;
   color: var(--text-dim); text-decoration: none;
   transition: color 0.2s;
 }
@@ -750,12 +750,12 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .contributor-name { flex: 1; }
 
 .contributor-count {
-  font-size: 10px; color: var(--text-muted);
+  font-size: 0.625rem; color: var(--text-muted);
   font-weight: 600;
 }
 
 .no-tags {
-  font-size: 11px; color: var(--text-muted);
+  font-size: 0.6875rem; color: var(--text-muted);
 }
 
 /* ====== 响应式 ====== */
@@ -769,9 +769,9 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   .user-caret { display: none; }
   .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
   .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
-  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   .hero-inner { padding: 40px 20px 36px; }
-  .hero-title { font-size: 22px; }
+  .hero-title { font-size: 1.375rem; }
 }
 
 /* 信笺统一：侧栏改为无卡片发丝线块（与首页右栏一致）*/
@@ -780,7 +780,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .sidebar-panel:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
 .panel-bar { border-bottom: none; background: transparent; padding: 0 0 12px; }
 .panel-body { padding: 0; }
-.panel-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
+.panel-title { font-family: var(--font-hand); font-size: 1.375rem; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
 .info-key { color: var(--text-dim); }
 
 /* 排序 / 筛选：去掉色块，改发丝线行 */
@@ -798,14 +798,14 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 }
 
 /* 统一：页面标题手写 40px */
-.hero-title { font-family: var(--font-hand); font-size: 40px; font-weight: 400; }
+.hero-title { font-family: var(--font-hand); font-size: 2.5rem; font-weight: 400; }
 /* 排序工具栏：左侧计数 + 右侧排序组（2026-10-19） */
 .sort-bar {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 0 16px; margin-bottom: 20px;
   border-bottom: 1px solid var(--border);
 }
-.sort-count { font-size: 13px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.sort-count { font-size: 0.8125rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
 .sort-group { display: flex; align-items: center; gap: 8px; }
 
 

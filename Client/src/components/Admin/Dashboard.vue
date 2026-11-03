@@ -127,11 +127,11 @@ onMounted(fetchStats)
   margin-bottom: 28px; padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
-.section-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
+.section-title { font-family: var(--font-hand); font-size: 1.375rem; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
 
 .state-box {
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted);
+  gap: 10px; padding: 48px 20px; font-size: 0.8125rem; color: var(--text-muted);
 }
 .state-box.error { color: var(--err); flex-direction: column; gap: 8px; }
 
@@ -155,8 +155,8 @@ onMounted(fetchStats)
 }
 .stat-cell:first-child { border-left: none; }
 
-.stat-number { font-size: 32px; font-weight: 800; color: var(--text-bright); line-height: 1; }
-.stat-sub { font-size: 11px; color: var(--text-muted); }
+.stat-number { font-size: 2rem; font-weight: 800; color: var(--text-bright); line-height: 1; }
+.stat-sub { font-size: 0.6875rem; color: var(--text-muted); }
 
 /* 数据面板 */
 .data-grid {
@@ -172,7 +172,7 @@ onMounted(fetchStats)
   border-bottom: none; background: transparent; padding: 0 0 12px;
 }
 .panel-title {
-  flex: 1; font-family: var(--font-hand); font-size: 17px; font-weight: 400;
+  flex: 1; font-family: var(--font-hand); font-size: 1.0625rem; font-weight: 400;
   color: var(--text-bright); text-align: left; letter-spacing: 0;
 }
 
@@ -181,13 +181,13 @@ onMounted(fetchStats)
 /* 表格 */
 .data-table { width: 100%; border-collapse: collapse; }
 .data-table th {
-  font-size: 10px; font-weight: 600; color: var(--text-muted);
+  font-size: 0.625rem; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px;
   text-align: left; padding: 10px 14px 10px 0;
   border-bottom: 1px solid var(--border);
 }
 .data-table td {
-  padding: 9px 14px 9px 0; font-size: 12px; color: var(--text-secondary);
+  padding: 9px 14px 9px 0; font-size: 0.75rem; color: var(--text-secondary);
   border-bottom: 1px solid var(--border-a50);
 }
 .data-table tbody tr:hover { background: var(--overlay-a15); }
@@ -197,7 +197,7 @@ onMounted(fetchStats)
 .user-link:hover { opacity: 0.8; }
 
 .role-badge, .status-badge {
-  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;
   padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
 }
 .role-badge.admin { color: var(--accent); background: var(--accent-a8); border: 1px solid var(--accent-a20); }
@@ -208,7 +208,7 @@ onMounted(fetchStats)
 .status-badge.draft { color: var(--warn); background: var(--warn-a8); border: 1px solid var(--warn-a20); }
 .status-badge.archived { color: var(--text-secondary); background: var(--text-secondary-a8); border: 1px solid var(--text-secondary-a20); }
 
-.muted { font-size: 11px; color: var(--text-muted); }
+.muted { font-size: 0.6875rem; color: var(--text-muted); }
 
 @media (max-width: 900px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }

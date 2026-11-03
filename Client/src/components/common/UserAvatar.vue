@@ -77,9 +77,9 @@ function onImgError() {
   user-select: none;
 }
 
-.ava-xs .avatar-char { font-size: 10px; }
-.ava-sm .avatar-char { font-size: 14px; }
-.ava-md .avatar-char { font-size: 20px; }
-.ava-lg .avatar-char { font-size: 28px; }
-.ava-xl .avatar-char { font-size: 38px; }
+.ava-xs .avatar-char { font-size: 0.625rem; }
+.ava-sm .avatar-char { font-size: 0.875rem; }
+.ava-md .avatar-char { font-size: 1.25rem; }
+.ava-lg .avatar-char { font-size: 1.75rem; }
+.ava-xl .avatar-char { font-size: 2.375rem; }
 </style>

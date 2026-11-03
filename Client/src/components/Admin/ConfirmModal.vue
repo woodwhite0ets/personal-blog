@@ -61,7 +61,7 @@ defineEmits(['confirm', 'cancel'])
 }
 
 .modal-title {
-  font-family: var(--font-hand); font-size: 20px; font-weight: 400;
+  font-family: var(--font-hand); font-size: 1.25rem; font-weight: 400;
   color: var(--text-bright); letter-spacing: 0;
 }
 
@@ -69,7 +69,7 @@ defineEmits(['confirm', 'cancel'])
 
 .modal-message {
   font-family: var(--font-sans);
-  font-size: 13px; color: var(--text-secondary); line-height: 1.7;
+  font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.7;
   margin: 0 0 24px; text-align: left;
 }
 

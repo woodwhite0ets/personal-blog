@@ -134,13 +134,13 @@ onMounted(async () => {
 .notes-main { max-width: 1080px; margin: 0 auto; padding: 64px 24px 104px; }
 
 .notes-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); }
-.notes-kicker { margin: 0 0 8px; font-size: 12px; letter-spacing: .08em; color: var(--text-dim); }
+.notes-kicker { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: .08em; color: var(--text-dim); }
 .notes-title {
-  margin: 0; font-size: clamp(32px, 4vw, 48px); font-weight: 700;
+  margin: 0; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
   letter-spacing: -0.025em; color: var(--text-bright); text-wrap: balance;
 }
-.notes-lead { margin: 14px 0 0; max-width: 66ch; font-size: 14px; line-height: 1.75; color: var(--text-secondary); text-wrap: pretty; }
-.notes-meta { margin: 10px 0 0; font-size: 12.5px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.notes-lead { margin: 14px 0 0; max-width: 66ch; font-size: 0.875rem; line-height: 1.75; color: var(--text-secondary); text-wrap: pretty; }
+.notes-meta { margin: 10px 0 0; font-size: 0.7812rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
 .notes-tools {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
@@ -149,7 +149,7 @@ onMounted(async () => {
 .notes-filters { display: flex; gap: 6px; flex-wrap: wrap; }
 .filter-btn {
   border: 1px solid var(--border-strong); background: transparent; color: var(--text-dim);
-  font-size: 12.5px; padding: 5px 11px; border-radius: 999px; cursor: pointer;
+  font-size: 0.7812rem; padding: 5px 11px; border-radius: 999px; cursor: pointer;
 }
 .filter-btn:hover { color: var(--text); border-color: var(--text-dim); }
 .filter-btn.active { color: var(--accent); border-color: var(--accent); }
@@ -157,26 +157,26 @@ onMounted(async () => {
 .notes-search input {
   width: 200px; padding: 7px 11px; border-radius: 8px;
   border: 1px solid var(--border-strong); background: var(--bg-elevated);
-  color: var(--text); font-size: 13px;
+  color: var(--text); font-size: 0.8125rem;
 }
 .notes-search input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .notes-list { list-style: none; margin: 10px 0 0; padding: 0; }
 .note-item { padding: 18px 2px; border-top: 1px solid var(--border); }
 .note-line { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.note-title { font-size: 15px; font-weight: 650; color: var(--text-bright); }
+.note-title { font-size: 0.9375rem; font-weight: 650; color: var(--text-bright); }
 .note-project {
-  font-size: 11px; color: var(--text-dim); padding: 1px 7px;
+  font-size: 0.6875rem; color: var(--text-dim); padding: 1px 7px;
   border: 1px solid var(--border); border-radius: 999px;
 }
-.note-date { margin-left: auto; font-size: 12px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
-.note-summary { margin: 6px 0 0; font-size: 13px; line-height: 1.7; color: var(--text-secondary); max-width: 76ch; }
-.note-tags { margin: 6px 0 0; font-size: 11px; color: var(--text-faint); letter-spacing: .02em; }
-.notes-empty { padding: 36px 2px; font-size: 14px; color: var(--text-dim); line-height: 1.8; }
+.note-date { margin-left: auto; font-size: 0.75rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.note-summary { margin: 6px 0 0; font-size: 0.8125rem; line-height: 1.7; color: var(--text-secondary); max-width: 76ch; }
+.note-tags { margin: 6px 0 0; font-size: 0.6875rem; color: var(--text-faint); letter-spacing: .02em; }
+.notes-empty { padding: 36px 2px; font-size: 0.875rem; color: var(--text-dim); line-height: 1.8; }
 .notes-empty p { margin: 0 0 6px; }
-.notes-empty-sub { color: var(--text-faint); font-size: 13px; }
+.notes-empty-sub { color: var(--text-faint); font-size: 0.8125rem; }
 .notes-empty-cta {
-  display: inline-block; margin-top: 14px; font-size: 13px;
+  display: inline-block; margin-top: 14px; font-size: 0.8125rem;
   color: var(--accent); text-decoration: none;
   border-bottom: 1px solid transparent;
 }
@@ -189,32 +189,32 @@ onMounted(async () => {
 /* 详情视图 */
 .notes-detail { max-width: 820px; }
 .detail-back {
-  display: inline-block; margin-bottom: 22px; font-size: 13px; color: var(--text-dim);
+  display: inline-block; margin-bottom: 22px; font-size: 0.8125rem; color: var(--text-dim);
   text-decoration: none; border-bottom: 1px solid var(--border-strong);
 }
 .detail-back:hover { color: var(--accent); border-color: var(--accent); }
 .detail-title {
-  margin: 0; font-size: clamp(26px, 3.4vw, 38px); font-weight: 700;
+  margin: 0; font-size: clamp(1.625rem, 3.4vw, 2.375rem); font-weight: 700;
   letter-spacing: -0.02em; color: var(--text-bright); text-wrap: balance;
 }
 .detail-meta {
   display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  margin: 12px 0 26px; font-size: 12.5px; color: var(--text-faint);
+  margin: 12px 0 26px; font-size: 0.7812rem; color: var(--text-faint);
   padding-bottom: 16px; border-bottom: 1px solid var(--border);
 }
 .detail-tags { letter-spacing: .02em; }
-.detail-body { font-size: 15px; line-height: 1.8; color: var(--text); }
+.detail-body { font-size: 0.9375rem; line-height: 1.8; color: var(--text); }
 .detail-body :deep(h1), .detail-body :deep(h2) {
-  margin: 28px 0 12px; font-size: 20px; color: var(--text-bright);
+  margin: 28px 0 12px; font-size: 1.25rem; color: var(--text-bright);
 }
-.detail-body :deep(h3) { margin: 22px 0 10px; font-size: 16px; color: var(--text-bright); }
+.detail-body :deep(h3) { margin: 22px 0 10px; font-size: 1rem; color: var(--text-bright); }
 .detail-body :deep(pre) {
   background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px;
-  padding: 14px 16px; overflow-x: auto; font-size: 12.5px; line-height: 1.6;
+  padding: 14px 16px; overflow-x: auto; font-size: 0.7812rem; line-height: 1.6;
 }
 .detail-body :deep(code) { font-family: ui-monospace, monospace; font-size: .92em; }
 .detail-body :deep(p code) { background: var(--bg-elevated); padding: 1px 5px; border-radius: 3px; }
-.detail-body :deep(table) { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+.detail-body :deep(table) { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.8125rem; }
 .detail-body :deep(th), .detail-body :deep(td) { border: 1px solid var(--border); padding: 7px 10px; text-align: left; }
 .detail-body :deep(blockquote) {
   margin: 14px 0; padding: 8px 16px; border-left: 3px solid var(--border-strong);
@@ -222,7 +222,7 @@ onMounted(async () => {
 }
 .detail-note {
   margin: 36px 0 0; padding-top: 16px; border-top: 1px solid var(--border);
-  font-size: 12.5px; color: var(--text-faint);
+  font-size: 0.7812rem; color: var(--text-faint);
 }
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

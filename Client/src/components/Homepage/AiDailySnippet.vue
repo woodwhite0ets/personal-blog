@@ -51,13 +51,13 @@ onMounted(async () => {
 .ai-snip-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
 .ai-snip-head .hm-h { flex: 1; margin-bottom: 6px; }
 .ai-snip-more {
-  font-size: 12.5px; color: var(--text-dim); text-decoration: none;
+  font-size: 0.7812rem; color: var(--text-dim); text-decoration: none;
   border-bottom: 1px solid var(--border-strong); padding-bottom: 1px;
   white-space: nowrap;
 }
 .ai-snip-more:hover { color: var(--accent); border-color: var(--accent); }
 .ai-snip-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
-.ai-snip-sub { margin: 0 0 10px; font-size: 12.5px; color: var(--text-dim); }
+.ai-snip-sub { margin: 0 0 10px; font-size: 0.7812rem; color: var(--text-dim); }
 
 .ai-snip-list { list-style: none; margin: 0; padding: 0; }
 .ai-snip-item {
@@ -66,22 +66,22 @@ onMounted(async () => {
 }
 .ai-snip-item:last-child { border-bottom: none; }
 .ai-snip-rank {
-  font-size: 13px; color: var(--text-faint); font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem; color: var(--text-faint); font-variant-numeric: tabular-nums;
 }
 .ai-snip-body { min-width: 0; }
 .ai-snip-name {
-  display: block; font-size: 14px; font-weight: 650; color: var(--text-bright);
+  display: block; font-size: 0.875rem; font-weight: 650; color: var(--text-bright);
   text-decoration: none; word-break: break-word;
 }
 .ai-snip-name:hover { color: var(--accent); }
 .ai-snip-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
 .ai-snip-desc {
-  margin: 3px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--text-secondary);
+  margin: 3px 0 0; font-size: 0.7812rem; line-height: 1.55; color: var(--text-secondary);
   display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical;
   overflow: hidden;
 }
 .ai-snip-stat {
-  font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums;
+  font-size: 0.75rem; color: var(--accent); font-variant-numeric: tabular-nums;
   font-weight: 600; white-space: nowrap;
 }
 

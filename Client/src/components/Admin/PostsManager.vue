@@ -223,8 +223,8 @@ onMounted(() => fetchPosts())
   margin-bottom: 20px; padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
-.section-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
-.section-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+.section-title { font-family: var(--font-hand); font-size: 1.375rem; font-weight: 400; color: var(--text-bright); letter-spacing: 0; }
+.section-count { font-size: 0.6875rem; color: var(--text-muted); margin-left: auto; }
 
 /* 筛选 */
 .filters {
@@ -234,7 +234,7 @@ onMounted(() => fetchPosts())
 
 .status-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); }
 .tab {
-  padding: 6px 14px; font-family: inherit; font-size: 11px; font-weight: 600;
+  padding: 6px 14px; font-family: inherit; font-size: 0.6875rem; font-weight: 600;
   color: var(--text-dim); background: none; border: none;
   border-bottom: 2px solid transparent; margin-bottom: -1px;
   cursor: pointer; transition: color 0.2s; letter-spacing: 0.5px;
@@ -250,7 +250,7 @@ onMounted(() => fetchPosts())
 }
 .search-wrap:focus-within { border-bottom-color: var(--accent); }
 .search-input {
-  font-family: inherit; font-size: 12px; color: var(--text);
+  font-family: inherit; font-size: 0.75rem; color: var(--text);
   background: none; border: none; outline: none;
   min-width: 200px; caret-color: var(--accent);
 }
@@ -259,7 +259,7 @@ onMounted(() => fetchPosts())
 /* 状态 */
 .state-box {
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted);
+  gap: 10px; padding: 48px 20px; font-size: 0.8125rem; color: var(--text-muted);
 }
 .state-box.error { color: var(--err); flex-direction: column; gap: 8px; }
 
@@ -275,13 +275,13 @@ onMounted(() => fetchPosts())
 
 .post-table { width: 100%; border-collapse: collapse; }
 .post-table th {
-  font-size: 10px; font-weight: 600; color: var(--text-muted);
+  font-size: 0.625rem; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px;
   text-align: left; padding: 10px 14px 10px 0;
   border-bottom: 1px solid var(--border);
 }
 .post-table td {
-  padding: 10px 14px 10px 0; font-size: 12px; color: var(--text-secondary);
+  padding: 10px 14px 10px 0; font-size: 0.75rem; color: var(--text-secondary);
   border-bottom: 1px solid var(--border-a50);
 }
 .post-table tbody tr:hover { background: var(--overlay-a15); }
@@ -294,21 +294,21 @@ onMounted(() => fetchPosts())
 .author-link:hover { color: var(--accent); }
 
 .pinned-tag {
-  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.5625rem; font-weight: 700; letter-spacing: 1px;
   color: var(--warn); padding: 1px 6px;
   background: var(--warn-a8); border: 1px solid var(--warn-a20);
   border-radius: 3px; margin-left: 6px; vertical-align: middle;
 }
 
 .status-badge {
-  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;
   padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
 }
 .status-badge.published { color: var(--ok); background: var(--ok-a8); border: 1px solid var(--ok-a20); }
 .status-badge.draft { color: var(--warn); background: var(--warn-a8); border: 1px solid var(--warn-a20); }
 .status-badge.archived { color: var(--text-secondary); background: var(--text-secondary-a8); border: 1px solid var(--text-secondary-a20); }
 
-.muted { font-size: 11px; color: var(--text-muted); }
+.muted { font-size: 0.6875rem; color: var(--text-muted); }
 
 .td-actions .btn-sm { margin-left: 6px; }
 

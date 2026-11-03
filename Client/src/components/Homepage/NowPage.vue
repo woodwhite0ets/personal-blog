@@ -131,39 +131,39 @@ onMounted(async () => {
 .now-main { max-width: 780px; margin: 0 auto; padding: 64px 24px 104px; }
 
 .now-head { padding-bottom: 22px; border-bottom: 1px solid var(--border); }
-.now-kicker { margin: 0 0 8px; font-size: 12px; letter-spacing: .08em; color: var(--text-dim); }
+.now-kicker { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: .08em; color: var(--text-dim); }
 .now-title {
-  margin: 0; font-size: clamp(30px, 4vw, 44px); font-weight: 700;
+  margin: 0; font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 700;
   letter-spacing: -0.025em; color: var(--text-bright); text-wrap: balance;
 }
-.now-lead { margin: 12px 0 0; font-size: 14px; line-height: 1.75; color: var(--text-secondary); max-width: 64ch; }
-.now-updated { margin: 10px 0 0; font-size: 12px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.now-lead { margin: 12px 0 0; font-size: 0.875rem; line-height: 1.75; color: var(--text-secondary); max-width: 64ch; }
+.now-updated { margin: 10px 0 0; font-size: 0.75rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
 .now-sec { margin-top: 30px; }
 .now-sec-title {
-  margin: 0 0 12px; font-size: 16px; font-weight: 650; color: var(--text-bright);
+  margin: 0 0 12px; font-size: 1rem; font-weight: 650; color: var(--text-bright);
   padding-bottom: 8px; border-bottom: 1px solid var(--border);
 }
 .now-list { list-style: none; margin: 0; padding: 0; }
 .now-list li {
   display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
-  padding: 8px 0; font-size: 14px; color: var(--text);
+  padding: 8px 0; font-size: 0.875rem; color: var(--text);
 }
 .now-link { color: var(--text-bright); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
 .now-link:hover { color: var(--accent); border-color: var(--accent); }
 .now-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
-.now-detail { font-size: 12.5px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.now-detail { font-size: 0.7812rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
 
 .now-stats { margin: 0; display: grid; gap: 10px; }
 .now-stats > div { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: baseline; }
-.now-stats dt { font-size: 12.5px; color: var(--text-dim); }
-.now-stats dd { margin: 0; font-size: 13.5px; color: var(--text-secondary); }
+.now-stats dt { font-size: 0.7812rem; color: var(--text-dim); }
+.now-stats dd { margin: 0; font-size: 0.8438rem; color: var(--text-secondary); }
 .now-inline-link {
-  margin-left: 10px; font-size: 12px; color: var(--accent);
+  margin-left: 10px; font-size: 0.75rem; color: var(--accent);
   text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
 }
-.now-dim { font-size: 13px; color: var(--text-dim); }
-.now-note { margin: 0; font-size: 13px; line-height: 1.75; color: var(--text-secondary); max-width: 68ch; }
+.now-dim { font-size: 0.8125rem; color: var(--text-dim); }
+.now-note { margin: 0; font-size: 0.8125rem; line-height: 1.75; color: var(--text-secondary); max-width: 68ch; }
 
 @media (max-width: 720px) {
   .now-main { padding: 40px 20px 72px; }

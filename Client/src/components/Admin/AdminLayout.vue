@@ -114,19 +114,19 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   height: 56px; display: flex; align-items: center; justify-content: space-between;
 }
 
-.brand { display: flex; align-items: baseline; gap: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
+.brand { display: flex; align-items: baseline; gap: 4px; text-decoration: none; font-size: 0.875rem; font-weight: 600; }
 .brand-text { color: var(--accent); }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; position: relative; }
 
 .admin-badge {
-  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;
   color: var(--warn); padding: 4px 10px;
   background: var(--warn-a8); border: 1px solid var(--warn-a20);
   border-radius: 4px; text-transform: uppercase;
 }
 
-.nav-link { font-size: 12px; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+.nav-link { font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
 .nav-link:hover { color: var(--accent); }
 
 .btn-user {
@@ -146,7 +146,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 
 .dropdown-item {
   display: flex; align-items: center; width: 100%; padding: 10px 14px;
-  font-family: inherit; font-size: 12px; font-weight: 500;
+  font-family: inherit; font-size: 0.75rem; font-weight: 500;
   color: var(--text-secondary); background: none; border: none;
   text-decoration: none; cursor: pointer; transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s;
 }
@@ -172,7 +172,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   border-bottom: 1px solid var(--border);
 }
 .panel-title {
-  flex: 1; font-size: 10px; font-weight: 600;
+  flex: 1; font-size: 0.625rem; font-weight: 600;
   color: var(--text-muted); text-align: center; letter-spacing: 1.5px; text-transform: lowercase;
 }
 
@@ -182,14 +182,14 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 
 .nav-item {
   display: flex; align-items: center; gap: 8px;
-  padding: 10px 16px; font-size: 12px; font-weight: 500;
+  padding: 10px 16px; font-size: 0.75rem; font-weight: 500;
   color: var(--text-dim); text-decoration: none;
   border-left: 2px solid transparent; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 .nav-item:hover { color: var(--text); background: var(--overlay-a2); }
 .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-a4); }
 
-.info-line { display: flex; justify-content: space-between; padding: 5px 12px; font-size: 11px; }
+.info-line { display: flex; justify-content: space-between; padding: 5px 12px; font-size: 0.6875rem; }
 .info-key { color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
 .info-val { color: var(--text-secondary); }
 
@@ -206,17 +206,17 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .sidebar-panel { background: transparent; border: none; border-radius: 0; box-shadow: none; padding: 0; }
 .panel-bar { border-bottom: none; background: transparent; padding: 0 0 12px; }
 .panel-body { padding: 0; }
-.panel-title { font-family: var(--font-hand); font-size: 17px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
+.panel-title { font-family: var(--font-hand); font-size: 1.0625rem; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
 .info-line { padding: 5px 0; }
 .info-key { color: var(--text-dim); }
 
 /* 统一：后台头部与主站一致 */
 .navbar { background: var(--bg); border-bottom: 1px solid var(--border); }
 .navbar-inner { max-width: 1120px; margin: 0 auto; padding: 0 28px; height: 74px; display: flex; align-items: center; gap: 24px; }
-.brand-text { font-family: var(--font-hand); font-size: 21px; color: var(--text-bright); }
-.brand-suffix { font-size: 13px; color: var(--text-dim); margin-left: 8px; }
-.admin-badge { font-size: 13px; color: var(--text-dim); border: 1px solid var(--border); border-radius: 3px; padding: 2px 8px; }
-.nav-link { font-size: 15px; color: var(--text-secondary); text-decoration: none; }
+.brand-text { font-family: var(--font-hand); font-size: 1.3125rem; color: var(--text-bright); }
+.brand-suffix { font-size: 0.8125rem; color: var(--text-dim); margin-left: 8px; }
+.admin-badge { font-size: 0.8125rem; color: var(--text-dim); border: 1px solid var(--border); border-radius: 3px; padding: 2px 8px; }
+.nav-link { font-size: 0.9375rem; color: var(--text-secondary); text-decoration: none; }
 .nav-link:hover { color: var(--text-bright); }
 .btn-user { border-radius: 4px; }
 </style>

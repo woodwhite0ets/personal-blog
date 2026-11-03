@@ -54,7 +54,7 @@ onMounted(async () => {
 .tags-header { padding: 64px 0 28px; }
 .tags-title {
   font-family: var(--font-sans);
-  font-size: clamp(44px, 5.2vw, 72px);
+  font-size: clamp(2.75rem, 5.2vw, 4.5rem);
   font-weight: 650;
   letter-spacing: -0.038em;
   line-height: 1.05;
@@ -62,7 +62,7 @@ onMounted(async () => {
   margin: 0;
   text-wrap: balance;
 }
-.tags-sub { margin: 12px 0 0; font-size: 15px; color: var(--text-secondary); }
+.tags-sub { margin: 12px 0 0; font-size: 0.9375rem; color: var(--text-secondary); }
 
 .tag-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; }
 .tag-row {
@@ -73,9 +73,9 @@ onMounted(async () => {
 .tag-bar { height: 3px; background: color-mix(in srgb, var(--text) 7%, transparent); border-radius: 999px; overflow: hidden; }
 .tag-bar i { display: block; height: 100%; background: var(--text-bright); border-radius: 999px;
   animation: barGrow .8s cubic-bezier(.16,1,.3,1) both; }
-.tag-name { flex: 1; font-size: 17px; color: var(--text); transition: color 0.2s; }
+.tag-name { flex: 1; font-size: 1.0625rem; color: var(--text); transition: color 0.2s; }
 .tag-row:hover .tag-name { color: var(--accent); }
-.tag-count { font-size: 13px; color: var(--text-dim); text-align: right; font-variant-numeric: tabular-nums; }
+.tag-count { font-size: 0.8125rem; color: var(--text-dim); text-align: right; font-variant-numeric: tabular-nums; }
 .state-box { padding: 40px 0; color: var(--text-dim); }
 @media (max-width: 860px) { .tag-grid { grid-template-columns: 1fr; } }
 /* 页尾装饰双线残留下线 */

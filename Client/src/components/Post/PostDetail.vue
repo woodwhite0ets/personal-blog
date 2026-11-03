@@ -681,22 +681,22 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .brand {
   display: flex; align-items: baseline; gap: 4px;
-  text-decoration: none; font-size: 14px; font-weight: 600;
+  text-decoration: none; font-size: 0.875rem; font-weight: 600;
 }
 
 .brand-bracket { color: var(--text-muted); }
 .brand-text { color: var(--accent); }
-.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 12px; }
+.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
 
 .nav-links { display: flex; gap: 28px; flex: 1; }
 
 .nav-links a {
   display: flex; align-items: center; gap: 6px;
-  text-decoration: none; font-size: 12px; font-weight: 500;
+  text-decoration: none; font-size: 0.75rem; font-weight: 500;
   color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px;
 }
 
-.nav-num { color: var(--text-faint); font-size: 10px; font-weight: 700; }
+.nav-num { color: var(--text-faint); font-size: 0.625rem; font-weight: 700; }
 
 .nav-links a:hover,
 .nav-links a.router-link-active { color: var(--text); }
@@ -721,7 +721,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .btn-write {
   display: flex; align-items: center; gap: 6px;
   padding: 6px 16px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
+  font-family: inherit; font-size: 0.75rem; font-weight: 600;
   color: var(--on-accent); background: var(--accent); border-radius: 6px;
   text-decoration: none; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
@@ -732,24 +732,24 @@ onBeforeUnmount(() => { resetSeoMeta() })
   transform: translateY(-1px);
 }
 
-.btn-write-icon { font-size: 15px; font-weight: 700; }
+.btn-write-icon { font-size: 0.9375rem; font-weight: 700; }
 
 /* ====== 状态 ====== */
 .state-box {
   position: relative; z-index: 1;
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; padding: 96px 20px; font-size: 13px; color: var(--text-muted);
+  gap: 10px; padding: 96px 20px; font-size: 0.8125rem; color: var(--text-muted);
 }
 
 .state-box.error {
   color: var(--err); flex-direction: column; gap: 12px;
 }
 
-.err-prefix { font-weight: 700; letter-spacing: 1px; font-size: 12px; }
+.err-prefix { font-weight: 700; letter-spacing: 1px; font-size: 0.75rem; }
 .state-text { color: inherit; }
 
 .link-btn {
-  font-family: inherit; font-size: 12px; font-weight: 600;
+  font-family: inherit; font-size: 0.75rem; font-weight: 600;
   color: var(--accent); text-decoration: none; transition: color 0.2s;
 }
 
@@ -785,7 +785,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .post-meta-top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 
 .post-tag {
-  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 1.2px;
   text-transform: uppercase; color: var(--accent);
   text-decoration: none;
   padding: 2px 6px; border-radius: 3px;
@@ -795,7 +795,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .post-tag:hover { background: var(--accent-a10); }
 
 .post-badge {
-  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.5625rem; font-weight: 700; letter-spacing: 1px;
   text-transform: uppercase; color: var(--ok);
   padding: 2px 8px; border: 1px solid var(--ok-a30);
   border-radius: 3px;
@@ -803,7 +803,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .post-title {
   font-family: var(--font-hand);
-  font-size: 34px; font-weight: 400; line-height: 1.45;
+  font-size: 2.125rem; font-weight: 400; line-height: 1.45;
   color: var(--text-bright); margin: 0 0 20px; letter-spacing: 0;
 }
 
@@ -824,19 +824,19 @@ onBeforeUnmount(() => { resetSeoMeta() })
   width: 26px; height: 26px;
   display: flex; align-items: center; justify-content: center;
   background: var(--accent-a10); color: var(--accent);
-  border-radius: 6px; font-size: 12px; font-weight: 700;
+  border-radius: 6px; font-size: 0.75rem; font-weight: 700;
   text-transform: uppercase;
 }
 
-.author-name { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.author-name { font-size: 0.8125rem; font-weight: 600; color: var(--text-secondary); }
 
 .meta-sep { width: 1px; height: 12px; background: var(--border); }
-.meta-item { font-size: 11px; color: var(--text-muted); }
+.meta-item { font-size: 0.6875rem; color: var(--text-muted); }
 
 /* ====== Markdown 正文（排版统一走全局 .markdown-body） ====== */
 .post-content {
   font-family: var(--font-serif);
-  font-size: 17px;
+  font-size: 1.0625rem;
   color: var(--text);
 }
 
@@ -850,7 +850,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .btn-like {
   padding: 8px 18px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .btn-like:hover:not(:disabled) { border-color: var(--err); color: var(--err); }
@@ -861,12 +861,12 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .comment-count-badge {
   display: flex; align-items: center; gap: 4px;
-  font-size: 12px; color: var(--text-muted); font-weight: 600;
+  font-size: 0.75rem; color: var(--text-muted); font-weight: 600;
 }
 
 .btn-edit {
   padding: 8px 20px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .btn-edit:hover {
@@ -875,16 +875,16 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .btn-delete {
   padding: 8px 20px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .btn-back {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .btn-back:hover { color: var(--accent); }
 
-.post-icon { font-size: 14px; }
+.post-icon { font-size: 0.875rem; }
 
 /* ====== 作者卡片 ====== */
 .author-card {
@@ -906,20 +906,20 @@ onBeforeUnmount(() => { resetSeoMeta() })
   display: flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, var(--accent-a20) 0%, var(--accent-a5) 100%);
   border: 1px solid var(--accent-a20);
-  border-radius: 10px; font-size: 20px; font-weight: 800;
+  border-radius: 10px; font-size: 1.25rem; font-weight: 800;
   color: var(--accent); text-transform: uppercase;
   flex-shrink: 0;
 }
 
 .author-card-body { flex: 1; display: flex; flex-direction: column; gap: 4px; }
 
-.author-card-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.author-card-name { font-size: 0.875rem; font-weight: 700; color: var(--text); }
 
-.author-card-nick { font-size: 12px; color: var(--text-dim); }
+.author-card-nick { font-size: 0.75rem; color: var(--text-dim); }
 
-.author-card-bio { font-size: 11px; color: var(--text-muted); }
+.author-card-bio { font-size: 0.6875rem; color: var(--text-muted); }
 
-.author-card-arrow { font-size: 16px; color: var(--text-muted); font-weight: 700; }
+.author-card-arrow { font-size: 1rem; color: var(--text-muted); font-weight: 700; }
 
 /* ====== 评论区 ====== */
 .comment-section {
@@ -934,14 +934,14 @@ onBeforeUnmount(() => { resetSeoMeta() })
   border-bottom: 1px solid var(--border);
 }
 
-.section-prompt { color: var(--accent); font-weight: 700; font-size: 13px; }
-.section-title { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
-.section-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+.section-prompt { color: var(--accent); font-weight: 700; font-size: 0.8125rem; }
+.section-title { flex: 1; font-size: 0.8125rem; font-weight: 600; color: var(--text); }
+.section-count { font-size: 0.6875rem; color: var(--text-muted); margin-left: auto; }
 
 .comment-form { margin-bottom: 24px; }
 .comment-textarea {
   width: 100%; padding: 12px 14px;
-  font-family: inherit; font-size: 13px; color: var(--text);
+  font-family: inherit; font-size: 0.8125rem; color: var(--text);
   background: var(--bg-elevated); border: 1px solid var(--border-strong);
   border-radius: 6px; outline: none; resize: vertical;
   caret-color: var(--accent); transition: border-color 0.2s;
@@ -954,7 +954,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   display: flex; align-items: center; justify-content: flex-end;
   gap: 12px; margin-top: 8px;
 }
-.comment-char-count { font-size: 10px; color: var(--text-muted); }
+.comment-char-count { font-size: 0.625rem; color: var(--text-muted); }
 .btn-comment-submit {
   padding: 6px 16px;
 }
@@ -973,11 +973,11 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .comment-err {
   display: block; margin-top: 6px;
-  font-size: 11px; color: var(--err);
+  font-size: 0.6875rem; color: var(--err);
 }
 
 .comment-login-hint {
-  text-align: center; padding: 24px; font-size: 13px; color: var(--text-muted);
+  text-align: center; padding: 24px; font-size: 0.8125rem; color: var(--text-muted);
 }
 .comment-login-hint a { color: var(--accent); text-decoration: none; }
 .comment-login-hint a:hover { color: var(--accent-hover); }
@@ -993,7 +993,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
   background: var(--accent-a8); color: var(--accent);
-  border-radius: 6px; font-size: 13px; font-weight: 700;
+  border-radius: 6px; font-size: 0.8125rem; font-weight: 700;
   text-transform: uppercase; flex-shrink: 0;
 }
 .comment-body { flex: 1; min-width: 0; }
@@ -1001,25 +1001,25 @@ onBeforeUnmount(() => { resetSeoMeta() })
   display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
 }
 .comment-author {
-  font-size: 12px; font-weight: 700; color: var(--text);
+  font-size: 0.75rem; font-weight: 700; color: var(--text);
   text-decoration: none; transition: color 0.2s;
 }
 .comment-author:hover { color: var(--accent); }
-.comment-time { font-size: 10px; color: var(--text-muted); }
+.comment-time { font-size: 0.625rem; color: var(--text-muted); }
 .comment-content {
-  font-size: 13px; line-height: 1.65; color: var(--text-secondary);
+  font-size: 0.8125rem; line-height: 1.65; color: var(--text-secondary);
   margin: 0; white-space: pre-wrap; word-break: break-word;
 }
 .comment-actions {
   display: flex; align-items: center; gap: 12px; margin-top: 8px;
 }
 .btn-reply {
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 .btn-reply:hover { color: var(--accent); }
-.reply-count { font-size: 11px; color: var(--text-faint); }
+.reply-count { font-size: 0.6875rem; color: var(--text-faint); }
 .btn-comment-delete {
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 .btn-comment-delete:hover { color: var(--err); }
 
@@ -1027,13 +1027,13 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .reply-list { margin-top: 12px; padding-left: 16px; border-left: 1px solid var(--border); }
 .reply-item { border-bottom: none; padding: 10px 0; }
-.reply-avatar { width: 26px; height: 26px; font-size: 11px; }
+.reply-avatar { width: 26px; height: 26px; font-size: 0.6875rem; }
 
 .comment-empty {
   display: flex; flex-direction: column; align-items: center;
-  gap: 8px; padding: 36px 0; font-size: 13px; color: var(--text-muted);
+  gap: 8px; padding: 36px 0; font-size: 0.8125rem; color: var(--text-muted);
 }
-.empty-icon { font-size: 24px; opacity: 0.3; }
+.empty-icon { font-size: 1.5rem; opacity: 0.3; }
 
 /* ====== 响应式 ====== */
 /* ====== 文章目录 TOC ====== */
@@ -1059,7 +1059,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   border-radius: 999px;
   color: var(--text-dim);
   font-family: inherit;
-  font-size: 12px;
+  font-size: 0.75rem;
   cursor: pointer;
   box-shadow: 0 4px 14px var(--shadow);
   backdrop-filter: blur(10px);
@@ -1071,7 +1071,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--shadow), 0 0 0 1px var(--accent-a20);
 }
-.toc-toggle-ico { font-size: 14px; transition: transform 0.3s ease; }
+.toc-toggle-ico { font-size: 0.875rem; transition: transform 0.3s ease; }
 
 .toc-nav {
   max-height: min(64vh, 520px);
@@ -1102,7 +1102,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   padding-bottom: 10px;
   margin-bottom: 6px;
   border-bottom: 1px solid var(--border);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .toc-prompt { color: var(--accent); animation: caretBlink 1s step-end infinite; }
 .toc-title { font-weight: 600; color: var(--text); letter-spacing: 1px; }
@@ -1112,7 +1112,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   background: var(--accent-a15);
   color: var(--accent);
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .toc-list {
@@ -1127,7 +1127,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   position: relative;
   display: block;
   color: var(--text-muted);
-  font-size: 12.5px;
+  font-size: 0.7812rem;
   text-decoration: none;
   line-height: 1.5;
   padding: 5px 8px 5px 12px;
@@ -1144,8 +1144,8 @@ onBeforeUnmount(() => { resetSeoMeta() })
   background: var(--accent);
   transition: width 0.2s ease;
 }
-.toc-list li.lv-3 a { padding-left: 26px; font-size: 12px; }
-.toc-list li.lv-4 a { padding-left: 40px; font-size: 11.5px; color: var(--text-faint); }
+.toc-list li.lv-3 a { padding-left: 26px; font-size: 0.75rem; }
+.toc-list li.lv-4 a { padding-left: 40px; font-size: 0.7188rem; color: var(--text-faint); }
 .toc-list li a:hover { color: var(--text); padding-left: 16px; }
 .toc-list li.active a {
   color: var(--accent);
@@ -1165,16 +1165,16 @@ onBeforeUnmount(() => { resetSeoMeta() })
   .nav-actions { gap: 8px; }
   .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
   .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
-  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
-  .post-title { font-size: 24px; }
+  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+  .post-title { font-size: 1.5rem; }
   .post-article { padding: 40px 20px 24px; }
 }
 
 /* ===== 信笺风覆盖（2026-10-11）===== */
 .post-article { max-width: 700px; padding: 96px 24px 40px; }
 .post-title { margin-bottom: 22px; }
-.post-meta-line, .post-meta-top { font-size: 14px; color: var(--text-dim); gap: 14px; }
-.post-tag { border-radius: 3px; padding: 2px 9px; font-size: 13px; }
+.post-meta-line, .post-meta-top { font-size: 0.875rem; color: var(--text-dim); gap: 14px; }
+.post-tag { border-radius: 3px; padding: 2px 9px; font-size: 0.8125rem; }
 .comment-list, .comment-item { border-color: var(--border); }
 .comment-item { border-radius: 4px; }
 .author-card { border-radius: 4px; box-shadow: none; }
@@ -1184,32 +1184,32 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 56px 0 8px; padding-top: 28px; border-top: 1px solid var(--border); }
 .post-nav-item { display: flex; flex-direction: column; gap: 4px; text-decoration: none; }
 .post-nav-item.next { text-align: right; }
-.post-nav-label { font-size: 13px; color: var(--text-dim); }
-.post-nav-title { font-size: 16px; color: var(--text-bright); transition: color .2s; }
+.post-nav-label { font-size: 0.8125rem; color: var(--text-dim); }
+.post-nav-title { font-size: 1rem; color: var(--text-bright); transition: color .2s; }
 .post-nav-item:hover .post-nav-title { color: var(--accent); }
 .related { margin: 48px 0 8px; }
-.related-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; color: var(--text-bright); margin: 0 0 14px; }
+.related-title { font-family: var(--font-hand); font-size: 1.375rem; font-weight: 400; color: var(--text-bright); margin: 0 0 14px; }
 .related-list { list-style: none; padding: 0; margin: 0; }
 .related-list li { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-.related-list a { flex: 1; min-width: 0; color: var(--text); text-decoration: none; font-size: 16px; transition: color .2s; }
+.related-list a { flex: 1; min-width: 0; color: var(--text); text-decoration: none; font-size: 1rem; transition: color .2s; }
 .related-list a:hover { color: var(--accent); }
-.related-date { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
+.related-date { font-size: 0.8125rem; color: var(--text-dim); white-space: nowrap; }
 
 /* 面包屑 + 分享 + 作者卡（信笺风）*/
-.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; color: var(--text-dim); margin: 0 0 18px; }
+.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.875rem; color: var(--text-dim); margin: 0 0 18px; }
 .breadcrumb a { color: var(--text-dim); text-decoration: none; transition: color .2s; }
 .breadcrumb a:hover { color: var(--accent); }
 .bc-sep { color: var(--text-faint); }
 .bc-cur { color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 40ch; }
-.btn-share { font-size: 15px; }
+.btn-share { font-size: 0.9375rem; }
 .author-card-inner { display: flex; align-items: center; gap: 16px; padding: 24px; border: 1px solid var(--border); border-radius: 4px; text-decoration: none; }
 .author-card-body { display: flex; flex-direction: column; gap: 2px; }
-.author-card-name { font-size: 16px; color: var(--text-bright); }
-.author-card-bio { font-size: 14px; color: var(--text-dim); }
+.author-card-name { font-size: 1rem; color: var(--text-bright); }
+.author-card-bio { font-size: 0.875rem; color: var(--text-dim); }
 
 .author-card-inner { padding: 28px; }
 
-.post-series { font-size: 15px; color: var(--accent); margin: -10px 0 16px; }
+.post-series { font-size: 0.9375rem; color: var(--accent); margin: -10px 0 16px; }
 
 /* 宽屏：目录常驻（不需点击展开）*/
 @media (min-width: 1200px) {
@@ -1226,7 +1226,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .cover-img { max-height: 360px; border-bottom: 1px solid var(--border); }
 .post-article, .comment-section, .author-card { max-width: 1000px; margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; }
 .post-article { padding-top: 64px; padding-bottom: 40px; }
-.post-title { font-family: var(--font-hand); font-size: clamp(40px, 5vw, 64px); line-height: 1.15; text-align: left; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin: 0 0 18px; text-wrap: balance; }
+.post-title { font-family: var(--font-hand); font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.15; text-align: left; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin: 0 0 18px; text-wrap: balance; }
 .post-meta-top { margin-bottom: 14px; }
 .post-tag, .post-badge { text-transform: none; letter-spacing: 0; border-radius: 0; padding: 0; }
 .post-meta-line { font-variant-numeric: tabular-nums; margin-bottom: 44px; padding-bottom: 18px; }
@@ -1237,7 +1237,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .author-card-inner { border-radius: 0; box-shadow: none; background: transparent; padding: 20px 0; border-left: 0; border-right: 0; }
 .comment-section { margin-bottom: 32px; }
 .comment-head { border-bottom: 1px solid var(--border); }
-.section-title, .related-title { font-family: var(--font-hand); font-size: 22px; font-weight: 400; }
+.section-title, .related-title { font-family: var(--font-hand); font-size: 1.375rem; font-weight: 400; }
 .section-count { font-variant-numeric: tabular-nums; }
 .comment-item { border-radius: 0; }
 .toc-toggle, .toc-nav { border-radius: 0; box-shadow: none; }
@@ -1249,7 +1249,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 @media (max-width: 860px) {
   .post-article, .comment-section, .author-card, .cover-wrap { padding-left: 24px; padding-right: 24px; }
   .post-article { padding-top: 44px; }
-  .post-title { font-size: clamp(40px, 9vw, 52px); }
+  .post-title { font-size: clamp(2.5rem, 9vw, 3.25rem); }
   .post-content { max-width: none; }
   .post-nav { grid-template-columns: 1fr; gap: 18px; }
   .post-nav-item.next { text-align: left; }
@@ -1264,7 +1264,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 /* 标签：柔和 pastel 底（minimalist-ui 规范，覆盖上面 3 处历史定义） */
 .post-tag, .post-badge {
-  display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: .04em;
   text-transform: none; color: var(--pale-blue-fg); background: var(--pale-blue-bg);
   border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent);
   border-radius: 6px; padding: 3px 10px;
@@ -1278,7 +1278,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 @media (min-width: 1200px) {
   /* 4.3vw：1200–1366 常见笔记本宽度下让 14 字标题保持单行，
      不必在「分 / 布式」这种词中间折行。 */
-  .post-title { font-size: clamp(40px, 4.3vw, 64px); max-width: min(100%, calc(50vw + 194px)); }
+  .post-title { font-size: clamp(2.5rem, 4.3vw, 4rem); max-width: min(100%, calc(50vw + 194px)); }
 }
 
 
@@ -1296,10 +1296,10 @@ onBeforeUnmount(() => { resetSeoMeta() })
   display: flex; align-items: center; gap: 6px;
   margin: 0 0 14px; justify-content: flex-end;
 }
-.font-tools-label { font-size: 12px; color: var(--text-faint); margin-right: 2px; }
+.font-tools-label { font-size: 0.75rem; color: var(--text-faint); margin-right: 2px; }
 .font-btn {
   border: 1px solid var(--border-strong); background: transparent;
-  color: var(--text-dim); font-size: 12px; line-height: 1;
+  color: var(--text-dim); font-size: 0.75rem; line-height: 1;
   padding: 5px 9px; border-radius: 6px; cursor: pointer;
 }
 .font-btn:hover { color: var(--text); border-color: var(--text-dim); }
@@ -1309,7 +1309,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .post-content pre { position: relative; }
 .post-content pre .code-copy {
   position: absolute; top: 8px; right: 8px; z-index: 2;
-  font-size: 11px; line-height: 1; padding: 5px 9px;
+  font-size: 0.6875rem; line-height: 1; padding: 5px 9px;
   border-radius: 5px; cursor: pointer;
   color: var(--text-dim); background: var(--bg-float, var(--bg-elevated));
   border: 1px solid var(--border-strong);
@@ -1335,7 +1335,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   position: fixed; top: 18px; right: 22px;
   width: 36px; height: 36px; border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, .28); background: rgba(0, 0, 0, .4);
-  color: #fff; font-size: 20px; line-height: 1; cursor: pointer;
+  color: #fff; font-size: 1.25rem; line-height: 1; cursor: pointer;
 }
 .lightbox-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .post-series a { color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; }

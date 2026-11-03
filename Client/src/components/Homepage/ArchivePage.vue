@@ -113,7 +113,7 @@ onMounted(async () => {
 .archive-header { padding: 64px 0 28px; }
 .archive-title {
   font-family: var(--font-sans);
-  font-size: clamp(44px, 5.2vw, 72px);
+  font-size: clamp(2.75rem, 5.2vw, 4.5rem);
   font-weight: 650;
   letter-spacing: -0.038em;
   line-height: 1.05;
@@ -121,11 +121,11 @@ onMounted(async () => {
   margin: 0;
   text-wrap: balance;
 }
-.archive-sub { margin: 12px 0 0; font-size: 15px; color: var(--text-secondary); }
+.archive-sub { margin: 12px 0 0; font-size: 0.9375rem; color: var(--text-secondary); }
 .archive-tags-link { color: var(--accent); text-decoration: none; }
 .archive-tags-link:hover { color: var(--accent-hover); }
 
-.state-box { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 48px 20px; font-size: 13px; color: var(--text-muted); }
+.state-box { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 48px 20px; font-size: 0.8125rem; color: var(--text-muted); }
 .state-box.error { color: var(--err); }
 .spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -133,17 +133,17 @@ onMounted(async () => {
 .year-group { padding: 16px 0 8px; }
 .year-head { display: flex; align-items: baseline; gap: 14px; margin: 34px 0 14px; }
 .year-num {
-  font-size: clamp(30px, 3.4vw, 48px); font-weight: 650;
+  font-size: clamp(1.875rem, 3.4vw, 3rem); font-weight: 650;
   letter-spacing: -0.045em; line-height: 1;
   color: var(--text-bright); font-variant-numeric: tabular-nums;
 }
-.year-count { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.year-count { font-size: 0.75rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
 
 .year-posts { display: flex; flex-direction: column; margin-top: 8px; }
 .archive-item { display: flex; align-items: baseline; gap: 24px; padding: 11px 0; text-decoration: none; border-bottom: 1px solid var(--border); }
 .archive-item:last-child { border-bottom: none; }
-.arch-date { font-size: 13px; color: var(--text-muted); font-weight: 600; min-width: 90px; font-variant-numeric: tabular-nums; }
-.arch-title { flex: 1; min-width: 0; font-size: 15px; color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.2s; }
+.arch-date { font-size: 0.8125rem; color: var(--text-muted); font-weight: 600; min-width: 90px; font-variant-numeric: tabular-nums; }
+.arch-title { flex: 1; min-width: 0; font-size: 0.9375rem; color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.2s; }
 .archive-item:hover .arch-title { color: var(--accent); }
-.arch-tag { font-size: 12px; color: var(--text-dim); font-weight: 500; }
+.arch-tag { font-size: 0.75rem; color: var(--text-dim); font-weight: 500; }
 </style>

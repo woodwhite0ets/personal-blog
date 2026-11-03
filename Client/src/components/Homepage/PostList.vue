@@ -110,21 +110,21 @@ defineEmits(['load-more', 'refresh'])
 }
 
 .section-title {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--text);
   letter-spacing: 0.5px;
 }
 
 .section-count {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--text-muted);
   margin-left: auto;
 }
 
 .btn-refresh {
   background: none;
-  font-size: 14px;
+  font-size: 0.875rem;
   border-radius: 4px;
   padding: 2px 8px;
 }
@@ -141,7 +141,7 @@ defineEmits(['load-more', 'refresh'])
   justify-content: center;
   gap: 10px;
   padding: 48px 20px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--text-muted);
 }
 
@@ -154,7 +154,7 @@ defineEmits(['load-more', 'refresh'])
 .err-prefix {
   font-weight: 700;
   letter-spacing: 1px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .state-text {
@@ -163,7 +163,7 @@ defineEmits(['load-more', 'refresh'])
 
 .link-btn {
   font-family: inherit;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--accent);
   background: none;
@@ -200,7 +200,7 @@ defineEmits(['load-more', 'refresh'])
   background: none;
   padding: 10px 28px;
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .btn-load-more:hover:not(:disabled) {
@@ -220,8 +220,8 @@ defineEmits(['load-more', 'refresh'])
 
 /* 信笺风分区标题 */
 .section-head { display: flex; align-items: baseline; gap: 12px; margin: 0 0 8px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-.section-title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: var(--text-bright); margin: 0; }
-.section-count { font-size: 13px; color: var(--text-dim); }
+.section-title { font-family: var(--font-hand); font-size: 1.5rem; font-weight: 400; color: var(--text-bright); margin: 0; }
+.section-count { font-size: 0.8125rem; color: var(--text-dim); }
 .section-arrow { display: none; }
 .btn-load-more { border-radius: 4px; }
 </style>

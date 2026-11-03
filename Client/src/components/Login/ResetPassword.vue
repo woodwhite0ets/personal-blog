@@ -137,7 +137,7 @@ async function handleReset() {
 .terminal-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg-deeper); border-bottom: 1px solid var(--border); }
 .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
 .dot-red { background: var(--dot-red); } .dot-yellow { background: var(--dot-yellow); } .dot-green { background: var(--dot-green); }
-.terminal-title { margin-left: auto; font-size: 11px; color: var(--text-muted); font-family: var(--font-sans); }
+.terminal-title { margin-left: auto; font-size: 0.6875rem; color: var(--text-muted); font-family: var(--font-sans); }
 
 .card-body { padding: 28px; }
 .header { margin-bottom: 24px; }
@@ -145,21 +145,21 @@ async function handleReset() {
 .prompt-arrow { color: var(--accent); font-weight: 700; }
 .prompt-cmd { color: var(--text-bright); font-weight: 600; }
 .subtitle { margin: 0; }
-.comment { color: var(--text-faint); font-size: 12px; }
+.comment { color: var(--text-faint); font-size: 0.75rem; }
 
 .field { margin-bottom: 20px; }
-.field label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+.field label { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
 .label-icon { color: var(--accent); }
 .input-wrap input {
   width: 100%; padding: 12px 14px;
   background: var(--bg-deeper); color: var(--text);
   border: 1px solid var(--border-strong); border-radius: 6px;
-  font-family: inherit; font-size: 14px; outline: none;
+  font-family: inherit; font-size: 0.875rem; outline: none;
   transition: border-color 0.2s;
 }
 .input-wrap input:focus { border-color: var(--accent); }
 .input-wrap input.error { border-color: var(--err); }
-.field-error { display: block; margin-top: 6px; font-size: 12px; color: var(--err); }
+.field-error { display: block; margin-top: 6px; font-size: 0.75rem; color: var(--err); }
 .err-prefix { font-weight: 700; }
 
 .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: var(--white); border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -169,14 +169,14 @@ async function handleReset() {
 .success-icon {
   width: 56px; height: 56px; margin: 0 auto 16px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 26px; font-weight: 700; color: var(--ok);
+  font-size: 1.625rem; font-weight: 700; color: var(--ok);
   border: 2px solid var(--ok); border-radius: 50%;
 }
-.success-text { color: var(--text); font-size: 14px; margin-bottom: 8px; }
-.btn-back { display: inline-block; margin-top: 16px; color: var(--accent); text-decoration: none; font-size: 14px; }
+.success-text { color: var(--text); font-size: 0.875rem; margin-bottom: 8px; }
+.btn-back { display: inline-block; margin-top: 16px; color: var(--accent); text-decoration: none; font-size: 0.875rem; }
 
 .back-link { margin-top: 20px; text-align: center; }
-.back-link a { color: var(--text-muted); text-decoration: none; font-size: 13px; }
+.back-link a { color: var(--text-muted); text-decoration: none; font-size: 0.8125rem; }
 .back-link a:hover { color: var(--accent); }
 
 /* 统一：auth 卡片宽度 420 */
@@ -187,7 +187,7 @@ async function handleReset() {
 .forgot-page, .reset-page { min-height:100dvh; display:block; padding:72px 24px; background:var(--bg); }
 .card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
 .card-body { max-width:560px; margin:0 auto; padding:0; }
-.auth-title { font-family:var(--font-hand); font-size:clamp(40px,5vw,64px); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
+.auth-title { font-family:var(--font-hand); font-size: clamp(2.5rem,5vw,4rem); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
 
 /* ===== 父级收口：清掉终端风残留（渐变/光晕/卡片阴影/装饰符号）===== */
 .err-prefix, .terminal-status, .terminal-bar, .terminal-dot, .terminal-title,

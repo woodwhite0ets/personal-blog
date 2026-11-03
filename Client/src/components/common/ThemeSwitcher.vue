@@ -96,7 +96,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
 
 .theme-dropdown-title {
   padding: 8px 14px;
-  font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+  font-size: 0.625rem; font-weight: 600; letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text-muted);
   background: var(--overlay-a15);
@@ -106,7 +106,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
 .theme-option {
   display: flex; align-items: center; gap: 10px;
   width: 100%; padding: 10px 14px;
-  font-family: inherit; font-size: 12px; font-weight: 500;
+  font-family: inherit; font-size: 0.75rem; font-weight: 500;
   color: var(--text-secondary); background: none; border: none;
   cursor: pointer; transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s;
 }
@@ -123,7 +123,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
 .theme-name { font-weight: 700; }
 
 .theme-hint {
-  flex: 1; font-size: 10px; color: var(--text-muted);
+  flex: 1; font-size: 0.625rem; color: var(--text-muted);
   text-align: right;
 }
 

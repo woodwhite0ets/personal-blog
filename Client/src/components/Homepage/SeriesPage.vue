@@ -104,17 +104,17 @@ onMounted(reload)
 .series-page { min-height: 100vh; background: var(--bg); color: var(--text); }
 .series-main { max-width: 1200px; margin: 0 auto; padding: 64px 24px 104px; }
 .series-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
-.series-kicker { margin: 0 0 8px; font-size: 12px; letter-spacing: .08em; color: var(--text-dim); }
+.series-kicker { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: .08em; color: var(--text-dim); }
 .series-title {
-  margin: 0; font-size: clamp(30px, 3.6vw, 44px); font-weight: 700;
+  margin: 0; font-size: clamp(1.875rem, 3.6vw, 2.75rem); font-weight: 700;
   letter-spacing: -0.02em; color: var(--text-bright); text-wrap: balance;
 }
 .series-meta {
-  margin: 10px 0 0; font-size: 12.5px; color: var(--text-faint);
+  margin: 10px 0 0; font-size: 0.7812rem; color: var(--text-faint);
   font-variant-numeric: tabular-nums;
 }
-.series-desc { margin: 6px 0 0; max-width: 62ch; font-size: 13.5px; line-height: 1.7; color: var(--text-dim); }
-.series-empty { padding: 40px 2px; font-size: 14px; color: var(--text-dim); }
+.series-desc { margin: 6px 0 0; max-width: 62ch; font-size: 0.8438rem; line-height: 1.7; color: var(--text-dim); }
+.series-empty { padding: 40px 2px; font-size: 0.875rem; color: var(--text-dim); }
 .series-back { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; }
 @media (max-width: 720px) { .series-main { padding: 40px 20px 72px; } }
 </style>

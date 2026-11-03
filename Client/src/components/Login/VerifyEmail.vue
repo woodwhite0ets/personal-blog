@@ -142,7 +142,7 @@ onMounted(async () => {
 
 .terminal-title {
   flex: 1; text-align: center;
-  font-size: 11px; color: var(--text-hint); letter-spacing: 1px;
+  font-size: 0.6875rem; color: var(--text-hint); letter-spacing: 1px;
 }
 
 .card-body { padding: 40px 32px 32px; }
@@ -152,7 +152,7 @@ onMounted(async () => {
   gap: 16px; text-align: center;
 }
 
-.state-text { font-size: 13px; color: var(--text-muted); }
+.state-text { font-size: 0.8125rem; color: var(--text-muted); }
 
 /* Success */
 .state.success .verify-icon {
@@ -161,22 +161,22 @@ onMounted(async () => {
   background: var(--ok-a10);
   border: 2px solid var(--ok);
   border-radius: 50%;
-  font-size: 28px; font-weight: 700; color: var(--ok);
+  font-size: 1.75rem; font-weight: 700; color: var(--ok);
 }
 
-.prompt-line { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+.prompt-line { display: flex; align-items: center; gap: 10px; font-size: 0.9375rem; }
 .prompt-arrow { color: var(--accent); font-weight: 700; }
 .prompt-cmd { color: var(--text-bright); font-weight: 600; }
 
 .verify-text {
-  font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin: 0;
+  font-size: 0.875rem; color: var(--text-secondary); line-height: 1.7; margin: 0;
 }
 
 .verify-text strong { color: var(--accent); font-weight: 600; }
 
 .btn-glow {
   padding: 12px 36px;
-  font-size: 14px;
+  font-size: 0.875rem;
   letter-spacing: 1px;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
 }
@@ -187,13 +187,13 @@ onMounted(async () => {
   transform: translateY(-1px);
 }
 
-.btn-arrow { font-size: 16px; }
+.btn-arrow { font-size: 1rem; }
 
 /* Error */
-.err-prefix { font-weight: 700; letter-spacing: 1px; font-size: 24px; color: var(--err); }
+.err-prefix { font-weight: 700; letter-spacing: 1px; font-size: 1.5rem; color: var(--err); }
 
 .btn-register {
-  font-family: inherit; font-size: 12px; font-weight: 600;
+  font-family: inherit; font-size: 0.75rem; font-weight: 600;
   color: var(--accent); text-decoration: none; transition: color 0.2s;
 }
 
@@ -214,7 +214,7 @@ onMounted(async () => {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 14px;
   background: var(--bg-elevated); border-top: 1px solid var(--border-strong);
-  font-size: 10px; color: var(--text-muted); letter-spacing: 1.5px;
+  font-size: 0.625rem; color: var(--text-muted); letter-spacing: 1.5px;
 }
 
 .status-dot {
@@ -239,7 +239,7 @@ onMounted(async () => {
 .verify-page { min-height:100dvh; display:block; padding:72px 24px; background:var(--bg); }
 .verify-card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
 .card-body { max-width:560px; margin:0 auto; padding:0; }
-.auth-title { font-family:var(--font-hand); font-size:clamp(40px,5vw,64px); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
+.auth-title { font-family:var(--font-hand); font-size: clamp(2.5rem,5vw,4rem); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
 .terminal-status { display:none; }
 
 /* ===== 父级收口：清掉终端风残留（渐变/光晕/卡片阴影/装饰符号）===== */
