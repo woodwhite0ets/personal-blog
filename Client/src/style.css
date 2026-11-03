@@ -2862,3 +2862,30 @@ html[data-theme="swiss"] {
 /* 标签计数：去掉填充轨道，靠对齐全宽的两列来读数量差 */
 .hm-bar { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 5px 0; }
 .hm-bar-num { color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+
+/* ===== 首屏舞台质感：点阵网格 + 暗角（2026-11-02） =====
+   参考 teamorouter /enterprise 的做法：4px 点线当标尺、椭圆遮罩做出舞台焦点、
+   边缘压暗把注意力收回中间。用 --ink 混合，六套主题（含反相为浅色的那几套）都成立。 */
+.hero-stage {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-color: #0b0b0b;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle, color-mix(in srgb, var(--ink) 20%, transparent) 1px, transparent 1.3px),
+    radial-gradient(circle, color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1.2px);
+  background-size: 96px 96px, 24px 24px;
+  background-position: 0 0, 0 0;
+  mask-image: radial-gradient(ellipse 82% 74% at 46% 34%, #000 8%, transparent 74%);
+  -webkit-mask-image: radial-gradient(ellipse 82% 74% at 46% 34%, #000 8%, transparent 74%);
+  opacity: .8;
+}
+
+.hero-vignette {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(
+    ellipse 76% 66% at 48% 36%,
+    transparent 30%,
+    color-mix(in srgb, var(--bg-deeper) 82%, transparent) 92%
+  );
+}

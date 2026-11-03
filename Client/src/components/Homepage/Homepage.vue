@@ -29,6 +29,9 @@
 
     <!-- ====== 首屏 Hero 带（非对称：左文 + 右信息栏）====== -->
     <section class="hero-band">
+      <!-- 技术图纸式的点阵 + 暗角（参考 teamorouter enterprise 的舞台质感） -->
+      <div class="hero-stage" aria-hidden="true"></div>
+      <div class="hero-vignette" aria-hidden="true"></div>
       <div class="hero-in">
         <div class="hero-text">
           <h1 class="hero-name" aria-label="WoodWhite"><span>W</span><span>o</span><span>o</span><span>d</span><span>W</span><span>h</span><span>i</span><span>t</span><span>e</span></h1>
