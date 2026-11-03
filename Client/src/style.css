@@ -2927,10 +2927,11 @@ html[data-theme="swiss"] {
 [data-theme="midnight"] .hero-art,
 [data-theme="terminal"] .hero-art,
 [data-theme="solar"] .hero-art {
-  --s1: 68%; --s2: 54%; --s3: 76%;
-  --tex-ink: rgba(28, 24, 18, .22);
+  /* 深色主题里这块面板是浅色，但整站是暗的——彩度要收，否则还是霓虹感 */
+  --s1: 52%; --s2: 40%; --s3: 58%;
+  --tex-ink: rgba(28, 24, 18, .20);
   --tex-blend: multiply;
-  --wash-filter: blur(30px) saturate(1.15);
+  --wash-filter: blur(30px) saturate(.85);
 }
 
 .hero-wash {
