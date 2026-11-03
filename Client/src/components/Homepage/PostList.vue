@@ -49,7 +49,7 @@
           class="btn btn-secondary btn-load-more"
           :disabled="loadingMore"
         >
-          {{ loadingMore ? '加载中...' : '更多文章' }}
+          {{ loadingMore ? '加载中…' : '更多文章' }}
         </button>
       </div>
     </template>

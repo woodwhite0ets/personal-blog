@@ -5,7 +5,7 @@
     <SiteNav>
   <template #search>
     <div class="search-wrap" :class="{ active: searchActive }">
-      <button class="btn btn-icon btn-search" @click="toggleSearch" title="搜索">
+      <button class="btn btn-icon btn-search" type="button" aria-label="搜索文章" title="搜索" @click="toggleSearch">
         <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
           <circle cx="7.8" cy="7.8" r="5.2" stroke="currentColor" stroke-width="1.4"/>
           <path d="M11.7 11.7 15.4 15.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
@@ -14,10 +14,10 @@
       <input
         v-if="searchActive"
         ref="searchInput"
-        v-model="searchQuery"
+        v-model="searchQuery" name="search"
         type="text"
         class="search-input"
-        placeholder="搜索文章..."
+        placeholder="搜索文章…"
         @keydown.escape="closeSearch"
         @keydown.enter="doSearch"
       />

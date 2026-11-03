@@ -1,6 +1,9 @@
 <template>
   <component :is="tag" :to="link" class="user-avatar" :class="[sizeClass, { clickable: !!link }]">
-    <img v-if="src" :src="src" :alt="alt" class="avatar-img" @error="onImgError" />
+    <img
+      v-if="src" :src="src" :alt="alt" :width="px" :height="px"
+      class="avatar-img" loading="lazy" decoding="async" @error="onImgError"
+    />
     <span v-else class="avatar-char">{{ char }}</span>
   </component>
 </template>
@@ -25,6 +28,9 @@ const char = computed(() => {
   const name = props.alt || '?'
   return name.charAt(0).toUpperCase()
 })
+
+const PX = { xs: 24, sm: 36, md: 52, lg: 72, xl: 96 }
+const px = computed(() => PX[props.size] || 36)
 
 const sizeMap = {
   xs: 'ava-xs', sm: 'ava-sm', md: 'ava-md', lg: 'ava-lg', xl: 'ava-xl',

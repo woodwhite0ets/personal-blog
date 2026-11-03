@@ -20,7 +20,7 @@
             <div class="input-wrap">
               <input
                 id="username"
-                v-model.trim="form.username"
+                v-model.trim="form.username" name="username" spellcheck="false"
                 type="text"
                 placeholder="admin"
                 autocomplete="username"
@@ -41,7 +41,7 @@
             <div class="input-wrap">
               <input
                 id="password"
-                v-model="form.password"
+                v-model="form.password" name="password"
                 :type="showPassword ? 'text' : 'password'"
                 placeholder="········"
                 autocomplete="current-password"
@@ -74,7 +74,7 @@
           <button type="submit" class="btn btn-primary" :disabled="loading">
             <span v-if="loading" class="spinner" role="status" aria-label="提交中"></span>
             
-            {{ loading ? '登录中...' : '进入' }}
+            {{ loading ? '登录中…' : '进入' }}
           </button>
         </form>
 
@@ -88,7 +88,7 @@
           <button class="btn btn-ghost btn-guest" @click="handleGuestLogin" :disabled="guestLoading">
             <span v-if="guestLoading" class="spinner-guest"></span>
             <span v-else class="guest-icon"></span>
-            {{ guestLoading ? '进入中...' : '以游客身份浏览' }}
+            {{ guestLoading ? '进入中…' : '以游客身份浏览' }}
           </button>
           <p class="guest-hint">
              只读模式：可浏览文章，无需注册

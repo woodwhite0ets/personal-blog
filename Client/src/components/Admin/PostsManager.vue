@@ -18,10 +18,10 @@
       </div>
       <div class="search-wrap">
         <input
-          v-model="searchQuery"
+          v-model="searchQuery" name="search"
           type="text"
           class="search-input"
-          placeholder="搜索标题或作者..."
+          placeholder="搜索标题或作者…"
           @input="onSearchInput"
         />
       </div>
@@ -81,7 +81,7 @@
       <!-- 分页 -->
       <div v-if="hasMore" class="load-more">
         <button class="btn btn-secondary" :disabled="loadingMore" @click="loadMore">
-          {{ loadingMore ? '加载中...' : '更多文章' }}
+          {{ loadingMore ? '加载中…' : '更多文章' }}
         </button>
       </div>
     </template>

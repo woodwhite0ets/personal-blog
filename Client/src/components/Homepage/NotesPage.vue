@@ -38,7 +38,7 @@
         </div>
         <label class="notes-search">
           <span class="sr-only">在标题和摘要里搜索</span>
-          <input v-model="keyword" type="search" placeholder="搜标题或摘要" />
+          <input v-model="keyword" name="q" type="search" placeholder="搜标题或摘要" />
         </label>
       </div>
 

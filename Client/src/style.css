@@ -518,9 +518,10 @@ button:active, .btn:active, .btn-write:active, .btn-login:active, .post-link:act
 .img-lightbox-close:hover { color: var(--accent); border-color: var(--accent); }
 
 /* ===== 第五波：正文微交互 / 排版锚点 ===== */
-.markdown-body h2, .markdown-body h3, .markdown-body h4 {
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
   scroll-margin-top: 84px;
 }
+.about-page [id] { scroll-margin-top: 90px; }
 .markdown-body h2, .markdown-body h3, .markdown-body h4 {
   transition: color 0.2s ease;
 }
@@ -1686,12 +1687,9 @@ body::after {
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
 }
+/* 元信息之间不再用发丝线（读起来像破折号），只靠间距区分 */
 .hm-meta .meta-minor::before,
-.ed-entry-meta .meta-minor::before {
-  content: ''; display: inline-block;
-  width: 12px; height: 1px; background: var(--border-strong);
-  vertical-align: middle; margin-right: 12px;
-}
+.ed-entry-meta .meta-minor::before { content: none; }
 
 /* ============================================================
    视觉精修（2026-10-19 · 第二轮）
@@ -2342,3 +2340,35 @@ a:hover { text-decoration-color: var(--accent); }
 :where(.panel-bar, .card-head) {
   border-bottom: 1px dotted var(--rule-dot-ink);
 }
+
+
+/* ============================================================
+   Web Interface Guidelines 审计修复（2026-11-04）
+   ============================================================ */
+
+/* ① 触控：去掉双击缩放延迟与点击灰块 */
+html {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ② 弹层/抽屉滚动不外溢到页面 */
+.modal-overlay,
+.lightbox,
+.theme-dropdown,
+.user-dropdown,
+.nav-links,
+.tl-grid,
+.ad-list { overscroll-behavior: contain; }
+
+/* ③ 刘海屏安全区：贴边面板给左右留白 */
+@supports (padding: env(safe-area-inset-left)) {
+  .hero-band,
+  .band-tint { margin-left: max(24px, env(safe-area-inset-left)); margin-right: max(24px, env(safe-area-inset-right)); }
+  .navbar-inner { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  .footer { padding-bottom: max(28px, env(safe-area-inset-bottom)); }
+}
+
+/* ④ 图片占位，避免加载后跳版 */
+.avatar-img, .cover-img, .cover-preview { display: block; }
+.avatar-img { object-fit: cover; }

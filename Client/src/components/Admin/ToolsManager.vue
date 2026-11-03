@@ -24,7 +24,7 @@
         </select>
         <div class="search-wrap">
           <input
-            v-model="q"
+            v-model="q" name="q"
             type="text"
             class="search-input"
             placeholder="搜名称、仓库、简介、评价…"

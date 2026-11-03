@@ -16,12 +16,20 @@
     <!-- ====== 用户资料头 ====== -->
     <section v-else class="user-hero deco-hero">
       <div class="user-hero-inner">
-        <div class="avatar-wrap" :class="{ 'avatar-editable': isOwnPage }" @click="isOwnPage && triggerAvatarUpload()">
+        <button
+          type="button"
+          class="avatar-wrap"
+          :class="{ 'avatar-editable': isOwnPage }"
+          :disabled="!isOwnPage"
+          :aria-label="isOwnPage ? '更换头像' : undefined"
+          :tabindex="isOwnPage ? 0 : -1"
+          @click="isOwnPage && triggerAvatarUpload()"
+        >
           <UserAvatar :src="profile?.avatar" :alt="(profile?.nickname || username)" size="xl" />
-          <span v-if="isOwnPage" class="avatar-edit-overlay" :class="{ uploading: avatarUploading }">
-            {{ avatarUploading ? '...' : '✎' }}
+          <span v-if="isOwnPage" class="avatar-edit-overlay" :class="{ uploading: avatarUploading }" aria-hidden="true">
+            {{ avatarUploading ? '…' : '✎' }}
           </span>
-        </div>
+        </button>
         <input
           ref="avatarInput"
           type="file"
@@ -175,19 +183,19 @@
             <template v-else>
               <div class="pwd-field">
                 <label>当前密码</label>
-                <input v-model="pwdForm.oldPassword" type="password" placeholder="••••••••" />
+                <input v-model="pwdForm.oldPassword" name="current-password" type="password" placeholder="••••••••" />
               </div>
               <div class="pwd-field">
                 <label>新密码</label>
-                <input v-model="pwdForm.newPassword" type="password" placeholder="至少 8 位，需包含字母和数字" />
+                <input v-model="pwdForm.newPassword" name="new-password" autocomplete="new-password" type="password" placeholder="至少 8 位，需包含字母和数字" />
               </div>
               <div class="pwd-field">
                 <label>确认新密码</label>
-                <input v-model="pwdForm.confirm" type="password" placeholder="再次输入" />
+                <input v-model="pwdForm.confirm" name="password-confirm" autocomplete="new-password" type="password" placeholder="再次输入" />
               </div>
               <span v-if="pwdError" class="pwd-err">{{ pwdError }}</span>
               <button class="btn btn-primary btn-block pwd-submit" @click="handleChangePwd" :disabled="pwdSaving">
-                {{ pwdSaving ? '保存中...' : '更新密码' }}
+                {{ pwdSaving ? '保存中…' : '更新密码' }}
               </button>
             </template>
           </div>
@@ -213,7 +221,7 @@
             <template v-else>
               <div class="pwd-field">
                 <label>昵称</label>
-                <input v-model="profileForm.nickname" type="text" placeholder="显示名称" maxlength="50" />
+                <input v-model="profileForm.nickname" name="nickname" type="text" placeholder="显示名称" maxlength="50" />
               </div>
               <div class="pwd-field">
                 <label>简介</label>
@@ -221,12 +229,12 @@
               </div>
               <div class="pwd-field">
                 <label>邮箱</label>
-                <input v-model="profileForm.email" type="email" placeholder="you@example.com" />
+                <input v-model="profileForm.email" name="email" autocomplete="email" type="email" placeholder="you@example.com" />
                 <span class="pwd-hint">修改邮箱需要重新验证</span>
               </div>
               <span v-if="profileError" class="pwd-err">{{ profileError }}</span>
               <button class="btn btn-primary btn-block pwd-submit" @click="handleSaveProfile" :disabled="profileSaving">
-                {{ profileSaving ? '保存中...' : '保存资料' }}
+                {{ profileSaving ? '保存中…' : '保存资料' }}
               </button>
             </template>
           </div>
@@ -670,7 +678,12 @@ watch(username, () => {
 .avatar-wrap {
   position: relative;
   border-radius: 12px;
+  /* 由 div 改成 button：清掉按钮默认样式 */
+  padding: 0; background: none; border: none; display: block; color: inherit;
+  font: inherit; line-height: 0;
 }
+.avatar-wrap:disabled { cursor: default; }
+.avatar-wrap:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .avatar-wrap.avatar-editable {
   cursor: pointer;
 }

@@ -43,7 +43,7 @@ Registerview · VUE
               </label>
               <input
                 id="username"
-                v-model.trim="form.username"
+                v-model.trim="form.username" name="username" spellcheck="false"
                 type="text"
                 placeholder="3-20 位字母数字下划线"
                 autocomplete="username"
@@ -60,7 +60,7 @@ Registerview · VUE
               </label>
               <input
                 id="nickname"
-                v-model.trim="form.nickname"
+                v-model.trim="form.nickname" name="nickname"
                 type="text"
                 placeholder="显示名称"
                 :class="{ error: errors.nickname }"
@@ -76,7 +76,7 @@ Registerview · VUE
               </label>
               <input
                 id="email"
-                v-model.trim="form.email"
+                v-model.trim="form.email" name="email"
                 type="email"
                 placeholder="you@example.com"
                 autocomplete="email"
@@ -94,7 +94,7 @@ Registerview · VUE
               <div class="password-wrap">
                 <input
                   id="password"
-                  v-model="form.password"
+                  v-model="form.password" name="password"
                   :type="showPassword ? 'text' : 'password'"
                   placeholder="至少 8 位，含字母和数字"
                   autocomplete="new-password"
@@ -129,7 +129,7 @@ Registerview · VUE
               </label>
               <input
                 id="confirm"
-                v-model="form.confirm"
+                v-model="form.confirm" name="password-confirm"
                 type="password"
                 placeholder="再次输入密码"
                 autocomplete="new-password"
@@ -178,7 +178,7 @@ Registerview · VUE
             <button type="submit" class="btn btn-primary" :disabled="loading">
               <span v-if="loading" class="spinner" role="status" aria-label="提交中"></span>
               
-              {{ loading ? '注册中...' : '注册' }}
+              {{ loading ? '注册中…' : '注册' }}
             </button>
           </form>
         </template>
@@ -195,7 +195,7 @@ Registerview · VUE
               点击邮件里的链接即可完成注册。<br/>
               没收到？检查垃圾邮件或
               <button class="link-btn" @click="handleResend" :disabled="resending">
-                {{ resending ? '发送中...' : '重新发送' }}
+                {{ resending ? '发送中…' : '重新发送' }}
               </button>
             </p>
           </div>

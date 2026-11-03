@@ -183,7 +183,7 @@
           <textarea
             v-model="commentText"
             class="comment-textarea"
-            placeholder="写评论..."
+            placeholder="写评论…"
             rows="3"
             maxlength="2000"
             :disabled="commenting"
@@ -191,7 +191,7 @@
           <div class="comment-form-actions">
             <span class="comment-char-count">{{ commentText.length }}/2000</span>
             <button class="btn btn-primary btn-sm btn-comment-submit" @click="submitComment()" :disabled="commenting || !commentText.trim()">
-              {{ commenting ? '发布中...' : '发表评论' }}
+              {{ commenting ? '发布中…' : '发表评论' }}
             </button>
           </div>
           <span v-if="commentError" class="comment-err">{{ commentError }}</span>
@@ -220,7 +220,7 @@
                   class="btn btn-ghost btn-sm btn-comment-delete"
                   @click="deleteComment(c.id)"
                   :disabled="deletingComment === c.id"
-                >{{ deletingComment === c.id ? '...' : '删除' }}</button>
+                >{{ deletingComment === c.id ? '…' : '删除' }}</button>
               </div>
 
               <!-- 回复输入 -->
@@ -228,13 +228,13 @@
                 <textarea
                   v-model="replyText"
                   class="comment-textarea"
-                  placeholder="写回复..."
+                  placeholder="写回复…"
                   rows="2"
                   :disabled="commenting"
                 ></textarea>
                 <div class="comment-form-actions">
                   <button class="btn btn-primary btn-sm btn-comment-submit" @click="submitComment(c.id)" :disabled="commenting || !replyText.trim()">
-                    {{ commenting ? '发布中...' : '回复' }}
+                    {{ commenting ? '发布中…' : '回复' }}
                   </button>
                 </div>
               </div>
@@ -254,7 +254,7 @@
                       class="btn btn-ghost btn-sm btn-comment-delete"
                       @click="deleteComment(r.id)"
                       :disabled="deletingComment === r.id"
-                    >{{ deletingComment === r.id ? '...' : '删除' }}</button>
+                    >{{ deletingComment === r.id ? '…' : '删除' }}</button>
                   </div>
                 </div>
               </div>
@@ -508,8 +508,9 @@ function observeHeadings(ids) {
 function scrollToHeading(id) {
   const el = document.getElementById(id)
   if (!el) return
-  const top = el.getBoundingClientRect().top + window.scrollY - 84
-  window.scrollTo({ top, behavior: 'smooth' })
+  // 偏移交给 CSS 的 scroll-margin-top（style.css 已给 markdown 标题设 84px），
+  // 这里不再手算，避免改顶部栏高度时两处不同步。
+  el.scrollIntoView({ block: 'start', behavior: 'smooth' })
   activeHeading.value = id
 }
 

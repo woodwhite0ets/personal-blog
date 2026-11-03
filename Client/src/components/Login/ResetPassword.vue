@@ -25,7 +25,7 @@
             <div class="input-wrap">
               <input
                 id="password"
-                v-model="form.password"
+                v-model="form.password" name="password"
                 type="password"
                 placeholder="••••••••"
                 autocomplete="new-password"
@@ -42,7 +42,7 @@
             <div class="input-wrap">
               <input
                 id="confirm"
-                v-model="form.confirm"
+                v-model="form.confirm" name="password-confirm"
                 type="password"
                 placeholder="••••••••"
                 autocomplete="new-password"

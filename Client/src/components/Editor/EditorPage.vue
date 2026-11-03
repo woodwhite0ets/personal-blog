@@ -44,10 +44,10 @@
         <!-- 标题 -->
         <input
           ref="titleInput"
-          v-model="form.title"
+          v-model="form.title" name="title"
           type="text"
           class="input-title"
-          placeholder="文章标题..."
+          placeholder="文章标题…"
           :class="{ error: errors.title }"
         />
         <span v-if="errors.title" class="field-err">{{ errors.title }}</span>
@@ -64,7 +64,7 @@
               v-model="tagInput"
               type="text"
               class="input-tag"
-              placeholder="添加标签..."
+              placeholder="添加标签…"
               :disabled="formTags.length >= 10"
               @keydown.enter.prevent="addTag"
               @keydown.backspace="handleTagBackspace"
@@ -104,7 +104,7 @@
         <textarea
           v-model="form.excerpt"
           class="input-excerpt"
-          placeholder="摘要（可选 — 留空则自动从正文生成）..."
+          placeholder="摘要（可选 — 留空则自动从正文生成）…"
           rows="2"
         ></textarea>
 
@@ -113,7 +113,7 @@
           ref="contentInput"
           v-model="form.content"
           class="input-content"
-          placeholder="在此编写 Markdown...&#10;&#10;提示: Ctrl+S 保存草稿 · Ctrl+Shift+P 发布 · 可直接粘贴图片"
+          placeholder="在此编写 Markdown…&#10;&#10;提示：Ctrl+S 保存草稿，Ctrl+Shift+P 发布，可直接粘贴图片"
           :class="{ error: errors.content }"
           @paste="handleContentPaste"
         ></textarea>

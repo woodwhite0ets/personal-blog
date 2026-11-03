@@ -302,6 +302,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
@@ -313,12 +314,18 @@ const tabs = [
   { key: 'models', label: '模型' },
 ]
 
-const view = ref('today')
+const route = useRoute()
+const router = useRouter()
+
+// tab 与日期进 URL：可分享、刷新不丢
+const VIEWS = ['today', 'trends', 'discover', 'models']
+const initialView = VIEWS.includes(route.query.view) ? route.query.view : 'today'
+const view = ref(initialView)
 
 // 今日
 const items = ref([])
 const dates = ref([])
-const activeDate = ref('')
+const activeDate = ref(typeof route.query.date === 'string' ? route.query.date : '')
 const updatedAt = ref(null)
 const loading = ref(true)
 const error = ref(false)
@@ -413,7 +420,7 @@ async function loadDates() {
 
 function onDateChange(event) {
   const next = event.target.value
-  if (next) load(next)
+  if (next) { load(next); syncQuery() }
 }
 
 async function loadTrends(force = false) {
@@ -502,15 +509,23 @@ async function loadModels(force = false) {
   }
 }
 
+function syncQuery(extra = {}) {
+  const query = { ...route.query, ...extra }
+  if (view.value === 'today') delete query.view; else query.view = view.value
+  if (activeDate.value) query.date = activeDate.value; else delete query.date
+  router.replace({ query })
+}
+
 async function switchView(next) {
   view.value = next
+  syncQuery()
   if (next === 'trends') await loadTrends()
   if (next === 'discover') await loadDiscover()
   if (next === 'models') await loadModels()
 }
 
 onMounted(async () => {
-  await Promise.all([load(), loadDates()])
+  await Promise.all([load(activeDate.value || undefined), loadDates()])
   // 概览里的「近 7 日新进」和「极客池」需要这两份数据，后台悄悄取一次
   loadTrends()
   loadDiscover()
@@ -577,10 +592,13 @@ onMounted(async () => {
 }
 .ad-h2 {
   display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
-  margin: 30px 0 14px; font-size: 0.9375rem; font-weight: 600; letter-spacing: .005em;
+  margin: 30px 0 14px; padding-bottom: 8px;
+  border-bottom: 1px dotted var(--rule-dot-ink);
+  font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600;
+  letter-spacing: .08em; color: var(--text-secondary);
 }
 .ad-h2:first-child { margin-top: 0; }
-.ad-h2 em { font-style: normal; font-size: 0.75rem; font-weight: 400; color: var(--text-dim); }
+.ad-h2 em { font-style: normal; font-family: var(--font-mono); font-size: 0.625rem; font-weight: 400; color: var(--text-faint); letter-spacing: .04em; }
 .ad-footnote {
   margin: 26px 0 0; padding-top: 14px; border-top: 1px solid var(--border);
   font-size: 0.75rem; color: var(--text-dim); font-variant-numeric: tabular-nums;
@@ -638,8 +656,9 @@ onMounted(async () => {
 .ad-bar-row.fresh { grid-template-columns: minmax(160px, 1.4fr) 92px 56px 72px; }
 .ad-bar-row.fresh .ad-bar-value:last-child { text-align: right; }
 .ad-bar-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ad-bar-track { height: 4px; border-radius: 2px; background: var(--border); overflow: hidden; }
-.ad-bar-fill { display: block; height: 100%; border-radius: 2px; background: var(--text-dim); }
+/* 去掉「填充轨道」观感：只留一条细柱，读作条形图而不是进度条 */
+.ad-bar-track { height: 2px; border-radius: 0; background: none; overflow: visible; border-left: 1px solid var(--border-strong); }
+.ad-bar-fill { display: block; height: 100%; background: var(--text-faint); }
 .ad-bar-value { font-size: 0.75rem; color: var(--text-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* 标签 */

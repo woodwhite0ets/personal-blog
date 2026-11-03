@@ -18,7 +18,7 @@
               :disabled="loading"
             >
               <span v-if="loading" class="spinner" role="status" aria-label="提交中"></span>
-              {{ loading ? '...' : confirmText }}
+              {{ loading ? '…' : confirmText }}
             </button>
           </div>
         </div>

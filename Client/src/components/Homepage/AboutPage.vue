@@ -164,8 +164,8 @@ onMounted(async () => {
     const target = document.querySelector(location.hash)
     if (target) {
       setTimeout(() => {
-        const y = target.getBoundingClientRect().top + window.scrollY - 84
-        window.scrollTo({ top: y, behavior: 'smooth' })
+        // 偏移由 CSS 的 scroll-margin-top 提供，这里只负责触发
+        target.scrollIntoView({ block: 'start', behavior: 'smooth' })
       }, 320)
     }
   }

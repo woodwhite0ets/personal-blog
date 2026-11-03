@@ -26,7 +26,7 @@
             <div class="input-wrap">
               <input
                 id="email"
-                v-model.trim="form.email"
+                v-model.trim="form.email" name="email"
                 type="email"
                 placeholder="you@example.com"
                 autocomplete="email"

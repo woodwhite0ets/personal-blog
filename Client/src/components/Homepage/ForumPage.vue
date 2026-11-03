@@ -7,7 +7,7 @@
     <SiteNav>
   <template #search>
 <div class="search-wrap" :class="{ active: searchActive }">
-            <button class="btn btn-icon btn-search" @click="toggleSearch" title="搜索">
+            <button class="btn btn-icon btn-search" type="button" aria-label="搜索文章" title="搜索" @click="toggleSearch">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -16,10 +16,10 @@
             <input
               v-if="searchActive"
               ref="searchInput"
-              v-model="searchQuery"
+              v-model="searchQuery" name="search"
               type="text"
               class="search-input"
-              placeholder="搜索帖子..."
+              placeholder="搜索帖子…"
               @keydown.escape="closeSearch"
               @keydown.enter="doSearch"
             />
@@ -298,11 +298,15 @@ const clearSearchLink = computed(() => {
   return { path: '/forum', query }
 })
 
-const sortMode = ref('latest')
+// 排序进 URL：?sort=popular 可分享、刷新不丢
+const sortMode = ref(route.query.sort === 'popular' ? 'popular' : 'latest')
 
 function switchSort(mode) {
   if (sortMode.value === mode) return
   sortMode.value = mode
+  const query = { ...route.query }
+  if (mode === 'latest') delete query.sort; else query.sort = mode
+  router.replace({ query })
   fetchPosts(1)
 }
 

@@ -13,7 +13,7 @@
           <label class="tl-search-label" for="tools-q">搜索工具</label>
           <input
             id="tools-q"
-            v-model="q"
+            v-model="q" name="q"
             class="tl-search"
             type="search"
             placeholder="名称、用途、标签，例如：本地、语音、PDF"
