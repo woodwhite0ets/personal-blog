@@ -2913,10 +2913,12 @@ html[data-theme="swiss"] {
 
 /* 深底（默认首屏）：像黑纸上晕开的淡彩，浓度偏低但面积大 */
 .hero-art {
-  --s1: 46%; --s2: 36%; --s3: 20%;
-  --tex-ink: rgba(255, 255, 255, .26);
+  /* 深底不要霓虹：浓度压到很低、饱和度减半、混合改 soft-light，
+     读起来是「纸上略有色偏的墨」而不是发光 */
+  --s1: 22%; --s2: 15%; --s3: 9%;
+  --tex-ink: rgba(255, 255, 255, .12);
   --tex-pitch: 5px;
-  --tex-blend: overlay;
+  --tex-blend: soft-light;
   --tex-mask: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .72) 58%, transparent 98%);
   --wash-blur: 30px;
 }
@@ -2928,6 +2930,7 @@ html[data-theme="swiss"] {
   --s1: 68%; --s2: 54%; --s3: 76%;
   --tex-ink: rgba(28, 24, 18, .22);
   --tex-blend: multiply;
+  --wash-filter: blur(30px) saturate(1.15);
 }
 
 .hero-wash {
@@ -2937,7 +2940,7 @@ html[data-theme="swiss"] {
     radial-gradient(ellipse 46% 66% at 76% 30%, color-mix(in srgb, var(--h2) var(--s2), transparent), transparent 64%),
     radial-gradient(ellipse 66% 58% at 48% 14%, color-mix(in srgb, var(--h3) var(--s3), transparent), transparent 70%),
     radial-gradient(ellipse 44% 50% at 94% 82%, color-mix(in srgb, var(--h2) calc(var(--s2) * 0.8), transparent), transparent 68%);
-  filter: blur(var(--wash-blur)) saturate(1.15);
+  filter: var(--wash-filter, blur(var(--wash-blur)) saturate(.6));
   transform: translateZ(0);
 }
 
@@ -2999,3 +3002,11 @@ html[data-theme="swiss"] {
   filter: none;
   opacity: .95;
 }
+
+
+/* 深底专用：3 极光 / 5 日落 这两套彩度最高，单独换成低饱和墨色，
+   避免在近黑背景上读成霓虹灯 */
+.hero-art[data-art="3"] { --h1: #4a4663; --h2: #3d5250; --h3: #574a3e; }
+.hero-art[data-art="5"] { --h1: #5a4a38; --h2: #4a3640; --h3: #2e394d; }
+[data-theme="midnight"] .hero-art[data-art="3"], [data-theme="terminal"] .hero-art[data-art="3"], [data-theme="solar"] .hero-art[data-art="3"] { --h1: #7a5cc0; --h2: #2f9b9b; --h3: #c98b5a; }
+[data-theme="midnight"] .hero-art[data-art="5"], [data-theme="terminal"] .hero-art[data-art="5"], [data-theme="solar"] .hero-art[data-art="5"] { --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; }
