@@ -107,9 +107,9 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   max-width: 1120px; margin: 0 auto; padding: 0 28px;
   height: 74px; display: flex; align-items: center; gap: 38px;
 }
-.brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 1; min-width: 0; text-decoration: none; font-size: 0.875rem; font-weight: 600; }
+.brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; text-decoration: none; font-size: 0.875rem; font-weight: 600; }
 .brand-bracket { color: var(--text-muted); }
-.brand-text { font-family: var(--font-hand); font-size: 1.3125rem; color: var(--text-bright); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.brand-text { font-family: var(--font-hand); font-size: 1.3125rem; color: var(--text-bright); white-space: nowrap; }
 .brand-caret { color: var(--accent); font-size: 0.75rem; margin-left: 1px; }
 .brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
 .nav-links { display: flex; gap: 28px; flex: 1; }
@@ -153,7 +153,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   .brand-path { display: none; }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
   .navbar-inner { padding: 0 16px; gap: 12px; }
   .brand-path { display: none; }
   /* 抽屉改成「从右滑入」：display 常驻 + translateX 位移，
@@ -178,6 +178,10 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   .nav-links.open::before { opacity: 1; }
   .nav-links a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   .nav-toggle { display: flex; flex: 0 0 34px; }
+  /* 只有进入抽屉模式才允许品牌名让位：先收缩、必要时省略，
+     宽度下限保证「woodwhite…」至少能看到几个字，而不是只剩一个省略号 */
+  .brand { flex-shrink: 1; min-width: 0; }
+  .brand-text { overflow: hidden; text-overflow: ellipsis; min-width: 9ch; }
   /* 导航链接隐藏后失去 flex:1 的占位，动作区需要自己靠右 */
   .nav-actions { gap: 8px; margin-left: auto; }
   .user-name, .user-caret { display: none; }
