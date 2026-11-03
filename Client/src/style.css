@@ -275,14 +275,14 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
 .btn-icon { width: 34px; height: 34px; padding: 0; border-radius: var(--radius-md); }
 .btn-block { width: 100%; }
 
+/* 标签：中性方框，颜色留给「选中/当前」状态，不在列表里撒彩色 */
 .tag {
   display: inline-block; padding: var(--sp-1) var(--sp-2); font-size: var(--fs-xs); line-height: 1.6;
-  color: var(--pale-blue-fg); background: var(--pale-blue-bg);
-  border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent); border-radius: 4px;
+  color: var(--text-secondary); background: transparent;
+  border: 1px solid var(--border-strong); border-radius: 3px;
+  transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
 }
-.tag:nth-child(4n+2) { color: var(--pale-green-fg); background: var(--pale-green-bg); border-color: color-mix(in srgb, var(--pale-green-fg) 14%, transparent); }
-.tag:nth-child(4n+3) { color: var(--pale-yellow-fg); background: var(--pale-yellow-bg); border-color: color-mix(in srgb, var(--pale-yellow-fg) 14%, transparent); }
-.tag:nth-child(4n+4) { color: var(--pale-red-fg); background: var(--pale-red-bg); border-color: color-mix(in srgb, var(--pale-red-fg) 14%, transparent); }
+.tag:hover { color: var(--text-bright); border-color: var(--text-bright); }
 
 /* ============================================================
    共享 Markdown 正文排版（文章详情 / 知识库 / 编辑器预览 / 网关指南共用）
@@ -1861,48 +1861,48 @@ body::after {
 :root {
   color-scheme: light;
 
-  --bg: #fbfaf6;
+  --bg: #fffefb;
   --bg-elevated: #ffffff;
-  --bg-float: #fffdf8;
-  --bg-deeper: #f3f1e9;
-  --bg-code: #f2efe4;
+  --bg-float: #ffffff;
+  --bg-deeper: #f2ede3;
+  --bg-code: #f5f1e6;
 
-  --text: #1c1917;
-  --text-bright: #0e0c0a;
-  --text-dim: #5d574d;
-  --text-muted: #635d54;
-  --text-faint: #6b6862;
-  --text-secondary: #645d53;
-  --text-hint: #6a6761;
+  --text: #14110f;
+  --text-bright: #0b0906;
+  --text-dim: #5c564c;
+  --text-muted: #615b51;
+  --text-faint: #6d675d;
+  --text-secondary: #575147;
+  --text-hint: #6d675d;
 
-  --accent: #9c3327;
-  --accent-hover: #7f281e;
+  --accent: #b8452f;
+  --accent-hover: #9c3327;
   --on-accent: #ffffff;
-  --accent-a2: rgba(156, 51, 39, 0.02);
+  --accent-a2: rgba(184, 69, 47, 0.02);
   --accent-a2: color-mix(in srgb, var(--accent) 2%, transparent);
-  --accent-a3: rgba(156, 51, 39, 0.03);
+  --accent-a3: rgba(184, 69, 47, 0.03);
   --accent-a3: color-mix(in srgb, var(--accent) 3%, transparent);
-  --accent-a4: rgba(156, 51, 39, 0.04);
+  --accent-a4: rgba(184, 69, 47, 0.04);
   --accent-a4: color-mix(in srgb, var(--accent) 4%, transparent);
-  --accent-a5: rgba(156, 51, 39, 0.05);
+  --accent-a5: rgba(184, 69, 47, 0.05);
   --accent-a5: color-mix(in srgb, var(--accent) 5%, transparent);
-  --accent-a6: rgba(156, 51, 39, 0.06);
+  --accent-a6: rgba(184, 69, 47, 0.06);
   --accent-a6: color-mix(in srgb, var(--accent) 6%, transparent);
-  --accent-a8: rgba(156, 51, 39, 0.08);
+  --accent-a8: rgba(184, 69, 47, 0.08);
   --accent-a8: color-mix(in srgb, var(--accent) 8%, transparent);
-  --accent-a10: rgba(156, 51, 39, 0.1);
+  --accent-a10: rgba(184, 69, 47, 0.1);
   --accent-a10: color-mix(in srgb, var(--accent) 10%, transparent);
-  --accent-a12: rgba(156, 51, 39, 0.16);
+  --accent-a12: rgba(184, 69, 47, 0.16);
   --accent-a12: color-mix(in srgb, var(--accent) 16%, transparent);
-  --accent-a15: rgba(156, 51, 39, 0.15);
+  --accent-a15: rgba(184, 69, 47, 0.15);
   --accent-a15: color-mix(in srgb, var(--accent) 15%, transparent);
-  --accent-a20: rgba(156, 51, 39, 0.2);
+  --accent-a20: rgba(184, 69, 47, 0.2);
   --accent-a20: color-mix(in srgb, var(--accent) 20%, transparent);
-  --accent-a25: rgba(156, 51, 39, 0.25);
+  --accent-a25: rgba(184, 69, 47, 0.25);
   --accent-a25: color-mix(in srgb, var(--accent) 25%, transparent);
-  --accent-a30: rgba(156, 51, 39, 0.3);
+  --accent-a30: rgba(184, 69, 47, 0.3);
   --accent-a30: color-mix(in srgb, var(--accent) 30%, transparent);
-  --accent-a50: rgba(156, 51, 39, 0.5);
+  --accent-a50: rgba(184, 69, 47, 0.5);
   --accent-a50: color-mix(in srgb, var(--accent) 50%, transparent);
 
   --ok: #2f6b46;
@@ -1931,11 +1931,11 @@ body::after {
 
   --purple: #6f5fbe;
 
-  --border: #e2dcd0;
-  --border-strong: #cdc4b4;
+  --border: #ded8ca;
+  --border-strong: #c4bcaa;
   --border-a30: rgba(0,0,0,0.08);
   --border-a50: rgba(0,0,0,0.12);
-  --divider: #e7e0d2;
+  --divider: #e6dfd0;
 
   --overlay-a1: rgba(0, 0, 0, 0.01);
   --overlay-a15: rgba(0, 0, 0, 0.015);
@@ -1952,7 +1952,7 @@ body::after {
 
   --navbar-bg: rgba(251,250,246,0.88);
 
-  --aurora-1: rgba(156, 51, 39, 0.10);
+  --aurora-1: rgba(184, 69, 47, 0.10);
   --aurora-2: rgba(176, 148, 96, 0.12);
   --aurora-3: rgba(150, 128, 96, 0.09);
   --scanline: rgba(0,0,0,0);
@@ -1976,7 +1976,7 @@ body::after { opacity: 0.05; mix-blend-mode: multiply; }
 
 .home-page, .forum-page, .tags-page, .archive-page, .about-page {
   background-image:
-    radial-gradient(1100px 660px at 86% -14%, rgba(156, 51, 39, 0.10), transparent 62%),
+    radial-gradient(1100px 660px at 86% -14%, rgba(184, 69, 47, 0.10), transparent 62%),
     radial-gradient(880px 580px at -8% 30%, rgba(176, 148, 96, 0.10), transparent 60%);
 }
 
@@ -2169,11 +2169,11 @@ body { line-height: 1.75; }
 /* 深底（默认首屏）：像黑纸上晕开的淡彩，浓度偏低但面积大 */
 .hero-art {
   /* 全站浅底：色块可以放开一点，但仍然靠 multiply 压在纸上，不做发光 */
-  --s1: 62%; --s2: 48%; --s3: 66%;
-  --tex-ink: rgba(30, 26, 20, .20);
-  --tex-pitch: 5px;
+  --s1: 78%; --s2: 62%; --s3: 84%;
+  --tex-ink: rgba(30, 26, 20, .55);
+  --tex-pitch: 7px;
   --tex-blend: multiply;
-  --tex-mask: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .72) 58%, transparent 98%);
+  --tex-mask: radial-gradient(ellipse 78% 70% at 42% 78%, #000 10%, transparent 76%);
   --wash-blur: 30px;
 }
 
@@ -2185,7 +2185,7 @@ body { line-height: 1.75; }
     radial-gradient(ellipse 46% 66% at 76% 30%, color-mix(in srgb, var(--h2) var(--s2), transparent), transparent 64%),
     radial-gradient(ellipse 66% 58% at 48% 14%, color-mix(in srgb, var(--h3) var(--s3), transparent), transparent 70%),
     radial-gradient(ellipse 44% 50% at 94% 82%, color-mix(in srgb, var(--h2) calc(var(--s2) * 0.8), transparent), transparent 68%);
-  filter: var(--wash-filter, blur(var(--wash-blur)) saturate(.6));
+  filter: var(--wash-filter, blur(var(--wash-blur)) saturate(1.05));
   transform: translateZ(0);
 }
 
@@ -2194,6 +2194,7 @@ body { line-height: 1.75; }
   background-image: radial-gradient(circle, var(--tex-ink) 1px, transparent 1.4px);
   background-size: var(--tex-pitch) var(--tex-pitch);
   mix-blend-mode: var(--tex-blend);
+  opacity: var(--tex-opacity, .14);
   mask-image: var(--tex-mask);
   -webkit-mask-image: var(--tex-mask);
 }
@@ -2274,3 +2275,70 @@ body { line-height: 1.75; }
 @media (max-width: 640px) {
   .band-tint { margin: 10px 12px 0; }
 }
+
+
+/* ============================================================
+   视觉语言对齐 teamorouter（2026-11-04）
+   取的是它的做法，不是它的素材：
+   ① 暖白画布 + 可见的灰色细线（1.7:1 对比的 hairline，比原来的米色线清楚）
+   ② 4px/4px 点线当分隔（--rule-dot），代替部分实线
+   ③ 面板切角（--notch），像一张缝在页面上的票根
+   ④ 小号等宽标签做注释层
+   ============================================================ */
+:root {
+  --rule-dot-ink: color-mix(in srgb, var(--text) 26%, transparent);
+  --rule-dot: linear-gradient(90deg, var(--rule-dot-ink) 0 4px, transparent 4px 8px);
+  --notch: 10px;
+  --hair: color-mix(in srgb, var(--text) 18%, transparent);
+}
+
+/* ① 分区标题下面那条线改点线：结构线用点线，内容边界用实线 */
+.hm-h::after,
+.hm-sec > .hm-h::after {
+  background: none;
+  background-image: var(--rule-dot);
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+  background-position: left center;
+  height: 1px;
+}
+
+/* 表格行/列表分隔：点线更像图纸，也更轻 */
+.tool-table th,
+.tool-table td,
+.tl-grid,
+.posts-table th, .posts-table td { border-color: var(--border); }
+.note-item { border-bottom: 1px dotted var(--rule-dot-ink); }
+.hr-item, .hr-item:last-of-type { border-bottom: 1px dotted var(--rule-dot-ink); }
+
+/* ② 面板切角：四角各 10px 内凹，像票根 */
+.hero-band,
+.band-tint {
+  /* 关键：圆角半径要写在 circle 后面（circle <radius> at <pos>），
+     否则会退化成 0 半径，整块被裁掉。 */
+  --notch-mask:
+    radial-gradient(circle var(--notch) at top left, transparent 98%, #000) top left / 51% 51% no-repeat,
+    radial-gradient(circle var(--notch) at top right, transparent 98%, #000) top right / 51% 51% no-repeat,
+    radial-gradient(circle var(--notch) at bottom left, transparent 98%, #000) bottom left / 51% 51% no-repeat,
+    radial-gradient(circle var(--notch) at bottom right, transparent 98%, #000) bottom right / 51% 51% no-repeat;
+  -webkit-mask: var(--notch-mask);
+  mask: var(--notch-mask);
+}
+
+/* ③ 注释层：小号等宽、字距放开，读起来像图纸上的批注 */
+.hero-rail dt,
+.hm-stats dt,
+.hr-head,
+.tl-status,
+.ad-date-label,
+.notes-count,
+.footer-tagline {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: .08em;
+  color: var(--text-faint);
+}
+
+/* ④ 强调色只用在「真需要指路」的地方：链接下划线、选中态、当前项 */
+a:hover { text-decoration-color: var(--accent); }
+::selection { background: color-mix(in srgb, var(--accent) 18%, transparent); }

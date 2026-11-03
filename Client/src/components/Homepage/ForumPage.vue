@@ -145,7 +145,7 @@
                 v-for="tag in tags"
                 :key="tag.name"
                 :to="`/forum?tag=${encodeURIComponent(tag.name)}`"
-                class="tag" :class="tag.size"
+                class="tag" :class="[tag.size, { selected: activeTag === tag.name }]"
               >
                 #{{ tag.name }}
               </router-link>
@@ -711,16 +711,16 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .tag {
   font-size: 0.6875rem; padding: 4px 11px;
-  background: var(--pale-blue-bg);
-  border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent);
-  border-radius: 999px;
-  color: var(--pale-blue-fg); cursor: pointer;
-  transition: border-color .3s cubic-bezier(.32,.72,0,1), background-color .3s cubic-bezier(.32,.72,0,1);
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  color: var(--text-secondary); cursor: pointer;
+  transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
   text-decoration: none;
 }
 
-.tag:hover { border-color: color-mix(in srgb, var(--pale-blue-fg) 36%, transparent); }
-.tag.router-link-active { border-color: var(--accent); color: var(--accent); }
+.tag:hover { color: var(--text-bright); border-color: var(--text-bright); }
+.tag.selected { border-color: var(--text-bright); color: var(--text-bright); }
 .tag.lg { font-size: 0.8125rem; font-weight: 600; }
 .tag.md { font-size: 0.75rem; }
 .tag.sm { font-size: 0.6875rem; }
