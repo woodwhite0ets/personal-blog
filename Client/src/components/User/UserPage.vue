@@ -616,7 +616,7 @@ watch(username, () => {
   width: 34px; height: 34px;
   display: flex; align-items: center; justify-content: center;
   background: none; border: 1px solid var(--border-strong); border-radius: 6px;
-  color: var(--text-dim); cursor: pointer; transition: all 0.2s;
+  color: var(--text-dim); cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .btn-search:hover { border-color: var(--accent); color: var(--accent); }
@@ -626,7 +626,7 @@ watch(username, () => {
   padding: 6px 16px;
   font-family: inherit; font-size: 12px; font-weight: 600;
   color: var(--on-accent); background: var(--accent); border-radius: 6px;
-  text-decoration: none; transition: all 0.2s;
+  text-decoration: none; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .btn-write:hover {
@@ -784,7 +784,7 @@ watch(username, () => {
   font-size: 11px; padding: 4px 10px;
   background: var(--overlay-a3);
   border: 1px solid var(--border); border-radius: 4px;
-  color: var(--text-dim); cursor: pointer; transition: all 0.2s;
+  color: var(--text-dim); cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
   text-decoration: none;
 }
 
@@ -901,8 +901,8 @@ watch(username, () => {
 }
 .pwd-done-icon { font-size: 20px; font-weight: 800; }
 
-.modal-enter-active { transition: all 0.2s ease-out; }
-.modal-leave-active { transition: all 0.15s ease-in; }
+.modal-enter-active { transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s; }
+.modal-leave-active { transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s; }
 .modal-enter-from { opacity: 0; }
 .modal-enter-from .pwd-modal { transform: scale(0.95); }
 .modal-leave-to { opacity: 0; }

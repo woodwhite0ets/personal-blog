@@ -505,7 +505,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   padding: 6px 16px;
   font-family: inherit; font-size: 12px; font-weight: 600;
   color: var(--on-accent); background: var(--accent); border-radius: 6px;
-  text-decoration: none; transition: all 0.2s;
+  text-decoration: none; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .btn-write:hover {
@@ -525,7 +525,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   font-family: inherit; font-size: 12px;
   color: var(--text); background: var(--overlay-a4);
   border: 1px solid var(--border-strong); border-radius: 8px;
-  cursor: pointer; transition: all 0.2s;
+  cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .btn-user:hover { border-color: var(--accent); background: var(--accent-a6); }
@@ -553,7 +553,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   font-family: inherit; font-size: 12px; font-weight: 500;
   color: var(--text-secondary); background: none; border: none;
   text-decoration: none; cursor: pointer;
-  transition: all 0.15s;
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
 .dropdown-item.admin-link {
@@ -689,7 +689,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   font-family: inherit; font-size: 11px; font-weight: 600;
   color: var(--text-secondary); background: var(--bg-elevated);
   border: 1px solid var(--border); border-radius: 4px;
-  cursor: pointer; transition: all 0.2s;
+  cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 .sort-btn:hover { border-color: var(--accent-a30); color: var(--text); }
 .sort-btn.active {

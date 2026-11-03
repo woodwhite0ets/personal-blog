@@ -24,6 +24,7 @@
               <span class="user-name">@{{ currentUser?.username }}</span>
               <span class="user-caret" :class="{ open: showUserMenu }">▾</span>
             </button>
+            <Transition name="pop">
             <div v-if="showUserMenu" class="user-dropdown">
               <router-link v-if="isAdmin" to="/admin/dashboard" class="dropdown-item admin-link" @click="showUserMenu = false">
                 <span class="dropdown-icon">⚙</span> 管理面板
@@ -35,6 +36,7 @@
                 <span class="dropdown-icon">⏻</span> 退出登录
               </button>
             </div>
+            </Transition>
           </div>
         </template>
       </div>
@@ -123,19 +125,19 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 }
 .nav-links a:hover::after, .nav-links a.router-link-active::after { transform: scaleX(1); }
 .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.btn-login { padding: 8px 18px; font: inherit; font-size: 14px; font-weight: 400; color: var(--text-bright); text-decoration: none; border: 1px solid var(--border-strong); border-radius: 4px; transition: all .25s var(--ease-spring); }
+.btn-login { padding: 8px 18px; font: inherit; font-size: 14px; font-weight: 400; color: var(--text-bright); text-decoration: none; border: 1px solid var(--border-strong); border-radius: 4px; transition: color .25s, background-color .25s, border-color .25s, opacity .25s, transform .25s, box-shadow .25s(--ease-spring); }
 .btn-login:hover { background: var(--text-bright); color: var(--bg); border-color: var(--text-bright); }
-.btn-write { display: flex; align-items: center; gap: 6px; padding: 9px 18px; font: inherit; font-size: 14px; font-weight: 400; color: var(--bg); background: var(--text-bright); border-radius: 4px; text-decoration: none; transition: all .25s var(--ease-spring); }
+.btn-write { display: flex; align-items: center; gap: 6px; padding: 9px 18px; font: inherit; font-size: 14px; font-weight: 400; color: var(--bg); background: var(--text-bright); border-radius: 4px; text-decoration: none; transition: color .25s, background-color .25s, border-color .25s, opacity .25s, transform .25s, box-shadow .25s(--ease-spring); }
 .btn-write:hover { background: var(--accent); color: var(--on-accent); }
 .btn-write-icon { font-size: 15px; font-weight: 700; }
 .user-menu-wrap { position: relative; }
-.btn-user { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; font: inherit; font-size: 12px; color: var(--text); background: var(--overlay-a4); border: 1px solid var(--border-strong); border-radius: 999px; cursor: pointer; transition: all 0.2s; }
+.btn-user { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; font: inherit; font-size: 12px; color: var(--text); background: var(--overlay-a4); border: 1px solid var(--border-strong); border-radius: 999px; cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s; }
 .btn-user:hover { border-color: var(--accent); background: var(--accent-a6); }
 .user-name { font-weight: 500; color: var(--text-secondary); }
 .user-caret { font-size: 10px; color: var(--text-muted); transition: transform 0.2s; }
 .user-caret.open { transform: rotate(180deg); }
-.user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 180px; background: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 8px; overflow: hidden; box-shadow: 0 12px 40px var(--shadow); z-index: 200; }
-.dropdown-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 500; color: var(--text-secondary); background: none; border: none; text-decoration: none; cursor: pointer; transition: all 0.15s; }
+.user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; transform-origin: top right; min-width: 180px; background: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 8px; overflow: hidden; box-shadow: 0 12px 40px var(--shadow); z-index: 200; }
+.dropdown-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 500; color: var(--text-secondary); background: none; border: none; text-decoration: none; cursor: pointer; transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s; }
 .dropdown-item.admin-link { color: var(--accent); border-bottom: 1px solid var(--border); }
 .dropdown-item.admin-link:hover { background: var(--accent-a6); }
 .dropdown-item.logout:hover { color: var(--err); }
@@ -154,14 +156,31 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 @media (max-width: 800px) {
   .navbar-inner { padding: 0 16px; gap: 12px; }
   .brand-path { display: none; }
-  .nav-links { display: none; }
+  /* 抽屉改成「从右滑入」：display 常驻 + translateX 位移，
+     关闭时 visibility:hidden 一并把链接移出 tab 顺序与无障碍树。 */
+  .nav-links {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column; align-items: stretch; gap: 0;
+    width: min(78vw, 300px);
+    background: var(--bg); border-left: 1px solid var(--border);
+    padding: 72px 20px 24px; z-index: 95;
+    box-shadow: -8px 0 24px var(--shadow-soft);
+    transform: translateX(100%); visibility: hidden;
+    overscroll-behavior: contain;
+    transition: transform .3s cubic-bezier(.32,.72,0,1), visibility .3s;
+  }
+  .nav-links::before {
+    content: ''; position: fixed; inset: 0; background: var(--modal-overlay);
+    opacity: 0; z-index: -1;
+    transition: opacity .3s cubic-bezier(.32,.72,0,1);
+  }
+  .nav-links.open { transform: none; visibility: visible; }
+  .nav-links.open::before { opacity: 1; }
+  .nav-links a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
   .nav-toggle { display: flex; flex: 0 0 34px; }
   /* 导航链接隐藏后失去 flex:1 的占位，动作区需要自己靠右 */
   .nav-actions { gap: 8px; margin-left: auto; }
   .user-name, .user-caret { display: none; }
-  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
-  .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
-  .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
 }
 
 /* 窄屏收紧：品牌与登录按钮各让一档，给汉堡按钮留出完整 34px */

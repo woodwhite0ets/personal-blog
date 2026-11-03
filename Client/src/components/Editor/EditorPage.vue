@@ -805,8 +805,8 @@ watch(
 .toast.error   { background: var(--bg-elevated); border: 1px solid var(--err-a30); color: var(--err); }
 .toast-icon { font-weight: 800; font-size: 14px; }
 
-.toast-enter-active { transition: all 0.25s ease-out; }
-.toast-leave-active { transition: all 0.2s ease-in; }
+.toast-enter-active { transition: color 0.25s, background-color 0.25s, border-color 0.25s, opacity 0.25s, transform 0.25s, box-shadow 0.25s; }
+.toast-leave-active { transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s; }
 .toast-enter-from { opacity: 0; transform: translateX(16px); }
 .toast-leave-to   { opacity: 0; transform: translateX(16px); }
 
@@ -959,7 +959,7 @@ watch(
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 8px; padding: 28px;
   background: var(--bg-elevated); border: 2px dashed var(--border);
-  border-radius: 8px; cursor: pointer; transition: all 0.2s;
+  border-radius: 8px; cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .cover-dropzone:hover { border-color: var(--accent); background: var(--accent-a2); }

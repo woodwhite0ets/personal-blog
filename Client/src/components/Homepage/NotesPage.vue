@@ -42,7 +42,14 @@
         </label>
       </div>
 
-      <p v-if="!loading && filtered.length === 0" class="notes-empty">没有匹配的笔记。</p>
+      <div v-if="!loading && filtered.length === 0" class="notes-empty">
+        <p v-if="keyword || activeProject">这个筛选下没有笔记，换个关键词或清空筛选试试。</p>
+        <template v-else>
+          <p>我这里暂时没有公开的笔记。</p>
+          <p class="notes-empty-sub">写项目时留下的结论还在本机知识库里，公开的只有文章。</p>
+          <router-link class="notes-empty-cta" to="/forum">去看文章</router-link>
+        </template>
+      </div>
 
       <ul class="notes-list">
         <li v-for="n in filtered" :key="n.path" class="note-item">
@@ -165,7 +172,16 @@ onMounted(async () => {
 .note-date { margin-left: auto; font-size: 12px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 .note-summary { margin: 6px 0 0; font-size: 13px; line-height: 1.7; color: var(--text-secondary); max-width: 76ch; }
 .note-tags { margin: 6px 0 0; font-size: 11px; color: var(--text-faint); letter-spacing: .02em; }
-.notes-empty { padding: 36px 2px; font-size: 14px; color: var(--text-dim); }
+.notes-empty { padding: 36px 2px; font-size: 14px; color: var(--text-dim); line-height: 1.8; }
+.notes-empty p { margin: 0 0 6px; }
+.notes-empty-sub { color: var(--text-faint); font-size: 13px; }
+.notes-empty-cta {
+  display: inline-block; margin-top: 14px; font-size: 13px;
+  color: var(--accent); text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.notes-empty-cta:hover { border-bottom-color: var(--accent); }
+.notes-empty-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .note-title { text-decoration: none; }
 .note-title:hover { color: var(--accent); }
 .note-title:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }

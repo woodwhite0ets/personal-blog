@@ -1,5 +1,6 @@
 <template>
   <Teleport to="body">
+    <Transition name="modal">
     <div v-if="visible" class="modal-overlay" @click.self="$emit('cancel')">
       <div class="modal-card">
         <div class="modal-head">
@@ -23,6 +24,7 @@
         </div>
       </div>
     </div>
+    </Transition>
   </Teleport>
 </template>
 

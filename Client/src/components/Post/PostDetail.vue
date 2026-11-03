@@ -713,7 +713,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   width: 34px; height: 34px;
   display: flex; align-items: center; justify-content: center;
   background: none; border: 1px solid var(--border-strong); border-radius: 6px;
-  color: var(--text-dim); cursor: pointer; transition: all 0.2s;
+  color: var(--text-dim); cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .btn-search:hover { border-color: var(--accent); color: var(--accent); }
@@ -723,7 +723,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   padding: 6px 16px;
   font-family: inherit; font-size: 12px; font-weight: 600;
   color: var(--on-accent); background: var(--accent); border-radius: 6px;
-  text-decoration: none; transition: all 0.2s;
+  text-decoration: none; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .btn-write:hover {

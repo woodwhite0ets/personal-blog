@@ -470,7 +470,7 @@ async function handleResend() {
   border-radius: 12px;
   font-size: 28px; font-weight: 800; color: var(--accent);
   text-transform: uppercase;
-  transition: all 0.3s;
+  transition: color 0.3s, background-color 0.3s, border-color 0.3s, opacity 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
 .avatar-hint {
@@ -528,7 +528,7 @@ async function handleResend() {
   font-size: 13px; font-weight: 700;
   background: var(--bg-deeper); color: var(--text-dim);
   border: 2px solid var(--border-strong);
-  transition: all 0.3s;
+  transition: color 0.3s, background-color 0.3s, border-color 0.3s, opacity 0.3s, transform 0.3s, box-shadow 0.3s;
 }
  
 .step.active .step-num {
@@ -750,7 +750,7 @@ async function handleResend() {
   cursor: pointer;
   overflow: hidden;
   padding: 0;
-  transition: all 0.2s;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
   flex-shrink: 0;
 }
 

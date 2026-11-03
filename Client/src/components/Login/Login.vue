@@ -42,11 +42,18 @@
               <input
                 id="password"
                 v-model="form.password"
-                type="password"
+                :type="showPassword ? 'text' : 'password'"
                 placeholder="········"
                 autocomplete="current-password"
                 :class="{ error: errors.password }"
               />
+              <button
+                type="button"
+                class="pw-toggle"
+                :aria-pressed="showPassword"
+                :aria-label="showPassword ? '隐藏密码' : '显示密码'"
+                @click="showPassword = !showPassword"
+              >{{ showPassword ? '隐藏' : '显示' }}</button>
             </div>
             <span v-if="errors.password" class="field-error">
               {{ errors.password }}
@@ -90,7 +97,6 @@
 
         <p class="back-link">
           <router-link to="/RegisterPage" class="deco-link">注册一个账号</router-link>
-          <span class="back-sep">·</span>
           <router-link to="/forgot-password" class="forgot-link deco-link">忘记密码？</router-link>
         </p>
         <span class="deco-end" aria-hidden="true"></span>
@@ -108,6 +114,7 @@ const router = useRouter()
 const route = useRoute()
 const { login, loginAsGuest } = useAuth()
 
+const showPassword = ref(false)
 const form = reactive({ username: '', password: '', remember: false })
 const errors = reactive({ username: '', password: '' })
 const serverError = ref('')
@@ -239,7 +246,16 @@ async function handleGuestLogin() {
 .input-wrap {
   position: relative;
   display: flex;
+  align-items: center;
 }
+.pw-toggle {
+  position: absolute; right: 8px;
+  font: inherit; font-size: 12px; padding: 4px 8px;
+  border-radius: 5px; border: 1px solid transparent;
+  background: none; color: var(--text-dim); cursor: pointer;
+}
+.pw-toggle:hover { color: var(--text); border-color: var(--border); }
+.pw-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
  
 .field input[type='text'],
 .field input[type='password'] {
@@ -352,7 +368,7 @@ async function handleGuestLogin() {
   font-weight: 600;
   letter-spacing: 1px;
   color: var(--accent);
-  border: 2px dashed var(--border-strong);
+  border: 1px solid var(--border-strong);
   gap: 10px;
 }
 
@@ -406,9 +422,8 @@ async function handleGuestLogin() {
   color: var(--text-faint);
 }
 
-.forgot-link {
-  color: var(--warn) !important;
-}
+.back-link { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.forgot-link { color: var(--text-dim) !important; }
 
  
 /* ==============================

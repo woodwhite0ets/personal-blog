@@ -148,7 +148,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   display: flex; align-items: center; width: 100%; padding: 10px 14px;
   font-family: inherit; font-size: 12px; font-weight: 500;
   color: var(--text-secondary); background: none; border: none;
-  text-decoration: none; cursor: pointer; transition: all 0.15s;
+  text-decoration: none; cursor: pointer; transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 .dropdown-item:hover { color: var(--text); background: var(--overlay-a3); }
 .dropdown-item.logout:hover { color: var(--err); }
@@ -184,7 +184,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   display: flex; align-items: center; gap: 8px;
   padding: 10px 16px; font-size: 12px; font-weight: 500;
   color: var(--text-dim); text-decoration: none;
-  border-left: 2px solid transparent; transition: all 0.2s;
+  border-left: 2px solid transparent; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 .nav-item:hover { color: var(--text); background: var(--overlay-a2); }
 .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-a4); }

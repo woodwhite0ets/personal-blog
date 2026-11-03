@@ -14,6 +14,7 @@
         <path d="M9 2.4a6.6 6.6 0 0 1 0 13.2z" fill="currentColor" opacity="0.9"/>
       </svg>
     </button>
+    <Transition name="pop">
     <div v-if="open" class="theme-dropdown" role="menu" aria-label="主题">
       <div class="theme-dropdown-title" aria-hidden="true">主题</div>
       <button
@@ -32,6 +33,7 @@
         <span v-if="t.id === current" class="theme-check" aria-hidden="true">✓</span>
       </button>
     </div>
+    </Transition>
   </div>
 </template>
 
@@ -75,7 +77,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
   width: 34px; height: 34px;
   display: flex; align-items: center; justify-content: center;
   background: none; border: 1px solid var(--border-strong); border-radius: 6px;
-  color: var(--text-dim); cursor: pointer; transition: all 0.2s;
+  color: var(--text-dim); cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .theme-btn:hover {
@@ -83,6 +85,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
 }
 
 .theme-dropdown {
+  transform-origin: top right;
   position: absolute; top: calc(100% + 8px); right: 0;
   min-width: 220px;
   background: var(--bg-float); border: 1px solid var(--border-strong);
@@ -105,7 +108,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
   width: 100%; padding: 10px 14px;
   font-family: inherit; font-size: 12px; font-weight: 500;
   color: var(--text-secondary); background: none; border: none;
-  cursor: pointer; transition: all 0.15s;
+  cursor: pointer; transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
 .theme-option:hover { background: var(--overlay-a4); color: var(--text); }
