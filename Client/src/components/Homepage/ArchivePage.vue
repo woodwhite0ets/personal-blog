@@ -121,24 +121,38 @@ onMounted(async () => {
   text-wrap: balance;
 }
 .archive-sub { margin: 12px 0 0; font-size: 0.9375rem; color: var(--text-secondary); }
-.archive-tags-link { color: var(--accent); text-decoration: none; }
-.archive-tags-link:hover { color: var(--accent-hover); }
+.archive-tags-link { color: var(--text-secondary); text-decoration: none; }
+.archive-tags-link:hover { color: var(--text-bright); }
 
 .state-box { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 48px 20px; font-size: 0.8125rem; color: var(--text-muted); }
 .state-box.error { color: var(--err); }
 .spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.year-group { padding: 16px 0 8px; }
-.year-head { display: flex; align-items: baseline; gap: 14px; margin: 40px 0 10px; padding-bottom: 8px; }
+/* 时间轴：年份占左栏并吸顶，右侧条目挂一条点线竖轨 */
+.year-group {
+  display: grid; grid-template-columns: 96px minmax(0, 1fr);
+  column-gap: 36px; padding: 0 0 8px;
+}
+.year-head {
+  grid-column: 1; grid-row: 1;
+  position: sticky; top: 88px; align-self: start;
+  display: flex; flex-direction: column; gap: 6px;
+  margin: 22px 0 0; padding: 0;
+}
 .year-num {
-  font-family: var(--font-mono);
-  font-size: 0.8125rem; font-weight: 600; letter-spacing: .1em;
-  line-height: 1; color: var(--text-secondary); font-variant-numeric: tabular-nums;
+  font-family: "Noto Serif SC", var(--font-serif);
+  font-size: 1.75rem; font-weight: 500; letter-spacing: -0.02em;
+  line-height: 1; color: var(--text-bright); font-variant-numeric: tabular-nums;
 }
 .year-count { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
-.year-posts { display: flex; flex-direction: column; margin-top: 8px; }
+.year-posts {
+  grid-column: 2; grid-row: 1;
+  display: flex; flex-direction: column;
+  margin: 22px 0 0; padding-left: 24px;
+  border-left: 1px dotted var(--rule-dot-ink);
+}
 .archive-item { display: flex; align-items: baseline; gap: 24px; padding: 11px 4px; text-decoration: none; border-bottom: 1px dotted var(--rule-dot-ink); transition: background-color var(--dur-hover) var(--ease-out); }
 .archive-item:hover { background: var(--overlay-a2); }
 .archive-item:last-child { border-bottom: none; }

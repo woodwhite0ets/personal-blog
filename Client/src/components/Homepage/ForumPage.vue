@@ -55,6 +55,10 @@
       <!-- 排序切换 -->
       <div class="sort-bar">
         <span class="sort-count meta-mono">共 {{ totalPosts }} 篇</span>
+        <span class="sub-nav">
+          <router-link class="sub-nav-link meta-mono" to="/tags">按分类</router-link>
+          <router-link class="sub-nav-link meta-mono" to="/archive">按时间</router-link>
+        </span>
         <div class="sort-group">
           <span class="sort-label">排序</span>
           <button
@@ -83,7 +87,7 @@
               ><mark v-if="seg.m" class="hl-hit">{{ seg.t }}</mark><template v-else>{{ seg.t }}</template></template></router-link>
             </h3>
             <p class="ed-entry-excerpt"><template
-              v-for="(seg, k) in hl(stripMarkdown(p.excerpt, 160))" :key="`e${k}`"
+              v-for="(seg, k) in hl(excerptOf(p))" :key="`e${k}`"
             ><mark v-if="seg.m" class="hl-hit">{{ seg.t }}</mark><template v-else>{{ seg.t }}</template></template></p>
             <p class="ed-entry-meta"><time>{{ p.date }}</time><span class="meta-minor">{{ readLabel(p) }} · {{ p.views || 0 }} 次浏览</span></p>
           </div>
@@ -97,29 +101,9 @@
 
       <!-- 侧边栏 -->
       <aside class="sidebar">
-        <div class="sidebar-panel">
-          <div class="panel-bar">
-            <span class="panel-title deco-rule">概况</span>
-          </div>
-          <div class="panel-body">
-            <div class="info-line">
-              <span class="info-key">板块</span>
-              <span class="info-val">技术交流</span>
-            </div>
-            <div class="info-line">
-              <span class="info-key">帖子</span>
-              <span class="info-val">{{ totalPosts }} 篇</span>
-            </div>
-            <div class="info-line">
-              <span class="info-key">状态</span>
-              <span class="info-val">开放中</span>
-            </div>
-          </div>
-        </div>
-
         <div v-if="contributors.length" class="sidebar-panel">
           <div class="panel-bar">
-            <span class="panel-title deco-rule">活跃用户</span>
+            <span class="panel-title deco-rule">作者</span>
           </div>
           <div class="panel-body">
             <router-link
@@ -130,7 +114,7 @@
             >
               <UserAvatar :src="c.avatar" :alt="c.username" size="xs" />
               <span class="contributor-name">@{{ c.username }}</span>
-              <span class="contributor-count">({{ c.count }})</span>
+              <span class="contributor-count">{{ c.count }} 篇</span>
             </router-link>
           </div>
         </div>
@@ -154,19 +138,6 @@
           </div>
         </div>
 
-        <div class="sidebar-panel">
-          <div class="panel-bar">
-            <span class="panel-title deco-rule">链接</span>
-          </div>
-          <div class="panel-body">
-            <router-link to="/HomePage" class="link-item">
-              博客首页
-            </router-link>
-            <router-link to="/archive" class="link-item">
-              文章归档
-            </router-link>
-          </div>
-        </div>
       </aside>
       <span class="deco-end" aria-hidden="true" style="grid-column: 1 / -1"></span>
     </div>
@@ -187,6 +158,27 @@ import { useAuth } from '../../stores/auth.js'
 const route = useRoute()
 
 // 后端给的是 "2 min read" 这类英文，页面统一成中文
+// 摘要开头常常重复标题（文章第一段就是标题），按字符逐位比对后剥掉
+const excerptOf = (p) => {
+  const raw = String(stripMarkdown(p.excerpt, 180) || '')
+  const title = String(p.title || '').replace(/\s+/g, '')
+  let idx = 0
+  let matched = 0
+  while (idx < raw.length && matched < title.length) {
+    const ch = raw[idx]
+    if (!/\s/.test(ch)) {
+      if (ch !== title[matched]) break
+      matched += 1
+    }
+    idx += 1
+  }
+  const rest = matched === title.length && title.length > 0
+    ? raw.slice(idx).replace(/^[\s:：,，。—\-、]+/, '')
+    : raw
+  // 摘要里残留的双破折号换成逗号（正文存量数据里有）
+  return rest.replace(/——/g, '，').replace(/\s+/g, ' ').trim()
+}
+
 const readLabel = (p) => {
   const m = String(p.read_time || '').match(/(\d+)/)
   return m ? `${m[1]} 分钟` : '短读'
@@ -677,18 +669,20 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .tag-filter-bar {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 16px; margin-bottom: 20px;
-  background: var(--accent-a4);
-  border: 1px solid var(--accent-a15);
+  background: transparent;
+  border-bottom: 1px dotted var(--rule-dot-ink);
+  border-top: none; border-left: none; border-right: none;
   border-radius: 6px; font-size: 0.75rem;
 }
 
 .sort-bar {
   grid-column: 1 / -1;
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 14px;
   margin-bottom: 16px;
   padding: 10px 16px;
-  background: var(--accent-a4);
-  border: 1px solid var(--accent-a15);
+  background: transparent;
+  border-bottom: 1px dotted var(--rule-dot-ink);
+  border-top: none; border-left: none; border-right: none;
   border-radius: 6px;
 }
 .sort-label {
@@ -814,7 +808,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   border-bottom: 1px solid var(--border);
 }
 .sort-count { font-size: 0.8125rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
-.sort-group { display: flex; align-items: center; gap: 8px; }
+.sort-group { display: flex; align-items: center; gap: 8px; margin-left: auto; }
 
 
 /* 搜索命中高亮 */

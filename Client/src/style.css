@@ -705,14 +705,17 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* 文章条目：与首页一致的 Double-Bezel 双层壳体 */
 /* 文章条目：编辑式列表（点线分隔 + 悬停微亮），与首页/归档同一套节奏 */
 .ed-entry {
-  display: block; padding: 0; margin: 0;
+  display: grid; grid-template-columns: 34px minmax(0, 1fr);
+  gap: 0 16px; align-items: start;
+  padding: 0; margin: 0;
   border: none; border-radius: 0; background: none;
   border-bottom: 1px dotted var(--rule-dot-ink);
   transition: background-color var(--dur-hover) var(--ease-out);
 }
+.ed-entry > .deco-idx { padding-top: 24px; }
 .ed-entry-body {
   background: none; border: none; border-radius: 0; box-shadow: none;
-  padding: 22px 4px;
+  padding: 22px 4px 24px;
 }
 .ed-entry:hover { background: var(--overlay-a2); transform: none; box-shadow: none; }
 .ed-entry .ed-entry-body { min-width: 0; }
@@ -2469,3 +2472,42 @@ html {
 }
 @media (max-width: 900px) { .tl-snip-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .tl-snip-grid { grid-template-columns: 1fr; } }
+
+
+/* ===== 文章页：封面条目 + 二级入口（2026-11-04）=====
+   首篇做成一张切角面板：大字号标题、两行摘要、等宽元信息。
+   与首页「榜单第一名」同一个手法：一屏只给一个落点。 */
+.ed-entry.is-featured {
+  display: block;         /* 封面条目不再用两列 */
+  margin: 0 0 6px;
+  padding: 0;
+  border-bottom: none;
+}
+.ed-entry.is-featured .ed-entry-body {
+  padding: 30px 30px 28px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+}
+.ed-entry.is-featured .deco-idx { display: none; }
+.ed-entry.is-featured .ed-entry-title {
+  font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+.ed-entry.is-featured .ed-entry-excerpt {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  -webkit-line-clamp: 2; line-clamp: 2;
+  display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
+  margin-bottom: 14px;
+}
+
+/* 文章页头部的二级入口 */
+.sub-nav { display: inline-flex; gap: 16px; margin-left: 4px; }
+.sub-nav-link {
+  color: var(--text-faint); text-decoration: none;
+  border-bottom: 1px solid var(--border-strong); padding-bottom: 1px;
+}
+.sub-nav-link + .sub-nav-link { margin-left: 0; }
+.sub-nav-link:hover { color: var(--text-bright); border-color: var(--text-bright); }

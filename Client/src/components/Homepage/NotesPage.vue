@@ -28,7 +28,7 @@
         </p>
       </header>
 
-      <div class="notes-tools">
+      <div class="notes-tools" v-if="total > 0">
         <div class="notes-filters" role="group" aria-label="按项目筛选">
           <button
             v-for="p in ['全部'].concat(projects)" :key="p" type="button"
