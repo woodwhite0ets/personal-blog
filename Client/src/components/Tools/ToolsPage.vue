@@ -1,5 +1,6 @@
 <template>
   <div class="tl-page">
+    <div class="page-wash" aria-hidden="true"></div>
     <SiteNav />
 
     <main class="tl-main">

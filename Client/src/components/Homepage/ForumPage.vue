@@ -1,5 +1,6 @@
 <template>
   <div class="forum-page">
+    <div class="page-wash" aria-hidden="true"></div>
 
     <span class="edge-label" aria-hidden="true">文章 · woodwhite@blog</span>
 

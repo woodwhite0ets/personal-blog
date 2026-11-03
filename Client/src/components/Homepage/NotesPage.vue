@@ -1,5 +1,6 @@
 <template>
   <div class="notes-page">
+    <div class="page-wash" aria-hidden="true"></div>
     <SiteNav />
 
     <main v-if="detail" class="notes-main notes-detail">

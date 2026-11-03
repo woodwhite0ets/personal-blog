@@ -1,5 +1,6 @@
 <template>
   <div class="archive-page">
+    <div class="page-wash" aria-hidden="true"></div>
 
     <span class="edge-label" aria-hidden="true">归档 · woodwhite@blog</span>
 

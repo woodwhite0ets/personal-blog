@@ -1,5 +1,6 @@
 <template>
   <div class="tags-page">
+    <div class="page-wash" aria-hidden="true"></div>
     <span class="edge-label" aria-hidden="true">分类 · woodwhite@blog</span>
     <SiteNav />
     <div class="tags-main">
