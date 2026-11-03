@@ -29,10 +29,12 @@
 
     <!-- ====== 首屏 Hero 带（非对称：左文 + 右信息栏）====== -->
     <section class="hero-band">
-      <!-- 首屏底图：手绘水彩的色块 + 半调网点（risograph 印刷质感） -->
-      <div class="hero-wash" aria-hidden="true"></div>
-      <div class="hero-halftone" aria-hidden="true"></div>
-      <div class="hero-vignette" aria-hidden="true"></div>
+      <!-- 首屏底图：五套「印在纸上的画」，每次刷新随机一套 -->
+      <div class="hero-art" :data-art="heroArt" aria-hidden="true">
+        <div class="hero-wash"></div>
+        <div class="hero-halftone"></div>
+        <div class="hero-vignette"></div>
+      </div>
       <div class="hero-in">
         <div class="hero-text">
           <h1 class="hero-name" aria-label="WoodWhite"><span>W</span><span>o</span><span>o</span><span>d</span><span>W</span><span>h</span><span>i</span><span>t</span><span>e</span></h1>
@@ -364,6 +366,22 @@ function handleClickOutside(e) {
 function scrollToPosts() {
   document.querySelector('.main-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
+
+// ====== 首屏底图：每次刷新随机一套（?art=1..5 可指定）======
+const ART_COUNT = 5
+const ART_KEY = 'blog-hero-art'
+const heroArt = ref(1)
+function pickHeroArt() {
+  const forced = Number(new URLSearchParams(window.location.search).get('art'))
+  if (Number.isInteger(forced) && forced >= 1 && forced <= ART_COUNT) return forced
+  let last = 0
+  try { last = Number(sessionStorage.getItem(ART_KEY)) || 0 } catch { /* 隐私模式下忽略 */ }
+  const pool = Array.from({ length: ART_COUNT }, (_, i) => i + 1).filter((n) => n !== last)
+  const picked = pool[Math.floor(Math.random() * pool.length)] || 1
+  try { sessionStorage.setItem(ART_KEY, String(picked)) } catch { /* 忽略 */ }
+  return picked
+}
+heroArt.value = pickHeroArt()
 
 // ====== 首屏光标跟随光晕 ======
 // 只写两个 px 变量去 translate 一个固定的渐变层（走合成器），
