@@ -1,5 +1,5 @@
 <template>
-  <div class="theme-switcher" ref="root">
+  <div v-if="themes.length > 1" class="theme-switcher" ref="root">
     <button
       class="theme-btn"
       type="button"

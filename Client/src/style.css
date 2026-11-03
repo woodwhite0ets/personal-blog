@@ -32,426 +32,8 @@
 }
 
 /* ===== 默认主题: terminal ===== */
-:root,
-[data-theme="terminal"] {
-  color-scheme: dark;
-
-  --bg: #0b0e14;
-  --bg-elevated: #11151f;
-  --bg-float: #171c29;
-  --bg-deeper: #0b0e14;
-  --bg-code: #0d1018;
-
-  --text: #c9d2e2;
-  --text-bright: #eff3fa;
-  --text-dim: #7d8592;
-  --text-muted: #7f8591;
-  --text-faint: #5a606a;
-  --text-secondary: #9aa5ba;
-  --text-hint: #7e8392;
-
-  --accent: #8b9cff;
-  --accent-hover: #a6b4ff;
-  --on-accent: #0b0e14;
-  --accent-a2: rgba(130, 183, 255, 0.02);
-  --accent-a2: color-mix(in srgb, var(--accent) 2%, transparent);
-  --accent-a3: rgba(96, 200, 255, 0.035);
-  --accent-a3: color-mix(in srgb, var(--accent) 3.5%, transparent);
-  --accent-a4: rgba(130, 183, 255, 0.04);
-  --accent-a4: color-mix(in srgb, var(--accent) 4%, transparent);
-  --accent-a5: rgba(130, 183, 255, 0.05);
-  --accent-a5: color-mix(in srgb, var(--accent) 5%, transparent);
-  --accent-a6: rgba(130, 183, 255, 0.06);
-  --accent-a6: color-mix(in srgb, var(--accent) 6%, transparent);
-  --accent-a8: rgba(130, 183, 255, 0.08);
-  --accent-a8: color-mix(in srgb, var(--accent) 8%, transparent);
-  --accent-a10: rgba(130, 183, 255, 0.1);
-  --accent-a10: color-mix(in srgb, var(--accent) 10%, transparent);
-  --accent-a12: rgba(130, 183, 255, 0.12);
-  --accent-a12: color-mix(in srgb, var(--accent) 12%, transparent);
-  --accent-a15: rgba(130, 183, 255, 0.15);
-  --accent-a15: color-mix(in srgb, var(--accent) 15%, transparent);
-  --accent-a20: rgba(130, 183, 255, 0.2);
-  --accent-a20: color-mix(in srgb, var(--accent) 20%, transparent);
-  --accent-a25: rgba(130, 183, 255, 0.25);
-  --accent-a25: color-mix(in srgb, var(--accent) 25%, transparent);
-  --accent-a30: rgba(130, 183, 255, 0.3);
-  --accent-a30: color-mix(in srgb, var(--accent) 30%, transparent);
-  --accent-a50: rgba(130, 183, 255, 0.5);
-  --accent-a50: color-mix(in srgb, var(--accent) 50%, transparent);
-
-  --ok: #5fd39a;
-  --ok-hover: #7cdeb0;
-  --ok-a6: rgba(95, 211, 154, 0.06);
-  --ok-a8: rgba(95, 211, 154, 0.08);
-  --ok-a10: rgba(95, 211, 154, 0.1);
-  --ok-a12: rgba(95, 211, 154, 0.12);
-  --ok-a20: rgba(95, 211, 154, 0.2);
-  --ok-a30: rgba(95, 211, 154, 0.3);
-  --ok-a40: rgba(95, 211, 154, 0.4);
-
-  --warn: #ffc77d;
-  --warn-a8: rgba(255, 199, 125, 0.08);
-  --warn-a20: rgba(255, 199, 125, 0.2);
-
-  --err: #ff8f8f;
-  --err-hover: #ffb0b0;
-  --err-a6: rgba(255, 143, 143, 0.06);
-  --err-a8: rgba(255, 143, 143, 0.08);
-  --err-a12: rgba(255, 143, 143, 0.12);
-  --err-a15: rgba(255, 143, 143, 0.15);
-  --err-a20: rgba(255, 143, 143, 0.2);
-  --err-a25: rgba(255, 143, 143, 0.25);
-  --err-a30: rgba(255, 143, 143, 0.3);
-
-  --purple: #b8a8ff;
-
-  --border: #1d2330;
-  --border-strong: #2a3140;
-  --border-a30: rgba(29,35,48,0.30);
-  --border-a50: rgba(29,35,48,0.50);
-  --divider: #141924;
-
-  --overlay-a1: rgba(255, 255, 255, 0.01);
-  --overlay-a15: rgba(255, 255, 255, 0.015);
-  --overlay-a2: rgba(255, 255, 255, 0.02);
-  --overlay-a3: rgba(255, 255, 255, 0.03);
-  --overlay-a4: rgba(255, 255, 255, 0.04);
-  --overlay-a5: rgba(255, 255, 255, 0.05);
-  --overlay-a8: rgba(255, 255, 255, 0.08);
-  --overlay-a10: rgba(255, 255, 255, 0.1);
-  --overlay-a20: rgba(255, 255, 255, 0.2);
-
-  --text-secondary-a8: rgba(154, 165, 186, 0.08);
-  --text-secondary-a20: rgba(154, 165, 186, 0.2);
-
-  --navbar-bg: rgba(11,14,20,0.86);
-
-  --aurora-1: rgba(96, 200, 255, 0.20);
-  --aurora-2: rgba(80, 220, 190, 0.12);
-  --aurora-3: rgba(60, 160, 230, 0.12);
-  --scanline: rgba(96, 200, 255, 0.035);
-  --shadow: rgba(2, 6, 16, 0.60);
-  --shadow-deep: rgba(2, 6, 16, 0.80);
-  --modal-overlay: rgba(0,0,0,0.60);
-  --white: #ffffff;
-}
-
 /* ===== 主题: paper (亮色纸面) ===== */
-[data-theme="paper"] {
-  color-scheme: light;
-
-  --bg: #fafaf8;
-  --bg-elevated: #ffffff;
-  --bg-float: #ffffff;
-  --bg-deeper: #f5f5f2;
-  --bg-code: #f3f1ea;
-
-  --text: #23211c;
-  --text-bright: #14120c;
-  --text-dim: #6b665a;
-  --text-muted: #726d65;
-  --text-faint: #6b6f74;
-  --text-secondary: #736d62;
-  --text-hint: #6a6e74;
-
-  --accent: #2f4a73;
-  --accent-hover: #24406a;
-  --on-accent: #ffffff;
-  --accent-a2: rgba(46, 125, 143, 0.02);
-  --accent-a2: color-mix(in srgb, var(--accent) 2%, transparent);
-  --accent-a3: rgba(46, 125, 143, 0.03);
-  --accent-a3: color-mix(in srgb, var(--accent) 3%, transparent);
-  --accent-a4: rgba(46, 125, 143, 0.04);
-  --accent-a4: color-mix(in srgb, var(--accent) 4%, transparent);
-  --accent-a5: rgba(46, 125, 143, 0.05);
-  --accent-a5: color-mix(in srgb, var(--accent) 5%, transparent);
-  --accent-a6: rgba(46, 125, 143, 0.06);
-  --accent-a6: color-mix(in srgb, var(--accent) 6%, transparent);
-  --accent-a8: rgba(46, 125, 143, 0.08);
-  --accent-a8: color-mix(in srgb, var(--accent) 8%, transparent);
-  --accent-a10: rgba(46, 125, 143, 0.1);
-  --accent-a10: color-mix(in srgb, var(--accent) 10%, transparent);
-  --accent-a12: rgba(46, 125, 143, 0.16);
-  --accent-a12: color-mix(in srgb, var(--accent) 16%, transparent);
-  --accent-a15: rgba(46, 125, 143, 0.15);
-  --accent-a15: color-mix(in srgb, var(--accent) 15%, transparent);
-  --accent-a20: rgba(46, 125, 143, 0.2);
-  --accent-a20: color-mix(in srgb, var(--accent) 20%, transparent);
-  --accent-a25: rgba(46, 125, 143, 0.25);
-  --accent-a25: color-mix(in srgb, var(--accent) 25%, transparent);
-  --accent-a30: rgba(46, 125, 143, 0.3);
-  --accent-a30: color-mix(in srgb, var(--accent) 30%, transparent);
-  --accent-a50: rgba(46, 125, 143, 0.5);
-  --accent-a50: color-mix(in srgb, var(--accent) 50%, transparent);
-
-  --ok: #2f7b55;
-  --ok-hover: #2f8a5d;
-  --ok-a6: rgba(56, 158, 109, 0.06);
-  --ok-a8: rgba(56, 158, 109, 0.08);
-  --ok-a10: rgba(56, 158, 109, 0.1);
-  --ok-a12: rgba(56, 158, 109, 0.12);
-  --ok-a20: rgba(56, 158, 109, 0.2);
-  --ok-a30: rgba(56, 158, 109, 0.3);
-  --ok-a40: rgba(56, 158, 109, 0.4);
-
-  --warn: #8d6724;
-  --warn-a8: rgba(192, 138, 46, 0.08);
-  --warn-a20: rgba(192, 138, 46, 0.2);
-
-  --err: #c65656;
-  --err-hover: #b24747;
-  --err-a6: rgba(198, 86, 86, 0.06);
-  --err-a8: rgba(198, 86, 86, 0.08);
-  --err-a12: rgba(198, 86, 86, 0.12);
-  --err-a15: rgba(198, 86, 86, 0.15);
-  --err-a20: rgba(198, 86, 86, 0.2);
-  --err-a25: rgba(198, 86, 86, 0.25);
-  --err-a30: rgba(198, 86, 86, 0.3);
-
-  --purple: #6f5fbe;
-
-  --border: #e6e4dd;
-  --border-strong: #d6d3ca;
-  --border-a30: rgba(0,0,0,0.08);
-  --border-a50: rgba(0,0,0,0.12);
-  --divider: #ebe7dd;
-
-  --overlay-a1: rgba(0, 0, 0, 0.01);
-  --overlay-a15: rgba(0, 0, 0, 0.015);
-  --overlay-a2: rgba(0, 0, 0, 0.02);
-  --overlay-a3: rgba(0, 0, 0, 0.03);
-  --overlay-a4: rgba(0, 0, 0, 0.04);
-  --overlay-a5: rgba(0, 0, 0, 0.05);
-  --overlay-a8: rgba(0, 0, 0, 0.08);
-  --overlay-a10: rgba(0, 0, 0, 0.1);
-  --overlay-a20: rgba(0, 0, 0, 0.2);
-
-  --text-secondary-a8: rgba(132, 138, 150, 0.08);
-  --text-secondary-a20: rgba(132, 138, 150, 0.2);
-
-  --navbar-bg: rgba(250,249,245,0.86);
-
-  --aurora-1: rgba(47, 74, 115, 0.10);
-  --aurora-2: rgba(160, 140, 100, 0.10);
-  --aurora-3: rgba(150, 130, 110, 0.08);
-  --scanline: rgba(0,0,0,0);
-  --shadow: rgba(74, 60, 40, 0.12);
-  --shadow-deep: rgba(74, 60, 40, 0.18);
-  --modal-overlay: rgba(0,0,0,0.40);
-  --white: #ffffff;
-}
-
 /* ===== 主题: midnight (深蓝夜色) ===== */
-[data-theme="midnight"] {
-  color-scheme: dark;
-
-  --bg: #0a0e1a;
-  --bg-elevated: #121826;
-  --bg-float: #182133;
-  --bg-deeper: #0a0e1a;
-  --bg-code: #0e1320;
-
-  --text: #cdd6e6;
-  --text-bright: #f0f4fb;
-  --text-dim: #7d89a1;
-  --text-muted: #80889d;
-  --text-faint: #7a7f88;
-  --text-secondary: #9ba8c0;
-  --text-hint: #7d899e;
-
-  --accent: #8fb0ff;
-  --accent-hover: #b0c7ff;
-  --on-accent: #0a0e1a;
-  --accent-a2: rgba(147, 197, 253, 0.02);
-  --accent-a2: color-mix(in srgb, var(--accent) 2%, transparent);
-  --accent-a3: rgba(147, 197, 253, 0.03);
-  --accent-a3: color-mix(in srgb, var(--accent) 3%, transparent);
-  --accent-a4: rgba(147, 197, 253, 0.04);
-  --accent-a4: color-mix(in srgb, var(--accent) 4%, transparent);
-  --accent-a5: rgba(147, 197, 253, 0.05);
-  --accent-a5: color-mix(in srgb, var(--accent) 5%, transparent);
-  --accent-a6: rgba(147, 197, 253, 0.06);
-  --accent-a6: color-mix(in srgb, var(--accent) 6%, transparent);
-  --accent-a8: rgba(147, 197, 253, 0.08);
-  --accent-a8: color-mix(in srgb, var(--accent) 8%, transparent);
-  --accent-a10: rgba(147, 197, 253, 0.1);
-  --accent-a10: color-mix(in srgb, var(--accent) 10%, transparent);
-  --accent-a12: rgba(147, 197, 253, 0.12);
-  --accent-a12: color-mix(in srgb, var(--accent) 12%, transparent);
-  --accent-a15: rgba(147, 197, 253, 0.15);
-  --accent-a15: color-mix(in srgb, var(--accent) 15%, transparent);
-  --accent-a20: rgba(147, 197, 253, 0.2);
-  --accent-a20: color-mix(in srgb, var(--accent) 20%, transparent);
-  --accent-a25: rgba(147, 197, 253, 0.25);
-  --accent-a25: color-mix(in srgb, var(--accent) 25%, transparent);
-  --accent-a30: rgba(147, 197, 253, 0.3);
-  --accent-a30: color-mix(in srgb, var(--accent) 30%, transparent);
-  --accent-a50: rgba(147, 197, 253, 0.5);
-  --accent-a50: color-mix(in srgb, var(--accent) 50%, transparent);
-
-  --ok: #6fd39b;
-  --ok-hover: #8bdeae;
-  --ok-a6: rgba(111, 211, 155, 0.06);
-  --ok-a8: rgba(220, 110, 200, 0.13);
-  --ok-a10: rgba(111, 211, 155, 0.1);
-  --ok-a12: rgba(111, 211, 155, 0.12);
-  --ok-a20: rgba(111, 211, 155, 0.2);
-  --ok-a30: rgba(111, 211, 155, 0.3);
-  --ok-a40: rgba(111, 211, 155, 0.4);
-
-  --warn: #e8c07a;
-  --warn-a8: rgba(232, 192, 122, 0.08);
-  --warn-a20: rgba(232, 192, 122, 0.2);
-
-  --err: #f58b8b;
-  --err-hover: #f8a8a8;
-  --err-a6: rgba(245, 139, 139, 0.06);
-  --err-a8: rgba(245, 139, 139, 0.08);
-  --err-a12: rgba(245, 139, 139, 0.12);
-  --err-a15: rgba(245, 139, 139, 0.15);
-  --err-a20: rgba(245, 139, 139, 0.2);
-  --err-a25: rgba(245, 139, 139, 0.25);
-  --err-a30: rgba(245, 139, 139, 0.3);
-
-  --purple: #c4b5fd;
-
-  --border: #1c2432;
-  --border-strong: #293449;
-  --border-a30: rgba(28,36,50,0.30);
-  --border-a50: rgba(28,36,50,0.50);
-  --divider: #131a28;
-
-  --overlay-a1: rgba(255, 255, 255, 0.01);
-  --overlay-a15: rgba(255, 255, 255, 0.015);
-  --overlay-a2: rgba(255, 255, 255, 0.02);
-  --overlay-a3: rgba(255, 255, 255, 0.03);
-  --overlay-a4: rgba(255, 255, 255, 0.04);
-  --overlay-a5: rgba(255, 255, 255, 0.05);
-  --overlay-a8: rgba(255, 255, 255, 0.08);
-  --overlay-a10: rgba(255, 255, 255, 0.1);
-  --overlay-a20: rgba(255, 255, 255, 0.2);
-
-  --text-secondary-a8: rgba(155, 168, 192, 0.08);
-  --text-secondary-a20: rgba(155, 168, 192, 0.2);
-
-  --navbar-bg: rgba(10,14,26,0.86);
-
-  --aurora-1: rgba(70, 130, 240, 0.24);
-  --aurora-2: rgba(160, 120, 255, 0.18);
-  --aurora-3: rgba(220, 110, 200, 0.13);
-  --scanline: rgba(130, 120, 250, 0.04);
-  --shadow: rgba(2, 4, 14, 0.60);
-  --shadow-deep: rgba(2, 4, 14, 0.80);
-  --modal-overlay: rgba(0,0,0,0.60);
-  --white: #ffffff;
-}
-
-/* ===== 主题: solar (琥珀终端) ===== */
-[data-theme="solar"] {
-  color-scheme: dark;
-
-  --bg: #14110d;
-  --bg-elevated: #1c1812;
-  --bg-float: #252019;
-  --bg-deeper: #16130e;
-  --bg-code: #1a1611;
-
-  --text: #e0d6c8;
-  --text-bright: #f5efe6;
-  --text-dim: #9c8f7d;
-  --text-muted: #908679;
-  --text-faint: #686154;
-  --text-secondary: #a89a86;
-  --text-hint: #8f8676;
-
-  --accent: #e0a96d;
-  --accent-hover: #efc08a;
-  --on-accent: #241a0c;
-  --accent-a2: rgba(232, 181, 124, 0.02);
-  --accent-a2: color-mix(in srgb, var(--accent) 2%, transparent);
-  --accent-a3: rgba(232, 181, 124, 0.03);
-  --accent-a3: color-mix(in srgb, var(--accent) 3%, transparent);
-  --accent-a4: rgba(232, 181, 124, 0.04);
-  --accent-a4: color-mix(in srgb, var(--accent) 4%, transparent);
-  --accent-a5: rgba(232, 181, 124, 0.05);
-  --accent-a5: color-mix(in srgb, var(--accent) 5%, transparent);
-  --accent-a6: rgba(232, 181, 124, 0.06);
-  --accent-a6: color-mix(in srgb, var(--accent) 6%, transparent);
-  --accent-a8: rgba(232, 181, 124, 0.08);
-  --accent-a8: color-mix(in srgb, var(--accent) 8%, transparent);
-  --accent-a10: rgba(232, 181, 124, 0.1);
-  --accent-a10: color-mix(in srgb, var(--accent) 10%, transparent);
-  --accent-a12: rgba(232, 181, 124, 0.12);
-  --accent-a12: color-mix(in srgb, var(--accent) 12%, transparent);
-  --accent-a15: rgba(232, 181, 124, 0.15);
-  --accent-a15: color-mix(in srgb, var(--accent) 15%, transparent);
-  --accent-a20: rgba(232, 181, 124, 0.2);
-  --accent-a20: color-mix(in srgb, var(--accent) 20%, transparent);
-  --accent-a25: rgba(232, 181, 124, 0.25);
-  --accent-a25: color-mix(in srgb, var(--accent) 25%, transparent);
-  --accent-a30: rgba(232, 181, 124, 0.3);
-  --accent-a30: color-mix(in srgb, var(--accent) 30%, transparent);
-  --accent-a50: rgba(232, 181, 124, 0.5);
-  --accent-a50: color-mix(in srgb, var(--accent) 50%, transparent);
-
-  --ok: #a8cf8e;
-  --ok-hover: #bcdaa2;
-  --ok-a6: rgba(168, 207, 142, 0.06);
-  --ok-a8: rgba(168, 207, 142, 0.08);
-  --ok-a10: rgba(168, 207, 142, 0.1);
-  --ok-a12: rgba(168, 207, 142, 0.12);
-  --ok-a20: rgba(168, 207, 142, 0.2);
-  --ok-a30: rgba(168, 207, 142, 0.3);
-  --ok-a40: rgba(168, 207, 142, 0.4);
-
-  --warn: #e2c079;
-  --warn-a8: rgba(226, 192, 121, 0.08);
-  --warn-a20: rgba(226, 192, 121, 0.2);
-
-  --err: #e08a86;
-  --err-hover: #eab0ac;
-  --err-a6: rgba(224, 138, 134, 0.06);
-  --err-a8: rgba(224, 138, 134, 0.08);
-  --err-a12: rgba(224, 138, 134, 0.12);
-  --err-a15: rgba(224, 138, 134, 0.15);
-  --err-a20: rgba(224, 138, 134, 0.2);
-  --err-a25: rgba(224, 138, 134, 0.25);
-  --err-a30: rgba(224, 138, 134, 0.3);
-
-  --purple: #c9a6d9;
-
-  --border: #2c2620;
-  --border-strong: #3c342a;
-  --border-a30: rgba(44,38,32,0.30);
-  --border-a50: rgba(44,38,32,0.50);
-  --divider: #201a14;
-
-  --overlay-a1: rgba(255, 255, 255, 0.01);
-  --overlay-a15: rgba(255, 255, 255, 0.015);
-  --overlay-a2: rgba(255, 255, 255, 0.02);
-  --overlay-a3: rgba(255, 255, 255, 0.03);
-  --overlay-a4: rgba(255, 255, 255, 0.04);
-  --overlay-a5: rgba(255, 255, 255, 0.05);
-  --overlay-a8: rgba(255, 255, 255, 0.08);
-  --overlay-a10: rgba(255, 255, 255, 0.1);
-  --overlay-a20: rgba(255, 255, 255, 0.2);
-
-  --text-secondary-a8: rgba(168, 154, 136, 0.08);
-  --text-secondary-a20: rgba(168, 154, 136, 0.2);
-
-  --navbar-bg: rgba(20,17,13,0.88);
-
-  --aurora-1: rgba(240, 175, 90, 0.20);
-  --aurora-2: rgba(235, 120, 80, 0.15);
-  --aurora-3: rgba(180, 200, 120, 0.12);
-  --scanline: rgba(232, 181, 124, 0.04);
-  --shadow: rgba(16, 10, 4, 0.60);
-  --shadow-deep: rgba(16, 10, 4, 0.80);
-  --modal-overlay: rgba(0,0,0,0.60);
-  --white: #ffffff;
-}
-
 /* ===== 设计令牌（跨主题共享，与配色解耦） ===== */
 :root {
   /* 字体：阅读层比例 / 代码层自托管 JetBrains Mono / 标题层 Space Grotesk */
@@ -654,7 +236,7 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
 /* 明/暗主题取不同 token 颜色（Shiki 双主题 CSS 变量，无需重渲染）*/
 .code-block .shiki span { color: var(--shiki-dark); }
 .code-block code { font-family: var(--font-mono); }
-[data-theme='paper'] .code-block .shiki span { color: var(--shiki-light); }
+.code-block .shiki span { color: var(--shiki-light); }
 
 /* 无障碍：键盘焦点可见（全站通用，组件里的 outline:none 不再导致失焦不可见） */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
@@ -1021,7 +603,7 @@ body::after {
   opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-[data-theme='paper'] body::after { opacity: 0.05; }
+body::after { opacity: 0.05; }
 
 /* ============================================================
    高级感打磨（2026-10-11）：弹簧缓动 + 按压反馈
@@ -1176,9 +758,6 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   border-radius: 19px;
   box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 55%, transparent);
   padding: 24px 26px;
-}
-html[data-theme="midnight"] .ed-entry-body {
-  box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 8%, transparent);
 }
 .ed-entry:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: var(--shadow-card); }
 .ed-entry .deco-idx { display: none; }
@@ -1464,13 +1043,6 @@ html[data-theme="midnight"] .ed-entry-body {
    标签柔和底色 · 深色主题覆盖（minimalist-ui）
    html[data-theme] 特异性 (0,1,1) > :root (0,1,0)，保证不被 489 行的浅色默认值盖掉
    ============================================================ */
-html[data-theme="midnight"] {
-  --pale-red-bg: #2a1517;    --pale-red-fg: #e0a3a3;
-  --pale-blue-bg: #0f2436;   --pale-blue-fg: #8ec8ea;
-  --pale-green-bg: #14251a;  --pale-green-fg: #93c9a0;
-  --pale-yellow-bg: #2a2214; --pale-yellow-fg: #d9b975;
-}
-
 /* ============================================================
    2026-10-19 商业极简：子页面装饰统一下线
    （首页 .hero-band 已单独处理；这里覆盖 tags/archive/about/forum 共用的 .deco-* 系统）
@@ -1770,10 +1342,6 @@ html[data-theme="midnight"] {
   display: flex; justify-content: space-between; align-items: center; gap: 14px;
   box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 40%, transparent);
 }
-html[data-theme="midnight"] .bezel-core {
-  box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 8%, transparent);
-}
-
 /* 项目卡编号下线：双层壳体已经足够承载视觉重量，外挂 01/02 反而脱节 */
 .band-tint .hm-proj { padding-left: 5px !important; }
 .band-tint .hm-proj::before { content: none !important; }
@@ -2054,26 +1622,6 @@ html[data-theme="midnight"] .bezel-core {
    ② 区块标题前置巨大序号（结构信息，不是装饰）
    ============================================================ */
 
-/* ① 项目区反相：直接翻转该区块内的语义 token，内部元素无需逐个改 */
-.band-tint {
-  --bg: #0B0B0B;
-  --bg-elevated: #161616;
-  --bg-deeper: #000000;
-  --text-bright: #FAFAFA;
-  --text: #E4E4E4;
-  --text-secondary: #A1A1A1;
-  --text-dim: #8A8A8A;
-  --text-muted: #7A7A7A;
-  --text-faint: #8F8F8F;   /* 原 #6B6B6B 在 #0B0B0B 上只有 3.69:1，不够 AA */
-  --border: #262626;
-  --border-strong: #3E3E3E;
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.55);
-  --pale-blue-bg: #10243a;
-  --pale-blue-fg: #9BC9EF;
-  background: var(--bg);
-  border-top: none;
-  border-bottom: none;
-}
 .band-tint .bezel-core {
   box-shadow: inset 0 1px 1px color-mix(in srgb, #fff 7%, transparent);
 }
@@ -2102,8 +1650,7 @@ body::after {
   background-size: 120px 120px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-[data-theme='paper'] body::after { opacity: 0.065; }
-[data-theme='midnight'] body::after { opacity: 0.045; }
+body::after { opacity: 0.065; }
 
 /* 极光光斑：直接铺在页面容器上，避免被容器 background 遮挡 */
 .home-page, .forum-page, .tags-page, .archive-page, .about-page {
@@ -2117,16 +1664,8 @@ body::after {
   opacity: 0.17;
   mix-blend-mode: multiply;
 }
-[data-theme='midnight'] body::after {
-  opacity: 0.09;
-  mix-blend-mode: screen;
-}
 /* 极光光斑加强：0.10 的深蓝在纸底上过于含蓄 */
-[data-theme='paper'] .home-page,
-[data-theme='paper'] .forum-page,
-[data-theme='paper'] .tags-page,
-[data-theme='paper'] .archive-page,
-[data-theme='paper'] .about-page {
+.home-page, .forum-page, .tags-page, .archive-page, .about-page {
   background-image:
     radial-gradient(1150px 680px at 86% -14%, rgba(47, 74, 115, 0.16), transparent 62%),
     radial-gradient(900px 600px at -8% 30%, rgba(160, 140, 100, 0.13), transparent 60%);
@@ -2167,33 +1706,18 @@ body::after {
 }
 .hm-list a .bezel-core::before { left: 15px; }
 
-/* ② 首屏深色段 */
-.hero-band {
-  --bg: #0B0B0B;
-  --bg-elevated: #161616;
-  --text-bright: #FAFAFA;
-  --text: #E4E4E4;
-  --text-secondary: #A1A1A1;
-  --text-dim: #8A8A8A;
-  --text-faint: #6B6B6B;
-  --border: #262626;
-  --border-strong: #3E3E3E;
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.55);
-  background: var(--bg);
-  border-bottom: none;
-}
 .hero-band::after { background: var(--border); }
 .hero .hero-name, .hero-name { color: var(--text-bright); }
 .hr-item, .hr-item:last-of-type { border-color: var(--border); }
 .hr-title { color: var(--text-secondary); }
-.hr-item:hover .hr-title { color: #FFF; }
+.hr-item:hover .hr-title { color: var(--text-bright); }
 .hero-topic {
-  background: color-mix(in srgb, #fff 5%, transparent);
-  border-color: color-mix(in srgb, #fff 11%, transparent);
+  background: color-mix(in srgb, var(--text-bright) 4%, transparent);
+  border-color: var(--border-strong);
   color: var(--text-secondary);
 }
-.hero-topic:hover { border-color: #FFF; color: #FFF; }
-.hero-visual { opacity: .16; color: #FFF; }
+.hero-topic:hover { border-color: var(--text-bright); color: var(--text-bright); }
+.hero-visual { opacity: .16; color: var(--text-bright); }
 .hg-rings circle { stroke: #FFF; opacity: .18; }
 .hg-spokes line { stroke: #FFF; opacity: .1; }
 .hg-nodes circle { fill: #FFF; opacity: .35; }
@@ -2208,107 +1732,14 @@ body::after {
    两个主题各自都有黑/白段落节奏，方向相反。
    ============================================================ */
 
-/* 对比段统一入口（原先散在 .hero-band / .band-tint 上） */
+/* 面板段统一入口：不再反相成深色，浅底上用一级底色 + 描边区分 */
 .hero-band, .band-tint {
-  --bg: #0B0B0B;
-  --bg-elevated: #161616;
-  --bg-deeper: #000000;
-  --text-bright: #FAFAFA;
-  --text: #E4E4E4;
-  --text-secondary: #A1A1A1;
-  --text-dim: #8A8A8A;
-  --text-muted: #7A7A7A;
-  --text-faint: #6B6B6B;
-  --border: #262626;
-  --border-strong: #3E3E3E;
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, .55);
-  --pale-blue-bg: #10243a;
-  --pale-blue-fg: #9BC9EF;
-  --ink: #FFFFFF;            /* 图形描边色（雷达图等） */
-  /* 首屏底图色团：深底上是「黑纸上的彩色晕染」，很淡 */
-  --wash-1: rgba(122, 146, 200, .16);
-  --wash-2: rgba(150, 162, 92, .13);
-  --wash-3: rgba(255, 246, 232, .06);
-  --halftone-ink: rgba(255, 255, 255, .16);
-  --halftone-blend: overlay;
-  background: var(--bg);
+  --ink: var(--text-bright);
+  background: var(--bg-elevated);
 }
-
 /* midnight：反相为浅色段 */
-[data-theme="midnight"] .hero-band,
-[data-theme="midnight"] .band-tint {
-  --wash-1: rgba(126, 150, 192, .40);
-  --wash-2: rgba(146, 158, 84, .32);
-  --wash-3: rgba(255, 246, 232, .58);
-  --halftone-ink: rgba(24, 22, 18, .18);
-  --halftone-blend: multiply;
-  --bg: #F4F4F2;
-  --bg-elevated: #FFFFFF;
-  --bg-deeper: #EDEDEA;
-  --text-bright: #0A0A0A;
-  --text: #262626;
-  --text-secondary: #4F4F4F;
-  --text-dim: #6F6F6F;
-  --text-muted: #7C7C7C;
-  --text-faint: #6E6E6E;   /* 原 #9A9A9A 在 #F4F4F2 上只有 ~2.9:1 */
-  --border: #E2E2DE;
-  --border-strong: #CFCFC9;
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, .07);
-  --pale-blue-bg: #E1F3FE;
-  --pale-blue-fg: #1F6C9F;
-  --ink: #0A0A0A;
-}
-
 /* terminal / solar 同样是深色站，首屏也需要反相成浅色，
    否则 #0B0B0B 的首屏压在 #0b0e14 的页面上，层次直接消失 */
-[data-theme="terminal"] .hero-band,
-[data-theme="terminal"] .band-tint {
-  --wash-1: rgba(126, 150, 192, .40);
-  --wash-2: rgba(146, 158, 84, .32);
-  --wash-3: rgba(255, 246, 232, .58);
-  --halftone-ink: rgba(24, 22, 18, .18);
-  --halftone-blend: multiply;
-  --bg: #F1F4F8;
-  --bg-elevated: #FFFFFF;
-  --bg-deeper: #E7EBF1;
-  --text-bright: #0A0C10;
-  --text: #24272D;
-  --text-secondary: #4C525C;
-  --text-dim: #626A75;
-  --text-muted: #6B7280;
-  --text-faint: #5F6771;
-  --border: #DDE2E9;
-  --border-strong: #C6CDD7;
-  --shadow-card: 0 2px 8px rgba(12, 20, 34, .08);
-  --pale-blue-bg: #E1EFFE;
-  --pale-blue-fg: #1F5C92;
-  --ink: #0A0C10;
-}
-
-[data-theme="solar"] .hero-band,
-[data-theme="solar"] .band-tint {
-  --wash-1: rgba(126, 150, 192, .40);
-  --wash-2: rgba(146, 158, 84, .32);
-  --wash-3: rgba(255, 246, 232, .58);
-  --halftone-ink: rgba(24, 22, 18, .18);
-  --halftone-blend: multiply;
-  --bg: #F7F2E7;
-  --bg-elevated: #FFFDF7;
-  --bg-deeper: #EFE8D9;
-  --text-bright: #16120B;
-  --text: #2A2419;
-  --text-secondary: #524936;
-  --text-dim: #675D49;
-  --text-muted: #6F6553;
-  --text-faint: #726855;
-  --border: #E4DAC6;
-  --border-strong: #CFC2A8;
-  --shadow-card: 0 2px 8px rgba(60, 44, 18, .08);
-  --pale-blue-bg: #F0E7D3;
-  --pale-blue-fg: #6B5327;
-  --ink: #16120B;
-}
-
 /* 图形与按钮改用 --ink，两个主题自动跟随 */
 .hero-band .hg-rings circle { stroke: var(--ink); opacity: .2; }
 .hero-band .hg-spokes line { stroke: var(--ink); opacity: .11; }
@@ -2388,9 +1819,6 @@ body::after {
 /* ② 反相段（首屏/项目区）的 --text-faint 在深底和浅底上都低于 4.5:1。
       只提升最弱一档，保持层级不被拉平。 */
 .hero-band, .band-tint { --text-faint: #7a7a7a; }
-[data-theme="midnight"] .hero-band,
-[data-theme="midnight"] .band-tint { --text-faint: #6f6f6f; }
-
 /* 首屏「最新」列表：栏目标题与日期是要读的元信息，不用最弱一档 */
 .hr-head { color: var(--text-dim); font-size: 0.6875rem; }
 .hr-date { color: var(--text-dim); }
@@ -2418,8 +1846,6 @@ body::after {
 
 /* ⑦ midnight 的 --text-faint (#7a7f88) 在 12px 元信息上只有 4.41:1，
       提一档到 4.9:1；反相段已在 ② 中单独处理，不受影响。 */
-[data-theme="midnight"] { --text-faint: #858b95; }
-
 /* ⑧ 分类页分布条：窄屏下名称列 128px 太宽，挤得条形只剩一半；
       收紧名称列与数字列，让长度编码重新可读。 */
 @media (max-width: 600px) {
@@ -2432,7 +1858,7 @@ body::after {
    主题: editorial（编辑排版） / swiss（瑞士网格） — 2026-11-02 新增
    两套都从 paper 派生：完整变量集 + 半径/字体覆盖，组件不用改。
    ============================================================ */
-html[data-theme="editorial"] {
+:root {
   color-scheme: light;
 
   --bg: #fbfaf6;
@@ -2543,210 +1969,39 @@ html[data-theme="editorial"] {
   --radius-xl: 6px;
 }
 
-html[data-theme="swiss"] {
-  color-scheme: light;
-
-  --bg: #fcfcfb;
-  --bg-elevated: #ffffff;
-  --bg-float: #ffffff;
-  --bg-deeper: #f1f1ef;
-  --bg-code: #f4f4f2;
-
-  --text: #161616;
-  --text-bright: #000000;
-  --text-dim: #585858;
-  --text-muted: #5c5c5c;
-  --text-faint: #666666;
-  --text-secondary: #4f4f4f;
-  --text-hint: #636363;
-
-  --accent: #111111;
-  --accent-hover: #000000;
-  --on-accent: #ffffff;
-  --accent-a2: rgba(17, 17, 17, 0.02);
-  --accent-a2: color-mix(in srgb, var(--accent) 2%, transparent);
-  --accent-a3: rgba(17, 17, 17, 0.03);
-  --accent-a3: color-mix(in srgb, var(--accent) 3%, transparent);
-  --accent-a4: rgba(17, 17, 17, 0.04);
-  --accent-a4: color-mix(in srgb, var(--accent) 4%, transparent);
-  --accent-a5: rgba(17, 17, 17, 0.05);
-  --accent-a5: color-mix(in srgb, var(--accent) 5%, transparent);
-  --accent-a6: rgba(17, 17, 17, 0.06);
-  --accent-a6: color-mix(in srgb, var(--accent) 6%, transparent);
-  --accent-a8: rgba(17, 17, 17, 0.08);
-  --accent-a8: color-mix(in srgb, var(--accent) 8%, transparent);
-  --accent-a10: rgba(17, 17, 17, 0.1);
-  --accent-a10: color-mix(in srgb, var(--accent) 10%, transparent);
-  --accent-a12: rgba(17, 17, 17, 0.16);
-  --accent-a12: color-mix(in srgb, var(--accent) 16%, transparent);
-  --accent-a15: rgba(17, 17, 17, 0.15);
-  --accent-a15: color-mix(in srgb, var(--accent) 15%, transparent);
-  --accent-a20: rgba(17, 17, 17, 0.2);
-  --accent-a20: color-mix(in srgb, var(--accent) 20%, transparent);
-  --accent-a25: rgba(17, 17, 17, 0.25);
-  --accent-a25: color-mix(in srgb, var(--accent) 25%, transparent);
-  --accent-a30: rgba(17, 17, 17, 0.3);
-  --accent-a30: color-mix(in srgb, var(--accent) 30%, transparent);
-  --accent-a50: rgba(17, 17, 17, 0.5);
-  --accent-a50: color-mix(in srgb, var(--accent) 50%, transparent);
-
-  --ok: #0a6b3f;
-  --ok-hover: #085a35;
-  --ok-a6: rgba(56, 158, 109, 0.06);
-  --ok-a8: rgba(56, 158, 109, 0.08);
-  --ok-a10: rgba(56, 158, 109, 0.1);
-  --ok-a12: rgba(56, 158, 109, 0.12);
-  --ok-a20: rgba(56, 158, 109, 0.2);
-  --ok-a30: rgba(56, 158, 109, 0.3);
-  --ok-a40: rgba(56, 158, 109, 0.4);
-
-  --warn: #7a5300;
-  --warn-a8: rgba(192, 138, 46, 0.08);
-  --warn-a20: rgba(192, 138, 46, 0.2);
-
-  --err: #c0261a;
-  --err-hover: #b24747;
-  --err-a6: rgba(198, 86, 86, 0.06);
-  --err-a8: rgba(198, 86, 86, 0.08);
-  --err-a12: rgba(198, 86, 86, 0.12);
-  --err-a15: rgba(198, 86, 86, 0.15);
-  --err-a20: rgba(198, 86, 86, 0.2);
-  --err-a25: rgba(198, 86, 86, 0.25);
-  --err-a30: rgba(198, 86, 86, 0.3);
-
-  --purple: #6f5fbe;
-
-  --border: #dedddb;
-  --border-strong: #c4c3c1;
-  --border-a30: rgba(0,0,0,0.08);
-  --border-a50: rgba(0,0,0,0.12);
-  --divider: #e8e7e5;
-
-  --overlay-a1: rgba(0, 0, 0, 0.01);
-  --overlay-a15: rgba(0, 0, 0, 0.015);
-  --overlay-a2: rgba(0, 0, 0, 0.02);
-  --overlay-a3: rgba(0, 0, 0, 0.03);
-  --overlay-a4: rgba(0, 0, 0, 0.04);
-  --overlay-a5: rgba(0, 0, 0, 0.05);
-  --overlay-a8: rgba(0, 0, 0, 0.08);
-  --overlay-a10: rgba(0, 0, 0, 0.1);
-  --overlay-a20: rgba(0, 0, 0, 0.2);
-
-  --text-secondary-a8: rgba(132, 138, 150, 0.08);
-  --text-secondary-a20: rgba(132, 138, 150, 0.2);
-
-  --navbar-bg: rgba(252,252,251,0.9);
-
-  --aurora-1: rgba(17, 17, 17, 0.05);
-  --aurora-2: rgba(17, 17, 17, 0.035);
-  --aurora-3: rgba(17, 17, 17, 0.03);
-  --scanline: rgba(0,0,0,0);
-  --shadow: rgba(0, 0, 0, 0.06);
-  --shadow-deep: rgba(0, 0, 0, 0.10);
-  --modal-overlay: rgba(0,0,0,0.40);
-  --white: #ffffff;
-
-  /* Swiss：全直角、无衬线、字体换成更中性的 Grotesk 取向 */
-  --font-sans: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  --font-display: var(--font-sans);
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
-}
-
 /* ===== 新增主题的浅色配套（代码高亮 / 颗粒 / 光斑） ===== */
-html[data-theme="editorial"] .code-block .shiki span,
-html[data-theme="swiss"] .code-block .shiki span { color: var(--shiki-light); }
+.code-block .shiki span { color: var(--shiki-light); }
 
-html[data-theme="editorial"] body::after,
-html[data-theme="swiss"] body::after { opacity: 0.05; mix-blend-mode: multiply; }
+body::after { opacity: 0.05; mix-blend-mode: multiply; }
 
-html[data-theme="editorial"] .home-page,
-html[data-theme="editorial"] .forum-page,
-html[data-theme="editorial"] .tags-page,
-html[data-theme="editorial"] .archive-page,
-html[data-theme="editorial"] .about-page {
+.home-page, .forum-page, .tags-page, .archive-page, .about-page {
   background-image:
     radial-gradient(1100px 660px at 86% -14%, rgba(156, 51, 39, 0.10), transparent 62%),
     radial-gradient(880px 580px at -8% 30%, rgba(176, 148, 96, 0.10), transparent 60%);
 }
 
-html[data-theme="swiss"] .home-page,
-html[data-theme="swiss"] .forum-page,
-html[data-theme="swiss"] .tags-page,
-html[data-theme="swiss"] .archive-page,
-html[data-theme="swiss"] .about-page {
-  background-image: none;
-}
+
 
 /* ===== thematic 细节：让两套新主题真的"有性格"（不碰组件结构） ===== */
 /* Editorial：标题走衬线，正文行高放松一点，读起来更像杂志 */
-html[data-theme="editorial"] h1,
-html[data-theme="editorial"] h2,
-html[data-theme="editorial"] h3,
-html[data-theme="editorial"] .tl-title,
-html[data-theme="editorial"] .ad-title,
-html[data-theme="editorial"] .section-title {
+h1,
+h2,
+h3,
+.tl-title,
+.ad-title,
+.section-title {
   font-family: var(--font-serif);
   font-weight: 600;
   letter-spacing: -0.012em;
 }
-html[data-theme="editorial"] body { line-height: 1.75; }
+body { line-height: 1.75; }
 
 /* Swiss：等宽数字 + 紧字距 + 更轻的阴影，直角靠线而不是靠投影分层 */
-html[data-theme="swiss"] body {
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.004em;
-}
-html[data-theme="swiss"] h1,
-html[data-theme="swiss"] h2,
-html[data-theme="swiss"] h3 {
-  font-weight: 700;
-  letter-spacing: -0.024em;
-}
-html[data-theme="swiss"] {
-  --shadow: rgba(0, 0, 0, 0.04);
-  --shadow-deep: rgba(0, 0, 0, 0.07);
-}
-
-/* ===== 反相段（首屏/项目区）按主题微调 =====
-   浅色主题本来就该保留黑段落节奏（paper 也是），这里只调"黑"的色相：
-   Editorial 用暖黑配暖纸，Swiss 用纯中性黑。 */
-html[data-theme="editorial"] .hero-band,
-html[data-theme="editorial"] .band-tint {
-  --wash-1: rgba(140, 112, 92, .18);
-  --wash-2: rgba(156, 130, 84, .13);
-  --wash-3: rgba(255, 244, 228, .06);
-  --bg: #14110f;
-  --bg-elevated: #1e1a17;
-  --bg-deeper: #0a0807;
-  --border: #2f2925;
-  --border-strong: #453d37;
-}
-html[data-theme="swiss"] .hero-band,
-html[data-theme="swiss"] .band-tint {
-  --wash-1: rgba(120, 130, 150, .10);
-  --wash-2: rgba(130, 135, 140, .08);
-  --wash-3: rgba(255, 255, 255, .05);
-  --bg: #0a0a0a;
-  --bg-elevated: #141414;
-  --bg-deeper: #000000;
-  --border: #242424;
-  --border-strong: #3a3a3a;
-}
-
 /* 标签底色（--pale-blue-*）按主题改配色：默认那抹冷蓝在两套新主题里都突兀 */
-html[data-theme="editorial"] {
+:root {
   --pale-blue-bg: color-mix(in srgb, var(--accent) 8%, #fff);
   --pale-blue-fg: #8d2f24;
 }
-html[data-theme="swiss"] {
-  --pale-blue-bg: #ededeb;
-  --pale-blue-fg: #111111;
-}
-
-
 /* ===== 反 AI 模板感：元信息不用「·」串（2026-11-02） ===== */
 .hero-role span + span {
   padding-left: 10px;
@@ -2913,27 +2168,16 @@ html[data-theme="swiss"] {
 
 /* 深底（默认首屏）：像黑纸上晕开的淡彩，浓度偏低但面积大 */
 .hero-art {
-  /* 深底不要霓虹：浓度压到很低、饱和度减半、混合改 soft-light，
-     读起来是「纸上略有色偏的墨」而不是发光 */
-  --s1: 22%; --s2: 15%; --s3: 9%;
-  --tex-ink: rgba(255, 255, 255, .12);
+  /* 全站浅底：色块可以放开一点，但仍然靠 multiply 压在纸上，不做发光 */
+  --s1: 62%; --s2: 48%; --s3: 66%;
+  --tex-ink: rgba(30, 26, 20, .20);
   --tex-pitch: 5px;
-  --tex-blend: soft-light;
+  --tex-blend: multiply;
   --tex-mask: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .72) 58%, transparent 98%);
   --wash-blur: 30px;
 }
 
 /* 反相成浅色的那几套：同一张画变成「米纸上的实色晕染」 */
-[data-theme="midnight"] .hero-art,
-[data-theme="terminal"] .hero-art,
-[data-theme="solar"] .hero-art {
-  /* 深色主题里这块面板是浅色，但整站是暗的——彩度要收，否则还是霓虹感 */
-  --s1: 52%; --s2: 40%; --s3: 58%;
-  --tex-ink: rgba(28, 24, 18, .20);
-  --tex-blend: multiply;
-  --wash-filter: blur(30px) saturate(.85);
-}
-
 .hero-wash {
   position: absolute; inset: -12% -6%;
   background-image:
@@ -2987,13 +2231,7 @@ html[data-theme="swiss"] {
 .hero-art[data-art="6"] {
   --tex-pitch: 4px;
   --tex-ink: rgba(255, 255, 255, .30);
-  --art-img: url(/hero/sample-dark.webp);
-}
-[data-theme="midnight"] .hero-art[data-art="6"],
-[data-theme="terminal"] .hero-art[data-art="6"],
-[data-theme="solar"] .hero-art[data-art="6"] {
   --art-img: url(/hero/sample-light.webp);
-  --tex-ink: rgba(30, 26, 20, .22);
 }
 .hero-art[data-art="6"] .hero-wash {
   inset: 0;
@@ -3007,10 +2245,8 @@ html[data-theme="swiss"] {
 
 /* 深底专用：3 极光 / 5 日落 这两套彩度最高，单独换成低饱和墨色，
    避免在近黑背景上读成霓虹灯 */
-.hero-art[data-art="3"] { --h1: #4a4663; --h2: #3d5250; --h3: #574a3e; }
-.hero-art[data-art="5"] { --h1: #5a4a38; --h2: #4a3640; --h3: #2e394d; }
-[data-theme="midnight"] .hero-art[data-art="3"], [data-theme="terminal"] .hero-art[data-art="3"], [data-theme="solar"] .hero-art[data-art="3"] { --h1: #7a5cc0; --h2: #2f9b9b; --h3: #c98b5a; }
-[data-theme="midnight"] .hero-art[data-art="5"], [data-theme="terminal"] .hero-art[data-art="5"], [data-theme="solar"] .hero-art[data-art="5"] { --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; }
+.hero-art[data-art="3"] { --h1: #7a5cc0; --h2: #2f9b9b; --h3: #c98b5a; --wash-blur: 40px; }
+.hero-art[data-art="5"] { --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; --wash-blur: 34px; }
 
 
 /* 窄屏收缝宽，避免内容区被挤太窄 */

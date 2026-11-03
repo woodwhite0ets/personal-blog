@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * 生成首屏位图样例（/public/hero/sample-{light,dark}.webp）
+ * 生成首屏位图样例（/public/hero/sample-light.webp）
  *
  * 做法：用 SVG 画几团高斯模糊的色块，再用 sharp 栅格化成 webp。
  * 好处是质感接近"印在纸上的水彩"、文件极小（约 7KB）；
- * 代价是深浅两套要各出一张（位图不会跟着主题换色）。
+ * 单主题后只需要一张。
  *
  * 用法：node Client/scripts/gen-hero-art.mjs
  * 依赖：借用 Server/node_modules 里的 sharp（Client 没装）
@@ -65,23 +65,7 @@ const light = svg({
   vig: '#ece3d3',
 })
 
-const dark = svg({
-  bg: '#08080a',
-  blobs: [
-    { c: '#2f4570', x: 420, y: 820, rx: 640, ry: 440, o: 0.95 },
-    { c: '#3a4a22', x: 1960, y: 260, rx: 600, ry: 480, o: 0.9 },
-    { c: '#1b2b44', x: 1240, y: 160, rx: 800, ry: 380, o: 0.9 },
-    { c: '#4a2f3f', x: 2320, y: 940, rx: 420, ry: 360, o: 0.6 },
-  ],
-  grain: 0.05,
-  vig: '#040405',
-})
-
-fs.mkdirSync(OUT_DIR, { recursive: true })
-for (const [name, s] of [
-  ['sample-light', light],
-  ['sample-dark', dark],
-]) {
+for (const [name, s] of [['sample-light', light]]) {
   const out = path.join(OUT_DIR, `${name}.webp`)
   await sharp(Buffer.from(s)).webp({ quality: 74, effort: 5 }).toFile(out)
   console.log(name, (fs.statSync(out).size / 1024).toFixed(0) + 'KB')
