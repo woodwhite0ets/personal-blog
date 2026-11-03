@@ -2225,12 +2225,23 @@ body::after {
   --pale-blue-bg: #10243a;
   --pale-blue-fg: #9BC9EF;
   --ink: #FFFFFF;            /* 图形描边色（雷达图等） */
+  /* 首屏底图色团：深底上是「黑纸上的彩色晕染」，很淡 */
+  --wash-1: rgba(122, 146, 200, .16);
+  --wash-2: rgba(150, 162, 92, .13);
+  --wash-3: rgba(255, 246, 232, .06);
+  --halftone-ink: rgba(255, 255, 255, .16);
+  --halftone-blend: overlay;
   background: var(--bg);
 }
 
 /* midnight：反相为浅色段 */
 [data-theme="midnight"] .hero-band,
 [data-theme="midnight"] .band-tint {
+  --wash-1: rgba(126, 150, 192, .40);
+  --wash-2: rgba(146, 158, 84, .32);
+  --wash-3: rgba(255, 246, 232, .58);
+  --halftone-ink: rgba(24, 22, 18, .18);
+  --halftone-blend: multiply;
   --bg: #F4F4F2;
   --bg-elevated: #FFFFFF;
   --bg-deeper: #EDEDEA;
@@ -2252,6 +2263,11 @@ body::after {
    否则 #0B0B0B 的首屏压在 #0b0e14 的页面上，层次直接消失 */
 [data-theme="terminal"] .hero-band,
 [data-theme="terminal"] .band-tint {
+  --wash-1: rgba(126, 150, 192, .40);
+  --wash-2: rgba(146, 158, 84, .32);
+  --wash-3: rgba(255, 246, 232, .58);
+  --halftone-ink: rgba(24, 22, 18, .18);
+  --halftone-blend: multiply;
   --bg: #F1F4F8;
   --bg-elevated: #FFFFFF;
   --bg-deeper: #E7EBF1;
@@ -2271,6 +2287,11 @@ body::after {
 
 [data-theme="solar"] .hero-band,
 [data-theme="solar"] .band-tint {
+  --wash-1: rgba(126, 150, 192, .40);
+  --wash-2: rgba(146, 158, 84, .32);
+  --wash-3: rgba(255, 246, 232, .58);
+  --halftone-ink: rgba(24, 22, 18, .18);
+  --halftone-blend: multiply;
   --bg: #F7F2E7;
   --bg-elevated: #FFFDF7;
   --bg-deeper: #EFE8D9;
@@ -2694,6 +2715,9 @@ html[data-theme="swiss"] {
    Editorial 用暖黑配暖纸，Swiss 用纯中性黑。 */
 html[data-theme="editorial"] .hero-band,
 html[data-theme="editorial"] .band-tint {
+  --wash-1: rgba(140, 112, 92, .18);
+  --wash-2: rgba(156, 130, 84, .13);
+  --wash-3: rgba(255, 244, 228, .06);
   --bg: #14110f;
   --bg-elevated: #1e1a17;
   --bg-deeper: #0a0807;
@@ -2702,6 +2726,9 @@ html[data-theme="editorial"] .band-tint {
 }
 html[data-theme="swiss"] .hero-band,
 html[data-theme="swiss"] .band-tint {
+  --wash-1: rgba(120, 130, 150, .10);
+  --wash-2: rgba(130, 135, 140, .08);
+  --wash-3: rgba(255, 255, 255, .05);
   --bg: #0a0a0a;
   --bg-elevated: #141414;
   --bg-deeper: #000000;
@@ -2864,22 +2891,6 @@ html[data-theme="swiss"] {
 .hm-bar-num { color: var(--text-dim); font-variant-numeric: tabular-nums; }
 
 
-/* ===== 首屏舞台质感：点阵网格 + 暗角（2026-11-02） =====
-   参考 teamorouter /enterprise 的做法：4px 点线当标尺、椭圆遮罩做出舞台焦点、
-   边缘压暗把注意力收回中间。用 --ink 混合，六套主题（含反相为浅色的那几套）都成立。 */
-.hero-stage {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background-color: #0b0b0b;
-  background-color: var(--bg);
-  background-image:
-    radial-gradient(circle, color-mix(in srgb, var(--ink) 20%, transparent) 1px, transparent 1.3px),
-    radial-gradient(circle, color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1.2px);
-  background-size: 96px 96px, 24px 24px;
-  background-position: 0 0, 0 0;
-  mask-image: radial-gradient(ellipse 82% 74% at 46% 34%, #000 8%, transparent 74%);
-  -webkit-mask-image: radial-gradient(ellipse 82% 74% at 46% 34%, #000 8%, transparent 74%);
-  opacity: .8;
-}
 
 .hero-vignette {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
@@ -2888,4 +2899,30 @@ html[data-theme="swiss"] {
     transparent 30%,
     color-mix(in srgb, var(--bg-deeper) 82%, transparent) 92%
   );
+}
+
+
+/* ===== 首屏底图：水彩块 + 半调网点（2026-11-02 第二版） =====
+   参考的是那种「印在纸上的彩色晕染」：几团柔和的色块 + 细密网点（halftone）+ 暗角。
+   不用位图，全部用渐变 + 网点叠出来，六套主题靠 --wash-* / --ink 自适应。 */
+.hero-wash {
+  position: absolute; inset: -8% -4%; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(ellipse 52% 58% at 16% 68%, var(--wash-1), transparent 68%),
+    radial-gradient(ellipse 44% 62% at 74% 34%, var(--wash-2), transparent 66%),
+    radial-gradient(ellipse 62% 54% at 52% 16%, var(--wash-3), transparent 72%),
+    radial-gradient(ellipse 40% 46% at 92% 78%, var(--wash-2), transparent 70%);
+  filter: blur(26px);
+  transform: translateZ(0);
+  opacity: .9;
+}
+
+.hero-halftone {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(circle, var(--halftone-ink) 1px, transparent 1.35px);
+  background-size: 5px 5px;
+  opacity: .55;
+  mix-blend-mode: var(--halftone-blend, overlay);
+  mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .72) 58%, transparent 98%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .72) 58%, transparent 98%);
 }

@@ -29,8 +29,9 @@
 
     <!-- ====== 首屏 Hero 带（非对称：左文 + 右信息栏）====== -->
     <section class="hero-band">
-      <!-- 技术图纸式的点阵 + 暗角（参考 teamorouter enterprise 的舞台质感） -->
-      <div class="hero-stage" aria-hidden="true"></div>
+      <!-- 首屏底图：手绘水彩的色块 + 半调网点（risograph 印刷质感） -->
+      <div class="hero-wash" aria-hidden="true"></div>
+      <div class="hero-halftone" aria-hidden="true"></div>
       <div class="hero-vignette" aria-hidden="true"></div>
       <div class="hero-in">
         <div class="hero-text">
