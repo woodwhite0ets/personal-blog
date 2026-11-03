@@ -3027,3 +3027,13 @@ html[data-theme="swiss"] {
 @media (max-width: 640px) {
   .hero-band { margin: 10px 12px 0; }
 }
+
+/* 与首屏一致：第二条深色带也左右留缝、无圆角，跟随相同的横距 */
+.band-tint {
+  margin: 16px 24px 0;
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 9%, transparent);
+}
+@media (max-width: 640px) {
+  .band-tint { margin: 10px 12px 0; }
+}
