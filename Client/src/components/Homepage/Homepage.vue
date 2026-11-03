@@ -140,98 +140,28 @@
           <WorkspaceSnippet />
         </section>
 
-        <div class="hm-sec hm-sec-last">
-          <h2 class="hm-h">项目</h2>
-          <div class="hm-2up">
-            <router-link to="/projects/charging-map" class="hm-proj">
-              <div class="bezel-core">
-      <svg class="proj-svg" viewBox="0 0 420 150" aria-hidden="true" focusable="false">
-        <g class="pv-grid">
-          <path d="M0 30 H420 M0 60 H420 M0 90 H420 M0 120 H420" />
-          <path d="M60 0 V150 M140 0 V150 M220 0 V150 M300 0 V150 M380 0 V150" />
-        </g>
-        <g class="pv-dots">
-          <circle cx="196" cy="94" r="2.6" />
-          <circle cx="67" cy="45" r="1.8" />
-          <circle cx="246" cy="81" r="1.8" />
-          <circle cx="216" cy="90" r="1.8" />
-          <circle cx="300" cy="85" r="1.8" />
-          <circle cx="116" cy="88" r="1.8" />
-          <circle cx="190" cy="92" r="1.8" />
-          <circle cx="277" cy="95" r="2.6" />
-          <circle cx="106" cy="48" r="1.8" />
-          <circle cx="222" cy="100" r="1.8" />
-          <circle cx="215" cy="28" r="1.8" />
-          <circle cx="153" cy="81" r="1.8" />
-          <circle cx="229" cy="87" r="1.8" />
-          <circle cx="238" cy="23" r="1.8" />
-          <circle cx="286" cy="60" r="2.6" />
-          <circle cx="203" cy="77" r="1.8" />
-          <circle cx="72" cy="76" r="1.8" />
-          <circle cx="300" cy="86" r="1.8" />
-          <circle cx="173" cy="74" r="1.8" />
-          <circle cx="363" cy="73" r="1.8" />
-          <circle cx="216" cy="23" r="1.8" />
-          <circle cx="154" cy="87" r="2.6" />
-          <circle cx="349" cy="31" r="1.8" />
-          <circle cx="254" cy="72" r="1.8" />
-          <circle cx="230" cy="83" r="1.8" />
-          <circle cx="194" cy="72" r="1.8" />
-          <circle cx="365" cy="129" r="1.8" />
-          <circle cx="210" cy="69" r="1.8" />
-          <circle cx="318" cy="75" r="2.6" />
-          <circle cx="202" cy="117" r="1.8" />
-          <circle cx="174" cy="56" r="1.8" />
-          <circle cx="266" cy="86" r="1.8" />
-          <circle cx="195" cy="78" r="1.8" />
-          <circle cx="173" cy="77" r="1.8" />
-        </g>
-        <g class="pv-label">
-          <text x="16" y="134">乐清市 · 34 站点</text>
-          <text x="404" y="134" text-anchor="end" class="pv-sub">PostGIS</text>
-        </g>
-      </svg>
-                <h3 class="hm-proj-title">乐清市充电桩分布图</h3>
-                <p class="hm-text">充电桩空间分布可视化，从 SQLite 升级到 Docker + PostGIS 架构。</p>
-                <span class="hm-tag">PostGIS</span><span class="hm-tag">Docker</span>
-              </div>
-            </router-link>
-            <router-link to="/projects/workstation" class="hm-proj">
-              <div class="bezel-core">
-      <svg class="proj-svg" viewBox="0 0 420 150" aria-hidden="true" focusable="false">
-        <g class="pv-line">
-          <rect x="150" y="20" width="120" height="110" rx="10" />
-          <path d="M150 50 H270 M150 80 H270 M150 110 H270" />
-          <rect x="18" y="42" width="70" height="26" rx="5" />
-          <rect x="18" y="84" width="70" height="26" rx="5" />
-          <rect x="332" y="42" width="70" height="26" rx="5" />
-          <rect x="332" y="84" width="70" height="26" rx="5" />
-          <path d="M88 55 H146 M88 97 H146 M274 55 H328 M274 97 H328" />
-        </g>
-        <g class="pv-dot">
-          <circle cx="165" cy="35" r="2.5" />
-          <circle cx="88" cy="55" r="2.5" />
-          <circle cx="328" cy="97" r="2.5" />
-        </g>
-        <g class="pv-label">
-          <text x="210" y="72" text-anchor="middle">工作站</text>
-          <text x="210" y="90" text-anchor="middle" class="pv-sub">24 核 · 62G · Ubuntu</text>
-          <text x="53" y="59" text-anchor="middle">模型</text>
-          <text x="53" y="101" text-anchor="middle">检索</text>
-          <text x="367" y="59" text-anchor="middle">Git / CI</text>
-          <text x="367" y="101" text-anchor="middle">网关</text>
-        </g>
-      </svg>
-                <h3 class="hm-proj-title">个人 AI 工作站</h3>
-                <p class="hm-text">单机托管本地模型、检索服务与自建 CI，systemd 定时器承担日常巡检与同步。</p>
-                <span class="hm-tag">Ubuntu</span><span class="hm-tag">systemd</span>
-              </div>
-            </router-link>
-          </div>
-        </div>
-
       </div>
     </section>
+
+    <!-- 工具库精选（按用途收的 AI 工具，只列我自己在用的） -->
+    <div class="hm" v-if="featuredTools.length">
+      <section class="hm-sec">
+        <div class="tl-snip-head">
+          <h2 class="hm-h">工具库</h2>
+          <router-link class="tl-snip-more" to="/tools">全部 {{ stats.tools || '' }} 个</router-link>
+        </div>
+        <p class="tl-snip-sub">按用途收的 AI 工具，这里只列我自己每天在用的。</p>
+        <ul class="tl-snip-grid">
+          <li v-for="t in featuredTools" :key="t.slug">
+            <router-link :to="`/tools/${t.slug}`" class="tl-snip-card">
+              <span class="tl-snip-name">{{ t.name }}</span>
+              <span class="tl-snip-desc">{{ t.tagline_zh || t.desc_en }}</span>
+              <span class="tl-snip-meta">{{ t.category_label }}</span>
+            </router-link>
+          </li>
+        </ul>
+      </section>
+    </div>
 
     <div class="hm">
       <!-- 关于 -->
@@ -258,50 +188,8 @@
         </div>
       </section>
 
-      <!-- 置顶 -->
-      <section class="hm-sec" v-if="pinnedPost">
-        <h2 class="hm-h">置顶</h2>
-        <router-link :to="`/post/${pinnedPost.slug || pinnedPost.id}`" class="hm-feature">
-          <div class="bezel-core">
-            <h3 class="hm-feature-title">{{ pinnedPost.title }}</h3>
-            <p class="hm-feature-excerpt">{{ cleanExcerpt(pinnedPost.excerpt) }}</p>
-            <p class="hm-meta"><time>{{ pinnedPost.date }}</time><span class="meta-minor"><span>{{ pinnedPost.read_time }}</span><span>{{ pinnedPost.views || 0 }} 次</span></span></p>
-          </div>
-        </router-link>
-      </section>
     </div>
 
-    <div class="hm">
-      <!-- 最近 / 热门 -->
-      <section class="hm-sec hm-sec-last">
-        <div class="hm-2up">
-          <div class="hm-sec--pair">
-            <h2 class="hm-h">最近更新</h2>
-            <ul class="hm-list">
-              <li v-for="p in posts.slice(0, 4)" :key="p.id">
-                <router-link :to="`/post/${p.slug || p.id}`">
-                  <div class="bezel-core">
-                    <span class="hm-li-t">{{ p.title }}</span><span class="hm-li-d">{{ p.date?.slice(5) }}</span>
-                  </div>
-                </router-link>
-              </li>
-            </ul>
-          </div>
-          <div class="hm-sec--pair">
-            <h2 class="hm-h">热门</h2>
-            <ul class="hm-list">
-              <li v-for="p in popular" :key="p.id">
-                <router-link :to="`/post/${p.slug || p.id}`">
-                  <div class="bezel-core">
-                    <span class="hm-li-t">{{ p.title }}</span><span class="hm-li-d">{{ p.views }}</span>
-                  </div>
-                </router-link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-    </div>
     <SiteFooter command='echo "© 2026 woodwhite@blog"' />
   </div>
 </template>
@@ -325,16 +213,15 @@ const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
 
 // 站点统计 + 热门文章
 const stats = ref({ posts: 0, views: 0, comments: 0, tags: 0, byMonth: [] })
+const featuredTools = ref([])
 const popular = ref([])
 const maxMonth = computed(() => Math.max(1, ...(stats.value.byMonth || []).map(m => m.c)))
 async function loadExtra() {
   try {
-    const [a, b] = await Promise.all([
-      fetch('/api/stats').then(r => r.ok ? r.json() : null),
-      fetch('/api/posts?page=1&status=published&sort=popular').then(r => r.ok ? r.json() : null),
-    ])
+    const a = await fetch('/api/stats').then(r => r.ok ? r.json() : null)
     if (a) stats.value = a
-    if (b) popular.value = (b.posts || []).slice(0, 3)
+    const c = await fetch('/api/ai-tools?mode=featured&limit=6').then(r => r.ok ? r.json() : null)
+    if (c) featuredTools.value = (c.items || []).slice(0, 6)
   } catch {}
 }
 
