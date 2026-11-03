@@ -25,14 +25,14 @@
   </template>
 </SiteNav>
 
-    <span class="edge-label" aria-hidden="true">woodwhite@blog · 2026</span>
+    <span class="edge-label" aria-hidden="true">2026</span>
 
     <!-- ====== 首屏 Hero 带（非对称：左文 + 右信息栏）====== -->
     <section class="hero-band">
       <div class="hero-in">
         <div class="hero-text">
           <h1 class="hero-name" aria-label="WoodWhite"><span>W</span><span>o</span><span>o</span><span>d</span><span>W</span><span>h</span><span>i</span><span>t</span><span>e</span></h1>
-          <p class="hero-role">应届毕业生 · Web 全栈开发</p>
+          <p class="hero-role"><span>应届毕业生</span><span>Web 全栈开发</span></p>
           <p class="hero-statement">写代码、做系统、记录踩过的坑。这里是我关于全栈开发、系统架构与开源实践的手记。</p>
           <div class="hero-topics" v-if="topTags.length">
             <router-link
@@ -47,9 +47,9 @@
           </div>
           <dl class="hero-rail">
             <div><dt>现在</dt><dd>分布式系统与 AI 工程化</dd></div>
-            <div><dt>已发布</dt><dd>{{ totalPublished }} 篇</dd></div>
-            <div><dt>阅读</dt><dd>{{ stats.views }}</dd></div>
-            <div><dt>分类</dt><dd>{{ tags.length }}</dd></div>
+            <div><dt>已发布</dt><dd>{{ loading ? '—' : `${totalPublished} 篇` }}</dd></div>
+            <div><dt>阅读</dt><dd>{{ loading ? '—' : stats.views }}</dd></div>
+            <div><dt>分类</dt><dd>{{ loading ? '—' : tags.length }}</dd></div>
           </dl>
         </div>
         <aside class="hero-recent" v-if="posts.length">
@@ -62,6 +62,20 @@
             <span class="hr-date">{{ (p.date || '').slice(5) }}</span>
           </router-link>
           <router-link to="/forum" class="hr-more">全部 {{ totalPublished }} 篇</router-link>
+        </aside>
+
+        <!-- 加载/失败时也要有东西占位，别让整列凭空消失 -->
+        <aside v-else-if="loading" class="hero-recent" aria-hidden="true">
+          <div class="hr-head">最新</div>
+          <div v-for="n in 3" :key="n" class="hr-item hr-skeleton">
+            <span class="hr-sk-bar"></span>
+            <span class="hr-sk-bar short"></span>
+          </div>
+        </aside>
+        <aside v-else-if="error" class="hero-recent">
+          <div class="hr-head">最新</div>
+          <p class="hr-error">文章没加载出来。</p>
+          <button type="button" class="hr-retry" @click="refresh">重试</button>
         </aside>
         <div class="hero-visual">
 <svg class="hero-graph" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
@@ -169,7 +183,7 @@
       </svg>
                 <h3 class="hm-proj-title">乐清市充电桩分布图</h3>
                 <p class="hm-text">充电桩空间分布可视化，从 SQLite 升级到 Docker + PostGIS 架构。</p>
-                <span class="hm-tag">PostGIS · Docker</span>
+                <span class="hm-tag">PostGIS</span><span class="hm-tag">Docker</span>
               </div>
             </router-link>
             <router-link to="/projects/workstation" class="hm-proj">
@@ -200,7 +214,7 @@
       </svg>
                 <h3 class="hm-proj-title">个人 AI 工作站</h3>
                 <p class="hm-text">单机托管本地模型、检索服务与自建 CI，systemd 定时器承担日常巡检与同步。</p>
-                <span class="hm-tag">Ubuntu · systemd</span>
+                <span class="hm-tag">Ubuntu</span><span class="hm-tag">systemd</span>
               </div>
             </router-link>
           </div>
@@ -236,7 +250,7 @@
           <div class="bezel-core">
             <h3 class="hm-feature-title">{{ pinnedPost.title }}</h3>
             <p class="hm-feature-excerpt">{{ cleanExcerpt(pinnedPost.excerpt) }}</p>
-            <p class="hm-meta"><time>{{ pinnedPost.date }}</time><span class="meta-minor">{{ pinnedPost.read_time }} · {{ pinnedPost.views || 0 }} 次</span></p>
+            <p class="hm-meta"><time>{{ pinnedPost.date }}</time><span class="meta-minor"><span>{{ pinnedPost.read_time }}</span><span>{{ pinnedPost.views || 0 }} 次</span></span></p>
           </div>
         </router-link>
       </section>
@@ -315,7 +329,7 @@ const {
   tags, contributors, totalPublished, sortMode,
   pinnedPost, hasMore, activeTag, activeSearch,
   clearTagLink, clearSearchLink,
-  switchSort, loadMore, fetchPosts,
+  switchSort, loadMore, fetchPosts, refresh,
 } = usePosts()
 
 // 摘要纯文本化（数据库存量 excerpt 含 markdown 标记，渲染时剥离）

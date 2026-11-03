@@ -1,24 +1,35 @@
 <template>
   <div class="theme-switcher" ref="root">
-    <button class="theme-btn" @click="open = !open" title="switch theme">
+    <button
+      class="theme-btn"
+      type="button"
+      title="切换主题"
+      aria-label="切换主题"
+      aria-haspopup="menu"
+      :aria-expanded="open"
+      @click="open = !open"
+    >
       <svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true">
         <circle cx="9" cy="9" r="6.6" stroke="currentColor" stroke-width="1.4"/>
         <path d="M9 2.4a6.6 6.6 0 0 1 0 13.2z" fill="currentColor" opacity="0.9"/>
       </svg>
     </button>
-    <div v-if="open" class="theme-dropdown">
-      <div class="theme-dropdown-title">theme</div>
+    <div v-if="open" class="theme-dropdown" role="menu" aria-label="主题">
+      <div class="theme-dropdown-title" aria-hidden="true">主题</div>
       <button
         v-for="t in themes"
         :key="t.id"
         class="theme-option"
         :class="{ active: t.id === current }"
+        type="button"
+        role="menuitemradio"
+        :aria-checked="t.id === current"
         @click="pick(t.id)"
       >
         <span class="theme-swatch" :style="{ background: swatchColor(t.id) }"></span>
         <span class="theme-name">{{ t.label }}</span>
         <span class="theme-hint">{{ t.hint }}</span>
-        <span v-if="t.id === current" class="theme-check">✓</span>
+        <span v-if="t.id === current" class="theme-check" aria-hidden="true">✓</span>
       </button>
     </div>
   </div>

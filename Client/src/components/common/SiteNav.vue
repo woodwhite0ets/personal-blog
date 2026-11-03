@@ -7,6 +7,8 @@
       <nav class="nav-links" :class="{ open: navOpen }" @click="navOpen = false">
         <router-link v-for="l in navLinks" :key="l.to" :to="l.to"> {{ l.label }}
         </router-link>
+        <router-link v-if="!isLoggedIn" to="/login" class="nav-drawer-auth">登录</router-link>
+        <router-link v-else :to="`/user/${currentUser?.username}`" class="nav-drawer-auth">我的页面</router-link>
       </nav>
       <div class="nav-actions">
         <ThemeSwitcher />
@@ -169,11 +171,15 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   .btn-login { padding: 7px 12px; font-size: 13px; }
 }
 
-/* 320–380：搜索图标让位（:deep 才能作用到父组件投递的 slot 内容），
-   再收紧内边距，保证 320px 下汉堡按钮仍在视口内。 */
+/* 320–380：超窄屏保住搜索（入口一旦藏掉手机上就搜不了文章），
+   改把登录按钮挪进抽屉；同时收紧内边距与品牌字号。 */
 @media (max-width: 380px) {
-  .navbar-inner { padding: 0 12px; gap: 8px; }
-  .brand-text { font-size: 17px; }
-  .nav-actions :deep(.search-wrap) { display: none; }
+  .navbar-inner { padding: 0 10px; gap: 6px; }
+  .brand-text { font-size: 16px; }
+  .btn-login { display: none; }
+}
+.nav-links .nav-drawer-auth { display: none; }
+@media (max-width: 768px) {
+  .nav-links .nav-drawer-auth { display: block; font-size: 14px; padding: 14px 6px 0; color: var(--accent); }
 }
 </style>

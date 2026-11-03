@@ -2127,7 +2127,7 @@ html[data-theme="midnight"] .bezel-core {
   --text-secondary: #A1A1A1;
   --text-dim: #8A8A8A;
   --text-muted: #7A7A7A;
-  --text-faint: #6B6B6B;
+  --text-faint: #8F8F8F;   /* 原 #6B6B6B 在 #0B0B0B 上只有 3.69:1，不够 AA */
   --border: #262626;
   --border-strong: #3E3E3E;
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.55);
@@ -2311,13 +2311,53 @@ body::after {
   --text-secondary: #4F4F4F;
   --text-dim: #6F6F6F;
   --text-muted: #7C7C7C;
-  --text-faint: #9A9A9A;
+  --text-faint: #6E6E6E;   /* 原 #9A9A9A 在 #F4F4F2 上只有 ~2.9:1 */
   --border: #E2E2DE;
   --border-strong: #CFCFC9;
   --shadow-card: 0 2px 8px rgba(0, 0, 0, .07);
   --pale-blue-bg: #E1F3FE;
   --pale-blue-fg: #1F6C9F;
   --ink: #0A0A0A;
+}
+
+/* terminal / solar 同样是深色站，首屏也需要反相成浅色，
+   否则 #0B0B0B 的首屏压在 #0b0e14 的页面上，层次直接消失 */
+[data-theme="terminal"] .hero-band,
+[data-theme="terminal"] .band-tint {
+  --bg: #F1F4F8;
+  --bg-elevated: #FFFFFF;
+  --bg-deeper: #E7EBF1;
+  --text-bright: #0A0C10;
+  --text: #24272D;
+  --text-secondary: #4C525C;
+  --text-dim: #626A75;
+  --text-muted: #6B7280;
+  --text-faint: #5F6771;
+  --border: #DDE2E9;
+  --border-strong: #C6CDD7;
+  --shadow-card: 0 2px 8px rgba(12, 20, 34, .08);
+  --pale-blue-bg: #E1EFFE;
+  --pale-blue-fg: #1F5C92;
+  --ink: #0A0C10;
+}
+
+[data-theme="solar"] .hero-band,
+[data-theme="solar"] .band-tint {
+  --bg: #F7F2E7;
+  --bg-elevated: #FFFDF7;
+  --bg-deeper: #EFE8D9;
+  --text-bright: #16120B;
+  --text: #2A2419;
+  --text-secondary: #524936;
+  --text-dim: #675D49;
+  --text-muted: #6F6553;
+  --text-faint: #726855;
+  --border: #E4DAC6;
+  --border-strong: #CFC2A8;
+  --shadow-card: 0 2px 8px rgba(60, 44, 18, .08);
+  --pale-blue-bg: #F0E7D3;
+  --pale-blue-fg: #6B5327;
+  --ink: #16120B;
 }
 
 /* 图形与按钮改用 --ink，两个主题自动跟随 */
@@ -2748,4 +2788,48 @@ html[data-theme="editorial"] {
 html[data-theme="swiss"] {
   --pale-blue-bg: #ededeb;
   --pale-blue-fg: #111111;
+}
+
+
+/* ===== 反 AI 模板感：元信息不用「·」串（2026-11-02） ===== */
+.hero-role span + span {
+  padding-left: 10px;
+  border-left: 1px solid var(--border-strong);
+}
+.meta-minor { display: inline-flex; gap: 10px; }
+.hm-tag + .hm-tag { margin-left: 10px; }
+
+/* 首屏「最新」列：加载骨架与失败态 */
+.hr-skeleton { pointer-events: none; }
+.hr-sk-bar {
+  display: block; height: 12px; border-radius: 3px;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+}
+.hr-sk-bar.short { width: 44%; height: 9px; margin-top: 9px; }
+.hr-error { margin: 12px 0; font-size: 13px; color: var(--text-dim); }
+.hr-retry {
+  font: inherit; font-size: 12px; padding: 5px 12px; border-radius: 6px;
+  border: 1px solid var(--border-strong); background: none; color: var(--text); cursor: pointer;
+}
+.hr-retry:hover { border-color: var(--accent); color: var(--accent); }
+.hr-retry:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* 触控目标：移动端把小图标按钮放到 40px（原来 34px） */
+@media (max-width: 768px) {
+  .nav-toggle, .theme-btn, .btn-search { width: 40px; height: 40px; }
+}
+
+/* 首屏视差只在桌面启用：中低端手机关掉，省一帧滚动开销 */
+@media (max-width: 980px) {
+  .hero-text { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* 320–400 窄屏：hero 标题字距/字号再收一档，
+   否则 white-space:nowrap 的 "WoodWhite" 会在 320px 被裁掉（实测溢出） */
+@media (max-width: 400px) {
+  .hero-name {
+    font-size: clamp(38px, 12.5vw, 58px);
+    letter-spacing: -0.045em;
+    margin-left: -0.02em;
+  }
 }
