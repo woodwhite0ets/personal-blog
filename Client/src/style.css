@@ -1847,7 +1847,7 @@ body::after {
   --text-secondary-a8: rgba(132, 138, 150, 0.08);
   --text-secondary-a20: rgba(132, 138, 150, 0.2);
 
-  --navbar-bg: rgba(251,250,246,0.88);
+  --navbar-bg: rgba(253,251,247,0.58);
 
   --aurora-1: rgba(184, 69, 47, 0.10);
   --aurora-2: rgba(176, 148, 96, 0.12);
@@ -2884,7 +2884,7 @@ html {
 /* ===== 内页顶部水彩气团（独立图层，2026-11-04 v2）=====
    放在页面根节点里、内容之下：页面根有不透明底色，所以气团必须是它的子元素。 */
 .forum-page, .archive-page, .tags-page, .notes-page, .now-page,
-.pl-page, .tl-page, .ad-page, .td-page { position: relative; }
+.pl-page, .tl-page, .ad-page, .td-page, .about-page, .post-detail-page { position: relative; }
 
 .page-wash {
   position: absolute; inset: 0 0 auto 0;
@@ -2905,10 +2905,14 @@ html {
 .now-page     { --page-wash-a: rgba(47,125,122,.46);  --page-wash-b: rgba(160,96,47,.40); }
 .pl-page      { --page-wash-a: rgba(160,96,47,.50);   --page-wash-b: rgba(74,111,158,.42); }
 .notes-page   { --page-wash-a: rgba(107,79,158,.44);  --page-wash-b: rgba(109,124,63,.36); }
+.about-page   { --page-wash-a: rgba(160,96,47,.42);   --page-wash-b: rgba(47,125,122,.40); }
+.post-detail-page { --page-wash-a: rgba(109,124,63,.34); --page-wash-b: rgba(74,111,158,.30); }
 
 /* 内容压在气团之上 */
 .tl-main, .ad-main, .tags-main, .archive-main, .notes-main,
 .now-main, .pl-main, .td-main, .forum-main, .ed-hero, .archive-header,
-.tags-header, .notes-head, .now-head, .pl-head, .tl-head, .ad-head {
+.tags-header, .notes-head, .now-head, .pl-head, .tl-head, .ad-head,
+.about-page > main, .about-page > .about-hero,
+.post-detail-page > main, .post-detail-page > .post-article {
   position: relative; z-index: 1;
 }
