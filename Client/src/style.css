@@ -2977,3 +2977,25 @@ html[data-theme="swiss"] {
 }
 
 .hero-art[data-art="5"] { --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; --wash-blur: 34px; }
+
+
+/* ---- 第 6 套：位图样例（自己画的 SVG 渲染成 webp，浅/深各一张） ---- */
+.hero-art[data-art="6"] {
+  --tex-pitch: 4px;
+  --tex-ink: rgba(255, 255, 255, .30);
+  --art-img: url(/hero/sample-dark.webp);
+}
+[data-theme="midnight"] .hero-art[data-art="6"],
+[data-theme="terminal"] .hero-art[data-art="6"],
+[data-theme="solar"] .hero-art[data-art="6"] {
+  --art-img: url(/hero/sample-light.webp);
+  --tex-ink: rgba(30, 26, 20, .22);
+}
+.hero-art[data-art="6"] .hero-wash {
+  inset: 0;
+  background-image: var(--art-img);
+  background-size: cover;
+  background-position: center;
+  filter: none;
+  opacity: .95;
+}

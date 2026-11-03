@@ -368,7 +368,7 @@ function scrollToPosts() {
 }
 
 // ====== 首屏底图：每次刷新随机一套（?art=1..5 可指定）======
-const ART_COUNT = 5
+const ART_COUNT = 6
 const ART_KEY = 'blog-hero-art'
 const heroArt = ref(1)
 function pickHeroArt() {
