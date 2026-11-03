@@ -33,7 +33,7 @@
             v-for="c in categories"
             :key="c.key"
             type="button"
-            class="tl-cat"
+            class="tl-cat" :data-cat="c.key"
             :class="{ active: category === c.key }"
             :aria-pressed="category === c.key"
             @click="pickCategory(c.key)"
@@ -78,7 +78,7 @@
       </div>
 
       <ul v-else class="tl-grid" :class="{ 'is-first': animateGrid }">
-        <li v-for="(it, idx) in items" :key="it.slug" class="tl-card" :style="{ '--i': idx }">
+        <li v-for="(it, idx) in items" :key="it.slug" class="tl-card" :data-cat="it.category" :style="{ '--i': idx }">
           <div class="tl-card-top">
             <RouterLink class="tl-name" :to="`/tools/${it.slug}`">{{ it.name }}</RouterLink>
             <span v-if="it.featured" class="tl-badge on">站长精选</span>

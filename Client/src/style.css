@@ -2511,3 +2511,143 @@ html {
 }
 .sub-nav-link + .sub-nav-link { margin-left: 0; }
 .sub-nav-link:hover { color: var(--text-bright); border-color: var(--text-bright); }
+
+
+/* ============================================================
+   上色 + 动效（2026-11-04）
+   策略：赤陶仍是唯一的主行动色；其余颜色只编码「类别」和「氛围」。
+   六个色相取自首屏水彩（蓝灰/橄榄/青/紫/铜/砖红），低饱和、浅底。
+   ============================================================ */
+:root {
+  --hue-blue:   #4a6f9e;
+  --hue-olive:  #6d7c3f;
+  --hue-teal:   #2f7d7a;
+  --hue-purple: #6b4f9e;
+  --hue-copper: #a0602f;
+  --hue-brick:  #a83c2c;
+
+  /* 类别 → 色相（16 个分类收敛到 6 个色相） */
+  --cat-code: var(--hue-blue);
+  --cat-writing: var(--hue-copper);
+  --cat-image: var(--hue-purple);
+  --cat-video: var(--hue-purple);
+  --cat-audio: var(--hue-teal);
+  --cat-speech: var(--hue-teal);
+  --cat-chat: var(--hue-blue);
+  --cat-docs: var(--hue-olive);
+  --cat-agent: var(--hue-brick);
+  --cat-model: var(--hue-olive);
+  --cat-infra: var(--hue-blue);
+  --cat-data: var(--hue-teal);
+  --cat-design: var(--hue-purple);
+  --cat-eval: var(--hue-copper);
+  --cat-list: var(--hue-copper);
+  --cat-other: var(--text-faint);
+}
+
+/* ① 每个页面的顶部带一层淡淡的水彩气团（原来只有首页有） */
+.archive-page, .tags-page, .notes-page, .now-page, .pl-page,
+.tl-page, .ad-page, .forum-page, .proj-page, .td-page {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 760px 420px at 4% -6%, var(--page-wash-a, rgba(110,145,200,.30)), transparent 70%),
+    radial-gradient(ellipse 620px 380px at 102% -10%, var(--page-wash-b, rgba(150,160,90,.24)), transparent 72%);
+  background-repeat: no-repeat;
+  /* 组件里的 scoped `background: var(--bg)` 会重置 background-image，这里只钉住图层 */
+  background-image:
+    radial-gradient(ellipse 760px 420px at 4% -6%, var(--page-wash-a, rgba(110,145,200,.30)), transparent 70%),
+    radial-gradient(ellipse 620px 380px at 102% -10%, var(--page-wash-b, rgba(150,160,90,.24)), transparent 72%) !important;
+}
+.tags-page    { --page-wash-a: rgba(47,125,122,.30);  --page-wash-b: rgba(107,79,158,.22); }
+.tl-page      { --page-wash-a: rgba(74,111,158,.30);  --page-wash-b: rgba(168,60,44,.18); }
+.ad-page      { --page-wash-a: rgba(168,60,44,.24);   --page-wash-b: rgba(74,111,158,.26); }
+.pl-page      { --page-wash-a: rgba(160,96,47,.28);   --page-wash-b: rgba(74,111,158,.22); }
+.forum-page   { --page-wash-a: rgba(109,124,63,.24);  --page-wash-b: rgba(107,79,158,.20); }
+.now-page     { --page-wash-a: rgba(47,125,122,.24);  --page-wash-b: rgba(160,96,47,.22); }
+.archive-page { --page-wash-a: rgba(74,111,158,.22);  --page-wash-b: rgba(47,125,122,.18); }
+.notes-page   { --page-wash-a: rgba(107,79,158,.20);  --page-wash-b: rgba(109,124,63,.18); }
+
+/* ② 类别色：工具卡的分类标签、分类 chips 选中态 */
+.tl-cat-tag { color: var(--cat-other); }
+.tl-card[data-cat="code"] .tl-cat-tag { color: var(--cat-code); }
+.tl-card[data-cat="agent"] .tl-cat-tag { color: var(--cat-agent); }
+.tl-card[data-cat="model"] .tl-cat-tag { color: var(--cat-model); }
+.tl-card[data-cat="data"] .tl-cat-tag { color: var(--cat-data); }
+.tl-card[data-cat="image"] .tl-cat-tag,
+.tl-card[data-cat="video"] .tl-cat-tag,
+.tl-card[data-cat="design"] .tl-cat-tag { color: var(--cat-image); }
+.tl-card[data-cat="speech"] .tl-cat-tag,
+.tl-card[data-cat="audio"] .tl-cat-tag { color: var(--cat-speech); }
+.tl-card[data-cat="docs"] .tl-cat-tag { color: var(--cat-docs); }
+.tl-card[data-cat="infra"] .tl-cat-tag { color: var(--cat-infra); }
+.tl-card[data-cat="writing"] .tl-cat-tag,
+.tl-card[data-cat="eval"] .tl-cat-tag,
+.tl-card[data-cat="list"] .tl-cat-tag { color: var(--cat-copper, var(--hue-copper)); }
+
+/* 卡片左侧一条类别色（hover 才出现，安静但有信息） */
+.tl-card { position: relative; }
+.tl-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: currentColor; color: var(--cat-other);
+  opacity: 0; transform: scaleY(.4); transform-origin: top;
+  transition: opacity var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out);
+}
+.tl-card:hover::before { opacity: .55; transform: scaleY(1); }
+.tl-card[data-cat="code"]::before { color: var(--cat-code); }
+.tl-card[data-cat="agent"]::before { color: var(--cat-agent); }
+.tl-card[data-cat="model"]::before { color: var(--cat-model); }
+.tl-card[data-cat="data"]::before { color: var(--cat-data); }
+.tl-card[data-cat="image"]::before, .tl-card[data-cat="video"]::before,
+.tl-card[data-cat="design"]::before { color: var(--cat-image); }
+.tl-card[data-cat="speech"]::before, .tl-card[data-cat="audio"]::before { color: var(--cat-speech); }
+.tl-card[data-cat="docs"]::before { color: var(--cat-docs); }
+.tl-card[data-cat="infra"]::before { color: var(--cat-infra); }
+
+/* ③ 分类页：颜色编码数量档位（不是随机轮转），配合同行的等宽计数一起读 */
+.tag-grid > li[data-tier="high"] .tag-name { color: var(--hue-teal); }
+.tag-grid > li[data-tier="mid"]  .tag-name { color: var(--hue-blue); }
+.tag-grid > li[data-tier="low"]  .tag-name { color: var(--text-secondary); }
+.tag-grid > li[data-tier="high"] .tag-count { color: var(--hue-teal); }
+.tag-grid > li[data-tier="mid"]  .tag-count { color: var(--hue-blue); }
+
+/* ④ 动效：滚动进入（CSS scroll-driven，无需 JS） */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .archive-item, .ed-entry, .tag-row, .tl-card, .ad-row {
+      animation: riseIn linear both;
+      animation-timeline: view();
+      animation-range: entry 2% entry 34%;
+    }
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: none; }
+    }
+  }
+}
+
+/* ⑤ 动效：悬停时卡片轻微抬起 + 类别色勾边 */
+@media (prefers-reduced-motion: no-preference) {
+  .tl-card { transition: transform var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out); }
+  .tl-card:hover { transform: translateY(-2px); }
+  .archive-item, .tag-row, .ed-entry { transition: background-color var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out); }
+  .archive-item:hover, .ed-entry:hover { transform: translateX(2px); }
+}
+
+
+/* 分类 chips 带一个小色点，颜色与卡片分类一致（编码类别，不是装饰） */
+.tl-cat { position: relative; padding-left: 18px; }
+.tl-cat::before {
+  content: ''; position: absolute; left: 7px; top: 50%; width: 5px; height: 5px;
+  margin-top: -2.5px; border-radius: 50%; background: var(--text-faint); opacity: .45;
+  transition: opacity var(--dur-hover) var(--ease-out);
+}
+.tl-cat:hover::before, .tl-cat.active::before { opacity: 1; }
+.tl-cat[data-cat="code"]::before { background: var(--cat-code); }
+.tl-cat[data-cat="agent"]::before { background: var(--cat-agent); }
+.tl-cat[data-cat="model"]::before { background: var(--cat-model); }
+.tl-cat[data-cat="data"]::before { background: var(--cat-data); }
+.tl-cat[data-cat="image"]::before, .tl-cat[data-cat="video"]::before, .tl-cat[data-cat="design"]::before { background: var(--cat-image); }
+.tl-cat[data-cat="speech"]::before, .tl-cat[data-cat="audio"]::before { background: var(--cat-speech); }
+.tl-cat[data-cat="docs"]::before { background: var(--cat-docs); }
+.tl-cat[data-cat="infra"]::before { background: var(--cat-infra); }
+.tl-cat[data-cat="writing"]::before, .tl-cat[data-cat="eval"]::before, .tl-cat[data-cat="list"]::before { background: var(--hue-copper); }

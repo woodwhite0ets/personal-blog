@@ -10,7 +10,7 @@
       <div v-if="loading" class="state-box" role="status" aria-live="polite">正在加载…</div>
       <div v-else-if="!tags.length" class="state-box">暂无标签。</div>
       <ul v-else class="tag-grid">
-        <li v-for="(t, i) in tags" :key="t.name">
+        <li v-for="(t, i) in tags" :key="t.name" :data-tier="t.post_count >= 5 ? 'high' : t.post_count >= 2 ? 'mid' : 'low'">
           <router-link :to="`/forum?tag=${encodeURIComponent(t.name)}`" class="tag-row">
             <span class="tag-name">{{ t.name }}</span>
             <span class="tag-count">{{ t.post_count }}</span>
