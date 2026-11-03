@@ -92,7 +92,7 @@
           <span class="meta-sep"></span>
           <span class="meta-item">{{ post.date }}</span>
           <span class="meta-sep"></span>
-          <span class="meta-item">{{ post.read_time }}</span>
+          <span class="meta-item">{{ readLabel }}</span>
           <span class="meta-sep"></span>
           <span class="meta-item" v-if="post.word_count">{{ post.word_count }} 字</span>
           <span class="meta-sep" v-if="post.word_count"></span>
@@ -322,6 +322,12 @@ const slug = computed(() => route.params.slug)
 
 // ====== 状态 ======
 const post = ref(null)
+
+// 后端给的是 "9 min read" 这类英文，页面统一成中文
+const readLabel = computed(() => {
+  const m = String(post.value?.read_time || '').match(/(\d+)/)
+  return m ? `${m[1]} 分钟` : '短读'
+})
 const loading = ref(true)
 const error = ref('')
 
@@ -799,9 +805,10 @@ onBeforeUnmount(() => { resetSeoMeta() })
 }
 
 .post-title {
-  font-family: var(--font-hand);
-  font-size: 2.125rem; font-weight: 400; line-height: 1.45;
-  color: var(--text-bright); margin: 0 0 20px; letter-spacing: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.4vw, 2.75rem); font-weight: 600; line-height: 1.28;
+  color: var(--text-bright); margin: 0 0 22px; letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
 .post-meta-line {
@@ -1106,8 +1113,9 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .toc-count {
   margin-left: auto;
   padding: 1px 7px;
-  background: var(--accent-a15);
-  color: var(--accent);
+  background: transparent;
+  color: var(--text-faint);
+  border: 1px solid var(--border-strong);
   border-radius: 999px;
   font-size: 0.6875rem;
 }
@@ -1170,7 +1178,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 /* ===== 信笺风覆盖（2026-10-11）===== */
 .post-article { max-width: 700px; padding: 96px 24px 40px; }
 .post-title { margin-bottom: 22px; }
-.post-meta-line, .post-meta-top { font-size: 0.875rem; color: var(--text-dim); gap: 14px; }
+.post-meta-line, .post-meta-top { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em; color: var(--text-faint); gap: 14px; }
 .post-tag { border-radius: 3px; padding: 2px 9px; font-size: 0.8125rem; }
 .comment-list, .comment-item { border-color: var(--border); }
 .comment-item { border-radius: 4px; }
@@ -1223,7 +1231,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .cover-img { max-height: 360px; border-bottom: 1px solid var(--border); }
 .post-article, .comment-section, .author-card { max-width: 1000px; margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; }
 .post-article { padding-top: 64px; padding-bottom: 40px; }
-.post-title { font-family: var(--font-hand); font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.15; text-align: left; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin: 0 0 18px; text-wrap: balance; }
+.post-title { font-family: "Noto Serif SC", var(--font-serif); font-weight: 500; font-size: clamp(2.1rem, 3.6vw, 3rem); line-height: 1.26; letter-spacing: -0.025em; text-align: left; padding-bottom: 18px; margin: 0 0 18px; text-wrap: balance; }
 .post-meta-top { margin-bottom: 14px; }
 .post-tag, .post-badge { text-transform: none; letter-spacing: 0; border-radius: 0; padding: 0; }
 .post-meta-line { font-variant-numeric: tabular-nums; margin-bottom: 44px; padding-bottom: 18px; }
@@ -1297,14 +1305,14 @@ onBeforeUnmount(() => { resetSeoMeta() })
   display: flex; align-items: center; gap: 6px;
   margin: 0 0 14px; justify-content: flex-end;
 }
-.font-tools-label { font-size: 0.75rem; color: var(--text-faint); margin-right: 2px; }
+.font-tools-label { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .06em; color: var(--text-faint); margin-right: 2px; }
 .font-btn {
   border: 1px solid var(--border-strong); background: transparent;
   color: var(--text-dim); font-size: 0.75rem; line-height: 1;
   padding: 5px 9px; border-radius: 6px; cursor: pointer;
 }
 .font-btn:hover { color: var(--text); border-color: var(--text-dim); }
-.font-btn.active { color: var(--accent); border-color: var(--accent); }
+.font-btn.active { color: var(--text-bright); border-color: var(--text-bright); }
 .font-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .post-content pre { position: relative; }

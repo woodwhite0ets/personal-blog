@@ -64,7 +64,7 @@ const next = computed(() => {
 .proj-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); }
 .proj-kicker { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: .08em; color: var(--text-dim); }
 .proj-title {
-  margin: 0; font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 700;
+  margin: 0;
   letter-spacing: -0.025em; color: var(--text-bright); text-wrap: balance;
 }
 .proj-sub { margin: 8px 0 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); }

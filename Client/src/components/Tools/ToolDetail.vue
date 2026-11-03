@@ -90,7 +90,7 @@ watch(() => route.params.slug, load)
 
 <style scoped>
 .td-page { min-height: 100vh; background: var(--bg); color: var(--text); }
-.td-main { max-width: 760px; margin: 0 auto; padding: 72px 24px 112px; }
+.td-main { max-width: 820px; margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 .td-back { margin: 0 0 22px; font-size: 0.8125rem; }
 .td-back a { color: var(--text-dim); text-decoration: none; }
@@ -101,7 +101,7 @@ watch(() => route.params.slug, load)
 .td-back-link { color: var(--accent); }
 
 .td-head { padding-bottom: 18px; border-bottom: 1px solid var(--border); }
-.td-title { margin: 0 0 10px; font-size: clamp(1.5rem, 3vw, 1.875rem); font-weight: 600; letter-spacing: -.01em; text-wrap: balance; }
+.td-title { margin: 0 0 10px; letter-spacing: -.01em; text-wrap: balance; }
 .td-tagline { margin: 0; font-size: 1rem; line-height: 1.7; color: var(--text-bright); max-width: 60ch; }
 .td-note {
   margin: 14px 0 0; padding-left: 12px; border-left: 2px solid var(--border-strong);

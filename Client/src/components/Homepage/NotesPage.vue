@@ -131,12 +131,12 @@ onMounted(async () => {
 
 <style scoped>
 .notes-page { min-height: 100vh; background: var(--bg); color: var(--text); }
-.notes-main { max-width: 1080px; margin: 0 auto; padding: 64px 24px 104px; }
+.notes-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 .notes-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); }
 .notes-kicker { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: .08em; color: var(--text-dim); }
 .notes-title {
-  margin: 0; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+  margin: 0;
   letter-spacing: -0.025em; color: var(--text-bright); text-wrap: balance;
 }
 .notes-lead { margin: 14px 0 0; max-width: 66ch; font-size: 0.875rem; line-height: 1.75; color: var(--text-secondary); text-wrap: pretty; }

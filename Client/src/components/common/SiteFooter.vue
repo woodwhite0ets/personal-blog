@@ -47,7 +47,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
 </script>
 
 <style scoped>
-.footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 32px 24px 24px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.footer { position: relative; z-index: 1; border-top: 1px dotted var(--rule-dot-ink); padding: 40px 24px 28px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 .footer-terminal { width: min(720px, 100%); background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 10px 34px var(--shadow); }
 .terminal-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--overlay-a15); border-bottom: 1px solid var(--border); }
 .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
@@ -80,8 +80,8 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
 .footer-status .status-dot { position: relative; }
 
 .footer-brand { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.footer-wordmark { font-family: var(--font-hand); font-size: 1.75rem; color: var(--text-bright); }
-.footer-tagline { font-size: 0.875rem; color: var(--text-dim); letter-spacing: .02em; }
+.footer-wordmark { font-family: var(--font-serif); font-size: 1.25rem; letter-spacing: -0.01em; color: var(--text-bright); }
+.footer-tagline { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-faint); letter-spacing: .06em; }
 .footer-links { font-size: 0.9375rem; gap: 16px; }
 .footer-links a { color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 1px; transition: color .2s, border-color .2s; }
 .footer-links a:hover { color: var(--text-bright); border-color: var(--text-bright); }

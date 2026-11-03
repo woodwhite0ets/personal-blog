@@ -30,7 +30,7 @@
     <!-- ====== Hero：论坛介绍 ====== -->
     <section class="ed-hero deco-hero">
       <h1 class="ed-hero-title">文章</h1>
-      <p class="ed-hero-excerpt">全栈开发 · 系统架构 · 开源实践。这里是我写下的全部文章。</p>
+      <p class="ed-hero-excerpt">写全栈开发、系统架构与开源实践，这里有全部文章。</p>
     </section>
 
     <!-- ====== 主体 ====== -->
@@ -54,7 +54,7 @@
 
       <!-- 排序切换 -->
       <div class="sort-bar">
-        <span class="sort-count">共 {{ totalPosts }} 篇</span>
+        <span class="sort-count meta-mono">共 {{ totalPosts }} 篇</span>
         <div class="sort-group">
           <span class="sort-label">排序</span>
           <button
@@ -75,7 +75,7 @@
       <div v-else-if="!posts.length" class="state-box" aria-live="polite">暂无文章。</div>
       <template v-else>
         <article v-for="(p, i) in posts" :key="p.id" class="ed-entry" :class="{ 'is-featured': i === 0 && isDefaultView }">
-          <span class="deco-idx">{{ String(i + 1).padStart(2, '0') }}</span>
+          <span class="deco-idx meta-mono">{{ String(i + 1).padStart(2, '0') }}</span>
           <div class="ed-entry-body">
             <h3 class="ed-entry-title">
               <router-link :to="`/post/${p.slug || p.id}`" class="deco-link"><template
@@ -85,7 +85,7 @@
             <p class="ed-entry-excerpt"><template
               v-for="(seg, k) in hl(stripMarkdown(p.excerpt, 160))" :key="`e${k}`"
             ><mark v-if="seg.m" class="hl-hit">{{ seg.t }}</mark><template v-else>{{ seg.t }}</template></template></p>
-            <p class="ed-entry-meta"><time>{{ p.date }}</time><span class="meta-minor">{{ p.read_time }} · {{ p.views || 0 }} 次</span></p>
+            <p class="ed-entry-meta"><time>{{ p.date }}</time><span class="meta-minor">{{ readLabel(p) }} · {{ p.views || 0 }} 次浏览</span></p>
           </div>
         </article>
         <button v-if="hasMore" class="ed-more-btn" :disabled="loadingMore" @click="loadMore">
@@ -185,6 +185,12 @@ import UserAvatar from '../common/UserAvatar.vue'
 import { useAuth } from '../../stores/auth.js'
 
 const route = useRoute()
+
+// 后端给的是 "2 min read" 这类英文，页面统一成中文
+const readLabel = (p) => {
+  const m = String(p.read_time || '').match(/(\d+)/)
+  return m ? `${m[1]} 分钟` : '短读'
+}
 const navOpen = ref(false)
 const router = useRouter()
 const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
@@ -631,9 +637,9 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .panel-bar {
   display: flex; align-items: center; gap: 6px;
-  padding: 8px 12px;
-  background: var(--overlay-a15);
-  border-bottom: 1px solid var(--border);
+  padding: 0 0 8px;
+  background: none;
+  border-bottom: 1px dotted var(--rule-dot-ink);
 }
 
 .panel-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -643,12 +649,13 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .dim { opacity: 0.3; }
 
 .panel-title {
-  flex: 1; font-size: 0.625rem; font-weight: 600;
-  color: var(--text-muted); text-align: center;
-  letter-spacing: 1.5px; text-transform: lowercase;
+  flex: 1; font-size: 0.6875rem; font-weight: 600;
+  color: var(--text-secondary); text-align: left;
+  letter-spacing: .1em; text-transform: none;
+  font-family: var(--font-mono);
 }
 
-.panel-body { padding: 14px 16px; }
+.panel-body { padding: 12px 0 0; }
 
 .info-line {
   display: flex; justify-content: space-between; align-items: center;
@@ -656,7 +663,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 }
 
 .info-key {
-  color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+  font-family: var(--font-mono); color: var(--text-faint); letter-spacing: .06em; font-weight: 600;
 }
 
 .info-val { color: var(--text-secondary); }
@@ -686,18 +693,15 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 }
 .sort-btn {
   padding: 4px 12px;
-  font-family: inherit; font-size: 0.6875rem; font-weight: 600;
-  color: var(--text-secondary); background: var(--bg-elevated);
-  border: 1px solid var(--border); border-radius: 4px;
-  cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+  font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; letter-spacing: .06em;
+  color: var(--text-dim); background: transparent;
+  border: 1px solid var(--border); border-radius: 3px;
+  cursor: pointer; transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
 }
-.sort-btn:hover { border-color: var(--accent-a30); color: var(--text); }
-.sort-btn.active {
-  color: var(--on-accent); background: var(--accent);
-  border-color: var(--accent);
-}
+.sort-btn:hover { border-color: var(--border-strong); color: var(--text); }
+.sort-btn.active { color: var(--text-bright); border-color: var(--text-bright); background: transparent; }
 
-.filter-prompt { color: var(--accent); font-weight: 700; }
+.filter-prompt { font-family: var(--font-mono); color: var(--text-faint); font-weight: 600; letter-spacing: .06em; }
 .filter-label { color: var(--text-muted); text-transform: uppercase; font-size: 0.625rem; letter-spacing: 1px; }
 .filter-tag { color: var(--accent); font-weight: 600; }
 .filter-clear {
@@ -776,12 +780,12 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 /* 信笺统一：侧栏改为无卡片发丝线块（与首页右栏一致）*/
 .sidebar { gap: 0; }
-.sidebar-panel { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; box-shadow: none; padding: 0 0 24px; margin-bottom: 24px; }
+.sidebar-panel { background: transparent; border: none; border-bottom: 1px dotted var(--rule-dot-ink); border-radius: 0; box-shadow: none; padding: 0 0 24px; margin-bottom: 24px; }
 .sidebar-panel:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
 .panel-bar { border-bottom: none; background: transparent; padding: 0 0 12px; }
 .panel-body { padding: 0; }
-.panel-title { font-family: var(--font-hand); font-size: 1.375rem; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--text-bright); }
-.info-key { color: var(--text-dim); }
+.panel-title { font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; letter-spacing: .1em; text-transform: none; color: var(--text-secondary); }
+.info-key { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em; color: var(--text-faint); }
 
 /* 排序 / 筛选：去掉色块，改发丝线行 */
 .sort-bar { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 0 0 14px; margin-bottom: 24px; }

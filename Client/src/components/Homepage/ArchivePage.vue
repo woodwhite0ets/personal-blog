@@ -8,7 +8,7 @@
     <div class="archive-main">
       <header class="archive-header deco-hero">
         <h1 class="archive-title">归档</h1>
-        <p class="archive-sub">共收录 {{ posts.length }} 篇文章 · <router-link to="/tags" class="archive-tags-link">按分类浏览</router-link></p>
+        <p class="archive-sub">共收录 {{ posts.length }} 篇文章，<router-link to="/tags" class="archive-tags-link">按分类浏览</router-link></p>
       </header>
 
       <div v-if="loading" class="state-box" role="status" aria-live="polite">
@@ -105,15 +105,14 @@ onMounted(async () => {
 
 /* 容器：契约 1000px / 左右 24px */
 .archive-main {
-  max-width: 1200px;
+  max-width: var(--page-w);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 64px var(--page-pad) 104px;
 }
 
-.archive-header { padding: 64px 0 28px; }
+.archive-header { padding: 0 0 28px; }
 .archive-title {
-  font-family: var(--font-sans);
-  font-size: clamp(2.75rem, 5.2vw, 4.5rem);
+  margin: 0;
   font-weight: 650;
   letter-spacing: -0.038em;
   line-height: 1.05;
@@ -131,19 +130,20 @@ onMounted(async () => {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .year-group { padding: 16px 0 8px; }
-.year-head { display: flex; align-items: baseline; gap: 14px; margin: 34px 0 14px; }
+.year-head { display: flex; align-items: baseline; gap: 14px; margin: 40px 0 10px; padding-bottom: 8px; }
 .year-num {
-  font-size: clamp(1.875rem, 3.4vw, 3rem); font-weight: 650;
-  letter-spacing: -0.045em; line-height: 1;
-  color: var(--text-bright); font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem; font-weight: 600; letter-spacing: .1em;
+  line-height: 1; color: var(--text-secondary); font-variant-numeric: tabular-nums;
 }
-.year-count { font-size: 0.75rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.year-count { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
 .year-posts { display: flex; flex-direction: column; margin-top: 8px; }
-.archive-item { display: flex; align-items: baseline; gap: 24px; padding: 11px 0; text-decoration: none; border-bottom: 1px solid var(--border); }
+.archive-item { display: flex; align-items: baseline; gap: 24px; padding: 11px 4px; text-decoration: none; border-bottom: 1px dotted var(--rule-dot-ink); transition: background-color var(--dur-hover) var(--ease-out); }
+.archive-item:hover { background: var(--overlay-a2); }
 .archive-item:last-child { border-bottom: none; }
-.arch-date { font-size: 0.8125rem; color: var(--text-muted); font-weight: 600; min-width: 90px; font-variant-numeric: tabular-nums; }
+.arch-date { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em; color: var(--text-faint); min-width: 96px; font-variant-numeric: tabular-nums; }
 .arch-title { flex: 1; min-width: 0; font-size: 0.9375rem; color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.2s; }
-.archive-item:hover .arch-title { color: var(--accent); }
-.arch-tag { font-size: 0.75rem; color: var(--text-dim); font-weight: 500; }
+.archive-item:hover .arch-title { color: var(--text-bright); }
+.arch-tag { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-faint); }
 </style>

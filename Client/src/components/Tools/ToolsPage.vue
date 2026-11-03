@@ -229,11 +229,11 @@ onMounted(reload)
 
 <style scoped>
 .tl-page { min-height: 100vh; background: var(--bg); color: var(--text); }
-.tl-main { max-width: 1080px; margin: 0 auto; padding: 72px 24px 112px; }
+.tl-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 .tl-head { padding-bottom: 18px; border-bottom: 1px solid var(--border); }
 .tl-title {
-  margin: 0 0 10px; font-size: clamp(1.625rem, 3.2vw, 2.125rem); font-weight: 600;
+  margin: 0 0 10px;
   letter-spacing: -.015em; text-wrap: balance;
 }
 .tl-desc { margin: 0 0 20px; max-width: 62ch; font-size: 0.875rem; line-height: 1.75; color: var(--text-dim); }
@@ -313,13 +313,13 @@ onMounted(reload)
   font-size: 0.8125rem; font-weight: 600; color: var(--text-secondary); text-decoration: none;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
 }
-.tl-name:hover { color: var(--accent); }
+.tl-name:hover { color: var(--text-bright); }
 .tl-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.tl-stars { flex: none; font-size: 0.75rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.tl-stars { flex: none; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 .tl-gain { color: var(--ok); margin-left: 2px; }
 
 .tl-tagline {
-  margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-bright);
+  margin: 0; font-family: var(--font-serif); font-size: 1.0625rem; line-height: 1.55; color: var(--text-bright);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   text-wrap: pretty;
 }
@@ -334,9 +334,9 @@ onMounted(reload)
 }
 .tl-badge.on { border-color: var(--accent); color: var(--accent); }
 .tl-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 0.75rem; color: var(--text-faint); }
-.tl-cat-tag { color: var(--accent); }
+.tl-cat-tag { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .06em; color: var(--text-faint); }
 .tl-tag::before { content: "#"; opacity: .5; }
-.tl-facts { margin: 0; font-size: 0.75rem; color: var(--text-faint); }
+.tl-facts { margin: 0; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em; color: var(--text-faint); }
 
 .tl-links { display: flex; gap: 14px; margin-top: 2px; font-size: 0.75rem; }
 .tl-links a { color: var(--text-dim); text-decoration: none; }

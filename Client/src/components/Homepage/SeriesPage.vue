@@ -106,7 +106,7 @@ onMounted(reload)
 .series-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
 .series-kicker { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: .08em; color: var(--text-dim); }
 .series-title {
-  margin: 0; font-size: clamp(1.875rem, 3.6vw, 2.75rem); font-weight: 700;
+  margin: 0;
   letter-spacing: -0.02em; color: var(--text-bright); text-wrap: balance;
 }
 .series-meta {
