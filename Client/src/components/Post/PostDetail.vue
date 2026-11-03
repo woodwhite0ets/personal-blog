@@ -783,13 +783,13 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .post-tag {
   font-size: 0.625rem; font-weight: 700; letter-spacing: 1.2px;
-  text-transform: uppercase; color: var(--accent);
-  text-decoration: none;
+  text-transform: uppercase; color: var(--text-secondary);
+  text-decoration: none; border: 1px solid var(--border-strong);
   padding: 2px 6px; border-radius: 3px;
-  transition: background 0.2s;
+  transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
 }
 
-.post-tag:hover { background: var(--accent-a10); }
+.post-tag:hover { color: var(--text-bright); border-color: var(--text-bright); }
 
 .post-badge {
   font-size: 0.5625rem; font-weight: 700; letter-spacing: 1px;
@@ -1262,12 +1262,12 @@ onBeforeUnmount(() => { resetSeoMeta() })
 /* 标签：柔和 pastel 底（minimalist-ui 规范，覆盖上面 3 处历史定义） */
 .post-tag, .post-badge {
   display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: .04em;
-  text-transform: none; color: var(--pale-blue-fg); background: var(--pale-blue-bg);
-  border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent);
+  text-transform: none; color: var(--tag-fg); background: var(--tag-bg);
+  border: 1px solid var(--tag-bd);
   border-radius: 6px; padding: 3px 10px;
   transition: border-color .15s;
 }
-.post-tag:hover, .post-badge:hover { border-color: color-mix(in srgb, var(--pale-blue-fg) 34%, transparent); }
+.post-tag:hover, .post-badge:hover { border-color: var(--text-bright); }
 
 /* 目录常驻（≥1200）时给标题让位：
    1200–1366 宽度下，1000px 文章容器会伸进右侧 240px 固定目录，

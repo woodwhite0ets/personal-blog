@@ -45,9 +45,7 @@
 
   /* 缓动：弹簧质感（非默认 linear/ease-in-out）*/
   --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);   /* 位移/抽屉 */
-  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* 进入/退出，界面默认 */
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* 屏内位移/变形 */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* 进入/退出，界面默认 */  /* 屏内位移/变形 */
   --dur-press: 120ms;
   --dur-hover: 160ms;
   --dur-pop: 200ms;
@@ -62,16 +60,14 @@
   --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px;
 
   /* 圆角：收敛（2026-10-19 商业极简，弃药丸） */
-  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px; --radius-xl: 18px; --radius-full: 9999px;
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px; --radius-full: 9999px;
 
   /* 悬浮层半透明底（hover 高亮用，替代旧 --surface-2 命名） */
   --surface-2: rgba(127, 127, 127, 0.08);
 
   /* 标签柔和底色（minimalist-ui：强调色只用于标签/行内代码，用褪色 pastel） */
-  --pale-red-bg: #FDEBEC;    --pale-red-fg: #9F2F2D;
-  --pale-blue-bg: #E1F3FE;   --pale-blue-fg: #1F6C9F;
-  --pale-green-bg: #EDF3EC;  --pale-green-fg: #346538;
-  --pale-yellow-bg: #FBF3DB; --pale-yellow-fg: #956400;
+  --tag-bg: transparent;      --tag-fg: var(--text-secondary);
+  --tag-bd: var(--border-strong);
 
   /* 卡片 hover 阴影（minimalist-ui：opacity < 0.05，几乎不可见） */
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -181,14 +177,6 @@ button {
 
 /* 通用动画工具类 */
 .anim-fade-up { animation: fadeInUp 0.35s var(--ease-out) backwards; }
-
-/* 骨架屏加载动画 */
-.skeleton {
-  background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-float) 50%, var(--bg-elevated) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: 4px;
-}
 
 /* 滚动条宽度微调 */
 html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top: 84px; }
@@ -392,7 +380,6 @@ html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top:
 /* 不支持滚动驱动动画的浏览器直接不显示这条进度线，不留一条死线 */
 @supports not (animation-timeline: scroll()) { .scroll-progress { display: none; } }
 
-
 /* 回到顶部按钮 */
 .back-to-top { position: fixed; right: 24px; bottom: 24px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 1.0625rem; color: var(--text-secondary); background: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 4px; cursor: pointer; z-index: 900; box-shadow: 0 6px 20px var(--shadow-soft); opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.2s, color 0.2s; }
 .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
@@ -462,13 +449,6 @@ button:active, .btn:active, .btn-write:active, .btn-login:active, .post-link:act
   outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
 }
 
-/* 状态点双 ping */
-.status-dot.ping { position: relative; }
-.status-dot.ping::after {
-  content: ''; position: absolute; inset: -4px; border-radius: 50%;
-  border: 2px solid var(--ok-a40); animation: ping 1.6s ease-out infinite;
-}
-
 /* Hero 标题微光（仅支持 background-clip:text 的环境） */
 @supports (-webkit-background-clip: text) {
   .hero-title a {
@@ -477,22 +457,6 @@ button:active, .btn:active, .btn-write:active, .btn-login:active, .post-link:act
     -webkit-text-fill-color: transparent; animation: shimText 7s linear infinite;
   }
 }
-
-/* ============================================================
-   动效增强 · 第四波（2026-08-31）— 知识库骨架 / 文章微交互 / 页脚进度
-   ============================================================ */
-
-/* 骨架屏宽度工具类 */
-.skel-w30 { width: 30%; }
-.skel-w40 { width: 40%; }
-.skel-w50 { width: 50%; }
-.skel-w60 { width: 60%; }
-.skel-w65 { width: 65%; }
-.skel-w70 { width: 70%; }
-.skel-w80 { width: 80%; }
-.skel-w85 { width: 85%; }
-.skel-w90 { width: 90%; }
-.skel-w100 { width: 100%; }
 
 /* 正文图片 hover 放大 + 柔和描边 */
 .markdown-body img { transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease, border-color .4s ease; }
@@ -527,7 +491,6 @@ button:active, .btn:active, .btn-write:active, .btn-login:active, .post-link:act
 
 /* 知识库内容淡入 + 空态/错误态/登录提示弹入 */
 .kb-article.anim-fade { animation: fadeIn .5s ease both; }
-.kb-project.active { animation: popIn .35s cubic-bezier(.22,1,.36,1) both; }
 
 /* 代码块复制按钮 */
 .code-actions { position: absolute; top: 8px; right: 8px; z-index: 2; }
@@ -603,14 +566,10 @@ body::after {
   opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-body::after { opacity: 0.05; }
-
-/* ============================================================
+body::after { opacity: 0.05; }/* ============================================================
    高级感打磨（2026-10-11）：弹簧缓动 + 按压反馈
    ============================================================ */
 .btn,
-.card-hover,
-.card-lift,
 .post-link {
   transition:
     background-color .3s var(--ease-spring),
@@ -821,12 +780,6 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hero-btn-solid:hover { opacity: .85; }
 .hero-btn-ghost { border: 1px solid var(--border-strong); color: var(--text-secondary); }
 .hero-btn-ghost:hover { border-color: var(--text-bright); color: var(--text-bright); }
-.hero-rail {
-  margin: 0; display: flex; flex-direction: column; gap: 18px;
-  border-left: 1px solid var(--border); padding-left: 28px;
-}
-.hero-rail dt { font-size: 0.6875rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
-.hero-rail dd { margin: 0; font-size: 0.9375rem; color: var(--text-bright); font-variant-numeric: tabular-nums; }
 .hm { max-width: 1200px; margin: 0 auto; padding: 0 24px 112px; }
 .hm-sec { padding: 96px 0; border-bottom: 1px solid var(--border); }
 .hm-sec-last { border-bottom: none; padding-bottom: 0; }
@@ -880,8 +833,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hm-li-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .hm-li-d { color: var(--text-dim); font-size: 0.8125rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
 @media (max-width: 860px) {
-  .hero-in { padding: 72px 24px 64px; }
-  .hm-3up, .hm-2up { grid-template-columns: 1fr; gap: 34px; }
+  .hero-in { padding: 72px 24px 64px; }.hm-2up { grid-template-columns: 1fr; gap: 34px; }
   .hm-sec { padding: 48px 0; }
 }
 
@@ -893,9 +845,6 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hm-proj .hm-text { margin-bottom: 0; }
 @media (max-width: 860px) {
   .hero-in { grid-template-columns: 1fr; gap: 36px; align-items: start; }
-  .hero-rail { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px 24px; border-left: none; border-top: 1px solid color-mix(in srgb, var(--bg) 14%, transparent); padding: 24px 0 0; }
-  .act-strip { gap: 5px; }
-  .act-lbl { font-size: 0.625rem; }
 }
 
 /* ===== 首页装饰系统（统一：网格 / 字母水印 / 点阵 / 分区方块 / 序号）===== */
@@ -937,10 +886,6 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   .band-tint .hm-proj { padding-left: 0; }
   .band-tint .hm-proj::before { position: static; display: block; margin-bottom: 8px; }
 }
-
-/* ===== 装饰加强 ===== */
-/* 首屏装饰（2026-10-19 商业极简：同心弧已下线） */
-.hero-band .hero-orn { display: none; }
 
 /* 左边缘竖向标签（2026-10-19 商业极简：已下线） */
 .edge-label { display: none; }
@@ -1089,10 +1034,6 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hero-role      { animation: heroFade .8s  cubic-bezier(.16, 1, .3, 1) .10s both; }
 .hero-statement { animation: heroFade .8s  cubic-bezier(.16, 1, .3, 1) .18s both; }
 .hero-actions   { animation: heroFade .8s  cubic-bezier(.16, 1, .3, 1) .28s both; }
-.hero-rail > div:nth-child(1) { animation: heroFade .7s cubic-bezier(.16, 1, .3, 1) .38s both; }
-.hero-rail > div:nth-child(2) { animation: heroFade .7s cubic-bezier(.16, 1, .3, 1) .44s both; }
-.hero-rail > div:nth-child(3) { animation: heroFade .7s cubic-bezier(.16, 1, .3, 1) .50s both; }
-.hero-rail > div:nth-child(4) { animation: heroFade .7s cubic-bezier(.16, 1, .3, 1) .56s both; }
 
 /* 2. 主按钮：深色块从左填充 → accent */
 .hero-btn-solid { position: relative; overflow: hidden; z-index: 0; }
@@ -1147,7 +1088,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 /* 无障碍：系统偏好"减少动态"时全部停用 */
 @media (prefers-reduced-motion: reduce) {
   .hero-name, .hero-role, .hero-statement, .hero-actions,
-  .hero-rail > div, .hero-band::after, .hm-sec, .hero-text, .hm-h::after {
+  .hero-band::after, .hm-sec, .hero-text, .hm-h::after {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -1191,7 +1132,6 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   min-height: 100dvh;
 }
 .hero-in { width: 100%; padding: 104px 24px; align-items: center; }
-.hero-rail { align-self: center; }
 
 /* 2. 光标跟随光晕（仅精确指针设备，触屏不启用） */
 .hero-band::before {
@@ -1245,16 +1185,6 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
    呼应「知识库 / 网关」主题，纯 SVG + CSS，无外部图片依赖
    ============================================================ */
 .hero-in { grid-template-columns: minmax(0, 1fr) 380px; gap: 72px; }
-
-.hero-rail {
-  flex-direction: row; flex-wrap: wrap; gap: 20px 44px;
-  border-left: none; padding-left: 0;
-  border-top: 1px solid var(--border);
-  padding-top: 22px; margin-top: 46px;
-}
-.hero-rail > div { min-width: 0; }
-.hero-rail dt { font-size: 0.625rem; letter-spacing: .14em; }
-.hero-rail dd { font-size: 0.875rem; }
 
 .hero-visual { position: relative; display: flex; align-items: center; justify-content: center; }
 .hero-graph { width: 100%; height: auto; max-height: 520px; overflow: visible; }
@@ -1395,24 +1325,10 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hero-actions { margin-top: 32px; gap: 10px; }
 .hero-btn { padding: 12px 24px; font-size: 0.8438rem; }
 
-/* 数据条：数字放大成第二视觉层 */
-.hero-rail {
-  margin-top: 44px; padding-top: 20px;
-  gap: 16px 40px;
-}
-.hero-rail dt { font-size: 0.5938rem; letter-spacing: .16em; }
-.hero-rail dd {
-  font-size: 1.375rem; font-weight: 600; letter-spacing: -0.03em;
-  line-height: 1.15; margin-top: 4px;
-}
-
 @media (max-width: 980px) {
   .hero-name { font-size: clamp(3.5rem, 13vw, 6rem); }
   .hero-visual { display: none; }
 }
-
-/* 极端排版微调：文字型数据保持小号，只有数字放大 */
-.hero-rail > div:first-child dd { font-size: 0.9375rem; font-weight: 500; letter-spacing: -0.01em; }
 .hero-role { margin-top: 44px; }
 
 /* 标题出血：与视口边缘对齐，制造"撑破"感 */
@@ -1564,7 +1480,6 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hero-statement { margin-top: 16px; font-size: 1rem; max-width: 44ch; }
 .hero-topics { margin-top: 22px; }
 .hero-actions { margin-top: 28px; }
-.hero-rail { margin-top: 36px; padding-top: 18px; }
 
 /* 右侧：最新三篇 */
 .hero-recent {
@@ -1769,13 +1684,7 @@ body::after {
 .hm-feature, .hm-proj, .hm-list a, .ed-entry { border-radius: var(--radius-md); }
 .hm-list a .bezel-core { border-radius: var(--radius-sm); }
 .hero-topic, .tag, .ptag, .post-tag, .post-badge,
-.hero-btn, .hero-btn-solid::after { border-radius: var(--radius-full); }
-.tag, .hm-tag, .skel-card, .code-block, .img-lightbox-figure { border-radius: var(--radius-sm); }
-
-/* ② 去掉中文标签上的 uppercase / 大字距
-   字母间距与大写是为拉丁字母设计的，套在中文标签上只产生"照搬英文规范"的痕迹 */
-.hero-rail dt,
-.bm-head,
+.hero-btn, .hero-btn-solid::after { border-radius: var(--radius-full); }.tag, .hm-tag, .code-block, .img-lightbox-figure { border-radius: var(--radius-sm); }.bm-head,
 .hr-head,
 .sort-label {
   text-transform: none;
@@ -1833,14 +1742,6 @@ body::after {
 .hm-list, .hm-list li, .hm-list a, .hm-list a .bezel-core { min-width: 0; max-width: 100%; }
 .hm-list a .bezel-core { width: 100%; }
 
-/* ⑤ 移动端首屏指标栏：第一项文案较长，独占一行；其余三项等分，
-      避免 2×2 网格里第一格折成两行、行高参差。 */
-@media (max-width: 860px) {
-  .hero-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 16px; }
-  .hero-rail > div:first-child { grid-column: 1 / -1; }
-  .hero-rail dd { line-height: 1.45; }
-}
-
 /* ⑥ 极窄屏的搜索让位写在 SiteNav.vue 的 scoped 样式里
       （slot 内容需要 :deep 才能命中），这里不再重复。 */
 
@@ -1852,7 +1753,6 @@ body::after {
   .hm-bar { grid-template-columns: 92px minmax(0, 1fr) 24px; }
   .hm-bar-name { font-size: 0.75rem; }
 }
-
 
 /* ============================================================
    主题: editorial（编辑排版） / swiss（瑞士网格） — 2026-11-02 新增
@@ -1880,8 +1780,6 @@ body::after {
   --on-accent: #ffffff;
   --accent-a2: rgba(184, 69, 47, 0.02);
   --accent-a2: color-mix(in srgb, var(--accent) 2%, transparent);
-  --accent-a3: rgba(184, 69, 47, 0.03);
-  --accent-a3: color-mix(in srgb, var(--accent) 3%, transparent);
   --accent-a4: rgba(184, 69, 47, 0.04);
   --accent-a4: color-mix(in srgb, var(--accent) 4%, transparent);
   --accent-a5: rgba(184, 69, 47, 0.05);
@@ -1920,13 +1818,11 @@ body::after {
   --warn-a20: rgba(192, 138, 46, 0.2);
 
   --err: #c65656;
-  --err-hover: #b24747;
   --err-a6: rgba(198, 86, 86, 0.06);
   --err-a8: rgba(198, 86, 86, 0.08);
   --err-a12: rgba(198, 86, 86, 0.12);
   --err-a15: rgba(198, 86, 86, 0.15);
   --err-a20: rgba(198, 86, 86, 0.2);
-  --err-a25: rgba(198, 86, 86, 0.25);
   --err-a30: rgba(198, 86, 86, 0.3);
 
   --purple: #6f5fbe;
@@ -1966,7 +1862,6 @@ body::after {
   --radius-sm: 2px;
   --radius-md: 3px;
   --radius-lg: 4px;
-  --radius-xl: 6px;
 }
 
 /* ===== 新增主题的浅色配套（代码高亮 / 颗粒 / 光斑） ===== */
@@ -1979,8 +1874,6 @@ body::after { opacity: 0.05; mix-blend-mode: multiply; }
     radial-gradient(1100px 660px at 86% -14%, rgba(184, 69, 47, 0.10), transparent 62%),
     radial-gradient(880px 580px at -8% 30%, rgba(176, 148, 96, 0.10), transparent 60%);
 }
-
-
 
 /* ===== thematic 细节：让两套新主题真的"有性格"（不碰组件结构） ===== */
 /* Editorial：标题走衬线，正文行高放松一点，读起来更像杂志 */
@@ -1997,11 +1890,7 @@ h3,
 body { line-height: 1.75; }
 
 /* Swiss：等宽数字 + 紧字距 + 更轻的阴影，直角靠线而不是靠投影分层 */
-/* 标签底色（--pale-blue-*）按主题改配色：默认那抹冷蓝在两套新主题里都突兀 */
-:root {
-  --pale-blue-bg: color-mix(in srgb, var(--accent) 8%, #fff);
-  --pale-blue-fg: #8d2f24;
-}
+
 /* ===== 反 AI 模板感：元信息不用「·」串（2026-11-02） ===== */
 .hero-role span + span {
   padding-left: 10px;
@@ -2131,7 +2020,6 @@ body { line-height: 1.75; }
 .tool-table,
 .table-wrap { overscroll-behavior: contain; }
 
-
 /* ===== 关于区：数据条与标签计数（2026-11-02 按 design-taste 审计后） ===== */
 .hm-stats {
   display: flex; flex-wrap: wrap; gap: 10px 34px;
@@ -2145,8 +2033,6 @@ body { line-height: 1.75; }
 .hm-bar { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 5px 0; }
 .hm-bar-num { color: var(--text-dim); font-variant-numeric: tabular-nums; }
 
-
-
 .hero-vignette {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background: radial-gradient(
@@ -2155,9 +2041,6 @@ body { line-height: 1.75; }
     color-mix(in srgb, var(--bg-deeper) 82%, transparent) 92%
   );
 }
-
-
-
 
 /* ============================================================
    首屏底图：五套「印在纸上的画」，刷新随机（2026-11-02 v3）
@@ -2227,7 +2110,6 @@ body { line-height: 1.75; }
 
 .hero-art[data-art="5"] { --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; --wash-blur: 34px; }
 
-
 /* ---- 第 6 套：位图样例（自己画的 SVG 渲染成 webp，浅/深各一张） ---- */
 .hero-art[data-art="6"] {
   --tex-pitch: 4px;
@@ -2243,12 +2125,10 @@ body { line-height: 1.75; }
   opacity: .95;
 }
 
-
 /* 深底专用：3 极光 / 5 日落 这两套彩度最高，单独换成低饱和墨色，
    避免在近黑背景上读成霓虹灯 */
 .hero-art[data-art="3"] { --h1: #7a5cc0; --h2: #2f9b9b; --h3: #c98b5a; --wash-blur: 40px; }
 .hero-art[data-art="5"] { --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; --wash-blur: 34px; }
-
 
 /* 窄屏收缝宽，避免内容区被挤太窄 */
 @media (max-width: 640px) {
@@ -2276,7 +2156,6 @@ body { line-height: 1.75; }
   .band-tint { margin: 10px 12px 0; }
 }
 
-
 /* ============================================================
    视觉语言对齐 teamorouter（2026-11-04）
    取的是它的做法，不是它的素材：
@@ -2289,7 +2168,6 @@ body { line-height: 1.75; }
   --rule-dot-ink: color-mix(in srgb, var(--text) 26%, transparent);
   --rule-dot: linear-gradient(90deg, var(--rule-dot-ink) 0 4px, transparent 4px 8px);
   --notch: 10px;
-  --hair: color-mix(in srgb, var(--text) 18%, transparent);
 }
 
 /* ① 分区标题下面那条线改点线：结构线用点线，内容边界用实线 */
@@ -2301,13 +2179,10 @@ body { line-height: 1.75; }
   background-repeat: repeat-x;
   background-position: left center;
   height: 1px;
-}
-
-/* 表格行/列表分隔：点线更像图纸，也更轻 */
+}/* 表格行/列表分隔：点线更像图纸，也更轻 */
 .tool-table th,
 .tool-table td,
-.tl-grid,
-.posts-table th, .posts-table td { border-color: var(--border); }
+.tl-grid { border-color: var(--border); }
 .note-item { border-bottom: 1px dotted var(--rule-dot-ink); }
 .hr-item, .hr-item:last-of-type { border-bottom: 1px dotted var(--rule-dot-ink); }
 
@@ -2323,15 +2198,10 @@ body { line-height: 1.75; }
     radial-gradient(circle var(--notch) at bottom right, transparent 98%, #000) bottom right / 51% 51% no-repeat;
   -webkit-mask: var(--notch-mask);
   mask: var(--notch-mask);
-}
-
-/* ③ 注释层：小号等宽、字距放开，读起来像图纸上的批注 */
-.hero-rail dt,
-.hm-stats dt,
+}.hm-stats dt,
 .hr-head,
 .tl-status,
 .ad-date-label,
-.notes-count,
 .footer-tagline {
   font-family: var(--font-mono);
   font-size: 0.6875rem;

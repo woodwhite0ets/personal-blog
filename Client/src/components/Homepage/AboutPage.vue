@@ -254,8 +254,8 @@ onMounted(async () => {
 .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .ptag {
   display: inline-block; font-size: 0.7188rem; padding: 3px 10px;
-  color: var(--pale-blue-fg); background: var(--pale-blue-bg);
-  border: 1px solid color-mix(in srgb, var(--pale-blue-fg) 14%, transparent);
+  color: var(--tag-fg); background: var(--tag-bg);
+  border: 1px solid var(--tag-bd);
   border-radius: 999px;
 }
 .ptag + .ptag::before { content: ' · '; color: var(--border-strong); }
