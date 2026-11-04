@@ -42,46 +42,61 @@
         </aside>
       </section>
 
-      <!-- ② 服务 -->
+      <!-- ② 服务：编辑式三行，不用卡片 -->
       <section class="co-sec">
         <h2 class="co-h2">做什么</h2>
-        <div class="co-grid co-grid-3">
-          <article class="co-card">
-            <h3>AI 应用后端与检索</h3>
-            <p>RAG、向量检索、提示与工具编排，带评测和灰度发布。</p>
-            <p class="co-meta">交付：接口、数据管道、部署</p>
-          </article>
-          <article class="co-card">
-            <h3>本地推理与自动化</h3>
-            <p>本地模型、推理服务、定时任务与巡检。</p>
-            <p class="co-meta">交付：可用端点、监控、运行手册</p>
-          </article>
-          <article class="co-card">
-            <h3>全栈实现</h3>
-            <p>Vue、Node、MySQL 的业务系统，含认证、权限、后台。</p>
-            <p class="co-meta">交付：可上线站点、管理端</p>
-          </article>
-        </div>
+        <ol class="co-services">
+          <li>
+            <span class="co-svc-idx">01</span>
+            <div>
+              <h3>AI 应用后端与检索</h3>
+              <p>RAG、向量检索、提示与工具编排，带评测和灰度发布。</p>
+            </div>
+            <span class="co-svc-meta">交付：接口、数据管道、部署</span>
+          </li>
+          <li>
+            <span class="co-svc-idx">02</span>
+            <div>
+              <h3>本地推理与自动化</h3>
+              <p>本地模型、推理服务、定时任务与巡检。</p>
+            </div>
+            <span class="co-svc-meta">交付：可用端点、监控、运行手册</span>
+          </li>
+          <li>
+            <span class="co-svc-idx">03</span>
+            <div>
+              <h3>全栈实现</h3>
+              <p>Vue、Node、MySQL 的业务系统，含认证、权限、后台。</p>
+            </div>
+            <span class="co-svc-meta">交付：可上线站点、管理端</span>
+          </li>
+        </ol>
       </section>
 
-      <!-- 入口：分成三个子页，首页不再长 -->
+      <!-- ③ 一条精选案例 + 去哪看更多 -->
       <section class="co-sec">
-        <div class="co-grid co-grid-3">
-          <router-link class="co-card co-entry" to="/work">
-            <h3>案例</h3>
-            <p>五个已上线的项目，每条写清问题、做法与结果。</p>
-            <span class="co-entry-more">看案例</span>
-          </router-link>
-          <router-link class="co-card co-entry" to="/stack">
-            <h3>用什么做</h3>
-            <p>自建的工作站：本地推理、检索、CI 与巡检，零入站端口。</p>
-            <span class="co-entry-more">看基础设施</span>
-          </router-link>
-          <router-link class="co-card co-entry" to="/contact">
-            <h3>怎么合作</h3>
-            <p>按项目或按月，签合同可开票，先聊需求再报价。</p>
-            <span class="co-entry-more">聊一聊</span>
-          </router-link>
+        <h2 class="co-h2">最近交付</h2>
+        <router-link :to="`/projects/${featured.slug}`" class="co-feature">
+          <span class="co-feature-name">{{ featured.name }}</span>
+          <span class="co-feature-sub">{{ featured.subtitle }}</span>
+          <span class="co-feature-result">结果：{{ featured.result }}</span>
+          <span class="co-feature-more">看这个案例的做法 →</span>
+        </router-link>
+        <p class="co-note">
+          另外 {{ cases.length - 1 }} 个在跑的项目，
+          <router-link to="/work">在案例页</router-link>；
+          基础设施与交付方式在<router-link to="/stack">能力页</router-link>。
+        </p>
+      </section>
+
+      <!-- ④ 运行事实：一条窄带 -->
+      <section class="co-sec">
+        <h2 class="co-h2">现在的状态</h2>
+        <div class="status-band">
+          <span class="sb-item"><span class="sb-k">已交付</span><span class="sb-v">{{ cases.length }} 个项目</span></span>
+          <span class="sb-item"><span class="sb-k">工作站</span><span class="sb-v">7×24 运行</span></span>
+          <span class="sb-item"><span class="sb-k">工具库</span><span class="sb-v">560 条</span></span>
+          <span class="sb-item"><span class="sb-k">响应</span><span class="sb-v">一天内</span></span>
         </div>
       </section>
 
@@ -100,7 +115,8 @@
 <script setup>
 import { projects } from '../../data/projects.js'
 
-const cases = projects.slice(0, 5)
+const cases = projects
+const featured = projects[0]
 const year = new Date().getFullYear()
 </script>
 
