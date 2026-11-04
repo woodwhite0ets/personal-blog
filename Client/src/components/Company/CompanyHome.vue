@@ -392,9 +392,36 @@ onUnmounted(() => {
 
 .co-aside-fig { margin: 0; }
 .co-aside-fig svg { width: 100%; height: auto; overflow: visible; }
-.fig-line { stroke: color-mix(in srgb, var(--text) 20%, transparent); stroke-width: .8; }
+.fig-line {
+  stroke: color-mix(in srgb, var(--text) 20%, transparent); stroke-width: .8;
+  stroke-dasharray: 272; stroke-dashoffset: 272;
+}
 .fig-dot { fill: var(--bg); stroke: color-mix(in srgb, var(--text) 42%, transparent); stroke-width: 1; }
 .fig-dot-key { fill: var(--accent); }
+
+/* 路径随进入视口画出来，四个节点跟着依次亮起（整页只有这一处"叙述型"动画） */
+@supports (animation-timeline: view()) {
+  .fig-line {
+    animation: figDraw linear both;
+    animation-timeline: view();
+    animation-range: entry 24% entry 62%;
+  }
+  .fig-dot, .fig-dot-key {
+    animation: figNode linear both;
+    animation-timeline: view();
+  }
+  .co-aside-fig circle:nth-of-type(1) { animation-range: entry 26% entry 44%; }
+  .co-aside-fig circle:nth-of-type(2) { animation-range: entry 34% entry 52%; }
+  .co-aside-fig circle:nth-of-type(3) { animation-range: entry 42% entry 60%; }
+  .co-aside-fig circle:nth-of-type(4) { animation-range: entry 50% entry 68%; }
+  .co-aside-fig text { animation: figNode linear both; animation-timeline: view(); animation-range: entry 46% entry 76%; }
+}
+@keyframes figDraw { from { stroke-dashoffset: 272; } to { stroke-dashoffset: 0; } }
+@keyframes figNode { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .fig-line { animation: none; stroke-dashoffset: 0; }
+  .fig-dot, .fig-dot-key, .co-aside-fig text { animation: none; opacity: 1; }
+}
 .fig-t { font-family: var(--font-mono); font-size: 8px; letter-spacing: .14em; fill: var(--text-faint); }
 
 /* ===== 指标带 ===== */
@@ -420,7 +447,19 @@ onUnmounted(() => {
   letter-spacing: -0.025em; color: var(--text-bright);
 }
 .co-h2-t { white-space: nowrap; }
-.co-h2-rule { flex: 1; height: 1px; background: var(--border); transform: translateY(-6px); }
+.co-h2-rule { flex: 1; height: 1px; background: var(--border); transform-origin: left; }
+@supports (animation-timeline: view()) {
+  .co-h2-rule {
+    animation: coRuleDraw linear both;
+    animation-timeline: view();
+    animation-range: entry 12% entry 48%;
+  }
+}
+@keyframes coRuleDraw {
+  from { transform: translateY(-6px) scaleX(0); }
+  to   { transform: translateY(-6px) scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce) { .co-h2-rule { animation: none; transform: translateY(-6px); } }
 .co-h2-note {
   font-family: var(--font-mono); font-size: 0.625rem; font-weight: 400;
   letter-spacing: .16em; color: var(--text-faint); white-space: nowrap;

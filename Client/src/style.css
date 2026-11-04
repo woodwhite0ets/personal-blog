@@ -2085,6 +2085,10 @@ body { line-height: 1.75; }
 @media (prefers-reduced-motion: reduce) {
   .hero-wash { animation: none; }
 }
+/* 手机端关掉首屏色团的常驻漂移：满屏 blur 层持续重绘，费电且看不出差别 */
+@media (max-width: 700px) {
+  .hero-wash { animation: none; }
+}
 /* 位图那套底图不参与漂移（否则会露出边缘） */
 .hero-art[data-art="6"] .hero-wash { animation: none; }
 
