@@ -21,7 +21,18 @@ function clearStaleToken() {
 const routes = [
   {
     path: '/',
+    name: 'CompanyHome',
+    component: () => import('../components/Company/CompanyHome.vue'),
+  },
+  {
+    // 博客首页仍走原路径，公司页的「博客」入口指这里
+    path: '/blog',
     redirect: '/HomePage',
+  },
+  {
+    // 公司页里叫「案例」，实际落在项目页
+    path: '/work',
+    redirect: '/projects',
   },
   {
     path: '/login',
@@ -189,6 +200,11 @@ const router = createRouter({
 
 // ====== 路由守卫 ======
 router.beforeEach((to, from, next) => {
+  // 按 hostname 分流：blog 子域进来落博客，根域落公司主页
+  if (to.path === '/' && window.location.hostname.startsWith('blog.')) {
+    next('/HomePage')
+    return
+  }
   const token = getToken();
 
   // 1. 过期 token 快速清理
