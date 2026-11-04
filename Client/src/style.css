@@ -2899,33 +2899,18 @@ html {
 .pl-page, .tl-page, .ad-page, .td-page, .about-page, .post-detail-page { position: relative; }
 
 .page-wash {
-  /* 覆盖整页：颜色不止在顶部，往下滑也有，只是更淡 */
+  /* 铺满整页：三条超宽横带，往下滑颜色一直在，只是更淡 */
   position: absolute; inset: 0;
   z-index: 0; pointer-events: none;
   overflow: hidden;
-  background-image: none;
-  opacity: 1;
+  background-image:
+    radial-gradient(ellipse 150% 42% at 8% 6%, var(--page-wash-a), transparent 72%),
+    radial-gradient(ellipse 150% 40% at 92% 38%, var(--page-wash-b), transparent 74%),
+    radial-gradient(ellipse 150% 40% at 12% 72%, var(--page-wash-a), transparent 74%),
+    radial-gradient(ellipse 150% 36% at 88% 98%, var(--page-wash-b), transparent 76%);
 }
-/* 两层各漂各的：合成器只处理 transform，不触发重绘 */
-.page-wash::before,
-.page-wash::after {
-  content: ''; position: absolute; pointer-events: none;
-  will-change: transform;
-  opacity: .55;  /* 与元素自身横带叠加，别压灰纸色 */
-}
-.page-wash::before {
-  inset: -10% -12% 52% -12%;
-  background: radial-gradient(ellipse 62% 72% at 32% 34%, var(--page-wash-a, rgba(110,145,200,.55)), transparent 72%);
-  filter: blur(16px);
-  animation: washDriftA 28s ease-in-out infinite alternate;
-}
-.page-wash::after {
-  display: none;
-  inset: -8% -12% 58% 42%;
-  background: radial-gradient(ellipse 62% 72% at 68% 30%, var(--page-wash-b, rgba(150,160,90,.45)), transparent 74%);
-  filter: blur(18px);
-  animation: washDriftB 38s ease-in-out infinite alternate;
-}
+.page-wash::before, .page-wash::after { content: none; }
+
 @keyframes washDriftA {
   from { transform: translate3d(-2.5%, 1%, 0) scale(1); }
   to   { transform: translate3d(3.5%, -2%, 0) scale(1.09); }
@@ -2937,16 +2922,16 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .page-wash::before, .page-wash::after { animation: none; }
 }
-.tl-page      { --page-wash-a: rgba(172,106,52,.09);   --page-wash-b: rgba(172,106,52,.04)}
-.ad-page      { --page-wash-a: rgba(172,106,52,.09);   --page-wash-b: rgba(172,106,52,.04)}
-.tags-page    { --page-wash-a: rgba(172,106,52,.09);   --page-wash-b: rgba(172,106,52,.04)}
-.forum-page   { --page-wash-a: rgba(172,106,52,.09);  --page-wash-b: rgba(172,106,52,.04)}
-.archive-page { --page-wash-a: rgba(172,106,52,.09); --page-wash-b: rgba(172,106,52,.04)}
-.now-page     { --page-wash-a: rgba(172,106,52,.09);   --page-wash-b: rgba(172,106,52,.04)}
-.pl-page      { --page-wash-a: rgba(172,106,52,.09);   --page-wash-b: rgba(172,106,52,.04)}
-.notes-page   { --page-wash-a: rgba(172,106,52,.09);  --page-wash-b: rgba(172,106,52,.04)}
-.about-page   { --page-wash-a: rgba(172,106,52,.09);  --page-wash-b: rgba(172,106,52,.04)}
-.post-detail-page { --page-wash-a: rgba(172,106,52,.09); --page-wash-b: rgba(172,106,52,.04)}
+.tl-page      { --page-wash-a: rgba(178,112,58,.30);   --page-wash-b: rgba(178,112,58,.16)}
+.ad-page      { --page-wash-a: rgba(178,112,58,.30);   --page-wash-b: rgba(178,112,58,.16)}
+.tags-page    { --page-wash-a: rgba(178,112,58,.30);   --page-wash-b: rgba(178,112,58,.16)}
+.forum-page   { --page-wash-a: rgba(178,112,58,.30);  --page-wash-b: rgba(178,112,58,.16)}
+.archive-page { --page-wash-a: rgba(178,112,58,.30); --page-wash-b: rgba(178,112,58,.16)}
+.now-page     { --page-wash-a: rgba(178,112,58,.30);   --page-wash-b: rgba(178,112,58,.16)}
+.pl-page      { --page-wash-a: rgba(178,112,58,.30);   --page-wash-b: rgba(178,112,58,.16)}
+.notes-page   { --page-wash-a: rgba(178,112,58,.30);  --page-wash-b: rgba(178,112,58,.16)}
+.about-page   { --page-wash-a: rgba(178,112,58,.30);  --page-wash-b: rgba(178,112,58,.16)}
+.post-detail-page { --page-wash-a: rgba(178,112,58,.30); --page-wash-b: rgba(178,112,58,.16)}
 
 /* 内容压在气团之上 */
 .tl-main, .ad-main, .tags-main, .archive-main, .notes-main,
