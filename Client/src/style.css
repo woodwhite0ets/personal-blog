@@ -3415,3 +3415,24 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .co-hero-facts::before, .co-hero-facts::after, .co-feature::before { animation: none; }
 }
+
+/* ============================================================
+   组件里的「博客大屏」质感（2026-11-05）
+   博客首屏是 水彩色团 + 半调网点 两层；这里把同一套搬进组件：
+   色团已有（::before 流动团），再补一层网点，让它读成「印上去的」。
+   ============================================================ */
+/* 网点作为元素自身的第二层背景，不影响 ::before/::after 的流动色团 */
+.co-feature, .co-hero-facts {
+  background-image:
+    radial-gradient(circle, rgba(20,17,15,.30) 1px, transparent 1.3px),
+    linear-gradient(180deg, color-mix(in srgb, #fff 78%, transparent), color-mix(in srgb, #fff 54%, transparent));
+  background-size: 6px 6px, 100% 100%;
+  background-blend-mode: multiply, normal;
+  background-position: 0 0, 0 0;
+}
+/* 事实栏原来的 ::after 是铜色团，网点另起一层 */
+.co-hero-facts { position: relative; }
+.co-hero-facts .co-fact { position: relative; z-index: 2; }
+
+/* 精选案例：右上角一片水彩 + 网点，读成一张印出来的卡 */
+.co-feature { position: relative; overflow: hidden; }
