@@ -3012,10 +3012,12 @@ html {
 
 /* ===== 公司站（company）共用样式：/、/work、/stack、/contact ===== */
 .co-page {
-  position: relative; min-height: 100vh; background-color: var(--bg); color: var(--text);
+  position: relative; min-height: 100vh; color: var(--text);
+  /* 公司站不要纯纸白：整页压一层极浅的品牌蓝，和标识同源 */
+  background-color: #f4f8fc;
   /* 公司页的气团：只留极淡的暖色，复用全局 .page-wash 的两层结构 */
-  --page-wash-a: rgba(184, 69, 47, .13);
-  --page-wash-b: rgba(160, 96, 47, .09);
+  --page-wash-a: rgba(47, 94, 136, .20);
+  --page-wash-b: rgba(113, 168, 213, .16);
 }
 
 .co-nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between;
