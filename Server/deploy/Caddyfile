@@ -69,7 +69,7 @@ woodwhite.top {
 	}
 
 	# 公司域只承载公司页，其余交给博客域
-	@not_company not path / /solutions* /work* /stack* /contact* /api/* /uploads/* /healthz /mcp* /assets/* /brand/* /fonts/* /robots.txt /sitemap.xml /og-default* /favicon*
+	@not_company not path / /solutions* /work* /stack* /contact* /api/* /uploads/* /healthz /mcp* /assets/* /brand/* /fonts/* /robots.txt /sitemap.xml /og-default* /favicon* *.js *.css *.json *.txt *.svg *.png *.jpg *.jpeg *.webp *.ico *.woff *.woff2 *.map *.xml *.webmanifest
 	redir @not_company https://blog.woodwhite.top{uri} 302
 	reverse_proxy 127.0.0.1:3027
 }
