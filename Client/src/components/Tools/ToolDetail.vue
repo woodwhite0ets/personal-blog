@@ -90,7 +90,7 @@ watch(() => route.params.slug, load)
 </script>
 
 <style scoped>
-.td-page { min-height: 100vh; background: var(--bg); color: var(--text); }
+.td-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
 .td-main { max-width: 820px; margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 .td-back { margin: 0 0 22px; font-size: 0.8125rem; }

@@ -339,7 +339,7 @@ onMounted(() => fetchUsers())
   background: var(--accent-a6); border: 1px solid var(--accent-a20);
   border-radius: 4px; padding: 3px 8px; outline: none; cursor: pointer;
 }
-.role-select option { background: var(--bg-float); color: var(--text); }
+.role-select option { background-color: var(--bg-float); color: var(--text); }
 
 .role-badge {
   font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;

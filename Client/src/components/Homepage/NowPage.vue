@@ -128,7 +128,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.now-page { min-height: 100vh; background: var(--bg); color: var(--text); }
+.now-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
 .now-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 .now-head { padding-bottom: 22px; }

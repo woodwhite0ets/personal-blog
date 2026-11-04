@@ -664,7 +664,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 <style scoped>
 .post-detail-page {
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
   font-family: var(--font-sans);
   color: var(--text);
   position: relative;
@@ -900,7 +900,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .author-card-inner {
   display: flex; align-items: center; gap: 16px;
-  padding: 20px; background: var(--bg-elevated);
+  padding: 20px; background-color: var(--bg-elevated);
   border: 1px solid var(--border); border-radius: 10px;
   text-decoration: none; transition: border-color 0.2s;
 }
@@ -948,7 +948,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .comment-textarea {
   width: 100%; padding: 12px 14px;
   font-family: inherit; font-size: 0.8125rem; color: var(--text);
-  background: var(--bg-elevated); border: 1px solid var(--border-strong);
+  background-color: var(--bg-elevated); border: 1px solid var(--border-strong);
   border-radius: 6px; outline: none; resize: vertical;
   caret-color: var(--accent); transition: border-color 0.2s;
   line-height: 1.6;
@@ -1060,7 +1060,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   align-items: center;
   gap: 6px;
   padding: 8px 12px;
-  background: var(--bg-float);
+  background-color: var(--bg-float);
   border: 1px solid var(--border-strong);
   border-radius: 999px;
   color: var(--text-dim);
@@ -1170,7 +1170,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   .nav-links { display: none; }
   .nav-toggle { display: flex; }
   .nav-actions { gap: 8px; }
-  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
+  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background-color: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
   .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
   .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   .post-title { font-size: 1.5rem; }
@@ -1228,7 +1228,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 /* 统一：文章页上边距 88，正文保持阅读宽度 */
 .post-article { padding-top: 88px; }
 /* 编辑式信笺：页面结构保持轻、薄、可读 */
-.post-detail-page { background: var(--bg); }
+.post-detail-page { background-color: var(--bg); }
 .cover-wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px; border-bottom: 0; }
 .cover-img { max-height: 360px; border-bottom: 1px solid var(--border); }
 .post-article, .comment-section, .author-card { max-width: 1000px; margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; }
@@ -1248,7 +1248,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .section-count { font-variant-numeric: tabular-nums; }
 .comment-item { border-radius: 0; }
 .toc-toggle, .toc-nav { border-radius: 0; box-shadow: none; }
-.toc-nav { background: var(--bg); }
+.toc-nav { background-color: var(--bg); }
 .toc-count { border-radius: 0; }
 .post-icon, .empty-icon { display: none; }
 .bg-grid, .bg-scanline { display: none; }

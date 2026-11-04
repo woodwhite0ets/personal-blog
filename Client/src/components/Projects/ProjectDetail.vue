@@ -58,7 +58,7 @@ const next = computed(() => {
 </script>
 
 <style scoped>
-.proj-page { min-height: 100vh; background: var(--bg); color: var(--text); }
+.proj-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
 .proj-main { max-width: 820px; margin: 0 auto; padding: 64px 24px 104px; }
 
 .proj-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); }

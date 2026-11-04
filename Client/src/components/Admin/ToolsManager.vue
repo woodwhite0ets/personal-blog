@@ -260,7 +260,7 @@ onMounted(() => {
 
 .select {
   font-family: inherit; font-size: 0.75rem; padding: 5px 8px; border-radius: 5px;
-  border: 1px solid var(--border); background: var(--bg-elevated); color: var(--text);
+  border: 1px solid var(--border); background-color: var(--bg-elevated); color: var(--text);
 }
 .select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .select-sm { padding: 3px 6px; font-size: 0.6875rem; }
@@ -297,7 +297,7 @@ onMounted(() => {
 .th-num { width: 76px; }
 .num-input {
   width: 66px; font-family: inherit; font-size: 0.75rem; padding: 4px 6px; border-radius: 5px;
-  border: 1px solid var(--border); background: var(--bg-elevated); color: var(--text);
+  border: 1px solid var(--border); background-color: var(--bg-elevated); color: var(--text);
   font-variant-numeric: tabular-nums;
 }
 .num-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -305,7 +305,7 @@ onMounted(() => {
 .text-input {
   width: 100%; min-width: 180px; font-family: inherit; font-size: 0.75rem; line-height: 1.55;
   padding: 6px 8px; border-radius: 5px; border: 1px solid var(--border);
-  background: var(--bg-elevated); color: var(--text); resize: vertical;
+  background-color: var(--bg-elevated); color: var(--text); resize: vertical;
 }
 .text-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .one-line { min-width: 200px; }

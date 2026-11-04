@@ -49,7 +49,7 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
 
 <style scoped>
 .footer { position: relative; z-index: 1; border-top: 1px dotted var(--rule-dot-ink); padding: 40px 24px 28px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-.footer-terminal { width: min(720px, 100%); background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 10px 34px var(--shadow); }
+.footer-terminal { width: min(720px, 100%); background-color: var(--bg-elevated); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 10px 34px var(--shadow); }
 .terminal-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--overlay-a15); border-bottom: 1px solid var(--border); }
 .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .dot-red { background: var(--dot-red); }

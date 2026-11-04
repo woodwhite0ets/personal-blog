@@ -229,7 +229,7 @@ onMounted(reload)
 </script>
 
 <style scoped>
-.tl-page { min-height: 100vh; background: var(--bg); color: var(--text); }
+.tl-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
 .tl-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 .tl-head { padding-bottom: 18px; border-bottom: 1px solid var(--border); }
@@ -243,7 +243,7 @@ onMounted(reload)
 .tl-search-label { font-size: 0.8125rem; color: var(--text-dim); white-space: nowrap; }
 .tl-search {
   flex: 1; min-width: 0; font: inherit; font-size: 0.875rem; padding: 8px 12px; border-radius: 6px;
-  border: 1px solid var(--border); background: var(--bg-elevated); color: var(--text);
+  border: 1px solid var(--border); background-color: var(--bg-elevated); color: var(--text);
 }
 .tl-search::placeholder { color: var(--text-faint); }
 .tl-search:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
@@ -251,11 +251,12 @@ onMounted(reload)
 .tl-cats { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; }
 .tl-cat {
   appearance: none; background: none; border: 1px solid transparent; border-radius: 6px;
-  padding: 5px 11px; font: inherit; font-size: 0.8125rem; color: var(--text-dim); cursor: pointer;
+  padding: 5px 11px 5px 20px; font: inherit; font-size: 0.8125rem; color: var(--text-dim); cursor: pointer;
   transition: color .12s ease, border-color .12s ease;
 }
 .tl-cat:hover { color: var(--text); }
 .tl-cat.active { color: var(--text); border-color: var(--border-strong); }
+.tl-cat:not([data-cat]) { padding-left: 11px; }
 .tl-cat:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .tl-cat-n { margin-left: 6px; font-size: 0.75rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
@@ -297,10 +298,10 @@ onMounted(reload)
 }
 .tl-card {
   display: flex; flex-direction: column; gap: 8px; padding: 18px 20px 16px;
-  background: var(--bg); min-width: 0;
+  background-color: var(--bg); min-width: 0;
   transition: background-color .12s ease;
 }
-.tl-card:hover { background: var(--bg-elevated); }
+.tl-card:hover { background-color: var(--bg-elevated); }
 
 /* 首屏卡片编排：45ms 一张、最多延迟到第 12 张，总时长压在 0.8s 内 */
 .tl-grid.is-first .tl-card {

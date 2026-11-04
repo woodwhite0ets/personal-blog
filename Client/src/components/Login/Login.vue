@@ -179,7 +179,7 @@ async function handleGuestLogin() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-deeper);
+  background-color: var(--bg-deeper);
   font-family: var(--font-sans);
   color: var(--text);
   position: relative;
@@ -193,7 +193,7 @@ async function handleGuestLogin() {
   position: relative;
   width: 420px;
   max-width: 92vw;
-  background: var(--bg-float);
+  background-color: var(--bg-float);
   border: 1px solid var(--border-strong);
   border-radius: 10px;
   box-shadow: 0 0 60px var(--shadow), 0 0 0 1px var(--overlay-a3) inset;
@@ -265,7 +265,7 @@ async function handleGuestLogin() {
   font-family: inherit;
   font-size: 0.875rem;
   color: var(--text-bright);
-  background: var(--bg-elevated);
+  background-color: var(--bg-elevated);
   border: 1px solid var(--border-strong);
   border-radius: 6px;
   outline: none;
@@ -472,7 +472,7 @@ async function handleGuestLogin() {
  
 
 <style scoped>
-.login-page { min-height: 100dvh; display:block; padding:72px 24px; background:var(--bg); }
+.login-page { min-height: 100dvh; display:block; padding:72px 24px; background-color: var(--bg); }
 .login-card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
 .card-body { max-width:560px; margin:0 auto; padding:0; }
 .login-title, .auth-title { font-family: "Noto Serif SC", var(--font-serif); font-weight: 500; letter-spacing: -0.025em; font-size: clamp(2rem,3.4vw,2.6rem); text-align:left; padding-bottom:16px; margin: 0 0 4px; }

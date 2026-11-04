@@ -397,7 +397,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 
 .home-page {
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
   font-family: var(--font-sans);
   color: var(--text);
   position: relative;
@@ -496,7 +496,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .search-input {
   width: 200px; height: 34px;
   padding: 0 12px;
-  background: var(--bg-elevated); border: 1px solid var(--border-strong); border-left: none;
+  background-color: var(--bg-elevated); border: 1px solid var(--border-strong); border-left: none;
   border-radius: 0 6px 6px 0;
   color: var(--text);
   font-family: inherit; font-size: 0.75rem;
@@ -563,7 +563,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .user-dropdown {
   position: absolute; top: calc(100% + 8px); right: 0;
   min-width: 180px;
-  background: var(--bg-float); border: 1px solid var(--border-strong);
+  background-color: var(--bg-float); border: 1px solid var(--border-strong);
   border-radius: 8px; overflow: hidden;
   box-shadow: 0 12px 40px var(--shadow);
   z-index: 200;
@@ -672,7 +672,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 
 /* 侧边栏面板入场动效（错峰） */
 .sidebar-panel {
-  background: var(--bg-elevated); border: 1px solid var(--border);
+  background-color: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; overflow: hidden;
   animation: fadeInUp 0.5s ease both;
 }
@@ -740,7 +740,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .sort-btn {
   padding: 4px 12px;
   font-family: inherit; font-size: 0.6875rem; font-weight: 600;
-  color: var(--text-dim); background: var(--bg-elevated);
+  color: var(--text-dim); background-color: var(--bg-elevated);
   border: 1px solid var(--border); border-radius: 4px;
   cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
@@ -823,7 +823,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
   .search-input { width: 130px; }
   .user-name { display: none; }
   .user-caret { display: none; }
-  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
+  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background-color: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
   .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
   .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   .hero-inner { padding: 64px 20px 52px; }

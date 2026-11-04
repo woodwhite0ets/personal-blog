@@ -545,7 +545,7 @@ watch(username, () => {
 <style scoped>
 .user-page {
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
   font-family: var(--font-sans);
   color: var(--text);
   position: relative;
@@ -755,7 +755,7 @@ watch(username, () => {
 .sidebar { display: flex; flex-direction: column; gap: 20px; }
 
 .sidebar-panel {
-  background: var(--bg-elevated); border: 1px solid var(--border);
+  background-color: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; overflow: hidden;
 }
 
@@ -860,7 +860,7 @@ watch(username, () => {
 }
 .pwd-modal {
   width: 420px; max-width: 90vw;
-  background: var(--bg-elevated); border: 1px solid var(--border);
+  background-color: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; overflow: hidden;
 }
 .pwd-modal-bar {
@@ -883,14 +883,14 @@ watch(username, () => {
 .pwd-field input {
   width: 100%; padding: 10px 12px;
   font-family: inherit; font-size: 0.8125rem; color: var(--text);
-  background: var(--bg); border: 1px solid var(--border-strong); border-radius: 4px;
+  background-color: var(--bg); border: 1px solid var(--border-strong); border-radius: 4px;
   outline: none; caret-color: var(--accent);
 }
 .pwd-field input:focus { border-color: var(--accent); }
 .pwd-field textarea {
   width: 100%; padding: 10px 12px;
   font-family: inherit; font-size: 0.8125rem; color: var(--text);
-  background: var(--bg); border: 1px solid var(--border-strong); border-radius: 4px;
+  background-color: var(--bg); border: 1px solid var(--border-strong); border-radius: 4px;
   outline: none; caret-color: var(--accent); resize: vertical;
 }
 .pwd-field textarea:focus { border-color: var(--accent); }
@@ -930,7 +930,7 @@ watch(username, () => {
   .nav-actions { gap: 8px; }
   .user-name { display: none; }
   .user-caret { display: none; }
-  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
+  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background-color: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
   .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
   .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   .user-hero-inner { flex-direction: column; text-align: center; padding: 40px 20px 32px; }

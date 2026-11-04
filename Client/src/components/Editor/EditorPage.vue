@@ -777,7 +777,7 @@ watch(
 <style scoped>
 .editor-page {
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
   font-family: var(--font-sans);
   color: var(--text);
   position: relative;
@@ -801,8 +801,8 @@ watch(
   box-shadow: 0 4px 24px var(--shadow);
   pointer-events: none;
 }
-.toast.success { background: var(--bg-elevated); border: 1px solid var(--ok-a30); color: var(--ok); }
-.toast.error   { background: var(--bg-elevated); border: 1px solid var(--err-a30); color: var(--err); }
+.toast.success { background-color: var(--bg-elevated); border: 1px solid var(--ok-a30); color: var(--ok); }
+.toast.error   { background-color: var(--bg-elevated); border: 1px solid var(--err-a30); color: var(--err); }
 .toast-icon { font-weight: 800; font-size: 0.875rem; }
 
 .toast-enter-active { transition: color 0.25s, background-color 0.25s, border-color 0.25s, opacity 0.25s, transform 0.25s, box-shadow 0.25s; }
@@ -917,7 +917,7 @@ watch(
 .tags-input-wrap {
   display: flex; flex-wrap: wrap; gap: 6px;
   align-items: center; padding: 8px 12px;
-  background: var(--bg-elevated); border: 1px solid var(--border-strong);
+  background-color: var(--bg-elevated); border: 1px solid var(--border-strong);
   border-radius: 6px; min-height: 42px;
   transition: border-color 0.2s;
 }
@@ -958,7 +958,7 @@ watch(
 .cover-dropzone {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 8px; padding: 28px;
-  background: var(--bg-elevated); border: 2px dashed var(--border);
+  background-color: var(--bg-elevated); border: 2px dashed var(--border);
   border-radius: 8px; cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
@@ -982,7 +982,7 @@ watch(
 .input-excerpt {
   width: 100%; padding: 12px 14px;
   font-family: inherit; font-size: 0.8125rem; color: var(--text);
-  background: var(--bg-elevated); border: 1px solid var(--border-strong);
+  background-color: var(--bg-elevated); border: 1px solid var(--border-strong);
   border-radius: 6px; outline: none; resize: none;
   caret-color: var(--accent); transition: border-color 0.2s;
 }
@@ -995,7 +995,7 @@ watch(
   flex: 1; min-height: 300px; width: 100%;
   padding: 14px; font-family: var(--font-mono);
   font-size: 0.875rem; line-height: 1.75; color: var(--text);
-  background: var(--bg-elevated); border: 1px solid var(--border-strong);
+  background-color: var(--bg-elevated); border: 1px solid var(--border-strong);
   border-radius: 8px; outline: none; resize: vertical;
   caret-color: var(--accent); transition: border-color 0.2s;
 }
@@ -1043,7 +1043,7 @@ watch(
 /* ====== 预览面板 ====== */
 .preview-pane {
   display: flex; flex-direction: column;
-  background: var(--bg-code);
+  background-color: var(--bg-code);
   overflow: hidden;
 }
 
@@ -1101,7 +1101,7 @@ watch(
 }
 
 .preview-body :deep(pre) {
-  background: var(--bg-elevated); border: 1px solid var(--border);
+  background-color: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; padding: 16px 20px; overflow-x: auto; margin: 18px 0;
 }
 

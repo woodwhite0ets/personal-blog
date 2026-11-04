@@ -89,7 +89,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-deeper);
+  background-color: var(--bg-deeper);
   font-family: var(--font-sans);
   color: var(--text);
   position: relative;
@@ -121,7 +121,7 @@ onMounted(async () => {
 .verify-card {
   position: relative;
   width: 420px; max-width: 92vw;
-  background: var(--bg-float);
+  background-color: var(--bg-float);
   border: 1px solid var(--border-strong);
   border-radius: 10px;
   box-shadow: 0 0 60px var(--shadow), 0 0 0 1px var(--overlay-a3) inset;
@@ -213,7 +213,7 @@ onMounted(async () => {
 .terminal-status {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 14px;
-  background: var(--bg-elevated); border-top: 1px solid var(--border-strong);
+  background-color: var(--bg-elevated); border-top: 1px solid var(--border-strong);
   font-size: 0.625rem; color: var(--text-muted); letter-spacing: 1.5px;
 }
 
@@ -236,7 +236,7 @@ onMounted(async () => {
 </style>
 
 <style scoped>
-.verify-page { min-height:100dvh; display:block; padding:72px 24px; background:var(--bg); }
+.verify-page { min-height:100dvh; display:block; padding:72px 24px; background-color: var(--bg); }
 .verify-card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
 .card-body { max-width:560px; margin:0 auto; padding:0; }
 .auth-title { font-family:var(--font-hand); font-size: clamp(2.5rem,5vw,4rem); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }

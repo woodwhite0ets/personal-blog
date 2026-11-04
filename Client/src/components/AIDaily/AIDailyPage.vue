@@ -535,7 +535,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.ad-page { min-height: 100vh; background: var(--bg); color: var(--text); }
+.ad-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
 .ad-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 /* 页头 */

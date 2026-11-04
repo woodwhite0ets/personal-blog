@@ -131,7 +131,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.notes-page { min-height: 100vh; background: var(--bg); color: var(--text); }
+.notes-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
 .notes-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 .notes-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); }
@@ -157,7 +157,7 @@ onMounted(async () => {
 .filter-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .notes-search input {
   width: 200px; padding: 7px 11px; border-radius: 8px;
-  border: 1px solid var(--border-strong); background: var(--bg-elevated);
+  border: 1px solid var(--border-strong); background-color: var(--bg-elevated);
   color: var(--text); font-size: 0.8125rem;
 }
 .notes-search input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -210,11 +210,11 @@ onMounted(async () => {
 }
 .detail-body :deep(h3) { margin: 22px 0 10px; font-size: 1rem; color: var(--text-bright); }
 .detail-body :deep(pre) {
-  background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px;
+  background-color: var(--bg-code); border: 1px solid var(--border); border-radius: 8px;
   padding: 14px 16px; overflow-x: auto; font-size: 0.7812rem; line-height: 1.6;
 }
 .detail-body :deep(code) { font-family: ui-monospace, monospace; font-size: .92em; }
-.detail-body :deep(p code) { background: var(--bg-elevated); padding: 1px 5px; border-radius: 3px; }
+.detail-body :deep(p code) { background-color: var(--bg-elevated); padding: 1px 5px; border-radius: 3px; }
 .detail-body :deep(table) { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.8125rem; }
 .detail-body :deep(th), .detail-body :deep(td) { border: 1px solid var(--border); padding: 7px 10px; text-align: left; }
 .detail-body :deep(blockquote) {

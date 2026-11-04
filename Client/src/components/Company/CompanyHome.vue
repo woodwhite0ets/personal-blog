@@ -137,7 +137,7 @@ const year = new Date().getFullYear()
 
 <style scoped>
 .co-page {
-  position: relative; min-height: 100vh; background: var(--bg); color: var(--text);
+  position: relative; min-height: 100vh; background-color: var(--bg); color: var(--text);
   /* 公司页的气团：只留极淡的暖色，复用全局 .page-wash 的两层结构 */
   --page-wash-a: rgba(184, 69, 47, .24);
   --page-wash-b: rgba(160, 96, 47, .18);

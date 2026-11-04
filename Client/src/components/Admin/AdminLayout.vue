@@ -98,7 +98,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 
 <style scoped>
 .admin-layout {
-  min-height: 100dvh; background: var(--bg);
+  min-height: 100dvh; background-color: var(--bg);
   font-family: var(--font-sans);
   color: var(--text); position: relative; overflow-x: hidden;
 }
@@ -140,7 +140,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 
 .user-dropdown {
   position: absolute; top: calc(100% + 8px); right: 0;
-  min-width: 160px; background: var(--bg); border: 1px solid var(--border);
+  min-width: 160px; background-color: var(--bg); border: 1px solid var(--border);
   border-radius: 0; box-shadow: none; z-index: 200;
 }
 
@@ -162,7 +162,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .sidebar { display: flex; flex-direction: column; gap: 16px; }
 
 .sidebar-panel {
-  background: var(--bg-elevated); border: 1px solid var(--border);
+  background-color: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; overflow: hidden;
 }
 
@@ -211,7 +211,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .info-key { color: var(--text-dim); }
 
 /* 统一：后台头部与主站一致 */
-.navbar { background: var(--bg); border-bottom: 1px solid var(--border); }
+.navbar { background-color: var(--bg); border-bottom: 1px solid var(--border); }
 .navbar-inner { max-width: 1120px; margin: 0 auto; padding: 0 28px; height: 74px; display: flex; align-items: center; gap: 24px; }
 .brand-text { font-family: var(--font-hand); font-size: 1.3125rem; color: var(--text-bright); }
 .brand-suffix { font-size: 0.8125rem; color: var(--text-dim); margin-left: 8px; }

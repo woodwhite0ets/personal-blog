@@ -44,7 +44,7 @@ onMounted(async () => {
 <style scoped>
 .tags-page {
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
   font-family: var(--font-sans);
   color: var(--text);
 }

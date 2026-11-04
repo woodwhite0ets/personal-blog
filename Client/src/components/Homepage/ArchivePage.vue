@@ -97,7 +97,7 @@ onMounted(async () => {
 <style scoped>
 .archive-page {
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
   font-family: var(--font-sans);
   color: var(--text);
   position: relative;

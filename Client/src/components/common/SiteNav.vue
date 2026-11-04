@@ -135,7 +135,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 .user-name { font-weight: 500; color: var(--text-secondary); }
 .user-caret { font-size: 0.625rem; color: var(--text-muted); transition: transform 0.2s; }
 .user-caret.open { transform: rotate(180deg); }
-.user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; transform-origin: top right; min-width: 180px; background: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 8px; overflow: hidden; box-shadow: 0 12px 40px var(--shadow); z-index: 200; }
+.user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; transform-origin: top right; min-width: 180px; background-color: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 8px; overflow: hidden; box-shadow: 0 12px 40px var(--shadow); z-index: 200; }
 .dropdown-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; font: inherit; font-size: 0.75rem; font-weight: 500; color: var(--text-secondary); background: none; border: none; text-decoration: none; cursor: pointer; transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s; }
 .dropdown-item.admin-link { color: var(--accent); border-bottom: 1px solid var(--border); }
 .dropdown-item.admin-link:hover { background: var(--accent-a6); }
@@ -161,7 +161,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
     position: fixed; top: 0; right: 0; bottom: 0;
     display: flex; flex-direction: column; align-items: stretch; gap: 0;
     width: min(78vw, 300px);
-    background: var(--bg); border-left: 1px solid var(--border);
+    background-color: var(--bg); border-left: 1px solid var(--border);
     padding: 72px 20px 24px; z-index: 95;
     box-shadow: -8px 0 24px var(--shadow-soft);
     transform: translateX(100%); visibility: hidden;

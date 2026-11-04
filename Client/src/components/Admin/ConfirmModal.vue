@@ -50,7 +50,7 @@ defineEmits(['confirm', 'cancel'])
 
 .modal-card {
   width: 400px; max-width: 92vw;
-  background: var(--bg); border: 1px solid var(--border);
+  background-color: var(--bg); border: 1px solid var(--border);
   border-radius: 0; box-shadow: none;
 }
 

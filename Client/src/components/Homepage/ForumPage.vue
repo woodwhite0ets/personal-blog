@@ -387,7 +387,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .forum-page {
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
   font-family: var(--font-sans);
   color: var(--text);
   position: relative;
@@ -485,7 +485,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .search-input {
   width: 200px; height: 34px;
   padding: 0 12px;
-  background: var(--bg-elevated); border: 1px solid var(--border-strong); border-left: none;
+  background-color: var(--bg-elevated); border: 1px solid var(--border-strong); border-left: none;
   border-radius: 0 6px 6px 0;
   color: var(--text);
   font-family: inherit; font-size: 0.75rem;
@@ -544,7 +544,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .user-dropdown {
   position: absolute; top: calc(100% + 8px); right: 0;
   min-width: 180px;
-  background: var(--bg-float); border: 1px solid var(--border-strong);
+  background-color: var(--bg-float); border: 1px solid var(--border-strong);
   border-radius: 8px; overflow: hidden;
   box-shadow: 0 12px 40px var(--shadow);
   z-index: 200;
@@ -628,7 +628,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .sidebar { display: flex; flex-direction: column; gap: 20px; }
 
 .sidebar-panel {
-  background: var(--bg-elevated); border: 1px solid var(--border);
+  background-color: var(--bg-elevated); border: 1px solid var(--border);
   border-radius: 8px; overflow: hidden;
 }
 
@@ -770,7 +770,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   .search-input { width: 130px; }
   .user-name { display: none; }
   .user-caret { display: none; }
-  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
+  .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background-color: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
   .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
   .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   .hero-inner { padding: 40px 20px 36px; }

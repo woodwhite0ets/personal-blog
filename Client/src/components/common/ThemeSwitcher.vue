@@ -88,7 +88,7 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
   transform-origin: top right;
   position: absolute; top: calc(100% + 8px); right: 0;
   min-width: 220px;
-  background: var(--bg-float); border: 1px solid var(--border-strong);
+  background-color: var(--bg-float); border: 1px solid var(--border-strong);
   border-radius: 8px; overflow: hidden;
   box-shadow: 0 12px 40px var(--shadow);
   z-index: 300;

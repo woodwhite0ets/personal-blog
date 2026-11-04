@@ -95,20 +95,20 @@ async function handleSend() {
   display: flex; align-items: center; justify-content: center;
   padding: 24px;
   position: relative;
-  background: var(--bg);
+  background-color: var(--bg);
 }
 .bg-grid { position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.3; }
 .bg-glow { position: fixed; top: -20%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, var(--accent-a10) 0%, transparent 60%); pointer-events: none; }
 
 .card {
   width: 100%; max-width: 420px;
-  background: var(--bg-elevated);
+  background-color: var(--bg-elevated);
   border: 1px solid var(--border-strong);
   border-radius: 10px;
   overflow: hidden;
   box-shadow: var(--shadow-deep);
 }
-.terminal-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg-deeper); border-bottom: 1px solid var(--border); }
+.terminal-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background-color: var(--bg-deeper); border-bottom: 1px solid var(--border); }
 .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
 .dot-red { background: var(--dot-red); } .dot-yellow { background: var(--dot-yellow); } .dot-green { background: var(--dot-green); }
 .terminal-title { margin-left: auto; font-size: 0.6875rem; color: var(--text-muted); font-family: var(--font-sans); }
@@ -128,7 +128,7 @@ async function handleSend() {
 .input-wrap { position: relative; }
 .input-wrap input {
   width: 100%; padding: 12px 14px;
-  background: var(--bg-deeper); color: var(--text);
+  background-color: var(--bg-deeper); color: var(--text);
   border: 1px solid var(--border-strong); border-radius: 6px;
   font-family: inherit; font-size: 0.875rem; outline: none;
   transition: border-color 0.2s;
@@ -161,7 +161,7 @@ async function handleSend() {
 </style>
 
 <style scoped>
-.forgot-page, .reset-page { min-height:100dvh; display:block; padding:72px 24px; background:var(--bg); }
+.forgot-page, .reset-page { min-height:100dvh; display:block; padding:72px 24px; background-color: var(--bg); }
 .card { width:100%; max-width:1000px; margin:0 auto; background:transparent; border:0; border-radius:0; box-shadow:none; }
 .card-body { max-width:560px; margin:0 auto; padding:0; }
 .auth-title { font-family:var(--font-hand); font-size: clamp(2.5rem,5vw,4rem); text-align:left; border-bottom:1px solid var(--border); padding-bottom:16px; }
