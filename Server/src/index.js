@@ -107,7 +107,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads'), { maxAge:
 // 静态文件 — 前端打包产物（生产环境）
 // 带 hash 的 /assets 资源可长期缓存；index.html 由 SPA 兜底设为不缓存
 app.use('/assets', express.static(path.join(__dirname, '../../Client/dist/assets'), { maxAge: '365d', immutable: true }));
-app.use(express.static(path.join(__dirname, '../../Client/dist')));
+app.use(express.static(path.join(__dirname, '../../Client/dist'), { index: false }));
 
 // ====== API 路由 ======
 app.get('/api/hello', (req, res) => {
@@ -234,7 +234,10 @@ app.use(async (req, res, next) => {
   // entry point after a deployment, otherwise they can request removed chunks.
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
   const indexPath = path.join(__dirname, '../../Client/dist/index.html');
-  if (req.path.startsWith('/post/')) {
+  // 文章页与「公司页 / 案例 / 工具库 / AI 榜」都要注入各自的 meta
+  const SEO_PATHS = new Set(['/', '/projects', '/tools', '/ai-daily']);
+  const cleanPath = req.path.replace(/\/+$/, '') || '/';
+  if (req.path.startsWith('/post/') || SEO_PATHS.has(cleanPath)) {
     try {
       const html = await renderSeoHtml(req, fs.readFileSync(indexPath, 'utf8'));
       return res.send(html);

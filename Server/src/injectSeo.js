@@ -23,7 +23,49 @@ function postOgImage(post) {
   return DEFAULT_OG_IMAGE;
 }
 
+// 路由 → 独立 meta（公司页、工具库、案例、榜单）。不在这里的路径保持默认。
+const ROUTE_META = {
+  '/': {
+    title: '木白 woodwhite — 协助你做出期待的产品',
+    desc: '一个人做，从需求到上线：AI 应用的后端与检索、本地推理与自动化、全栈实现。可开票，按合同交付。',
+    canonical: 'https://woodwhite.top/',
+  },
+  '/projects': {
+    title: '案例 — 木白 woodwhite',
+    desc: '五个已上线的项目：充电桩检定监管平台、自建 AI 工作站、AI 每日榜、知识库、本站，每条写清问题、做法与结果。',
+    canonical: 'https://woodwhite.top/projects',
+  },
+  '/tools': {
+    title: 'AI 工具库 — 木白 woodwhite',
+    desc: '按用途收录的 AI 工具，按分类、免费与否、是否需要自备 key 筛选，560 条持续更新。',
+    canonical: 'https://blog.woodwhite.top/tools',
+  },
+  '/ai-daily': {
+    title: 'AI 项目榜 — 每日 Star 增量榜',
+    desc: '每天从 GitHub 抓取 AI 相关项目，按 24 小时 Star 增量排名，中文介绍由本地模型生成。',
+    canonical: 'https://blog.woodwhite.top/ai-daily',
+  },
+};
+
+function applyRouteMeta(html, meta) {
+  const t = escapeHtml(meta.title);
+  const d = escapeHtml(meta.desc);
+  let out = html;
+  out = out.replace(/<title>[^<]*<\/title>/, `<title>${t}</title>`);
+  out = out.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${d}" />`);
+  out = out.replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${t}" />`);
+  out = out.replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${d}" />`);
+  out = out.replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${t}" />`);
+  out = out.replace(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${d}" />`);
+  out = out.replace(/<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${meta.canonical}" />`);
+  out = out.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${meta.canonical}" />`);
+  return out;
+}
+
 async function renderSeoHtml(req, baseHtml) {
+  const routeMeta = ROUTE_META[req.path === '' ? '/' : req.path.replace(/\/+$/, '') || '/'];
+  if (routeMeta) return applyRouteMeta(baseHtml, routeMeta);
+
   const m = req.path.match(/^\/post\/([^/]+)\/?$/);
   if (!m) return baseHtml;
   let post;
