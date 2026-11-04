@@ -3436,3 +3436,45 @@ html {
 
 /* 精选案例：右上角一片水彩 + 网点，读成一张印出来的卡 */
 .co-feature { position: relative; overflow: hidden; }
+
+/* ============================================================
+   材质参数按实测调强 + 铺到更多区块（2026-11-05 第三版）
+   网点：4px 间距 / 45% 强度；水彩：alpha .75、blur 10px（太大就成雾）
+   ============================================================ */
+.co-feature, .co-hero-facts, .mkt-steps li, .mkt-compare > div, .mkt-cta {
+  background-image:
+    radial-gradient(circle, rgba(20,17,15,.18) 1px, transparent 1.25px),
+    linear-gradient(180deg, color-mix(in srgb, #fff 80%, transparent), color-mix(in srgb, #fff 56%, transparent));
+  background-size: 7px 7px, 100% 100%;
+  background-blend-mode: multiply, normal;
+  background-color: transparent;
+  -webkit-mask-image: radial-gradient(ellipse 92% 96% at 50% 40%, #000 22%, rgba(0,0,0,.45) 68%, transparent 100%);
+  mask-image: radial-gradient(ellipse 92% 96% at 50% 40%, #000 22%, rgba(0,0,0,.45) 68%, transparent 100%);
+}
+.co-hero-facts::before, .co-feature::before { filter: blur(10px); opacity: .9; }
+.co-hero-facts::before {
+  background: radial-gradient(closest-side, rgba(74,111,158,.75), rgba(74,111,158,0) 72%);
+}
+.co-hero-facts::after {
+  background: radial-gradient(closest-side, rgba(184,96,58,.55), rgba(184,96,58,0) 72%);
+}
+.co-feature::before {
+  background: radial-gradient(closest-side, rgba(184,96,58,.45), rgba(184,96,58,0) 72%);
+}
+/* CTA 区也做成一块有材质的横向面板 */
+.mkt-cta {
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.85);
+  border-left: 3px solid var(--brand-deep);
+  border-radius: 4px;
+  padding: 40px 36px 44px;
+  margin-top: 72px;
+}
+.mkt-cta::before {
+  content: ''; position: absolute; z-index: 0; border-radius: 50%; pointer-events: none;
+  left: -8%; top: -40%; width: 55%; height: 180%; filter: blur(14px);
+  background: radial-gradient(closest-side, rgba(74,111,158,.55), rgba(74,111,158,0) 72%);
+  animation: coFlowB 19s ease-in-out infinite;
+}
+.mkt-cta > * { position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .mkt-cta::before { animation: none; } }
