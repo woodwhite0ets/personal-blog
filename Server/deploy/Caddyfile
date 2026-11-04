@@ -68,6 +68,9 @@ woodwhite.top {
 		file_server
 	}
 
+	# 公司域只承载公司页，其余交给博客域
+	@not_company not path / /solutions* /work* /stack* /contact* /api/* /uploads/* /healthz /mcp* /assets/*
+	redir @not_company https://blog.woodwhite.top{uri} 302
 	reverse_proxy 127.0.0.1:3027
 }
 
@@ -111,6 +114,14 @@ blog.woodwhite.top {
 	@legacy_console path /console /console/*
 	redir @legacy_console /gateway 302
 
+	# 公司路径若落到博客域，跳回公司域
+	@company_paths path /solutions* /work* /stack* /contact*
+	redir @company_paths https://woodwhite.top{uri} 302
+	# 博客首页统一到 /blog
+	@blog_root path /
+	redir @blog_root /blog 302
+	@html path / /index.html
+	header @html >Cache-Control "no-store"
 	handle {
 		reverse_proxy 127.0.0.1:3027
 	}
@@ -170,4 +181,19 @@ map.woodwhite.top {
 		file_server
 	}
 	reverse_proxy 127.0.0.1:13001
+}
+git.woodwhite.top {
+	import access_log /var/log/caddy/git-access.log
+	import security
+	# git 的 smart HTTP 走 Forgejo 自己的账号/token 认证，门口密码只保护网页与 API
+	@git path *.git/info/refs *.git/git-upload-pack *.git/git-receive-pack
+	handle @git {
+		reverse_proxy 127.0.0.1:8080
+	}
+	handle {
+		basic_auth {
+			woodwhite $2a$14$41oJXg/GaApvE88SPRBUmeOZ/9bLP0OxJAS9hDQ7Hirt3DtMT0xXa
+		}
+		reverse_proxy 127.0.0.1:8080
+	}
 }
