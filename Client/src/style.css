@@ -3013,11 +3013,10 @@ html {
 /* ===== 公司站（company）共用样式：/、/work、/stack、/contact ===== */
 .co-page {
   position: relative; min-height: 100vh; color: var(--text);
-  /* 公司站不要纯纸白：整页压一层极浅的品牌蓝，和标识同源 */
-  background-color: #f4f8fc;
+  background-color: var(--bg);   /* 底色保持纸白，颜色只落在组件与文字上 */
   /* 公司页的气团：只留极淡的暖色，复用全局 .page-wash 的两层结构 */
-  --page-wash-a: rgba(47, 94, 136, .20);
-  --page-wash-b: rgba(113, 168, 213, .16);
+  --page-wash-a: rgba(47, 94, 136, .10);
+  --page-wash-b: rgba(113, 168, 213, .07);
 }
 
 .co-nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between;
@@ -3308,3 +3307,20 @@ html {
 @media (max-width: 560px) { .co-back { display: none; } }
 /* 链接与选中态统一到品牌的深蓝 */
 .co-page .co-feature-more { color: var(--brand-deep); }
+
+
+/* ===== 公司页：颜色落在「文字与组件」上，纸底不动 ===== */
+.co-kicker { color: var(--brand-deep); }
+.co-h2 { color: var(--brand-deep); border-bottom-color: color-mix(in srgb, var(--brand-deep) 24%, transparent); }
+.co-fact dt { color: var(--brand-deep); }
+
+.co-why-k { color: var(--brand-deep); }
+.co-case-status { color: var(--brand-deep); border-color: color-mix(in srgb, var(--brand-deep) 34%, transparent); }
+.co-case-name { color: var(--text-bright); }
+.co-case-name:hover { color: var(--brand-deep); }
+.co-feature { border-left: 3px solid var(--brand-deep); }
+
+.co-svc-idx { color: var(--brand-mid); }
+.mkt-table th { color: var(--brand-deep); border-bottom-color: color-mix(in srgb, var(--brand-deep) 30%, transparent); }
+.mkt-steps span { color: var(--brand-deep); }
+.co-links a:hover { color: var(--brand-deep); }
