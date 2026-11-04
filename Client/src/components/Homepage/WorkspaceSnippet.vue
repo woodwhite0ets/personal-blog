@@ -10,7 +10,7 @@
     </div>
 
     <div class="ws-groups">
-      <section v-for="(group, gi) in groups" :key="group.title" class="ws-group">
+      <section v-for="(group, gi) in groups" :key="group.title" class="ws-group" :data-g="gi">
         <h3 class="ws-group-title">
           <span class="ws-group-idx" aria-hidden="true">{{ String(gi + 1).padStart(2, '0') }}</span>
           {{ group.title }}
@@ -203,7 +203,11 @@ const groups = [
 }
 @media (max-width: 1180px) { .ws-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 680px) { .ws-groups { grid-template-columns: 1fr; } }
-.ws-group { min-width: 0; }
+.ws-group { min-width: 0; padding: 16px 16px 18px; border-radius: 4px; }
+.ws-group[data-g="0"] { background: color-mix(in srgb, var(--hue-blue) 5%, transparent); }
+.ws-group[data-g="1"] { background: color-mix(in srgb, var(--hue-brick) 4%, transparent); }
+.ws-group[data-g="2"] { background: color-mix(in srgb, var(--hue-teal) 5%, transparent); }
+.ws-group[data-g="3"] { background: color-mix(in srgb, var(--hue-olive) 5%, transparent); }
 .ws-group-title {
   display: flex; align-items: baseline; gap: 8px;
   margin: 0 0 10px; padding-bottom: 7px;

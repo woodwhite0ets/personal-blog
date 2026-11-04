@@ -152,7 +152,7 @@
         </div>
         <p class="tl-snip-sub">按用途收的 AI 工具，这里只列我自己每天在用的。</p>
         <ul class="tl-snip-grid">
-          <li v-for="t in featuredTools" :key="t.slug">
+          <li v-for="t in featuredTools" :key="t.slug" :data-cat="t.category">
             <router-link :to="`/tools/${t.slug}`" class="tl-snip-card">
               <span class="tl-snip-name">{{ t.name }}</span>
               <span class="tl-snip-desc">{{ t.tagline_zh || t.desc_en }}</span>
