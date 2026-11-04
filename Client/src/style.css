@@ -2903,26 +2903,24 @@ html {
   position: absolute; inset: 0;
   z-index: 0; pointer-events: none;
   overflow: hidden;
-  background-image:
-    radial-gradient(ellipse 150% 38% at 10% 8%, var(--page-wash-a), transparent 74%),
-    radial-gradient(ellipse 140% 34% at 92% 48%, var(--page-wash-b), transparent 76%),
-    radial-gradient(ellipse 150% 34% at 14% 88%, var(--page-wash-a), transparent 78%);
-  opacity: .75;
+  background-image: none;
+  opacity: 1;
 }
 /* 两层各漂各的：合成器只处理 transform，不触发重绘 */
 .page-wash::before,
 .page-wash::after {
   content: ''; position: absolute; pointer-events: none;
   will-change: transform;
-  opacity: .42;   /* 与元素自身的三条横带叠加，这里只做轻微的流动 */
+  opacity: .9;   /* 只保留这一层，避免多层叠加把纸色压灰 */
 }
 .page-wash::before {
-  inset: -6% 40% 62% -10%;
+  inset: -10% -12% 52% -12%;
   background: radial-gradient(ellipse 62% 72% at 32% 34%, var(--page-wash-a, rgba(110,145,200,.55)), transparent 72%);
   filter: blur(16px);
   animation: washDriftA 28s ease-in-out infinite alternate;
 }
 .page-wash::after {
+  display: none;
   inset: -8% -12% 58% 42%;
   background: radial-gradient(ellipse 62% 72% at 68% 30%, var(--page-wash-b, rgba(150,160,90,.45)), transparent 74%);
   filter: blur(18px);
@@ -2939,16 +2937,16 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .page-wash::before, .page-wash::after { animation: none; }
 }
-.tl-page      { --page-wash-a: rgba(172,106,52,.16);   --page-wash-b: rgba(172,106,52,.07)}
-.ad-page      { --page-wash-a: rgba(172,106,52,.16);   --page-wash-b: rgba(172,106,52,.07)}
-.tags-page    { --page-wash-a: rgba(172,106,52,.16);   --page-wash-b: rgba(172,106,52,.07)}
-.forum-page   { --page-wash-a: rgba(172,106,52,.16);  --page-wash-b: rgba(172,106,52,.07)}
-.archive-page { --page-wash-a: rgba(172,106,52,.16); --page-wash-b: rgba(172,106,52,.07)}
-.now-page     { --page-wash-a: rgba(172,106,52,.16);   --page-wash-b: rgba(172,106,52,.07)}
-.pl-page      { --page-wash-a: rgba(172,106,52,.16);   --page-wash-b: rgba(172,106,52,.07)}
-.notes-page   { --page-wash-a: rgba(172,106,52,.16);  --page-wash-b: rgba(172,106,52,.07)}
-.about-page   { --page-wash-a: rgba(172,106,52,.16);  --page-wash-b: rgba(172,106,52,.07)}
-.post-detail-page { --page-wash-a: rgba(172,106,52,.16); --page-wash-b: rgba(172,106,52,.07)}
+.tl-page      { --page-wash-a: rgba(172,106,52,.09);   --page-wash-b: rgba(172,106,52,.04)}
+.ad-page      { --page-wash-a: rgba(172,106,52,.09);   --page-wash-b: rgba(172,106,52,.04)}
+.tags-page    { --page-wash-a: rgba(172,106,52,.09);   --page-wash-b: rgba(172,106,52,.04)}
+.forum-page   { --page-wash-a: rgba(172,106,52,.09);  --page-wash-b: rgba(172,106,52,.04)}
+.archive-page { --page-wash-a: rgba(172,106,52,.09); --page-wash-b: rgba(172,106,52,.04)}
+.now-page     { --page-wash-a: rgba(172,106,52,.09);   --page-wash-b: rgba(172,106,52,.04)}
+.pl-page      { --page-wash-a: rgba(172,106,52,.09);   --page-wash-b: rgba(172,106,52,.04)}
+.notes-page   { --page-wash-a: rgba(172,106,52,.09);  --page-wash-b: rgba(172,106,52,.04)}
+.about-page   { --page-wash-a: rgba(172,106,52,.09);  --page-wash-b: rgba(172,106,52,.04)}
+.post-detail-page { --page-wash-a: rgba(172,106,52,.09); --page-wash-b: rgba(172,106,52,.04)}
 
 /* 内容压在气团之上 */
 .tl-main, .ad-main, .tags-main, .archive-main, .notes-main,
@@ -3011,17 +3009,35 @@ html {
 
 
 /* ============================================================
-   卡片水彩底（2026-11-04 v3）：五套不同构图，大块洇染
-   相邻卡片换一套，不再「全是一个样」。
+   卡片水彩底（2026-11-04 v4）：只给少数卡片上色，其余保持干净
+   每 4 张里有 1 张带水彩，四套构图轮换——有节拍，不是满屏花。
    ============================================================ */
 .tl-card,
 .tl-snip-card,
 .co-card,
 .ws-group,
 .sidebar-panel {
-  /* 半透暖白：底下的纸色透上来，卡片不再是贴在页面上的一块白 */
   background-color: color-mix(in srgb, #fffdf8 88%, transparent);
   background-repeat: no-repeat;
+}
+
+/* 只有这些带色：工具库每 4 张第 1 张、首页精选第 1 张、公司页第 1 张 */
+.tl-card:nth-child(4n+1) {
+  background-image:
+    radial-gradient(ellipse 68% 96% at 0% 30%, color-mix(in srgb, var(--hue-copper) 22%, transparent), transparent 70%),
+    radial-gradient(ellipse 40% 34% at 96% 96%, color-mix(in srgb, var(--hue-blue) 16%, transparent), transparent 72%);
+}
+.tl-card:nth-child(8n+5) {
+  background-image:
+    radial-gradient(ellipse 120% 46% at 60% -8%, color-mix(in srgb, var(--hue-blue) 20%, transparent), transparent 72%),
+    radial-gradient(ellipse 38% 30% at 4% 100%, color-mix(in srgb, var(--hue-teal) 15%, transparent), transparent 74%);
+}
+.tl-snip-grid li:nth-child(1) .tl-snip-card,
+.co-grid-3 .co-card:nth-child(1),
+.co-grid-2 .co-card:nth-child(1) {
+  background-image:
+    radial-gradient(ellipse 68% 96% at 0% 30%, color-mix(in srgb, var(--hue-copper) 20%, transparent), transparent 70%),
+    radial-gradient(ellipse 40% 34% at 96% 96%, color-mix(in srgb, var(--hue-blue) 14%, transparent), transparent 72%);
 }
 
 /* A 左侧大块暖 */
