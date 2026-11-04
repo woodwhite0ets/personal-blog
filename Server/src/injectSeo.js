@@ -30,6 +30,21 @@ const ROUTE_META = {
     desc: '一个人做，从需求到上线：AI 应用的后端与检索、本地推理与自动化、全栈实现。可开票，按合同交付。',
     canonical: 'https://woodwhite.top/',
   },
+  '/work': {
+    title: '案例 — 木白 woodwhite',
+    desc: '五个已上线的项目：充电桩检定监管平台、自建 AI 工作站、AI 每日榜、知识库、本站，每条写清问题、做法与结果。',
+    canonical: 'https://woodwhite.top/work',
+  },
+  '/stack': {
+    title: '能力与基础设施 — 木白 woodwhite',
+    desc: '自托管的工作站：本地推理、pgvector 检索、自建 Git 与 CI、systemd 巡检，零入站端口，数据不出内网。',
+    canonical: 'https://woodwhite.top/stack',
+  },
+  '/contact': {
+    title: '联系 — 木白 woodwhite',
+    desc: '按项目或按月合作，签合同、可开票、按阶段验收。邮箱 1903784785@qq.com，微信 Woodwhite-0827。',
+    canonical: 'https://woodwhite.top/contact',
+  },
   '/projects': {
     title: '案例 — 木白 woodwhite',
     desc: '五个已上线的项目：充电桩检定监管平台、自建 AI 工作站、AI 每日榜、知识库、本站，每条写清问题、做法与结果。',

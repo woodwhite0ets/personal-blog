@@ -235,7 +235,7 @@ app.use(async (req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
   const indexPath = path.join(__dirname, '../../Client/dist/index.html');
   // 文章页与「公司页 / 案例 / 工具库 / AI 榜」都要注入各自的 meta
-  const SEO_PATHS = new Set(['/', '/projects', '/tools', '/ai-daily']);
+  const SEO_PATHS = new Set(['/', '/work', '/stack', '/contact', '/projects', '/tools', '/ai-daily']);
   const cleanPath = req.path.replace(/\/+$/, '') || '/';
   if (req.path.startsWith('/post/') || SEO_PATHS.has(cleanPath)) {
     try {
