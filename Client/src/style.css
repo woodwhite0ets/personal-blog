@@ -3483,3 +3483,74 @@ html {
   .mkt-compare { grid-template-columns: 1fr; }
   .mkt-compare > div:first-child { border-right: none; border-bottom: 1px solid var(--border-strong); }
 }
+
+/* ============================================================
+   组件统一按 teamorouter 的卡片配方（2026-11-05 最终版）
+   取自它的 .pf-card：
+     background: color-mix(#fff 55%, transparent)
+     border: 1px solid color-mix(ink 12%, transparent)
+     border-radius: 10px（--corner）
+     padding: 18px 20px;  gap: 14px
+     hover 只把 border 换成 ink 16%，没有任何阴影
+   卡片之间用 14px 间隙分开，不是拼成一张网格。
+   ============================================================ */
+:root {
+  --mkt-corner: 10px;
+  --mkt-card-bg: color-mix(in srgb, #fff 55%, transparent);
+  --mkt-card-line: color-mix(in srgb, var(--text) 12%, transparent);
+  --mkt-card-line-hover: color-mix(in srgb, var(--text) 16%, transparent);
+  --mkt-gap: 14px;
+}
+
+/* 所有内容块都用同一张卡 */
+.co-hero-facts,
+.mkt-table,
+.mkt-cta { 
+  background: var(--mkt-card-bg);
+  border: 1px solid var(--mkt-card-line);
+  border-radius: var(--mkt-corner);
+  box-shadow: none;
+  padding: 18px 20px;
+}
+.co-hero-facts { border-left: 1px solid var(--mkt-card-line); }
+.co-hero-facts:hover, .mkt-table:hover, .mkt-cta:hover { border-color: var(--mkt-card-line-hover); }
+
+/* 表格：卡内去掉外框与竖线，只留行间点线 */
+.mkt-table { border-collapse: separate; border-spacing: 0; width: 100%; }
+.mkt-table th, .mkt-table td { border: none; border-bottom: 1px dotted var(--rule-dot-ink); }
+.mkt-table tr:last-child td { border-bottom: none; }
+
+/* 对照表：两张独立的卡，14px 间隙 */
+.mkt-compare {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--mkt-gap); border: none; background: none; overflow: visible;
+}
+.mkt-compare > div {
+  background: var(--mkt-card-bg);
+  border: 1px solid var(--mkt-card-line);
+  border-radius: var(--mkt-corner);
+  padding: 18px 20px; box-shadow: none;
+}
+.mkt-compare > div:first-child { background: color-mix(in srgb, var(--text) 4%, transparent); border-right: 1px solid var(--mkt-card-line); }
+.mkt-compare > div:hover { border-color: var(--mkt-card-line-hover); }
+
+/* 四步：四张独立的卡 */
+.mkt-steps {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--mkt-gap); border: none; background: none;
+}
+.mkt-steps li {
+  background: var(--mkt-card-bg);
+  border: 1px solid var(--mkt-card-line);
+  border-radius: var(--mkt-corner);
+  padding: 18px 20px; box-shadow: none;
+}
+.mkt-steps li:hover { border-color: var(--mkt-card-line-hover); }
+
+@media (max-width: 860px) {
+  .mkt-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mkt-compare { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .mkt-steps { grid-template-columns: 1fr; }
+}
