@@ -1135,7 +1135,7 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
   min-height: 100vh;
   min-height: 100dvh;
 }
-.hero-in { width: 100%; padding: 104px 24px; align-items: center; }
+.hero-in { width: 100%; padding: 84px 24px 68px; align-items: center; }
 
 /* 2. 光标跟随光晕（仅精确指针设备，触屏不启用） */
 .hero-band::before {
@@ -2052,12 +2052,15 @@ body { line-height: 1.75; }
 
 /* 深底（默认首屏）：像黑纸上晕开的淡彩，浓度偏低但面积大 */
 .hero-art {
-  /* 全站浅底：色块可以放开一点，但仍然靠 multiply 压在纸上，不做发光 */
-  --s1: 78%; --s2: 62%; --s3: 84%;
-  --tex-ink: rgba(30, 26, 20, .55);
-  --tex-pitch: 7px;
-  --tex-blend: multiply;
-  --tex-mask: radial-gradient(ellipse 78% 70% at 42% 78%, #000 10%, transparent 76%);
+  /* 首屏画浓度：太淡像没上色、太浓像霓虹，取中间值（两个首页共用这一组） */
+  --s1: 54%; --s2: 44%; --s3: 58%;
+  /* 点阵：照 teamorouter 的 dot-matrix 配方 —— 22px 间距 / 0.85px 点 / 30% 主色 / 椭圆遮罩淡出，
+     不再用 multiply + 7px 的密网点（那样会压成一片灰雾） */
+  --tex-ink: color-mix(in srgb, color-mix(in srgb, var(--h1, var(--accent)) 42%, var(--text-bright)) 34%, transparent);
+  --tex-pitch: 22px;
+  --tex-blend: normal;
+  --tex-opacity: .9;
+  --tex-mask: radial-gradient(72% 64% at 50% 46%, #000, transparent 82%);
   --wash-blur: 30px;
 }
 
@@ -2087,13 +2090,87 @@ body { line-height: 1.75; }
 
 .hero-halftone {
   position: absolute; inset: 0;
-  background-image: radial-gradient(circle, var(--tex-ink) 1px, transparent 1.4px);
+  background-image: radial-gradient(circle, var(--tex-ink) .85px, transparent 1.25px);
   background-size: var(--tex-pitch) var(--tex-pitch);
   mix-blend-mode: var(--tex-blend);
-  opacity: var(--tex-opacity, .14);
+  opacity: var(--tex-opacity, .9);
   mask-image: var(--tex-mask);
   -webkit-mask-image: var(--tex-mask);
 }
+
+/* ===== 点阵底纹：可复用的那层（同 teamorouter 的 dot-matrix 配方）
+   22px 间距 / 0.85px 点径 / 30% 当前区块主色 / 椭圆遮罩淡出。
+   用法：父元素 position:relative，内容层加 position:relative + z-index:1。
+   换色只改 --dot-color，换淡出方向只改 --dot-mask。 ===== */
+.dot-field {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  --dot-pitch: 22px;
+  --dot-ink: color-mix(in srgb, color-mix(in srgb, var(--dot-color, var(--accent)) 45%, var(--text)) 34%, transparent);
+  --dot-mask: radial-gradient(72% 64% at 50% 46%, #000, transparent 82%);
+  background-image: radial-gradient(circle, var(--dot-ink) .85px, transparent 1.25px);
+  background-size: var(--dot-pitch) var(--dot-pitch);
+  mask-image: var(--dot-mask);
+  -webkit-mask-image: var(--dot-mask);
+}
+/* ===== 组件底纹：跟首屏大屏同一套画（wash + 点阵 + 椭圆淡出），按 data-field 轮换五套色 =====
+   .art-field 只画在自身背景之上、内容之下（isolation + z-index:-1），不用改组件底色。 ===== */
+.art-field { position: relative; isolation: isolate; overflow: hidden; }
+.art-field::before, .art-field::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+}
+/* 1. 两团淡彩：左下主色、右上副色 */
+.art-field::before {
+  background-image:
+    radial-gradient(ellipse 66% 76% at 12% 92%, color-mix(in srgb, var(--f1, var(--accent)) 20%, transparent), transparent 70%),
+    radial-gradient(ellipse 58% 70% at 88% 10%, color-mix(in srgb, var(--f2, var(--accent)) 15%, transparent), transparent 68%);
+}
+/* 2. 点阵：22px 间距、0.85px 点，左上显、右下淡出 */
+.art-field::after {
+  background-image: radial-gradient(circle, color-mix(in srgb, color-mix(in srgb, var(--f1, var(--accent)) 40%, var(--text)) 28%, transparent) .85px, transparent 1.25px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(120% 120% at 18% 8%, #000 26%, transparent 90%);
+  -webkit-mask-image: radial-gradient(120% 120% at 18% 8%, #000 26%, transparent 90%);
+}
+/* 3. 五套色 = 首屏那五套画 */
+/* 组件底纹用首屏那五套画的原色（水彩 / 蓝图 / 极光 / 墨赭 / 日落），
+   具体给哪一张由 JS 随机分配（见 utils/art.js），与首屏同一套口语 */
+.art-field[data-field="1"] { --f1: #6e91c8; --f2: #96a05a; }
+.art-field[data-field="2"] { --f1: #2f6d8f; --f2: #4b5fa8; }
+.art-field[data-field="3"] { --f1: #7a5cc0; --f2: #2f9b9b; }
+.art-field[data-field="4"] { --f1: #1e2740; --f2: #a3563c; }
+.art-field[data-field="5"] { --f1: #d98b3f; --f2: #b0436f; }
+@media (prefers-reduced-motion: reduce) { /* 纯静态底纹，无需降级 */ }
+
+/* ===== 组件底纹（安静版）：纸纤维 + 极淡点阵，不再撒彩色 =====
+   首屏那块"画"保留随机五套；组件只留一层几乎看不见的纸纹，高级感来自
+   双层描边、留白与字距，而不是每张卡换一个颜色。 ===== */
+.paper-field { position: relative; isolation: isolate; overflow: hidden; }
+.paper-field::before, .paper-field::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+}
+/* 1. 一层自上而下的纸面明暗，2% 以内，只在有卡片对比时才察觉 */
+.paper-field::before {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--text) 2.4%, transparent),
+    transparent 42%);
+}
+/* 2. 22px 点阵，墨色 9%，左下显、右上淡出 */
+.paper-field::after {
+  background-image: radial-gradient(circle,
+    color-mix(in srgb, var(--text) 9%, transparent) .8px, transparent 1.2px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(120% 120% at 12% 100%, #000 22%, transparent 88%);
+  -webkit-mask-image: radial-gradient(120% 120% at 12% 100%, #000 22%, transparent 88%);
+}
+/* 3. 纸颗粒：整块卡上一遍 2.5% 的噪声（固定尺寸的 data-uri，不额外请求） */
+.paper-grain { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .5;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.06'/></svg>");
+}
+
+/* 反向遮罩：中心干净、四周显点（适合首屏，不抢正文）*/
+.dot-field--edge { --dot-mask: radial-gradient(ellipse 80% 70% at 50% 40%, transparent 30%, #000 78%); }
+/* 只在右侧一块显点（公司页首屏跟卡片走）*/
+.dot-field--right { --dot-mask: radial-gradient(ellipse 62% 86% at 84% 42%, #000 4%, transparent 74%); }
 
 .hero-vignette {
   position: absolute; inset: 0;
@@ -2109,24 +2186,31 @@ body { line-height: 1.75; }
 
 .hero-art[data-art="2"] {
   --h1: #2f6d8f; --h2: #4b5fa8; --h3: #cfe3ef;
-  --tex-pitch: 9px;
-  --tex-ink: color-mix(in srgb, var(--h1) 55%, transparent);
 }
-.hero-art[data-art="2"] .hero-halftone { opacity: .8; }
+.hero-art[data-art="2"] .hero-halftone { opacity: 1; }
 
-.hero-art[data-art="3"] { --h1: #7a5cc0; --h2: #2f9b9b; --h3: #c98b5a; --wash-blur: 40px; }
+.hero-art[data-art="3"] {
+  --h1: #7a5cc0; --h2: #2f9b9b; --h3: #c98b5a; --wash-blur: 40px;
+  /* 极光这套彩度最高：浓度按同一"观感"压一档，免得比别的画浓一截 */
+  --s1: 44%; --s2: 36%; --s3: 48%;
+}
 
 .hero-art[data-art="4"] {
   --h1: #1e2740; --h2: #a3563c; --h3: #e7dccb;
   --s1: 46%; --s2: 30%; --s3: 22%;
 }
 
-.hero-art[data-art="5"] { --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; --wash-blur: 34px; }
+.hero-art[data-art="5"] {
+  --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; --wash-blur: 34px;
+  /* 日落这套同理，压到和极光一档 */
+  --s1: 42%; --s2: 34%; --s3: 46%;
+}
 
 /* ---- 第 6 套：位图样例（自己画的 SVG 渲染成 webp，浅/深各一张） ---- */
 .hero-art[data-art="6"] {
-  --tex-pitch: 4px;
+  --tex-pitch: 8px;
   --tex-ink: rgba(255, 255, 255, .30);
+  --tex-opacity: .45;
   --art-img: url(/hero/sample-light.webp);
 }
 .hero-art[data-art="6"] .hero-wash {
@@ -3048,13 +3132,13 @@ html {
 .co-btn { font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: .04em; padding: 12px 22px;
   border: 1px solid var(--border-strong); color: var(--text); text-decoration: none; border-radius: 3px;
   transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out); }
-.co-btn:hover { color: var(--brand-deep); border-color: var(--brand-deep); }
-.co-btn:focus-visible { outline: 2px solid var(--brand-deep); outline-offset: 3px; }
+.co-btn:hover { color: var(--accent); border-color: var(--accent); }
+.co-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .co-btn-solid {
-  background: var(--brand-deep); color: #fff; border-color: var(--brand-deep);
+  background: var(--accent); color: #fff; border-color: var(--accent);
   transition: background-color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
 }
-.co-btn-solid:hover { background: #244b6e; border-color: #244b6e; color: #fff; }
+.co-btn-solid:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; }
 
 .co-sec { margin-top: 72px; }
 
@@ -3271,11 +3355,8 @@ html {
 .co-brand-cn { font-family: "Noto Serif SC", var(--font-serif); font-weight: 500; font-size: 1.0625rem; letter-spacing: .04em; color: var(--text-bright); }
 .co-brand-en { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-faint); }
 
-/* 公司站主色跟随官方蓝，赤陶只留在少数强调位 */
-.co-page {
-  --accent: #2f5e88;
-  --accent-hover: #244b6e;
-}
+/* 2026-11-05：公司站不再单独套蓝色主色，与博客统一走赤陶 + 纸底
+   （官方蓝仍留在 logo 与品牌标识资产里，不当组件主色用） */
 
 @media (max-width: 560px) {
   .co-brand-symbol { height: 24px; }
@@ -3302,28 +3383,28 @@ html {
   margin-left: auto; padding-right: 18px;
   border-right: 1px solid var(--border);
 }
-.co-back:hover { color: var(--brand-deep); }
-.co-back:focus-visible { outline: 2px solid var(--brand-deep); outline-offset: 3px; }
+.co-back:hover { color: var(--accent); }
+.co-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (max-width: 560px) { .co-back { display: none; } }
 /* 链接与选中态统一到品牌的深蓝 */
-.co-page .co-feature-more { color: var(--brand-deep); }
+.co-page .co-feature-more { color: var(--accent); }
 
 
 /* ===== 公司页：颜色落在「文字与组件」上，纸底不动 ===== */
-.co-kicker { color: var(--brand-deep); }
-.co-h2 { color: var(--brand-deep); border-bottom-color: color-mix(in srgb, var(--brand-deep) 24%, transparent); }
-.co-fact dt { color: var(--brand-deep); }
+.co-kicker { color: var(--accent); }
+.co-h2 { color: var(--accent); border-bottom-color: color-mix(in srgb, var(--accent) 24%, transparent); }
+.co-fact dt { color: var(--accent); }
 
-.co-why-k { color: var(--brand-deep); }
-.co-case-status { color: var(--brand-deep); border-color: color-mix(in srgb, var(--brand-deep) 34%, transparent); }
+.co-why-k { color: var(--accent); }
+.co-case-status { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 34%, transparent); }
 .co-case-name { color: var(--text-bright); }
-.co-case-name:hover { color: var(--brand-deep); }
-.co-feature { border-left: 3px solid var(--brand-deep); }
+.co-case-name:hover { color: var(--accent); }
+.co-feature { border-left: 3px solid var(--accent); }
 
-.co-svc-idx { color: var(--brand-mid); }
-.mkt-table th { color: var(--brand-deep); border-bottom-color: color-mix(in srgb, var(--brand-deep) 30%, transparent); }
-.mkt-steps span { color: var(--brand-deep); }
-.co-links a:hover { color: var(--brand-deep); }
+.co-svc-idx { color: color-mix(in srgb, var(--accent) 55%, transparent); }
+.mkt-table th { color: var(--accent); border-bottom-color: color-mix(in srgb, var(--accent) 30%, transparent); }
+.mkt-steps span { color: var(--accent); }
+.co-links a:hover { color: var(--accent); }
 
 
 /* ===== 公司页：组件背景直接着色 ===== */
@@ -3331,7 +3412,7 @@ html {
 .co-feature {
   background: color-mix(in srgb, #fff 62%, transparent);
   border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
-  border-left: 3px solid var(--brand-deep);
+  border-left: 3px solid var(--accent);
 }
 .co-feature:hover { background: color-mix(in srgb, #fff 80%, transparent); }
 
@@ -3339,7 +3420,7 @@ html {
 .co-hero-facts {
   background: color-mix(in srgb, #fff 58%, transparent);
   border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
-  border-left: 2px solid color-mix(in srgb, var(--brand-deep) 55%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
   padding: 18px 20px 16px;
   border-radius: 3px;
 }
@@ -3348,7 +3429,7 @@ html {
 .mkt-steps li { background: color-mix(in srgb, #fff 55%, transparent); }
 
 /* 六项能力：悬停时整行微微上色 */
-.co-caps li:hover { background: color-mix(in srgb, var(--brand-mid) 8%, transparent); }
+.co-caps li:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
 
 /* 对照表：左侧压灰表示「常见做法」，右侧保持纸面——靠明度对比，不靠色相 */
 .mkt-compare > div:first-child { background: color-mix(in srgb, var(--text) 5%, transparent); }
@@ -3371,9 +3452,9 @@ html {
   -webkit-backdrop-filter: blur(13px) saturate(1.25);
   box-shadow: none;
 }
-.co-hero-facts { border-left: 2px solid color-mix(in srgb, var(--brand-deep) 55%, transparent); }
-.co-feature { border-left: 3px solid var(--brand-deep); }
-.co-feature:hover { border-color: color-mix(in srgb, var(--text) 16%, transparent); border-left-color: var(--brand-deep); }
+.co-hero-facts { border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); }
+.co-feature { border-left: 3px solid var(--accent); }
+.co-feature:hover { border-color: color-mix(in srgb, var(--text) 16%, transparent); border-left-color: var(--accent); }
 
 /* 流动色团 */
 .co-fact, .co-feature > * { position: relative; z-index: 1; }
@@ -3426,7 +3507,7 @@ html {
 .mkt-cta {
   position: relative; overflow: hidden;
   border: 1px solid rgba(255,255,255,.85);
-  border-left: 3px solid var(--brand-deep);
+  border-left: 3px solid var(--accent);
   border-radius: 4px;
   padding: 40px 36px 44px;
   margin-top: 72px;
@@ -3468,7 +3549,7 @@ html {
   border-bottom: 1px dotted var(--rule-dot-ink);
 }
 .mkt-compare > div:first-child h3 { color: var(--text-faint); }
-.mkt-compare > div:last-child h3 { color: var(--brand-deep); border-bottom-color: color-mix(in srgb, var(--brand-deep) 30%, transparent); }
+.mkt-compare > div:last-child h3 { color: var(--accent); border-bottom-color: color-mix(in srgb, var(--accent) 30%, transparent); }
 .mkt-compare ul { margin: 0; padding: 0; list-style: none; }
 .mkt-compare li {
   position: relative; padding-left: 20px; margin-bottom: 10px;
@@ -3478,7 +3559,7 @@ html {
 .mkt-compare > div:first-child li { color: var(--text-faint); }
 .mkt-compare > div:first-child li::before { content: '×'; position: absolute; left: 0; color: var(--err); opacity: .7; }
 .mkt-compare > div:last-child li { color: var(--text); }
-.mkt-compare > div:last-child li::before { content: '✓'; position: absolute; left: 0; color: var(--brand-deep); }
+.mkt-compare > div:last-child li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); }
 @media (max-width: 860px) {
   .mkt-compare { grid-template-columns: 1fr; }
   .mkt-compare > div:first-child { border-right: none; border-bottom: 1px solid var(--border-strong); }
@@ -3561,18 +3642,32 @@ html {
 .co-hero-facts,
 .mkt-table,
 .mkt-cta {
-  background: linear-gradient(150deg, #fff6ee, #ffeede);
+  background: var(--bg-elevated);
   border-color: color-mix(in srgb, var(--text) 10%, transparent);
 }
 .mkt-compare > div:last-child,
 .mkt-steps li {
-  background: linear-gradient(150deg, #f4f8fd, #eaf2fb);   /* 冷色系：浅蓝 */
-  border-color: color-mix(in srgb, var(--brand-deep) 14%, transparent);
+  background: var(--bg-elevated);
+  border-color: color-mix(in srgb, var(--accent) 14%, transparent);
 }
 .mkt-compare > div:first-child {
-  background: linear-gradient(150deg, #f4f2ee, #eae7e1);   /* 灰：表示常见做法 */
+  background: color-mix(in srgb, var(--text) 4%, var(--bg-elevated));   /* 灰一档：表示常见做法 */
   border-color: color-mix(in srgb, var(--text) 10%, transparent);
 }
 .co-feature {
-  background: linear-gradient(150deg, #fff6ee, #ffeede);
+  background: var(--bg-elevated);
 }
+
+/* ============================================================
+   2026-11-05 收口：表格 / 步骤 / 对照一律用纸白不透明底，
+   颜色只由 .art-field 的随机底纹提供（半透明白会把底纹放大成一团渐变色块）。
+   ============================================================ */
+.mkt-steps li,
+.mkt-compare > div,
+.mkt-compare > div:last-child,
+.mkt-table,
+.co-hero-facts,
+.mkt-cta {
+  background: var(--bg-elevated);
+}
+.mkt-compare > div:first-child { background: color-mix(in srgb, var(--text) 4%, var(--bg-elevated)); }
