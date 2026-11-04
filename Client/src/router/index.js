@@ -39,9 +39,9 @@ const routes = [
     redirect: '/blog',
   },
   {
+    // 营销内容已并入首页
     path: '/solutions',
-    name: 'CompanySolutions',
-    component: () => import('../components/Company/CompanySolutions.vue'),
+    redirect: '/',
   },
   {
     path: '/work',
