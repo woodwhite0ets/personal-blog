@@ -2907,7 +2907,7 @@ html {
     radial-gradient(ellipse 150% 38% at 10% 8%, var(--page-wash-a), transparent 74%),
     radial-gradient(ellipse 140% 34% at 92% 48%, var(--page-wash-b), transparent 76%),
     radial-gradient(ellipse 150% 34% at 14% 88%, var(--page-wash-a), transparent 78%);
-  opacity: .6;
+  opacity: .88;
 }
 /* 两层各漂各的：合成器只处理 transform，不触发重绘 */
 .page-wash::before,
@@ -2938,16 +2938,16 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .page-wash::before, .page-wash::after { animation: none; }
 }
-.tl-page      { --page-wash-a: rgba(160,96,47,.12);   --page-wash-b: rgba(74,111,158,.10)}
-.ad-page      { --page-wash-a: rgba(160,96,47,.13);   --page-wash-b: rgba(74,111,158,.10)}
-.tags-page    { --page-wash-a: rgba(160,96,47,.12);   --page-wash-b: rgba(74,111,158,.10)}
-.forum-page   { --page-wash-a: rgba(160,96,47,.12);  --page-wash-b: rgba(74,111,158,.10)}
-.archive-page { --page-wash-a: rgba(160,96,47,.12); --page-wash-b: rgba(74,111,158,.09)}
-.now-page     { --page-wash-a: rgba(160,96,47,.12);   --page-wash-b: rgba(74,111,158,.09)}
-.pl-page      { --page-wash-a: rgba(160,96,47,.13);   --page-wash-b: rgba(74,111,158,.10)}
-.notes-page   { --page-wash-a: rgba(160,96,47,.11);  --page-wash-b: rgba(74,111,158,.09)}
-.about-page   { --page-wash-a: rgba(160,96,47,.12);  --page-wash-b: rgba(74,111,158,.10)}
-.post-detail-page { --page-wash-a: rgba(160,96,47,.09); --page-wash-b: rgba(74,111,158,.07)}
+.tl-page      { --page-wash-a: rgba(160,96,47,.30);   --page-wash-b: rgba(74,111,158,.24)}
+.ad-page      { --page-wash-a: rgba(160,96,47,.31);   --page-wash-b: rgba(74,111,158,.24)}
+.tags-page    { --page-wash-a: rgba(160,96,47,.29);   --page-wash-b: rgba(74,111,158,.23)}
+.forum-page   { --page-wash-a: rgba(160,96,47,.29);  --page-wash-b: rgba(74,111,158,.23)}
+.archive-page { --page-wash-a: rgba(160,96,47,.28); --page-wash-b: rgba(74,111,158,.22)}
+.now-page     { --page-wash-a: rgba(160,96,47,.28);   --page-wash-b: rgba(74,111,158,.22)}
+.pl-page      { --page-wash-a: rgba(160,96,47,.31);   --page-wash-b: rgba(74,111,158,.24)}
+.notes-page   { --page-wash-a: rgba(160,96,47,.27);  --page-wash-b: rgba(74,111,158,.21)}
+.about-page   { --page-wash-a: rgba(160,96,47,.29);  --page-wash-b: rgba(74,111,158,.23)}
+.post-detail-page { --page-wash-a: rgba(160,96,47,.22); --page-wash-b: rgba(74,111,158,.17)}
 
 /* 内容压在气团之上 */
 .tl-main, .ad-main, .tags-main, .archive-main, .notes-main,

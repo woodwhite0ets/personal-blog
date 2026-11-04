@@ -139,8 +139,8 @@ const year = new Date().getFullYear()
 .co-page {
   position: relative; min-height: 100vh; background: var(--bg); color: var(--text);
   /* 公司页的气团：只留极淡的暖色，复用全局 .page-wash 的两层结构 */
-  --page-wash-a: rgba(184, 69, 47, .07);
-  --page-wash-b: rgba(160, 96, 47, .05);
+  --page-wash-a: rgba(184, 69, 47, .24);
+  --page-wash-b: rgba(160, 96, 47, .18);
 }
 
 .co-nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between;
