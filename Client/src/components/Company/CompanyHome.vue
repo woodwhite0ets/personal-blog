@@ -18,6 +18,7 @@
     <main class="co-main">
       <!-- ① 定位 -->
       <section class="co-hero">
+        <div class="co-hero-main">
         <p class="co-kicker">浙江乐清，可开票，按合同交付</p>
         <h1 class="co-title">
           <!-- TODO(博士)：把这一句换成真实定位。要求：给谁、解决什么问题、可验收 -->
@@ -30,6 +31,14 @@
           <a class="co-btn co-btn-solid" href="mailto:1903784785@qq.com">说说你的项目</a>
           <router-link class="co-btn" to="/projects">看案例</router-link>
         </div>
+        </div>
+
+        <aside class="co-hero-facts" aria-label="基本情况">
+          <div class="co-fact"><dt>地点</dt><dd>浙江乐清</dd></div>
+          <div class="co-fact"><dt>结算</dt><dd>可开票</dd></div>
+          <div class="co-fact"><dt>交付</dt><dd>签合同，按阶段验收</dd></div>
+          <div class="co-fact"><dt>案例</dt><dd><router-link to="/projects">4 个已上线项目</router-link></dd></div>
+        </aside>
       </section>
 
       <!-- ② 服务 -->
@@ -146,6 +155,14 @@ const year = new Date().getFullYear()
 
 .co-main { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 40px 24px 96px; }
 
+.co-hero { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 48px; align-items: end; }
+.co-hero-main { min-width: 0; }
+.co-hero-facts { margin: 0; padding-left: 8px; border-left: 1px dotted var(--rule-dot-ink); }
+.co-fact { display: flex; align-items: baseline; gap: 14px; padding: 9px 0; }
+.co-fact dt { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .02em; color: var(--text-faint); width: 44px; flex: none; }
+.co-fact dd { margin: 0; font-size: 0.875rem; color: var(--text); }
+.co-fact dd a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+.co-fact dd a:hover { color: var(--accent); border-color: var(--accent); }
 .co-kicker { margin: 0 0 14px; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .03em; color: var(--text-faint); }
 .co-title { margin: 0 0 20px; font-family: "Noto Serif SC", var(--font-serif); font-weight: 500;
   font-size: clamp(2rem, 4.4vw, 3.4rem); line-height: 1.18; letter-spacing: -0.03em; color: var(--text-bright); text-wrap: balance; max-width: 20ch; }
@@ -200,6 +217,10 @@ const year = new Date().getFullYear()
 .co-foot-links a { color: var(--text-faint); text-decoration: none; }
 .co-foot-links a:hover { color: var(--text-bright); }
 
+@media (max-width: 900px) {
+  .co-hero { grid-template-columns: 1fr; gap: 32px; align-items: start; }
+  .co-hero-facts { border-left: none; border-top: 1px dotted var(--rule-dot-ink); padding-left: 0; padding-top: 8px; }
+}
 @media (max-width: 820px) {
   .co-grid-3, .co-grid-2 { grid-template-columns: 1fr; }
   .co-proof li { grid-template-columns: 1fr; gap: 4px; }
