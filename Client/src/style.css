@@ -3554,3 +3554,25 @@ html {
 @media (max-width: 560px) {
   .mkt-steps { grid-template-columns: 1fr; }
 }
+
+/* 组件的「彩色化」用 teamorouter 自己的做法：
+   它的暖色卡是 linear-gradient(150deg, #fff6ee, #ffeede) —— 极浅的杏奶油渐变，
+   不是饱和色块。这里把同一配方给主要组件，并让每块换一个色相的家常做法保持一致。 */
+.co-hero-facts,
+.mkt-table,
+.mkt-cta {
+  background: linear-gradient(150deg, #fff6ee, #ffeede);
+  border-color: color-mix(in srgb, var(--text) 10%, transparent);
+}
+.mkt-compare > div:last-child,
+.mkt-steps li {
+  background: linear-gradient(150deg, #f4f8fd, #eaf2fb);   /* 冷色系：浅蓝 */
+  border-color: color-mix(in srgb, var(--brand-deep) 14%, transparent);
+}
+.mkt-compare > div:first-child {
+  background: linear-gradient(150deg, #f4f2ee, #eae7e1);   /* 灰：表示常见做法 */
+  border-color: color-mix(in srgb, var(--text) 10%, transparent);
+}
+.co-feature {
+  background: linear-gradient(150deg, #fff6ee, #ffeede);
+}
