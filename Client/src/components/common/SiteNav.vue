@@ -3,18 +3,23 @@
     <div class="navbar-inner">
       <router-link to="/" class="brand" title="回到木白 · 公司主页" aria-label="木白，公司主页">
         <img class="brand-mark" src="/brand/opc-mark-color.svg" alt="" width="955" height="672" aria-hidden="true" />
-        <span class="brand-text">woodwhite@blog</span>
+        <span class="brand-text">{{ isCompany ? 'woodwhite' : 'woodwhite@blog' }}</span>
       </router-link>
-      <router-link to="/" class="brand-back">← 木白</router-link>
+      <router-link v-if="!isCompany" to="/" class="brand-back">← 木白</router-link>
       <nav class="nav-links" :class="{ open: navOpen }" @click="navOpen = false">
         <router-link v-for="l in navLinks" :key="l.to" :to="l.to"> {{ l.label }}
         </router-link>
-        <router-link v-if="!isLoggedIn" to="/login" class="nav-drawer-auth">登录</router-link>
-        <router-link v-else :to="`/user/${currentUser?.username}`" class="nav-drawer-auth">我的页面</router-link>
+        <template v-if="!isCompany">
+          <router-link v-if="!isLoggedIn" to="/login" class="nav-drawer-auth">登录</router-link>
+          <router-link v-else :to="`/user/${currentUser?.username}`" class="nav-drawer-auth">我的页面</router-link>
+        </template>
       </nav>
       <div class="nav-actions">
-        <ThemeSwitcher />
+        <ThemeSwitcher v-if="!isCompany" />
         <slot name="search" />
+        <!-- 公司站：右端只有一个主行动（跟博客「新文章」同一个按钮配方） -->
+        <a v-if="isCompany" class="btn-write" href="mailto:1903784785@qq.com">说说你的项目</a>
+        <template v-else>
         <router-link v-if="!isLoggedIn" to="/login" class="btn-login">登录</router-link>
         <template v-else>
           <router-link to="/editor" class="btn-write">
@@ -41,6 +46,7 @@
             </Transition>
           </div>
         </template>
+        </template>
       </div>
       <button class="nav-toggle" :class="{ open: navOpen }" @click="navOpen = !navOpen" aria-label="菜单" :aria-expanded="navOpen"><span></span><span></span><span></span></button>
     </div>
@@ -54,10 +60,16 @@ import UserAvatar from './UserAvatar.vue'
 import ThemeSwitcher from './ThemeSwitcher.vue'
 import { useAuth } from '../../stores/auth.js'
 
+const props = defineProps({
+  // blog＝博客顶栏；company＝公司站顶栏（同一套尺寸/材质，只换链接与行动区）
+  variant: { type: String, default: 'blog' },
+})
+const isCompany = computed(() => props.variant === 'company')
+
 const route = useRoute()
 const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
 
-const navLinks = [
+const blogLinks = [
   { to: '/blog', label: '首页' },
   { to: '/forum', label: '文章' },
   { to: '/ai-daily', label: 'AI 榜' },
@@ -66,6 +78,14 @@ const navLinks = [
   { to: '/now', label: '现在' },
   { to: '/about', label: '关于' },
 ]
+const companyLinks = [
+  { to: '/', label: '首页' },
+  { to: '/work', label: '案例' },
+  { to: '/stack', label: '能力' },
+  { to: '/contact', label: '联系' },
+  { to: '/blog', label: '博客' },
+]
+const navLinks = computed(() => (isCompany.value ? companyLinks : blogLinks))
 
 const section = computed(() => {
   const p = route.path
