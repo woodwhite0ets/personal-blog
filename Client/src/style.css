@@ -3345,7 +3345,7 @@ html {
 }
 
 /* 四个步骤：同一材质，不交替上色 */
-.mkt-steps li { background: color-mix(in srgb, #fff 62%, transparent); }
+.mkt-steps li { background: color-mix(in srgb, #fff 55%, transparent); }
 
 /* 六项能力：悬停时整行微微上色 */
 .co-caps li:hover { background: color-mix(in srgb, var(--brand-mid) 8%, transparent); }
@@ -3452,3 +3452,34 @@ html {
 }
 .co-fact { padding: 10px 0; border-bottom: 1px dotted var(--rule-dot-ink); }
 .co-fact:last-child { border-bottom: none; }
+
+/* ===== 对照表：真正给出两栏的视觉差别（2026-11-05） ===== */
+.mkt-compare {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0; border: 1px solid var(--border-strong); border-radius: 4px; overflow: hidden;
+  background: none;
+}
+.mkt-compare > div { padding: 26px 28px 28px; background: none; }
+.mkt-compare > div:first-child { background: color-mix(in srgb, var(--text) 4%, transparent); border-right: 1px solid var(--border-strong); }
+.mkt-compare > div:last-child { background: color-mix(in srgb, #fff 55%, transparent); }
+.mkt-compare h3 {
+  margin: 0 0 16px; padding-bottom: 10px;
+  font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; letter-spacing: .08em;
+  border-bottom: 1px dotted var(--rule-dot-ink);
+}
+.mkt-compare > div:first-child h3 { color: var(--text-faint); }
+.mkt-compare > div:last-child h3 { color: var(--brand-deep); border-bottom-color: color-mix(in srgb, var(--brand-deep) 30%, transparent); }
+.mkt-compare ul { margin: 0; padding: 0; list-style: none; }
+.mkt-compare li {
+  position: relative; padding-left: 20px; margin-bottom: 10px;
+  font-size: 0.875rem; line-height: 1.7;
+}
+.mkt-compare li:last-child { margin-bottom: 0; }
+.mkt-compare > div:first-child li { color: var(--text-faint); }
+.mkt-compare > div:first-child li::before { content: '×'; position: absolute; left: 0; color: var(--err); opacity: .7; }
+.mkt-compare > div:last-child li { color: var(--text); }
+.mkt-compare > div:last-child li::before { content: '✓'; position: absolute; left: 0; color: var(--brand-deep); }
+@media (max-width: 860px) {
+  .mkt-compare { grid-template-columns: 1fr; }
+  .mkt-compare > div:first-child { border-right: none; border-bottom: 1px solid var(--border-strong); }
+}
