@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { getToken, isGuest } from '../stores/auth.js';
-import { isReload, getScroll, saveCurrentPosition } from '../utils/scroll.js';
 
 // 安全解码 JWT payload（兼容 base64url 的 - _ 字符）
 function decodeTokenPayload(token) {
@@ -214,42 +213,26 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     // 带 #锚点 时滚到目标元素，留出固定导航栏高度
     if (to.hash) return { el: to.hash, top: 84, behavior: 'smooth' };
-    // 刷新：一律回顶部；站内前进/后退：回到该历史记录上次停的位置
-    // （优先用我们自己记的位置：vue-router 自带的 savedPosition 在这套 SPA 里常常是 0）
-    if (!isReload) {
-      const y = getScroll(window.history.state?.position);
-      // 等新页面渲染完再滚，否则目标页还没撑开高度，会被浏览器夹到很小的值
-      if (y !== null) {
-        return new Promise((resolve) => {
-          requestAnimationFrame(() => {
-            setTimeout(() => resolve({ left: 0, top: y }), 0);
-            // 页面切换有 out-in 过渡：过渡期间旧页面已卸载、新页面还没挂上，
-            // 这时滚会撞到很矮的文档高度被夹住，所以过渡结束后补两次校正。
-            for (const delay of [140, 360]) {
-              setTimeout(() => {
-                if (Math.abs(window.scrollY - y) > 4) window.scrollTo({ left: 0, top: y, behavior: 'auto' });
-              }, delay);
-            }
-          });
-        });
-      }
+    // 前进/后退：vue-router 会给出该条历史记录上次的滚动位置。这里不让它自己滚
+    // （它在页面过渡中滚，文档还没撑开高度，会被夹成很小一个值），改由 afterEach 补偿落位。
+    if (savedPosition && typeof savedPosition.top === 'number') {
+      scheduleRestore(savedPosition.top);
+      return false;
     }
-    if (savedPosition) return savedPosition;
+    // 刷新 / 直接打开 / 站内跳转：一律回顶部
     return { top: 0 };
   },
 });
 
 // ====== 路由守卫 ======
-// 离开当前页时记一次滚动位置。
-// 判断依据：只有 history.state.position 仍等于"当前这条记录"时才是 push/replace 离开；
-// 前进/后退时浏览器已经把 state 换成目标记录，此时不能记（否则会用自己的 0 覆盖掉旧记录）。
-let activePos = null
-router.afterEach(() => { activePos = window.history.state?.position ?? null })
-router.beforeEach(() => {
-  if (activePos !== null && window.history.state?.position === activePos) {
-    saveCurrentPosition()
+// 恢复滚动位置：等页面渲染 + 过渡结束后再落位，并在之后补几次（过渡期间文档还矮，会滚不到位）
+function scheduleRestore(y) {
+  const apply = () => window.scrollTo({ left: 0, top: y, behavior: 'auto' });
+  requestAnimationFrame(apply);
+  for (const delay of [140, 320, 650, 1100]) {
+    setTimeout(() => { if (Math.abs(window.scrollY - y) > 4) apply(); }, delay);
   }
-})
+}
 
 router.beforeEach((to, from, next) => {
   // 两个域名各管各的，互相跳转，避免同一内容出现在两个域下（重复内容/权重分散）

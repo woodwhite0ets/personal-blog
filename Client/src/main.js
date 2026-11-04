@@ -11,11 +11,11 @@ import router from './router/index.js'
 import { initEnhance } from './utils/enhance.js'
 import { initHighlighter } from './utils/highlighter.js'
 
-// 滚动位置策略（细节见 utils/scroll.js）：
-//  - 刷新 / 新开页 → 回到顶部
-//  - 站内前进后退 → 回到该历史记录上次的位置
+// 滚动位置策略：
+//  - 刷新 / 新开页 / 站内跳转 → 回顶部
+//  - 前进后退 → 回到该条历史记录上次的位置（vue-router 记，router.afterEach 落位）
 if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
-  // 关掉浏览器的原生恢复，避免"刷新后停在半页/页尾"，位置由路由层统一决定
+  // 关掉浏览器的原生恢复，避免"刷新后停在半页/页尾"
   history.scrollRestoration = 'manual'
 }
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
