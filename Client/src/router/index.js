@@ -30,9 +30,19 @@ const routes = [
     redirect: '/HomePage',
   },
   {
-    // 公司页里叫「案例」，实际落在项目页
     path: '/work',
-    redirect: '/projects',
+    name: 'CompanyWork',
+    component: () => import('../components/Company/CompanyWork.vue'),
+  },
+  {
+    path: '/stack',
+    name: 'CompanyStack',
+    component: () => import('../components/Company/CompanyStack.vue'),
+  },
+  {
+    path: '/contact',
+    name: 'CompanyContact',
+    component: () => import('../components/Company/CompanyContact.vue'),
   },
   {
     path: '/login',
