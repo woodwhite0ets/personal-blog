@@ -30,6 +30,11 @@ const routes = [
     redirect: '/HomePage',
   },
   {
+    path: '/solutions',
+    name: 'CompanySolutions',
+    component: () => import('../components/Company/CompanySolutions.vue'),
+  },
+  {
     path: '/work',
     name: 'CompanyWork',
     component: () => import('../components/Company/CompanyWork.vue'),
