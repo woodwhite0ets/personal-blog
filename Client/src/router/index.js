@@ -18,6 +18,9 @@ function clearStaleToken() {
   sessionStorage.clear();
 }
 
+// 公司站只认这几个路径，其余都属于博客
+const COMPANY_PATHS = ['/solutions', '/work', '/stack', '/contact']
+
 const routes = [
   {
     path: '/',
@@ -217,10 +220,15 @@ const router = createRouter({
 
 // ====== 路由守卫 ======
 router.beforeEach((to, from, next) => {
-  // 按 hostname 分流：blog 子域进来落博客，根域落公司主页
-  if (to.path === '/' && window.location.hostname.startsWith('blog.')) {
-    next('/HomePage')
-    return
+  // 两个域名各管各的，互相跳转，避免同一内容出现在两个域下（重复内容/权重分散）
+  const host = window.location.hostname
+  const onBlog = host.startsWith('blog.')
+  const onCompany = host === 'woodwhite.top' || host === 'www.woodwhite.top'
+  if (onBlog || onCompany) {
+    const p = to.path
+    const companyPath = p === '/' || COMPANY_PATHS.some((x) => p === x || p.startsWith(x + '/'))
+    if (onBlog && companyPath) { window.location.replace(`https://woodwhite.top${p === '/' ? '/' : p}`); return }
+    if (onCompany && !companyPath) { window.location.replace(`https://blog.woodwhite.top${p}`); return }
   }
   const token = getToken();
 
