@@ -3009,108 +3009,26 @@ html {
 .hm-bars { background: color-mix(in srgb, var(--hue-copper) 4%, transparent); padding: 16px 18px; border-radius: 4px; }
 
 
+
+
 /* ============================================================
-   卡片底色（2026-11-04 v5）：一套，不五套
-   所有卡片共用同一种处理——左上角一点暖色洇进来、向右下淡出，
-   和页面底同一个色源。卡片之间靠内容和位置区分，不靠颜色。
+   回到干净版：组件不带任何背景水彩/渐变
+   纸底是 --bg，卡片是暖白 --bg-elevated，靠细线和留白分层。
    ============================================================ */
-.tl-card,
-.tl-snip-card,
-.co-card,
-.ws-group,
-.sidebar-panel {
-  background-color: color-mix(in srgb, #fffdf8 90%, transparent);
-  background-image:
-    radial-gradient(ellipse 86% 120% at -6% -20%, color-mix(in srgb, var(--hue-copper) 10%, transparent), transparent 72%);
-  background-repeat: no-repeat;
+.tl-card, .tl-snip-card, .co-card, .ws-group, .sidebar-panel,
+.panel-notch, .note-item, .project-item {
+  background-image: none;
+  background-color: var(--bg-elevated);
 }
 
-/* 卡片之间只留极轻的边线，让一屏读成一张纸上的若干块，而不是彩色拼贴 */
-.tl-card:hover,
-.tl-snip-card:hover,
-.co-card:hover { background-color: color-mix(in srgb, #fffdf8 96%, transparent); }
-
-/* 只有这些带色：工具库每 4 张第 1 张、首页精选第 1 张、公司页第 1 张 */
-.tl-card:nth-child(4n+1) {
-  background-image:
-    radial-gradient(ellipse 68% 96% at 0% 30%, color-mix(in srgb, var(--hue-copper) 22%, transparent), transparent 70%),
-    radial-gradient(ellipse 40% 34% at 96% 96%, color-mix(in srgb, var(--hue-blue) 16%, transparent), transparent 72%);
-}
-.tl-card:nth-child(8n+5) {
-  background-image:
-    radial-gradient(ellipse 120% 46% at 60% -8%, color-mix(in srgb, var(--hue-blue) 20%, transparent), transparent 72%),
-    radial-gradient(ellipse 38% 30% at 4% 100%, color-mix(in srgb, var(--hue-teal) 15%, transparent), transparent 74%);
-}
-.tl-snip-grid li:nth-child(1) .tl-snip-card,
-.co-grid-3 .co-card:nth-child(1),
-.co-grid-2 .co-card:nth-child(1) {
-  background-image:
-    radial-gradient(ellipse 68% 96% at 0% 30%, color-mix(in srgb, var(--hue-copper) 20%, transparent), transparent 70%),
-    radial-gradient(ellipse 40% 34% at 96% 96%, color-mix(in srgb, var(--hue-blue) 14%, transparent), transparent 72%);
-}
-
-/* A 左侧大块暖 */
-.tl-card:nth-child(5n+1), .tl-snip-grid li:nth-child(3n+1) .tl-snip-card,
-.co-grid-3 .co-card:nth-child(1), .ws-group:nth-child(1), .sidebar-panel {
-  background-image:
-    radial-gradient(ellipse 68% 96% at 0% 30%, color-mix(in srgb, var(--hue-copper) 20%, transparent), transparent 70%),
-    radial-gradient(ellipse 40% 34% at 96% 96%, color-mix(in srgb, var(--hue-blue) 14%, transparent), transparent 72%);
-}
-/* B 顶部冷带 */
-.tl-card:nth-child(5n+2), .tl-snip-grid li:nth-child(3n+2) .tl-snip-card,
-.co-grid-3 .co-card:nth-child(2), .ws-group:nth-child(2) {
-  background-image:
-    radial-gradient(ellipse 120% 46% at 60% -8%, color-mix(in srgb, var(--hue-blue) 20%, transparent), transparent 70%),
-    radial-gradient(ellipse 38% 30% at 4% 100%, color-mix(in srgb, var(--hue-teal) 14%, transparent), transparent 74%);
-}
-/* C 底部橄榄 */
-.tl-card:nth-child(5n+3), .tl-snip-grid li:nth-child(3n) .tl-snip-card,
-.co-grid-3 .co-card:nth-child(3), .ws-group:nth-child(3) {
-  background-image:
-    radial-gradient(ellipse 110% 44% at 40% 108%, color-mix(in srgb, var(--hue-olive) 20%, transparent), transparent 70%),
-    radial-gradient(ellipse 36% 30% at 98% 2%, color-mix(in srgb, var(--hue-copper) 14%, transparent), transparent 74%);
-}
-/* D 右上砖红 */
-.tl-card:nth-child(5n+4), .ws-group:nth-child(4), .co-grid-2 .co-card:nth-child(1) {
-  background-image:
-    radial-gradient(ellipse 62% 84% at 100% 0%, color-mix(in srgb, var(--hue-brick) 17%, transparent), transparent 70%),
-    radial-gradient(ellipse 40% 34% at 0% 100%, color-mix(in srgb, var(--hue-purple) 13%, transparent), transparent 74%);
-}
-/* E 中间奶油带 */
-.tl-card:nth-child(5n+5), .co-grid-2 .co-card:nth-child(2) {
-  background-image:
-    radial-gradient(ellipse 120% 34% at 50% 50%, color-mix(in srgb, var(--hue-copper) 13%, transparent), transparent 76%),
-    radial-gradient(ellipse 34% 30% at 2% 4%, color-mix(in srgb, var(--hue-blue) 12%, transparent), transparent 74%),
-    radial-gradient(ellipse 34% 30% at 98% 96%, color-mix(in srgb, var(--hue-teal) 12%, transparent), transparent 74%);
-}
-
-/* 错开四组，避免整片网格像贴了同一张纸 */
-.tl-card:nth-child(4n+2), .tl-snip-grid li:nth-child(2) .tl-snip-card,
-.co-card:nth-child(2), .ws-group:nth-child(2) { background-image:
-    radial-gradient(ellipse 44% 40% at 92% 0%, color-mix(in srgb, var(--hue-blue) 32%, transparent), transparent 70%),
-    radial-gradient(ellipse 36% 32% at 4% 100%, color-mix(in srgb, var(--hue-teal) 26%, transparent), transparent 72%); }
-.tl-card:nth-child(4n+3), .tl-snip-grid li:nth-child(3) .tl-snip-card,
-.co-card:nth-child(3), .ws-group:nth-child(3) { background-image:
-    radial-gradient(ellipse 48% 42% at 12% 100%, color-mix(in srgb, var(--hue-olive) 32%, transparent), transparent 70%),
-    radial-gradient(ellipse 38% 34% at 94% 4%, color-mix(in srgb, var(--hue-copper) 26%, transparent), transparent 72%); }
-.tl-card:nth-child(4n+4), .ws-group:nth-child(4) { background-image:
-    radial-gradient(ellipse 46% 40% at 90% 100%, color-mix(in srgb, var(--hue-brick) 30%, transparent), transparent 70%),
-    radial-gradient(ellipse 36% 32% at 6% 0%, color-mix(in srgb, var(--hue-blue) 24%, transparent), transparent 72%); }
-
-
-/* 页面级气团彻底关掉（还有一条旧的 .page-wash 定义在生效，是顶部那条渐变带的来源）。
-   颜色交给卡片，纸底保持 #fffefb 本身。 */
-.page-wash,
-.page-wash::before,
-.page-wash::after { display: none !important; }
-
-/* 分类 chips：「全部」不带色点 */
+/* 顶部那条灰蓝带来自旧的 .page-wash（v2 定义，height 620px）。
+   组件背景已清空，这个图层也一并关掉；分类 chips 的「全部」不带色点。 */
+.page-wash, .page-wash::before, .page-wash::after { display: none !important; }
 .tl-cat:not([data-cat])::before { content: none; }
 
-
-/* 页面根节点不再画任何渐变：之前有旧的极光/气团规则残留，是顶部那条灰蓝带的来源。
-   纸底就是 --bg 本身，颜色只出现在卡片上。 */
-.archive-page, .tags-page, .notes-page, .now-page, .pl-page, .tl-page,
-.ad-page, .td-page, .forum-page, .proj-page, .about-page, .post-detail-page, .co-page {
+/* 兜底：页面根节点用不透明纸色盖住，任何遗留的渐变图层都不会透出来 */
+.tl-page, .ad-page, .td-page, .pl-page, .proj-page, .tags-page, .archive-page,
+.notes-page, .now-page, .forum-page, .about-page, .post-detail-page, .co-page {
+  background: var(--bg) !important;
   background-image: none !important;
 }
