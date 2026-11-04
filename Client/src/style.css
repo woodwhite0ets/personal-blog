@@ -3227,3 +3227,28 @@ html {
 .tl-grid, .tl-snip-grid, .ad-list, .co-caps, .mkt-steps, .mkt-compare, .co-grid {
   overscroll-behavior: auto;
 }
+
+
+/* ===== 公司页手机端（≤560px）：表格与导航收紧，避免挤压与横向溢出 ===== */
+@media (max-width: 560px) {
+  .co-nav { padding: 18px 16px; gap: 12px; }
+  .co-brand-cn { font-size: 1.25rem; }
+  .co-brand-en { font-size: 0.8125rem; }
+  .co-links { gap: 14px; }
+  .co-links a { font-size: 0.6875rem; }
+  .co-main { padding: 28px 16px 72px; }
+  .co-title { font-size: clamp(1.75rem, 8vw, 2.4rem); }
+  .co-actions .co-btn { padding: 11px 16px; font-size: 0.75rem; }
+
+  /* 表格：三列在 390px 下已经很挤，缩字号与内距，绝不横向溢出 */
+  .mkt-table { font-size: 0.75rem; table-layout: fixed; }
+  .mkt-table th, .mkt-table td { padding: 10px 8px 10px 0; word-break: break-word; }
+  .mkt-table td:first-child { white-space: normal; }
+  .mkt-table th:first-child, .mkt-table td:first-child { width: 30%; }
+  .mkt-table th:nth-child(2), .mkt-table td:nth-child(2) { width: 40%; }
+  .mkt-table th:nth-child(3), .mkt-table td:nth-child(3) { width: 30%; }
+
+  .mkt-steps { grid-template-columns: 1fr; }
+  .co-case-head { gap: 8px; }
+  .co-case-period { margin-left: 0; }
+}
