@@ -207,12 +207,21 @@ const routes = [
   },
 ];
 
+// 本次文档加载是刷新还是直接打开（用于决定"刷新时忽略 URL 里的 #锚点"）
+const navType = (() => {
+  try { return performance.getEntriesByType('navigation')[0]?.type || 'navigate' } catch { return 'navigate' }
+})()
+const isReload = navType === 'reload'
+let firstNavDone = false
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
+    // 刷新时忽略 URL 里的 #锚点：否则停在页脚点过「常见问题」再刷新，会被带到 FAQ 那一屏
+    const ignoreHash = isReload && !firstNavDone;
     // 带 #锚点 时滚到目标元素，留出固定导航栏高度
-    if (to.hash) return { el: to.hash, top: 84, behavior: 'smooth' };
+    if (to.hash && !ignoreHash) return { el: to.hash, top: 84 };
     // 前进/后退：vue-router 会给出该条历史记录上次的滚动位置。这里不让它自己滚
     // （它在页面过渡中滚，文档还没撑开高度，会被夹成很小一个值），改由 afterEach 补偿落位。
     if (savedPosition && typeof savedPosition.top === 'number') {
