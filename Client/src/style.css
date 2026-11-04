@@ -2905,14 +2905,13 @@ html {
   overflow: hidden;
   background-image: none;
   opacity: 1;
-  display: none;   /* 页面级气团暂时关掉：一层淡色也能把纸压灰，颜色交给卡片 */
 }
 /* 两层各漂各的：合成器只处理 transform，不触发重绘 */
 .page-wash::before,
 .page-wash::after {
   content: ''; position: absolute; pointer-events: none;
   will-change: transform;
-  opacity: .9;   /* 只保留这一层，避免多层叠加把纸色压灰 */
+  opacity: .55;  /* 与元素自身横带叠加，别压灰纸色 */
 }
 .page-wash::before {
   inset: -10% -12% 52% -12%;
@@ -3023,12 +3022,4 @@ html {
 
 /* 顶部那条灰蓝带来自旧的 .page-wash（v2 定义，height 620px）。
    组件背景已清空，这个图层也一并关掉；分类 chips 的「全部」不带色点。 */
-.page-wash, .page-wash::before, .page-wash::after { display: none !important; }
 .tl-cat:not([data-cat])::before { content: none; }
-
-/* 兜底：页面根节点用不透明纸色盖住，任何遗留的渐变图层都不会透出来 */
-.tl-page, .ad-page, .td-page, .pl-page, .proj-page, .tags-page, .archive-page,
-.notes-page, .now-page, .forum-page, .about-page, .post-detail-page, .co-page {
-  background: var(--bg) !important;
-  background-image: none !important;
-}
