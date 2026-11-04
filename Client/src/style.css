@@ -3443,20 +3443,19 @@ html {
    ============================================================ */
 .co-feature, .co-hero-facts, .mkt-steps li, .mkt-compare > div, .mkt-cta {
   background-image:
-    radial-gradient(circle, rgba(20,17,15,.18) 1px, transparent 1.25px),
-    linear-gradient(180deg, color-mix(in srgb, #fff 80%, transparent), color-mix(in srgb, #fff 56%, transparent));
-  background-size: 7px 7px, 100% 100%;
-  background-blend-mode: multiply, normal;
+    linear-gradient(165deg,
+      color-mix(in srgb, var(--brand-mid) 22%, #fff),
+      color-mix(in srgb, var(--hue-copper) 8%, #fff) 62%,
+      color-mix(in srgb, var(--brand-mid) 14%, #fff));
+  background-size: 100% 100%;
   background-color: transparent;
-  -webkit-mask-image: radial-gradient(ellipse 92% 96% at 50% 40%, #000 22%, rgba(0,0,0,.45) 68%, transparent 100%);
-  mask-image: radial-gradient(ellipse 92% 96% at 50% 40%, #000 22%, rgba(0,0,0,.45) 68%, transparent 100%);
 }
-.co-hero-facts::before, .co-feature::before { filter: blur(10px); opacity: .9; }
+.co-hero-facts::before, .co-feature::before { filter: blur(8px); opacity: 1; }
 .co-hero-facts::before {
-  background: radial-gradient(closest-side, rgba(74,111,158,.75), rgba(74,111,158,0) 72%);
+  background: radial-gradient(closest-side, rgba(74,111,158,.95), rgba(74,111,158,0) 76%);
 }
 .co-hero-facts::after {
-  background: radial-gradient(closest-side, rgba(184,96,58,.55), rgba(184,96,58,0) 72%);
+  background: radial-gradient(closest-side, rgba(184,96,58,.7), rgba(184,96,58,0) 76%);
 }
 .co-feature::before {
   background: radial-gradient(closest-side, rgba(184,96,58,.45), rgba(184,96,58,0) 72%);
