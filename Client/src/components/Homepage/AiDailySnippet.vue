@@ -123,4 +123,25 @@ onMounted(async () => {
   .ai-snip-item { grid-template-columns: 26px 1fr; }
   .ai-snip-stat { grid-column: 2; margin-top: 4px; }
 }
+
+/* 动效：进视口时逐行升起（滚动驱动，纯 CSS）+ hover 右移 3px */
+@keyframes snipRow {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@supports (animation-timeline: view()) {
+  .ai-snip-item {
+    animation: snipRow linear both;
+    animation-timeline: view();
+    animation-range: entry 5% entry 22%;
+  }
+}
+.ai-snip-item {
+  transition: background-color var(--dur-hover) var(--ease-out), translate var(--dur-hover) var(--ease-out);
+}
+.ai-snip-item:hover { translate: 3px 0; background: var(--overlay-a2); }
+@media (prefers-reduced-motion: reduce) {
+  .ai-snip-item { animation: none !important; }
+  .ai-snip-item:hover { translate: none; }
+}
 </style>

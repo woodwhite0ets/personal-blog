@@ -29,14 +29,11 @@
 
     <!-- ====== 首屏 Hero 带（非对称：左文 + 右信息栏）====== -->
     <section class="hero-band">
-      <!-- 首屏底图：五套「印在纸上的画」，每次刷新随机一套 -->
-      <div class="hero-art" :data-art="heroArt" aria-hidden="true">
-        <div class="hero-wash"></div>
-        <div class="hero-halftone"></div>
-        <div class="hero-vignette"></div>
-      </div>
+      <!-- 首屏底图：五套「印在纸上的画」，每次刷新随机一套（组件见 common/HeroBackdrop.vue） -->
+      <HeroBackdrop session-key="blog-hero-art" />
       <div class="hero-in">
         <div class="hero-text">
+          <p class="hero-badge"><span class="hero-badge-dot" aria-hidden="true"></span>持续更新 · 全栈 / 系统 / AI 工程</p>
           <h1 class="hero-name" aria-label="WoodWhite"><span>W</span><span>o</span><span>o</span><span>d</span><span>W</span><span>h</span><span>i</span><span>t</span><span>e</span></h1>
           <p class="hero-role"><span>应届毕业生</span><span>Web 全栈开发</span></p>
           <p class="hero-statement">写代码、做系统、记录踩过的坑。这里是我关于全栈开发、系统架构与开源实践的手记。</p>
@@ -51,6 +48,14 @@
             <router-link to="/forum" class="hero-btn hero-btn-solid">阅读文章</router-link>
             <a href="https://github.com/woodwhite0ets" target="_blank" rel="noopener" class="hero-btn hero-btn-ghost">GitHub</a>
           </div>
+          <p class="hero-trust">
+            <span>{{ loading ? '…' : `${totalPublished} 篇已发布` }}</span>
+            <i aria-hidden="true"></i>
+            <span>{{ stats.views ? `${fmt(stats.views)} 次阅读` : '持续更新中' }}</span>
+            <i aria-hidden="true"></i>
+            <span v-if="stats.uptimeDays">已运行 {{ stats.uptimeDays }} 天</span>
+            <span v-else>自建工作站</span>
+          </p>
         </div>
         <aside class="hero-recent" v-if="posts.length">
           <div class="hr-head">最新</div>
@@ -117,6 +122,7 @@
     <!-- AI 项目榜（每日更新）-->
     <div class="hm">
       <section class="hm-sec ai-snip-sec">
+        <p class="hm-eyebrow">今日榜单 · DAILY</p>
         <AiDailySnippet />
       </section>
     </div>
@@ -132,11 +138,33 @@
       </div>
     </div>
 
+    <!-- 热门文章（按阅读量，数据来自 /api/posts?sort=popular） -->
+    <div class="hm" v-if="popular.length">
+      <section class="hm-sec pop-sec">
+        <p class="hm-eyebrow">热门 · MOST READ</p>
+        <div class="pop-head">
+          <h2 class="hm-h">读得最多的几篇</h2>
+          <router-link class="pop-more" to="/forum?sort=popular">全部文章 →</router-link>
+        </div>
+        <ol class="pop-list">
+          <li v-for="(p, i) in popular" :key="p.id">
+            <router-link :to="`/post/${p.slug || p.id}`" class="pop-item">
+              <span class="pop-rank">{{ String(i + 1).padStart(2, '0') }}</span>
+              <span class="pop-title">{{ p.title }}</span>
+              <span class="pop-date">{{ (p.date || '').slice(0, 10) }}</span>
+              <span class="pop-views">{{ fmt(p.views) }} 阅读</span>
+            </router-link>
+          </li>
+        </ol>
+      </section>
+    </div>
+
     <!-- 项目（色带，打破纵向单调）-->
     <section class="band-tint">
       <div class="hm">
         <!-- 工作站：在用的项目 -->
         <section class="hm-sec ws-sec">
+          <p class="hm-eyebrow">在跑的东西 · RUNNING</p>
           <WorkspaceSnippet />
         </section>
 
@@ -146,14 +174,15 @@
     <!-- 工具库精选（按用途收的 AI 工具，只列我自己在用的） -->
     <div class="hm" v-if="featuredTools.length">
       <section class="hm-sec">
+        <p class="hm-eyebrow">按用途收录 · TOOLBOX</p>
         <div class="tl-snip-head">
           <h2 class="hm-h">工具库</h2>
           <router-link class="tl-snip-more" to="/tools">全部 {{ stats.tools || '' }} 个</router-link>
         </div>
         <p class="tl-snip-sub">按用途收的 AI 工具，这里只列我自己每天在用的。</p>
         <ul class="tl-snip-grid">
-          <li v-for="t in featuredTools" :key="t.slug" :data-cat="t.category">
-            <router-link :to="`/tools/${t.slug}`" class="tl-snip-card">
+          <li v-for="(t, i) in featuredTools" :key="t.slug" :data-cat="t.category">
+            <router-link :to="`/tools/${t.slug}`" class="tl-snip-card paper-field">
               <span class="tl-snip-name">{{ t.name }}</span>
               <span class="tl-snip-desc">{{ t.tagline_zh || t.desc_en }}</span>
               <span class="tl-snip-meta">{{ t.category_label }}</span>
@@ -166,6 +195,7 @@
     <div class="hm">
       <!-- 关于 -->
       <section class="hm-sec">
+        <p class="hm-eyebrow">关于 · ABOUT</p>
         <h2 class="hm-h">关于</h2>
         <div class="hm-about-grid">
           <div class="hm-about">
@@ -199,6 +229,7 @@ import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { stripMarkdown } from '../../utils/excerpt.js'
 import SiteNav from '../common/SiteNav.vue'
+import HeroBackdrop from '../common/HeroBackdrop.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 import AiDailySnippet from './AiDailySnippet.vue'
 import WorkspaceSnippet from './WorkspaceSnippet.vue'
@@ -215,14 +246,23 @@ const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
 const stats = ref({ posts: 0, views: 0, comments: 0, tags: 0, byMonth: [] })
 const featuredTools = ref([])
 const popular = ref([])
+// 数字加千分位：21300 → 21,300
+const fmt = (n) => Number(n || 0).toLocaleString('en-US')
 const maxMonth = computed(() => Math.max(1, ...(stats.value.byMonth || []).map(m => m.c)))
 async function loadExtra() {
   try {
-    const a = await fetch('/api/stats').then(r => r.ok ? r.json() : null)
+    const [a, c, d] = await Promise.all([
+      fetch('/api/stats').then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch('/api/ai-tools?mode=featured&limit=6').then(r => r.ok ? r.json() : null).catch(() => null),
+      // 热门：按阅读量取前 5（route 只在论坛页读 sort 参数，这里直接用接口）
+      fetch('/api/posts?sort=popular&status=published&type=owner').then(r => r.ok ? r.json() : null).catch(() => null),
+    ])
     if (a) stats.value = a
-    const c = await fetch('/api/ai-tools?mode=featured&limit=6').then(r => r.ok ? r.json() : null)
-    if (c) featuredTools.value = (c.items || []).slice(0, 6)
-  } catch {}
+    if (c) {
+      featuredTools.value = (c.items || []).slice(0, 6)
+    }
+    if (d) popular.value = (d.posts || []).slice(0, 5)
+  } catch { /* 首页附属模块失败不影响主列表 */ }
 }
 
 // ====== 文章数据层（取数/分页/筛选/搜索/标签/作者统计） ======
@@ -264,22 +304,6 @@ function handleClickOutside(e) {
 function scrollToPosts() {
   document.querySelector('.main-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
-
-// ====== 首屏底图：每次刷新随机一套（?art=1..5 可指定）======
-const ART_COUNT = 6
-const ART_KEY = 'blog-hero-art'
-const heroArt = ref(1)
-function pickHeroArt() {
-  const forced = Number(new URLSearchParams(window.location.search).get('art'))
-  if (Number.isInteger(forced) && forced >= 1 && forced <= ART_COUNT) return forced
-  let last = 0
-  try { last = Number(sessionStorage.getItem(ART_KEY)) || 0 } catch { /* 隐私模式下忽略 */ }
-  const pool = Array.from({ length: ART_COUNT }, (_, i) => i + 1).filter((n) => n !== last)
-  const picked = pool[Math.floor(Math.random() * pool.length)] || 1
-  try { sessionStorage.setItem(ART_KEY, String(picked)) } catch { /* 忽略 */ }
-  return picked
-}
-heroArt.value = pickHeroArt()
 
 // ====== 首屏光标跟随光晕 ======
 // 只写两个 px 变量去 translate 一个固定的渐变层（走合成器），
@@ -932,4 +956,97 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 /* 首页两栏并排（打破纵向单调）*/
 .home-cols { max-width: 860px; margin: 0 auto; padding: 0 24px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: start; }
 @media (max-width: 760px) { .home-cols { grid-template-columns: 1fr; gap: 40px; } }
+
+/* ===== 2026-11-05 对照 teamorouter 的结构重做 ===== */
+/* 首屏徽标 + 信任行 */
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px;
+  padding: 5px 12px; border: 1px solid var(--border); border-radius: 999px;
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em;
+  color: var(--text-dim); background: var(--overlay-a2);
+}
+.hero-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex: none; }
+.hero-trust {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 22px 0 0;
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .03em; color: var(--text-faint);
+}
+.hero-trust i { width: 1px; height: 10px; background: var(--border-strong); display: inline-block; }
+
+/* 板块小标签：先给分类，再给标题（同 teamorouter 的「价格 · PRICE」） */
+.hm-eyebrow {
+  margin: 0 0 10px; font-family: var(--font-mono); font-size: 0.625rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint);
+}
+.hm-eyebrow + .hm-h { margin-top: 2px; }
+
+/* 热门文章：排行列表（编号 + 标题 + 日期 + 阅读量） */
+.pop-sec { padding: 44px 0 40px; }
+.pop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
+.pop-head .hm-h { margin-bottom: 0; flex: 1; }
+.pop-more { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .03em; color: var(--text-dim); text-decoration: none; }
+.pop-more:hover { color: var(--accent); }
+.pop-list { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--border-strong); }
+.pop-item {
+  display: grid; grid-template-columns: 34px minmax(0, 1fr) 92px 84px; align-items: baseline; gap: 14px;
+  padding: 12px 2px; border-bottom: 1px dotted var(--border); text-decoration: none;
+  transition: background-color var(--dur-hover) var(--ease-out);
+}
+.pop-item:hover { background: var(--overlay-a2); }
+.pop-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pop-rank { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-faint); }
+.pop-title { font-size: 0.9375rem; line-height: 1.55; color: var(--text-bright); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pop-item:hover .pop-title { color: var(--accent); }
+.pop-date, .pop-views { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .02em; color: var(--text-faint); text-align: right; }
+@media (max-width: 700px) {
+  .pop-item { grid-template-columns: 26px minmax(0, 1fr) 72px; gap: 10px; }
+  .pop-date { display: none; }
+  .pop-title { white-space: normal; }
+}
+
+/* ===== 动效：跟公司页同一套语言（滚动驱动 + 只动合成器属性） ===== */
+/* 1. 热门榜：hover 时标题右移 2px、序号与阅读数变强调色 */
+.pop-item { transition: background-color var(--dur-hover) var(--ease-out); }
+.pop-title, .pop-rank, .pop-views { transition: color var(--dur-hover) var(--ease-out), translate var(--dur-hover) var(--ease-out); }
+.pop-item:hover .pop-title { translate: 2px 0; }
+.pop-item:hover .pop-rank, .pop-item:hover .pop-views { color: var(--accent); }
+
+/* 2. 首屏信任行：等主标题落位后再淡入 */
+.hero-trust { animation: fadeInUp .6s var(--ease-out) .42s both; }
+
+/* 3. 工具卡：进视口轻弹 + hover 抬起 2px */
+@supports (animation-timeline: view()) {
+  .tl-snip-grid li { animation: popRise linear both; animation-timeline: view(); animation-range: entry 6% entry 24%; }
+}
+@keyframes popRise {
+  from { opacity: 0; scale: .972; }
+  to   { opacity: 1; scale: 1; }
+}
+.tl-snip-card { transition: border-color var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out), translate var(--dur-hover) var(--ease-out); }
+.tl-snip-grid li:hover .tl-snip-card { translate: 0 -2px; }
+
+/* 4. 板块小标签：左侧短线随进入视口展开 */
+.hm-eyebrow { position: relative; padding-left: 0; }
+.hm-eyebrow::before {
+  content: ""; display: inline-block; vertical-align: middle;
+  width: 18px; height: 1px; margin-right: 8px;
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+  transform: scaleX(.35); transform-origin: left;
+  transition: transform .5s var(--ease-out);
+}
+.hm-eyebrow:hover::before { transform: scaleX(1); }
+
+/* 5. 运行事实带：等进入视口再淡入，数字用等宽数字防跳动 */
+.sb-v { font-variant-numeric: tabular-nums; }
+@supports (animation-timeline: view()) {
+  .status-band { animation: bandFade linear both; animation-timeline: view(); animation-range: entry 10% entry 60%; }
+}
+@keyframes bandFade {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-trust, .tl-snip-grid li, .status-band { animation: none !important; }
+  .pop-item:hover .pop-title, .tl-snip-grid li:hover .tl-snip-card { translate: none; }
+}
 </style>

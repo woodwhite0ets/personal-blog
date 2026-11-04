@@ -10,7 +10,7 @@
     </div>
 
     <div class="ws-groups">
-      <section v-for="(group, gi) in groups" :key="group.title" class="ws-group" :data-g="gi">
+      <section v-for="(group, gi) in groups" :key="group.title" class="ws-group paper-field" :data-g="gi">
         <h3 class="ws-group-title">
           <span class="ws-group-idx" aria-hidden="true">{{ String(gi + 1).padStart(2, '0') }}</span>
           {{ group.title }}
@@ -248,5 +248,23 @@ const groups = [
 @media (max-width: 900px) {
   .ws-groups { grid-template-columns: 1fr; gap: 24px; }
   .ws-item { grid-template-columns: 104px 1fr; }
+}
+
+/* 动效：分组进视口时升起，条目 hover 时底色浮起 */
+@keyframes wsGroup {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@supports (animation-timeline: view()) {
+  .ws-group {
+    animation: wsGroup linear both;
+    animation-timeline: view();
+    animation-range: entry 4% entry 26%;
+  }
+}
+.ws-item { transition: background-color var(--dur-hover) var(--ease-out); }
+.ws-item:hover { background: var(--overlay-a2); }
+@media (prefers-reduced-motion: reduce) {
+  .ws-group { animation: none !important; }
 }
 </style>
