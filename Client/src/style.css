@@ -3353,3 +3353,65 @@ html {
 /* 对照表：左侧压灰表示「常见做法」，右侧保持纸面——靠明度对比，不靠色相 */
 .mkt-compare > div:first-child { background: color-mix(in srgb, var(--text) 5%, transparent); }
 .mkt-compare > div:last-child { background: color-mix(in srgb, #fff 55%, transparent); }
+
+/* ============================================================
+   照 teamorouter 的「凸显」做法（2026-11-05）
+   ① 材质：半透明白渐变 + 白色内描边 + backdrop blur（它的 .route-node）
+   ② 流动色彩：独立色团 + radial-gradient(closest-side) + 只动 transform，
+      17s / 21s 两个周期错开（它的 .hero-flow）
+   ③ 悬停只改边线，绝不加阴影
+   ============================================================ */
+.co-hero-facts, .co-feature {
+  position: relative; overflow: hidden;
+  background: linear-gradient(180deg,
+    color-mix(in srgb, #fff 78%, transparent),
+    color-mix(in srgb, #fff 54%, transparent));
+  border: 1px solid rgba(255, 255, 255, .85);
+  backdrop-filter: blur(13px) saturate(1.25);
+  -webkit-backdrop-filter: blur(13px) saturate(1.25);
+  box-shadow: none;
+}
+.co-hero-facts { border-left: 2px solid color-mix(in srgb, var(--brand-deep) 55%, transparent); }
+.co-feature { border-left: 3px solid var(--brand-deep); }
+.co-feature:hover { border-color: color-mix(in srgb, var(--text) 16%, transparent); border-left-color: var(--brand-deep); }
+
+/* 流动色团 */
+.co-hero-facts::before,
+.co-hero-facts::after,
+.co-feature::before {
+  content: ''; position: absolute; z-index: 0; border-radius: 50%;
+  pointer-events: none; filter: blur(16px);
+}
+.co-hero-facts::before {
+  left: -10%; top: -30%; width: 70%; height: 120%;
+  background: radial-gradient(closest-side, rgba(113,168,213,.55), rgba(113,168,213,0) 70%);
+  animation: coFlowA 17s ease-in-out infinite;
+}
+.co-hero-facts::after {
+  right: -12%; bottom: -35%; width: 66%; height: 120%;
+  background: radial-gradient(closest-side, rgba(184,96,58,.38), rgba(184,96,58,0) 70%);
+  animation: coFlowB 21s ease-in-out infinite;
+}
+.co-feature::before {
+  right: -8%; top: -40%; width: 58%; height: 150%;
+  background: radial-gradient(closest-side, rgba(184,96,58,.28), rgba(184,96,58,0) 70%);
+  animation: coFlowA 23s ease-in-out infinite;
+}
+.co-fact, .co-feature > * { position: relative; z-index: 1; }
+
+@keyframes coFlowA { 0%, 100% { transform: translate(-13%, 7%) scale(1.05); } 50% { transform: translate(15%, -10%) scale(1.34); } }
+@keyframes coFlowB { 0%, 100% { transform: translate(16%, -6%) scale(1.26); } 50% { transform: translate(-12%, 12%) scale(.95); } }
+
+/* 六项能力：悬停只改边线，不上底色 */
+.co-caps li:hover { background: none; border-bottom-color: color-mix(in srgb, var(--text) 26%, transparent); }
+
+/* 卡片错峰入场 */
+@media (prefers-reduced-motion: no-preference) {
+  .co-caps li:nth-child(1), .co-caps li:nth-child(2) { animation: coRise .5s var(--ease-out) both; }
+  .co-caps li:nth-child(3), .co-caps li:nth-child(4) { animation: coRise .5s var(--ease-out) .06s both; }
+  .co-caps li:nth-child(5), .co-caps li:nth-child(6) { animation: coRise .5s var(--ease-out) .12s both; }
+  @keyframes coRise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .co-hero-facts::before, .co-hero-facts::after, .co-feature::before { animation: none; }
+}
