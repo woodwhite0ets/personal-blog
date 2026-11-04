@@ -3327,30 +3327,29 @@ html {
 
 
 /* ===== 公司页：组件背景直接着色 ===== */
-/* 精选案例：暖色底 + 左侧色条 */
+/* 精选案例：半透明纸面 + 细边线（teamorouter 的 pf-card 做法）+ 左侧一道强调 */
 .co-feature {
-  background: color-mix(in srgb, var(--hue-copper) 10%, var(--bg-elevated));
+  background: color-mix(in srgb, #fff 62%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
   border-left: 3px solid var(--brand-deep);
 }
-.co-feature:hover { background: color-mix(in srgb, var(--hue-copper) 15%, var(--bg-elevated)); }
+.co-feature:hover { background: color-mix(in srgb, #fff 80%, transparent); }
 
-/* 事实栏：整块浅蓝底，和右侧留白形成一块「信息面板」 */
+/* 事实栏：半透明纸面，靠边线和留白成为一块面板，不铺颜色 */
 .co-hero-facts {
-  background: color-mix(in srgb, var(--brand-mid) 12%, var(--bg-elevated));
-  border-left: 2px solid color-mix(in srgb, var(--brand-deep) 40%, transparent);
+  background: color-mix(in srgb, #fff 58%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--brand-deep) 55%, transparent);
   padding: 18px 20px 16px;
   border-radius: 3px;
 }
 
-/* 四个步骤：交替底色，读起来是一排卡片而不是白纸 */
-.mkt-steps li:nth-child(1) { background: color-mix(in srgb, var(--hue-blue) 8%, var(--bg)); }
-.mkt-steps li:nth-child(2) { background: color-mix(in srgb, var(--hue-teal) 8%, var(--bg)); }
-.mkt-steps li:nth-child(3) { background: color-mix(in srgb, var(--hue-copper) 8%, var(--bg)); }
-.mkt-steps li:nth-child(4) { background: color-mix(in srgb, var(--hue-olive) 8%, var(--bg)); }
+/* 四个步骤：同一材质，不交替上色 */
+.mkt-steps li { background: color-mix(in srgb, #fff 62%, transparent); }
 
 /* 六项能力：悬停时整行微微上色 */
 .co-caps li:hover { background: color-mix(in srgb, var(--brand-mid) 8%, transparent); }
 
-/* 对照表：左「常见做法」压灰，右「我的做法」用品牌浅蓝，视觉上分出胜负 */
-.mkt-compare > div:first-child { background: color-mix(in srgb, var(--text) 4%, var(--bg)); }
-.mkt-compare > div:last-child { background: color-mix(in srgb, var(--brand-mid) 10%, var(--bg)); }
+/* 对照表：左侧压灰表示「常见做法」，右侧保持纸面——靠明度对比，不靠色相 */
+.mkt-compare > div:first-child { background: color-mix(in srgb, var(--text) 5%, transparent); }
+.mkt-compare > div:last-child { background: color-mix(in srgb, #fff 55%, transparent); }
