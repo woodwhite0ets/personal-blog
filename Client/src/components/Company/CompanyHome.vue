@@ -18,14 +18,13 @@
     <main class="co-main">
       <!-- ① 定位 -->
       <section class="co-hero">
-        <p class="co-kicker">一人公司 · 浙江乐清</p>
+        <p class="co-kicker">一人公司，浙江乐清</p>
         <h1 class="co-title">
           <!-- TODO(博士)：把这一句换成真实定位。要求：给谁、解决什么问题、可验收 -->
-          <span class="co-placeholder">用一句话说清：帮谁做什么</span>
+          <span class="co-placeholder">待定：帮谁做什么</span>
         </h1>
         <p class="co-lead">
-          承接 AI 应用的后端与检索、自建推理与自动化，也能把原型跑到能上线。
-          下面是在做的事和已经做完的。
+          接 AI 应用的后端和检索，做本地推理与自动化，也把原型做到能上线。
         </p>
         <div class="co-actions">
           <a class="co-btn co-btn-solid" href="mailto:hi@woodwhite.top">说说你的项目</a>
@@ -35,29 +34,29 @@
 
       <!-- ② 服务 -->
       <section class="co-sec">
-        <h2 class="co-h2">能做的三件事</h2>
+        <h2 class="co-h2">做什么</h2>
         <div class="co-grid co-grid-3">
           <article class="co-card">
             <h3>AI 应用后端与检索</h3>
-            <p>把模型接进业务：RAG、向量检索、提示与工具编排，含评测与灰度。</p>
-            <p class="co-meta">典型交付：接口 + 数据管道 + 部署</p>
+            <p>RAG、向量检索、提示与工具编排，带评测和灰度发布。</p>
+            <p class="co-meta">交付：接口、数据管道、部署</p>
           </article>
           <article class="co-card">
-            <h3>自建推理与自动化</h3>
-            <p>本地模型、推理服务、定时任务与巡检，让机器自己跑起来。</p>
-            <p class="co-meta">典型交付：可用端点 + 监控 + 运行手册</p>
+            <h3>本地推理与自动化</h3>
+            <p>本地模型、推理服务、定时任务与巡检。</p>
+            <p class="co-meta">交付：可用端点、监控、运行手册</p>
           </article>
           <article class="co-card">
             <h3>全栈实现</h3>
-            <p>Vue / Node / MySQL 的完整业务系统，含认证、权限、后台。</p>
-            <p class="co-meta">典型交付：可上线站点 + 管理端</p>
+            <p>Vue、Node、MySQL 的业务系统，含认证、权限、后台。</p>
+            <p class="co-meta">交付：可上线站点、管理端</p>
           </article>
         </div>
       </section>
 
       <!-- ③ 证据 -->
       <section class="co-sec">
-        <h2 class="co-h2">凭什么信</h2>
+        <h2 class="co-h2">做过什么</h2>
         <ul class="co-proof">
           <li>
             <span class="co-proof-k">自建工作站</span>
@@ -65,11 +64,11 @@
           </li>
           <li>
             <span class="co-proof-k">持续产出</span>
-            <span class="co-proof-v">AI 每日榜与工具库每天自动采集、清洗、打标，已积累 560 条人工复核条目</span>
+            <span class="co-proof-v">AI 每日榜和工具库每天自动采集、清洗、打标；工具库共 560 条，其中 18 条是我自己挑的</span>
           </li>
           <li>
             <span class="co-proof-k">可查的痕迹</span>
-            <span class="co-proof-v">踩过的坑与结论都写在博客与知识库里，不做不可验证的承诺</span>
+            <span class="co-proof-v">踩过的坑和结论写在博客与知识库里</span>
           </li>
         </ul>
       </section>
@@ -87,14 +86,14 @@
             <p>长期迭代或运维，每周固定时间投入，适合已有产品的团队。</p>
           </div>
         </div>
-        <p class="co-note">可开票。首次沟通不收费，需求不清也可以先聊清楚再定。</p>
+        <p class="co-note">可开票。首次沟通不收费；需求没想清楚也可以先聊。</p>
       </section>
 
       <!-- ⑤ 联系 -->
       <section class="co-sec co-contact">
         <h2 class="co-h2">联系</h2>
         <p class="co-lead">
-          写清背景、目标和时间预期，我一般一天内回。
+          邮件里写清背景、目标和时间预期就行，一般一天内回。
         </p>
         <a class="co-mail" href="mailto:hi@woodwhite.top">hi@woodwhite.top</a>
       </section>
