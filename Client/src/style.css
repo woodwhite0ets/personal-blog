@@ -2905,6 +2905,7 @@ html {
   overflow: hidden;
   background-image: none;
   opacity: 1;
+  display: none;   /* 页面级气团暂时关掉：一层淡色也能把纸压灰，颜色交给卡片 */
 }
 /* 两层各漂各的：合成器只处理 transform，不触发重绘 */
 .page-wash::before,
@@ -3009,17 +3010,25 @@ html {
 
 
 /* ============================================================
-   卡片水彩底（2026-11-04 v4）：只给少数卡片上色，其余保持干净
-   每 4 张里有 1 张带水彩，四套构图轮换——有节拍，不是满屏花。
+   卡片底色（2026-11-04 v5）：一套，不五套
+   所有卡片共用同一种处理——左上角一点暖色洇进来、向右下淡出，
+   和页面底同一个色源。卡片之间靠内容和位置区分，不靠颜色。
    ============================================================ */
 .tl-card,
 .tl-snip-card,
 .co-card,
 .ws-group,
 .sidebar-panel {
-  background-color: color-mix(in srgb, #fffdf8 88%, transparent);
+  background-color: color-mix(in srgb, #fffdf8 90%, transparent);
+  background-image:
+    radial-gradient(ellipse 86% 120% at -6% -20%, color-mix(in srgb, var(--hue-copper) 10%, transparent), transparent 72%);
   background-repeat: no-repeat;
 }
+
+/* 卡片之间只留极轻的边线，让一屏读成一张纸上的若干块，而不是彩色拼贴 */
+.tl-card:hover,
+.tl-snip-card:hover,
+.co-card:hover { background-color: color-mix(in srgb, #fffdf8 96%, transparent); }
 
 /* 只有这些带色：工具库每 4 张第 1 张、首页精选第 1 张、公司页第 1 张 */
 .tl-card:nth-child(4n+1) {
@@ -3087,3 +3096,21 @@ html {
 .tl-card:nth-child(4n+4), .ws-group:nth-child(4) { background-image:
     radial-gradient(ellipse 46% 40% at 90% 100%, color-mix(in srgb, var(--hue-brick) 30%, transparent), transparent 70%),
     radial-gradient(ellipse 36% 32% at 6% 0%, color-mix(in srgb, var(--hue-blue) 24%, transparent), transparent 72%); }
+
+
+/* 页面级气团彻底关掉（还有一条旧的 .page-wash 定义在生效，是顶部那条渐变带的来源）。
+   颜色交给卡片，纸底保持 #fffefb 本身。 */
+.page-wash,
+.page-wash::before,
+.page-wash::after { display: none !important; }
+
+/* 分类 chips：「全部」不带色点 */
+.tl-cat:not([data-cat])::before { content: none; }
+
+
+/* 页面根节点不再画任何渐变：之前有旧的极光/气团规则残留，是顶部那条灰蓝带的来源。
+   纸底就是 --bg 本身，颜色只出现在卡片上。 */
+.archive-page, .tags-page, .notes-page, .now-page, .pl-page, .tl-page,
+.ad-page, .td-page, .forum-page, .proj-page, .about-page, .post-detail-page, .co-page {
+  background-image: none !important;
+}
