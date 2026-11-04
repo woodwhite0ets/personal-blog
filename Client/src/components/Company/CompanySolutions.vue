@@ -2,8 +2,12 @@
   <div class="co-page">
     <div class="page-wash" aria-hidden="true"></div>
     <header class="co-nav">
-      <router-link to="/" class="co-brand" aria-label="木白 woodwhite">
-        <img class="co-brand-mark" src="/brand/wordmark-a.svg" alt="木白 woodwhite" width="733" height="152" />
+      <router-link to="/" class="co-brand" aria-label="OPC 木白 woodwhite">
+        <img class="co-brand-symbol" src="/brand/opc-mark.svg" alt="" width="955" height="672" aria-hidden="true" />
+        <span class="co-brand-text">
+          <span class="co-brand-cn">木白</span>
+          <span class="co-brand-en">woodwhite</span>
+        </span>
       </router-link>
       <nav class="co-links" aria-label="站内">
         <router-link to="/solutions">方案</router-link>

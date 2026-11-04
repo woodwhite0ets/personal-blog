@@ -3257,3 +3257,23 @@ html {
 /* 公司站品牌标记：SVG 字标，高度对齐导航 */
 .co-brand-mark { display: block; height: 24px; width: auto; }
 @media (max-width: 560px) { .co-brand-mark { height: 20px; } }
+
+
+/* 公司站启用 OPC 官方标识：Y+A 三条蓝带 + 木白 woodwhite 字标 */
+.co-brand { display: inline-flex; align-items: center; gap: 10px; }
+.co-brand-symbol { display: block; height: 30px; width: auto; }
+.co-brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+.co-brand-cn { font-family: "Noto Serif SC", var(--font-serif); font-weight: 500; font-size: 1.0625rem; letter-spacing: .04em; color: var(--text-bright); }
+.co-brand-en { font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-faint); }
+
+/* 公司站主色跟随官方蓝，赤陶只留在少数强调位 */
+.co-page {
+  --accent: #427eaf;
+  --accent-hover: #356a94;
+}
+
+@media (max-width: 560px) {
+  .co-brand-symbol { height: 24px; }
+  .co-brand-cn { font-size: 0.9375rem; }
+  .co-brand-en { font-size: 0.5rem; }
+}
