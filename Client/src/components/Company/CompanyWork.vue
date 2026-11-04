@@ -2,9 +2,8 @@
   <div class="co-page">
     <div class="page-wash" aria-hidden="true"></div>
     <header class="co-nav">
-      <router-link to="/" class="co-brand">
-        <span class="co-brand-cn">木白</span>
-        <span class="co-brand-en">woodwhite</span>
+      <router-link to="/" class="co-brand" aria-label="木白 woodwhite">
+        <img class="co-brand-mark" src="/brand/wordmark-a.svg" alt="木白 woodwhite" width="733" height="152" />
       </router-link>
       <nav class="co-links" aria-label="站内">
         <router-link to="/work">案例</router-link>

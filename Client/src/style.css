@@ -3252,3 +3252,8 @@ html {
   .co-case-head { gap: 8px; }
   .co-case-period { margin-left: 0; }
 }
+
+
+/* 公司站品牌标记：SVG 字标，高度对齐导航 */
+.co-brand-mark { display: block; height: 24px; width: auto; }
+@media (max-width: 560px) { .co-brand-mark { height: 20px; } }
