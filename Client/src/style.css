@@ -1763,7 +1763,7 @@ body::after {
   color-scheme: light;
 
   --bg: #fffefb;
-  --bg-elevated: #ffffff;
+  --bg-elevated: #fffdf8;
   --bg-float: #ffffff;
   --bg-deeper: #f2ede3;
   --bg-code: #f5f1e6;
@@ -2907,13 +2907,14 @@ html {
     radial-gradient(ellipse 150% 38% at 10% 8%, var(--page-wash-a), transparent 74%),
     radial-gradient(ellipse 140% 34% at 92% 48%, var(--page-wash-b), transparent 76%),
     radial-gradient(ellipse 150% 34% at 14% 88%, var(--page-wash-a), transparent 78%);
-  opacity: .5;
+  opacity: .75;
 }
 /* 两层各漂各的：合成器只处理 transform，不触发重绘 */
 .page-wash::before,
 .page-wash::after {
   content: ''; position: absolute; pointer-events: none;
   will-change: transform;
+  opacity: .42;   /* 与元素自身的三条横带叠加，这里只做轻微的流动 */
 }
 .page-wash::before {
   inset: -6% 40% 62% -10%;
@@ -2938,16 +2939,16 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .page-wash::before, .page-wash::after { animation: none; }
 }
-.tl-page      { --page-wash-a: rgba(160,96,47,.22);   --page-wash-b: rgba(74,111,158,.06)}
-.ad-page      { --page-wash-a: rgba(160,96,47,.23);   --page-wash-b: rgba(74,111,158,.06)}
-.tags-page    { --page-wash-a: rgba(160,96,47,.21);   --page-wash-b: rgba(74,111,158,.06)}
-.forum-page   { --page-wash-a: rgba(160,96,47,.21);  --page-wash-b: rgba(74,111,158,.06)}
-.archive-page { --page-wash-a: rgba(160,96,47,.21); --page-wash-b: rgba(74,111,158,.06)}
-.now-page     { --page-wash-a: rgba(160,96,47,.21);   --page-wash-b: rgba(74,111,158,.06)}
-.pl-page      { --page-wash-a: rgba(160,96,47,.23);   --page-wash-b: rgba(74,111,158,.06)}
-.notes-page   { --page-wash-a: rgba(160,96,47,.20);  --page-wash-b: rgba(74,111,158,.06)}
-.about-page   { --page-wash-a: rgba(160,96,47,.21);  --page-wash-b: rgba(74,111,158,.06)}
-.post-detail-page { --page-wash-a: rgba(160,96,47,.16); --page-wash-b: rgba(74,111,158,.06)}
+.tl-page      { --page-wash-a: rgba(160,96,47,.12);   --page-wash-b: rgba(74,111,158,.05)}
+.ad-page      { --page-wash-a: rgba(160,96,47,.12);   --page-wash-b: rgba(74,111,158,.05)}
+.tags-page    { --page-wash-a: rgba(160,96,47,.12);   --page-wash-b: rgba(74,111,158,.05)}
+.forum-page   { --page-wash-a: rgba(160,96,47,.12);  --page-wash-b: rgba(74,111,158,.05)}
+.archive-page { --page-wash-a: rgba(160,96,47,.12); --page-wash-b: rgba(74,111,158,.05)}
+.now-page     { --page-wash-a: rgba(160,96,47,.12);   --page-wash-b: rgba(74,111,158,.05)}
+.pl-page      { --page-wash-a: rgba(160,96,47,.12);   --page-wash-b: rgba(74,111,158,.05)}
+.notes-page   { --page-wash-a: rgba(160,96,47,.12);  --page-wash-b: rgba(74,111,158,.05)}
+.about-page   { --page-wash-a: rgba(160,96,47,.12);  --page-wash-b: rgba(74,111,158,.05)}
+.post-detail-page { --page-wash-a: rgba(160,96,47,.12); --page-wash-b: rgba(74,111,158,.05)}
 
 /* 内容压在气团之上 */
 .tl-main, .ad-main, .tags-main, .archive-main, .notes-main,
@@ -3018,7 +3019,8 @@ html {
 .co-card,
 .ws-group,
 .sidebar-panel {
-  background-color: var(--bg-elevated);
+  /* 半透暖白：底下的纸色透上来，卡片不再是贴在页面上的一块白 */
+  background-color: color-mix(in srgb, #fffdf8 72%, transparent);
   background-repeat: no-repeat;
 }
 
@@ -3026,35 +3028,35 @@ html {
 .tl-card:nth-child(5n+1), .tl-snip-grid li:nth-child(3n+1) .tl-snip-card,
 .co-grid-3 .co-card:nth-child(1), .ws-group:nth-child(1), .sidebar-panel {
   background-image:
-    radial-gradient(ellipse 68% 96% at 0% 30%, color-mix(in srgb, var(--hue-copper) 30%, transparent), transparent 70%),
-    radial-gradient(ellipse 40% 34% at 96% 96%, color-mix(in srgb, var(--hue-blue) 22%, transparent), transparent 72%);
+    radial-gradient(ellipse 68% 96% at 0% 30%, color-mix(in srgb, var(--hue-copper) 13%, transparent), transparent 72%),
+    radial-gradient(ellipse 40% 34% at 96% 96%, color-mix(in srgb, var(--hue-blue) 9%, transparent), transparent 74%);
 }
 /* B 顶部冷带 */
 .tl-card:nth-child(5n+2), .tl-snip-grid li:nth-child(3n+2) .tl-snip-card,
 .co-grid-3 .co-card:nth-child(2), .ws-group:nth-child(2) {
   background-image:
-    radial-gradient(ellipse 120% 46% at 60% -8%, color-mix(in srgb, var(--hue-blue) 30%, transparent), transparent 72%),
-    radial-gradient(ellipse 38% 30% at 4% 100%, color-mix(in srgb, var(--hue-teal) 22%, transparent), transparent 74%);
+    radial-gradient(ellipse 120% 46% at 60% -8%, color-mix(in srgb, var(--hue-blue) 13%, transparent), transparent 72%),
+    radial-gradient(ellipse 38% 30% at 4% 100%, color-mix(in srgb, var(--hue-teal) 9%, transparent), transparent 76%);
 }
 /* C 底部橄榄 */
 .tl-card:nth-child(5n+3), .tl-snip-grid li:nth-child(3n) .tl-snip-card,
 .co-grid-3 .co-card:nth-child(3), .ws-group:nth-child(3) {
   background-image:
-    radial-gradient(ellipse 110% 44% at 40% 108%, color-mix(in srgb, var(--hue-olive) 30%, transparent), transparent 72%),
-    radial-gradient(ellipse 36% 30% at 98% 2%, color-mix(in srgb, var(--hue-copper) 22%, transparent), transparent 74%);
+    radial-gradient(ellipse 110% 44% at 40% 108%, color-mix(in srgb, var(--hue-olive) 13%, transparent), transparent 72%),
+    radial-gradient(ellipse 36% 30% at 98% 2%, color-mix(in srgb, var(--hue-copper) 9%, transparent), transparent 76%);
 }
 /* D 右上砖红 */
 .tl-card:nth-child(5n+4), .ws-group:nth-child(4), .co-grid-2 .co-card:nth-child(1) {
   background-image:
-    radial-gradient(ellipse 62% 84% at 100% 0%, color-mix(in srgb, var(--hue-brick) 26%, transparent), transparent 70%),
-    radial-gradient(ellipse 40% 34% at 0% 100%, color-mix(in srgb, var(--hue-purple) 20%, transparent), transparent 74%);
+    radial-gradient(ellipse 62% 84% at 100% 0%, color-mix(in srgb, var(--hue-brick) 11%, transparent), transparent 72%),
+    radial-gradient(ellipse 40% 34% at 0% 100%, color-mix(in srgb, var(--hue-purple) 8%, transparent), transparent 76%);
 }
 /* E 中间奶油带 */
 .tl-card:nth-child(5n+5), .co-grid-2 .co-card:nth-child(2) {
   background-image:
-    radial-gradient(ellipse 120% 34% at 50% 50%, color-mix(in srgb, var(--hue-copper) 20%, transparent), transparent 76%),
-    radial-gradient(ellipse 34% 30% at 2% 4%, color-mix(in srgb, var(--hue-blue) 18%, transparent), transparent 74%),
-    radial-gradient(ellipse 34% 30% at 98% 96%, color-mix(in srgb, var(--hue-teal) 18%, transparent), transparent 74%);
+    radial-gradient(ellipse 120% 34% at 50% 50%, color-mix(in srgb, var(--hue-copper) 8%, transparent), transparent 78%),
+    radial-gradient(ellipse 34% 30% at 2% 4%, color-mix(in srgb, var(--hue-blue) 7%, transparent), transparent 76%),
+    radial-gradient(ellipse 34% 30% at 98% 96%, color-mix(in srgb, var(--hue-teal) 7%, transparent), transparent 76%);
 }
 
 /* 错开四组，避免整片网格像贴了同一张纸 */
