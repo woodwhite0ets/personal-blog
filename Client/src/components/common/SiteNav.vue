@@ -2,6 +2,7 @@
   <header class="navbar">
     <div class="navbar-inner">
       <router-link to="/" class="brand" title="回到木白 · 公司主页" aria-label="木白，公司主页">
+        <img class="brand-mark" src="/brand/opc-mark-gray.svg" alt="" width="955" height="672" aria-hidden="true" />
         <span class="brand-text">woodwhite@blog</span>
       </router-link>
       <router-link to="/" class="brand-back">← 木白</router-link>

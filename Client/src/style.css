@@ -3277,3 +3277,9 @@ html {
   .co-brand-cn { font-size: 0.9375rem; }
   .co-brand-en { font-size: 0.5rem; }
 }
+
+
+/* 博客顶栏的品牌标记（与公司站同一个 OPC 两档灰标识） */
+.brand { gap: 8px; align-items: center; }
+.brand-mark { display: block; height: 22px; width: auto; }
+@media (max-width: 560px) { .brand-mark { height: 18px; } }
