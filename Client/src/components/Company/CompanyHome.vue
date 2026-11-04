@@ -42,35 +42,28 @@
         </aside>
       </section>
 
-      <!-- ② 服务：编辑式三行，不用卡片 -->
+      <!-- ② 做什么：六个并列小节，两列，不用卡片 -->
       <section class="co-sec">
         <h2 class="co-h2">做什么</h2>
-        <ol class="co-services">
-          <li>
-            <span class="co-svc-idx">01</span>
-            <div>
-              <h3>AI 应用后端与检索</h3>
-              <p>RAG、向量检索、提示与工具编排，带评测和灰度发布。</p>
-            </div>
-            <span class="co-svc-meta">交付：接口、数据管道、部署</span>
-          </li>
-          <li>
-            <span class="co-svc-idx">02</span>
-            <div>
-              <h3>本地推理与自动化</h3>
-              <p>本地模型、推理服务、定时任务与巡检。</p>
-            </div>
-            <span class="co-svc-meta">交付：可用端点、监控、运行手册</span>
-          </li>
-          <li>
-            <span class="co-svc-idx">03</span>
-            <div>
-              <h3>全栈实现</h3>
-              <p>Vue、Node、MySQL 的业务系统，含认证、权限、后台。</p>
-            </div>
-            <span class="co-svc-meta">交付：可上线站点、管理端</span>
-          </li>
-        </ol>
+        <ul class="co-caps">
+          <li><h3>RAG 与向量检索</h3><p>把文档变成能查的知识库，带重排与评测。</p></li>
+          <li><h3>提示与工具编排</h3><p>多步任务的流程编排，失败可重试、可回放。</p></li>
+          <li><h3>评测与灰度</h3><p>上线前先量化效果，按比例放量，出问题能退回。</p></li>
+          <li><h3>本地推理</h3><p>自带机器跑模型，不按次计费，数据不出内网。</p></li>
+          <li><h3>定时任务与巡检</h3><p>采集、清洗、同步、健康检查自己跑，出异常告警。</p></li>
+          <li><h3>全栈实现</h3><p>Vue / Node / MySQL 的业务系统，含认证、权限与后台。</p></li>
+        </ul>
+      </section>
+
+      <!-- ③ 为什么是这种方式 -->
+      <section class="co-sec">
+        <h2 class="co-h2">为什么是这种方式</h2>
+        <ul class="co-why">
+          <li><span class="co-why-k">不用买算力</span><span class="co-why-v">模型跑在自己机器上，少一层按次计费的账单，也少一个外部依赖。</span></li>
+          <li><span class="co-why-k">数据不出内网</span><span class="co-why-v">检索与推理都在本地，敏感资料不必交给第三方 API。</span></li>
+          <li><span class="co-why-k">交付可验收</span><span class="co-why-v">每个阶段有明确产物和验收标准，签合同按阶段结。</span></li>
+          <li><span class="co-why-k">改动当天上线</span><span class="co-why-v">自建 Git 与 CI，不用排队等额度，改完就能发。</span></li>
+        </ul>
       </section>
 
       <!-- ③ 一条精选案例 + 去哪看更多 -->

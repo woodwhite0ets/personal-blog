@@ -3153,3 +3153,25 @@ html {
   .co-services li { grid-template-columns: 32px minmax(0, 1fr); }
   .co-svc-meta { grid-column: 2; text-align: left; margin-top: 6px; }
 }
+
+
+/* 公司首页：六个能力小节（两列，点线分隔）+ 为什么 */
+.co-caps { list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 48px; }
+.co-caps li { padding: 18px 2px; border-bottom: 1px dotted var(--rule-dot-ink); }
+.co-caps h3 { margin: 0 0 6px; font-family: "Noto Serif SC", var(--font-serif);
+  font-weight: 500; font-size: 1.0625rem; color: var(--text-bright); }
+.co-caps p { margin: 0; font-size: 0.875rem; line-height: 1.7; color: var(--text-secondary); }
+
+.co-why { list-style: none; margin: 0; padding: 0; }
+.co-why li { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 20px;
+  padding: 15px 2px; border-bottom: 1px dotted var(--rule-dot-ink); align-items: baseline; }
+.co-why li:last-child { border-bottom: none; }
+.co-why-k { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em; color: var(--text-faint); }
+.co-why-v { font-size: 0.9375rem; line-height: 1.7; color: var(--text); }
+
+@media (max-width: 760px) {
+  .co-caps { grid-template-columns: 1fr; gap: 0; }
+  .co-why li { grid-template-columns: 1fr; gap: 4px; }
+}
