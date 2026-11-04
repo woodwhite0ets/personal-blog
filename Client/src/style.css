@@ -3047,9 +3047,13 @@ html {
 .co-btn { font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: .04em; padding: 12px 22px;
   border: 1px solid var(--border-strong); color: var(--text); text-decoration: none; border-radius: 3px;
   transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out); }
-.co-btn:hover { color: var(--text-bright); border-color: var(--text-bright); }
-.co-btn-solid { background: var(--text-bright); color: var(--bg); border-color: var(--text-bright); }
-.co-btn-solid:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.co-btn:hover { color: var(--brand-deep); border-color: var(--brand-deep); }
+.co-btn:focus-visible { outline: 2px solid var(--brand-deep); outline-offset: 3px; }
+.co-btn-solid {
+  background: var(--brand-deep); color: #fff; border-color: var(--brand-deep);
+  transition: background-color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
+}
+.co-btn-solid:hover { background: #244b6e; border-color: #244b6e; color: #fff; }
 
 .co-sec { margin-top: 72px; }
 
@@ -3301,5 +3305,4 @@ html {
 .co-back:focus-visible { outline: 2px solid var(--brand-deep); outline-offset: 3px; }
 @media (max-width: 560px) { .co-back { display: none; } }
 /* 链接与选中态统一到品牌的深蓝 */
-.co-page a, .co-page .co-links a:hover { color: inherit; }
-.co-page .co-links a:hover, .co-page .co-feature-more { color: var(--brand-deep); }
+.co-page .co-feature-more { color: var(--brand-deep); }
