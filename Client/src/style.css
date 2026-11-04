@@ -2531,7 +2531,7 @@ html {
    六个色相取自首屏水彩（蓝灰/橄榄/青/紫/铜/砖红），低饱和、浅底。
    ============================================================ */
 :root {
-  --hue-blue:   #4a6f9e;
+  --hue-blue:   #33567f;
   --hue-olive:  #6d7c3f;
   --hue-teal:   #2f7d7a;
   --hue-purple: #6b4f9e;
@@ -3268,8 +3268,8 @@ html {
 
 /* 公司站主色跟随官方蓝，赤陶只留在少数强调位 */
 .co-page {
-  --accent: #427eaf;
-  --accent-hover: #356a94;
+  --accent: #2f5e88;
+  --accent-hover: #244b6e;
 }
 
 @media (max-width: 560px) {
