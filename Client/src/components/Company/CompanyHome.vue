@@ -185,7 +185,7 @@ const year = new Date().getFullYear()
 .co-grid { display: grid; gap: 1px; background: var(--rule-dot-ink); border: 1px dotted var(--rule-dot-ink); }
 .co-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .co-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.co-card { background: var(--bg); padding: 24px 22px 26px; display: flex; flex-direction: column; }
+.co-card { background-color: var(--bg); padding: 24px 22px 26px; display: flex; flex-direction: column; }
 /* 服务卡的底色由 style.css 的统一水彩规则给，这里不单独设色 */
 .co-card h3 { margin: 0 0 10px; font-family: "Noto Serif SC", var(--font-serif); font-size: 1.125rem; font-weight: 500; color: var(--text-bright); }
 .co-card p { margin: 0; font-size: 0.875rem; line-height: 1.75; color: var(--text-secondary); }
