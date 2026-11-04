@@ -2019,7 +2019,7 @@ body { line-height: 1.75; }
 .user-dropdown,
 .markdown-body pre,
 .tool-table,
-.table-wrap { overscroll-behavior: contain; }
+.table-wrap { overscroll-behavior-x: contain; }
 
 /* ===== 关于区：数据条与标签计数（2026-11-02 按 design-taste 审计后） ===== */
 .hm-stats {
@@ -2395,9 +2395,9 @@ html {
 .lightbox,
 .theme-dropdown,
 .user-dropdown,
-.nav-links,
-.tl-grid,
-.ad-list { overscroll-behavior: contain; }
+.nav-links { overscroll-behavior: contain; }
+/* 只给「本身要横向滚动」的容器加，且只限横向，纵向滚轮必须继续传给页面 */
+.table-wrap { overscroll-behavior-x: contain; }
 
 /* ③ 刘海屏安全区：贴边面板给左右留白 */
 @supports (padding: env(safe-area-inset-left)) {
@@ -3211,4 +3211,19 @@ html {
 @media (max-width: 860px) {
   .mkt-compare { grid-template-columns: 1fr; }
   .mkt-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+
+/* 首屏装饰层必须不吃点击：.hero-wash / .hero-halftone 之前漏了 pointer-events，
+   它们铺满首屏，会挡住按钮、标签和右侧「最新」列表——首页「点不动」就是这个。 */
+.hero-art, .hero-art *,
+.hero-wash, .hero-halftone, .hero-vignette,
+.hero-stage, .page-wash, .page-wash * {
+  pointer-events: none !important;
+}
+
+
+/* 兜底：内容容器永不吃滚动事件（scroll chaining 必须留给页面） */
+.tl-grid, .tl-snip-grid, .ad-list, .co-caps, .mkt-steps, .mkt-compare, .co-grid {
+  overscroll-behavior: auto;
 }
