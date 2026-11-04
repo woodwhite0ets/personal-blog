@@ -3015,8 +3015,8 @@ html {
   position: relative; min-height: 100vh; color: var(--text);
   background-color: var(--bg);   /* 底色保持纸白，颜色只落在组件与文字上 */
   /* 公司页的气团：只留极淡的暖色，复用全局 .page-wash 的两层结构 */
-  --page-wash-a: rgba(47, 94, 136, .10);
-  --page-wash-b: rgba(113, 168, 213, .07);
+  --page-wash-a: rgba(184, 96, 58, .16);
+  --page-wash-b: rgba(74, 111, 158, .12);
 }
 
 .co-nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between;
@@ -3324,3 +3324,33 @@ html {
 .mkt-table th { color: var(--brand-deep); border-bottom-color: color-mix(in srgb, var(--brand-deep) 30%, transparent); }
 .mkt-steps span { color: var(--brand-deep); }
 .co-links a:hover { color: var(--brand-deep); }
+
+
+/* ===== 公司页：组件背景直接着色 ===== */
+/* 精选案例：暖色底 + 左侧色条 */
+.co-feature {
+  background: color-mix(in srgb, var(--hue-copper) 10%, var(--bg-elevated));
+  border-left: 3px solid var(--brand-deep);
+}
+.co-feature:hover { background: color-mix(in srgb, var(--hue-copper) 15%, var(--bg-elevated)); }
+
+/* 事实栏：整块浅蓝底，和右侧留白形成一块「信息面板」 */
+.co-hero-facts {
+  background: color-mix(in srgb, var(--brand-mid) 12%, var(--bg-elevated));
+  border-left: 2px solid color-mix(in srgb, var(--brand-deep) 40%, transparent);
+  padding: 18px 20px 16px;
+  border-radius: 3px;
+}
+
+/* 四个步骤：交替底色，读起来是一排卡片而不是白纸 */
+.mkt-steps li:nth-child(1) { background: color-mix(in srgb, var(--hue-blue) 8%, var(--bg)); }
+.mkt-steps li:nth-child(2) { background: color-mix(in srgb, var(--hue-teal) 8%, var(--bg)); }
+.mkt-steps li:nth-child(3) { background: color-mix(in srgb, var(--hue-copper) 8%, var(--bg)); }
+.mkt-steps li:nth-child(4) { background: color-mix(in srgb, var(--hue-olive) 8%, var(--bg)); }
+
+/* 六项能力：悬停时整行微微上色 */
+.co-caps li:hover { background: color-mix(in srgb, var(--brand-mid) 8%, transparent); }
+
+/* 对照表：左「常见做法」压灰，右「我的做法」用品牌浅蓝，视觉上分出胜负 */
+.mkt-compare > div:first-child { background: color-mix(in srgb, var(--text) 4%, var(--bg)); }
+.mkt-compare > div:last-child { background: color-mix(in srgb, var(--brand-mid) 10%, var(--bg)); }
