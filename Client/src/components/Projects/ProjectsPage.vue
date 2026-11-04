@@ -5,9 +5,9 @@
 
     <main class="pl-main">
       <header class="pl-head">
-        <p class="pl-kicker">项目</p>
-        <h1 class="pl-title">做过的东西</h1>
-        <p class="pl-lead">都在自己机器上跑过、交付过。每条写清它在解决什么问题，细节在文章里。</p>
+        <p class="pl-kicker">案例</p>
+        <h1 class="pl-title">做过什么</h1>
+        <p class="pl-lead">五件事，都跑在自己的机器上或在线上跑着。每条写清解决什么问题、怎么做的、结果是什么。</p>
       </header>
 
       <ul class="pl-list">
@@ -20,6 +20,7 @@
             </div>
             <p class="pl-sub">{{ p.subtitle }}</p>
             <p class="pl-summary">{{ p.summary }}</p>
+            <p v-if="p.result" class="pl-result">结果：{{ p.result }}</p>
             <p class="pl-stack">{{ p.stack.join(' · ') }}</p>
           </router-link>
         </li>
@@ -60,6 +61,7 @@ import { projects } from '../../data/projects.js'
 }
 .pl-period { margin-left: auto; font-size: 0.75rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 .pl-sub { margin: 6px 0 0; font-size: 0.8438rem; color: var(--text-secondary); }
+.pl-result { margin: 6px 0 0; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.6; color: var(--text-secondary); }
 .pl-summary { margin: 8px 0 0; font-size: 0.8438rem; line-height: 1.7; color: var(--text-secondary); max-width: 80ch; }
 .pl-stack { margin: 8px 0 0; font-size: 0.6875rem; color: var(--text-faint); font-family: ui-monospace, monospace; }
 

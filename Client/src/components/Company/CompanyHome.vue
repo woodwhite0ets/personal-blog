@@ -22,7 +22,7 @@
         <p class="co-kicker">浙江乐清，可开票，按合同交付</p>
         <h1 class="co-title">
           <!-- TODO(博士)：把这一句换成真实定位。要求：给谁、解决什么问题、可验收 -->
-          协助您做出期待的产品
+          协助你做出期待的产品
         </h1>
         <p class="co-lead">
           从需求到上线：AI 应用的后端与检索、本地推理与自动化、全栈实现。
@@ -37,7 +37,7 @@
           <div class="co-fact"><dt>地点</dt><dd>浙江乐清</dd></div>
           <div class="co-fact"><dt>结算</dt><dd>可开票</dd></div>
           <div class="co-fact"><dt>交付</dt><dd>签合同，按阶段验收</dd></div>
-          <div class="co-fact"><dt>案例</dt><dd><router-link to="/projects">4 个已上线项目</router-link></dd></div>
+          <div class="co-fact"><dt>案例</dt><dd><router-link to="/projects">5 个已上线项目</router-link></dd></div>
         </aside>
       </section>
 

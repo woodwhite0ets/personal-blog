@@ -2935,16 +2935,16 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .page-wash::before, .page-wash::after { animation: none; }
 }
-.tl-page      { --page-wash-a: rgba(74,111,158,.55);  --page-wash-b: rgba(168,60,44,.38); }
-.ad-page      { --page-wash-a: rgba(168,60,44,.45);   --page-wash-b: rgba(74,111,158,.50); }
-.tags-page    { --page-wash-a: rgba(47,125,122,.52);  --page-wash-b: rgba(107,79,158,.42); }
-.forum-page   { --page-wash-a: rgba(109,124,63,.48);  --page-wash-b: rgba(107,79,158,.38); }
-.archive-page { --page-wash-a: rgba(74,111,158,.46);  --page-wash-b: rgba(47,125,122,.36); }
-.now-page     { --page-wash-a: rgba(47,125,122,.46);  --page-wash-b: rgba(160,96,47,.40); }
-.pl-page      { --page-wash-a: rgba(160,96,47,.50);   --page-wash-b: rgba(74,111,158,.42); }
-.notes-page   { --page-wash-a: rgba(107,79,158,.44);  --page-wash-b: rgba(109,124,63,.36); }
-.about-page   { --page-wash-a: rgba(160,96,47,.42);   --page-wash-b: rgba(47,125,122,.40); }
-.post-detail-page { --page-wash-a: rgba(109,124,63,.34); --page-wash-b: rgba(74,111,158,.30); }
+.tl-page      { --page-wash-a: rgba(74,111,158,.30);  --page-wash-b: rgba(168,60,44,.20); }
+.ad-page      { --page-wash-a: rgba(168,60,44,.24);   --page-wash-b: rgba(74,111,158,.28); }
+.tags-page    { --page-wash-a: rgba(47,125,122,.28);  --page-wash-b: rgba(107,79,158,.22); }
+.forum-page   { --page-wash-a: rgba(109,124,63,.26);  --page-wash-b: rgba(107,79,158,.20); }
+.archive-page { --page-wash-a: rgba(74,111,158,.25);  --page-wash-b: rgba(47,125,122,.20); }
+.now-page     { --page-wash-a: rgba(47,125,122,.25);  --page-wash-b: rgba(160,96,47,.22); }
+.pl-page      { --page-wash-a: rgba(160,96,47,.28);   --page-wash-b: rgba(74,111,158,.23); }
+.notes-page   { --page-wash-a: rgba(107,79,158,.24);  --page-wash-b: rgba(109,124,63,.20); }
+.about-page   { --page-wash-a: rgba(160,96,47,.26);   --page-wash-b: rgba(47,125,122,.22); }
+.post-detail-page { --page-wash-a: rgba(109,124,63,.22); --page-wash-b: rgba(74,111,158,.20); }
 
 /* 内容压在气团之上 */
 .tl-main, .ad-main, .tags-main, .archive-main, .notes-main,
