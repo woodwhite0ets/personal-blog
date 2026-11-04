@@ -3,12 +3,13 @@
     <div class="page-wash" aria-hidden="true"></div>
     <header class="co-nav">
       <router-link to="/" class="co-brand" aria-label="OPC 木白 woodwhite">
-        <img class="co-brand-symbol" src="/brand/opc-mark-gray.svg" alt="" width="955" height="672" aria-hidden="true" />
+        <img class="co-brand-symbol" src="/brand/opc-mark-color.svg" alt="" width="955" height="672" aria-hidden="true" />
         <span class="co-brand-text">
           <span class="co-brand-cn">木白</span>
           <span class="co-brand-en">woodwhite</span>
         </span>
       </router-link>
+      <router-link to="/" class="co-back">← 首页</router-link>
       <nav class="co-links" aria-label="站内">
         <router-link to="/solutions">方案</router-link>
         <router-link to="/work">案例</router-link>

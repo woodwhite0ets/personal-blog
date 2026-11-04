@@ -3283,3 +3283,23 @@ html {
 .brand { gap: 8px; align-items: center; }
 .brand-mark { display: block; height: 22px; width: auto; }
 @media (max-width: 560px) { .brand-mark { height: 18px; } }
+
+
+/* ===== 与商标对齐的三档蓝（取自官方稿）+ 子页返回 ===== */
+:root {
+  --brand-deep:  #2f5e88;
+  --brand-mid:   #71a8d5;
+  --brand-light: #b5ddfd;
+}
+.co-back {
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em;
+  color: var(--text-muted); text-decoration: none;
+  margin-left: auto; padding-right: 18px;
+  border-right: 1px solid var(--border);
+}
+.co-back:hover { color: var(--brand-deep); }
+.co-back:focus-visible { outline: 2px solid var(--brand-deep); outline-offset: 3px; }
+@media (max-width: 560px) { .co-back { display: none; } }
+/* 链接与选中态统一到品牌的深蓝 */
+.co-page a, .co-page .co-links a:hover { color: inherit; }
+.co-page .co-links a:hover, .co-page .co-feature-more { color: var(--brand-deep); }
