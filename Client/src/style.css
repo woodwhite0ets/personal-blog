@@ -179,7 +179,14 @@ button {
 .anim-fade-up { animation: fadeInUp 0.35s var(--ease-out) backwards; }
 
 /* 滚动条宽度微调 */
-html { background-color: var(--bg); scroll-behavior: smooth; scroll-padding-top: 84px; }
+html {
+  background-color: var(--bg);
+  scroll-padding-top: 84px;
+  /* 不要全站 smooth：路由回顶/位置恢复这类程序化滚动一旦走缓动，
+     用户在这几百毫秒里滚轮就会被"拉回去"，表现为刷新后下滑又弹回上方。
+     需要顺滑的地方（回到顶部按钮、锚点）由代码显式传 behavior:'smooth'。 */
+  scroll-behavior: auto;
+}
 
 /* 选中文本高亮 */
 ::selection { background: var(--accent-a25); color: var(--text-bright); }
