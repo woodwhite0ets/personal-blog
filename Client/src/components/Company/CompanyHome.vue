@@ -21,10 +21,10 @@
         <p class="co-kicker">一人公司，浙江乐清</p>
         <h1 class="co-title">
           <!-- TODO(博士)：把这一句换成真实定位。要求：给谁、解决什么问题、可验收 -->
-          <span class="co-placeholder">待定：帮谁做什么</span>
+          协助您做出期待的产品
         </h1>
         <p class="co-lead">
-          接 AI 应用的后端和检索，做本地推理与自动化，也把原型做到能上线。
+          一个人做，从需求到上线：AI 应用的后端与检索、本地推理与自动化、全栈实现。
         </p>
         <div class="co-actions">
           <a class="co-btn co-btn-solid" href="mailto:hi@woodwhite.top">说说你的项目</a>
@@ -117,7 +117,8 @@ const year = new Date().getFullYear()
 .co-page { position: relative; min-height: 100vh; background: var(--bg); color: var(--text); }
 .page-wash { position: absolute; inset: 0 0 auto 0; height: min(680px, 78vh); z-index: 0; pointer-events: none;
   background-image:
-    radial-gradient(ellipse 64% 60% at 22% -10%, rgba(74,111,158,.13), transparent 76%);
+    radial-gradient(ellipse 46% 52% at 14% -8%, rgba(74,111,158,.10), transparent 72%),
+    radial-gradient(ellipse 40% 46% at 88% -6%, rgba(184,69,47,.07), transparent 74%);
   filter: blur(12px);
   mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 46%, transparent 96%);
   -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 46%, transparent 96%); }
@@ -132,7 +133,7 @@ const year = new Date().getFullYear()
 .co-links a:hover { color: var(--text-bright); }
 .co-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-.co-main { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 56px 24px 96px; }
+.co-main { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 40px 24px 96px; }
 
 .co-kicker { margin: 0 0 14px; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .12em; color: var(--text-faint); }
 .co-title { margin: 0 0 20px; font-family: "Noto Serif SC", var(--font-serif); font-weight: 500;
@@ -147,7 +148,7 @@ const year = new Date().getFullYear()
 .co-btn-solid { background: var(--text-bright); color: var(--bg); border-color: var(--text-bright); }
 .co-btn-solid:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-.co-sec { margin-top: 88px; }
+.co-sec { margin-top: 72px; }
 .co-h2 { display: flex; align-items: baseline; gap: 12px; margin: 0 0 26px; padding-bottom: 10px;
   border-bottom: 1px dotted var(--rule-dot-ink);
   font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; letter-spacing: .1em; color: var(--text-secondary); }
@@ -156,10 +157,10 @@ const year = new Date().getFullYear()
 .co-grid { display: grid; gap: 1px; background: var(--rule-dot-ink); border: 1px dotted var(--rule-dot-ink); }
 .co-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .co-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.co-card { background: var(--bg); padding: 24px 22px 26px; }
+.co-card { background: var(--bg); padding: 24px 22px 26px; display: flex; flex-direction: column; }
 .co-card h3 { margin: 0 0 10px; font-family: "Noto Serif SC", var(--font-serif); font-size: 1.125rem; font-weight: 500; color: var(--text-bright); }
 .co-card p { margin: 0; font-size: 0.875rem; line-height: 1.75; color: var(--text-secondary); }
-.co-meta { margin-top: 12px !important; font-family: var(--font-mono); font-size: 0.6875rem !important; letter-spacing: .04em; color: var(--text-faint) !important; }
+.co-meta { margin-top: auto !important; padding-top: 18px; font-family: var(--font-mono); font-size: 0.6875rem !important; letter-spacing: .04em; color: var(--text-faint) !important; }
 
 .co-proof { list-style: none; margin: 0; padding: 0; }
 .co-proof li { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 20px; padding: 16px 0;
