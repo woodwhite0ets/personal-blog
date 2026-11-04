@@ -146,7 +146,7 @@ async function handleLogin() {
   loading.value = true
   try {
     await login(form.username, form.password, form.remember)
-    const redirect = route.query.redirect || '/HomePage'
+    const redirect = route.query.redirect || '/blog'
     router.push(redirect)
   } catch (e) {
     serverError.value = e.message || '连接失败，请重试'
@@ -160,7 +160,7 @@ async function handleGuestLogin() {
   serverError.value = ''
   try {
     await loginAsGuest()
-    const redirect = route.query.redirect || '/HomePage'
+    const redirect = route.query.redirect || '/blog'
     router.push(redirect)
   } catch (e) {
     serverError.value = e.message || '游客登录失败'

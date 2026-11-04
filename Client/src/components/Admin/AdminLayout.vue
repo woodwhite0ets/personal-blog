@@ -4,13 +4,13 @@
     <!-- 导航栏 -->
     <header class="navbar">
       <div class="navbar-inner">
-        <router-link to="/HomePage" class="brand">
+        <router-link to="/blog" class="brand">
           <span class="brand-text">woodwhite@blog</span>
           <span class="brand-suffix">管理</span>
         </router-link>
         <div class="nav-actions">
           <span class="admin-badge">管理员</span>
-          <router-link to="/HomePage" class="nav-link">← 博客</router-link>
+          <router-link to="/blog" class="nav-link">← 博客</router-link>
           <button class="btn btn-secondary btn-user" @click="showMenu = !showMenu">
             <UserAvatar :src="currentUser?.avatar" :alt="(currentUser?.nickname || currentUser?.username || '?')" size="sm" />
             <span class="user-name">@{{ currentUser?.username }}</span>

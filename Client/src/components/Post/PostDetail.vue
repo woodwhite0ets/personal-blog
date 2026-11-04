@@ -44,7 +44,7 @@
     <div v-else-if="error" class="state-box error" role="alert">
       <span class="err-prefix">文章暂时无法打开</span>
       <span class="state-text">{{ error }}</span>
-      <router-link to="/HomePage" class="link-btn">← 返回首页</router-link>
+      <router-link to="/blog" class="link-btn">← 返回首页</router-link>
     </div>
 
     <!-- ====== 文章内容 ====== -->
@@ -58,10 +58,10 @@
         <header class="post-head deco-hero">
         <!-- 标签 -->
         <nav class="breadcrumb" aria-label="面包屑">
-          <router-link to="/HomePage">首页</router-link>
+          <router-link to="/blog">首页</router-link>
           <template v-if="post.tags && post.tags[0]">
             <span class="bc-sep">/</span>
-            <router-link :to="`/HomePage?tag=${encodeURIComponent(post.tags[0].name)}`">{{ post.tags[0].name }}</router-link>
+            <router-link :to="`/blog?tag=${encodeURIComponent(post.tags[0].name)}`">{{ post.tags[0].name }}</router-link>
           </template>
           <span class="bc-sep">/</span>
           <span class="bc-cur">{{ post.title }}</span>
@@ -71,7 +71,7 @@
           <router-link
             v-for="tag in normalizedTags"
             :key="tag.slug || tag.name"
-            :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
+            :to="`/blog?tag=${encodeURIComponent(tag.name)}`"
             class="post-tag"
           >#{{ tag.name }}</router-link>
           <span v-if="normalizedTags.length === 0" class="post-tag">#未分类</span>
@@ -144,7 +144,7 @@
           <button v-if="canDelete" class="btn btn-danger btn-delete" @click="confirmDeletePost">
             删除文章
           </button>
-          <router-link to="/HomePage" class="btn btn-ghost btn-back">
+          <router-link to="/blog" class="btn btn-ghost btn-back">
             返回首页
           </router-link>
         </div>
@@ -363,7 +363,7 @@ async function handleDelete() {
       headers: { Authorization: `Bearer ${getToken()}` },
     })
     if (!res.ok) throw new Error((await res.json()).message || '删除失败')
-    router.push('/HomePage')
+    router.push('/blog')
   } catch (e) {
     error.value = e.message
   } finally {

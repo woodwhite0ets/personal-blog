@@ -25,9 +25,15 @@ const routes = [
     component: () => import('../components/Company/CompanyHome.vue'),
   },
   {
-    // 博客首页仍走原路径，公司页的「博客」入口指这里
+    // 博客首页：新规范路径
     path: '/blog',
-    redirect: '/HomePage',
+    name: 'BlogHome',
+    component: () => import('../components/Homepage/Homepage.vue'),
+  },
+  {
+    // 旧路径保留，永久跳到 /blog（站内还有大量历史链接指向这里）
+    path: '/HomePage',
+    redirect: '/blog',
   },
   {
     path: '/solutions',
@@ -59,11 +65,7 @@ const routes = [
     name: 'RegisterPage',
     component: () => import('../components/Login/Register.vue'),
   },
-  {
-    path: '/HomePage',
-    name: 'HomePage',
-    component: () => import('../components/Homepage/Homepage.vue'),
-  },
+
   {
     path: '/post/:slug',
     name: 'PostDetail',

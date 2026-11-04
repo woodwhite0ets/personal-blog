@@ -5,7 +5,7 @@
       <p class="nf-code">404</p>
       <h1 class="nf-title">这一页不见了</h1>
       <p class="nf-text">你要找的内容可能已被移动或删除。</p>
-      <router-link to="/HomePage" class="nf-link">回到首页</router-link>
+      <router-link to="/blog" class="nf-link">回到首页</router-link>
       <span class="deco-end" aria-hidden="true"></span>
     </div>
   </main>

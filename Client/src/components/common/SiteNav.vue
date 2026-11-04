@@ -58,7 +58,7 @@ const route = useRoute()
 const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
 
 const navLinks = [
-  { to: '/HomePage', label: '首页' },
+  { to: '/blog', label: '首页' },
   { to: '/forum', label: '文章' },
   { to: '/ai-daily', label: 'AI 榜' },
   { to: '/tools', label: '工具' },

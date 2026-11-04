@@ -10,7 +10,7 @@
     <div v-if="notFound" class="user-notfound">
       <div class="notfound-icon">?</div>
       <p class="notfound-text">用户 @{{ username }} 不存在</p>
-      <router-link to="/HomePage" class="notfound-link">返回首页</router-link>
+      <router-link to="/blog" class="notfound-link">返回首页</router-link>
     </div>
 
     <!-- ====== 用户资料头 ====== -->
@@ -144,7 +144,7 @@
               <router-link
                 v-for="tag in userTags"
                 :key="tag.name"
-                :to="`/HomePage?tag=${encodeURIComponent(tag.name)}`"
+                :to="`/blog?tag=${encodeURIComponent(tag.name)}`"
                 class="tag" :class="tag.size"
               >
                 #{{ tag.name }}

@@ -12,7 +12,7 @@
     <!-- ====== 导航栏 ====== -->
     <header class="navbar">
       <div class="navbar-inner">
-        <router-link to="/HomePage" class="brand">
+        <router-link to="/blog" class="brand">
           <span class="brand-bracket">[</span>
           <span class="brand-text">woodwhite@blog</span>
           <span class="brand-bracket">]</span>

@@ -15,7 +15,7 @@
         <router-link to="/work">案例</router-link>
         <router-link to="/stack">能力</router-link>
         <router-link to="/contact">联系</router-link>
-        <router-link to="/HomePage">博客</router-link>
+        <router-link to="/blog">博客</router-link>
       </nav>
     </header>
 
@@ -101,7 +101,7 @@
     <footer class="co-foot">
       <span>© {{ year }} 木白 woodwhite</span>
       <span class="co-foot-links">
-        <router-link to="/HomePage">博客</router-link>
+        <router-link to="/blog">博客</router-link>
         <a href="https://github.com/woodwhite0ets" target="_blank" rel="noopener noreferrer">GitHub</a>
       </span>
     </footer>

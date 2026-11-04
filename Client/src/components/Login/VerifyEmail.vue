@@ -18,7 +18,7 @@
             邮箱验证成功！<br/>
             欢迎 <strong>@{{ username }}</strong>
           </p>
-          <router-link to="/HomePage" class="btn btn-primary">
+          <router-link to="/blog" class="btn btn-primary">
              进入博客
           </router-link>
         </div>

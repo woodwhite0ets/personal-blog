@@ -16,7 +16,7 @@
         <router-link
           v-for="tag in (post.tags && post.tags.length ? post.tags : [{ name: post.tag || '未分类' }])"
           :key="typeof tag === 'string' ? tag : tag.name"
-          :to="`/HomePage?tag=${encodeURIComponent(typeof tag === 'string' ? tag : tag.name)}`"
+          :to="`/blog?tag=${encodeURIComponent(typeof tag === 'string' ? tag : tag.name)}`"
           class="post-tag"
         >#{{ typeof tag === 'string' ? tag : tag.name }}</router-link>
       </span>

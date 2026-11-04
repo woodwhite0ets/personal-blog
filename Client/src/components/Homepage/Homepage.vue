@@ -355,7 +355,7 @@ function doSearch() {
   } else {
     delete query.search
   }
-  router.push({ path: '/HomePage', query })
+  router.push({ path: '/blog', query })
   searchActive.value = false
 }
 
