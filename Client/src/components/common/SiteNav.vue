@@ -1,9 +1,10 @@
 <template>
   <header class="navbar">
     <div class="navbar-inner">
-      <router-link to="/HomePage" class="brand">
+      <router-link to="/" class="brand" title="回到木白 · 公司主页" aria-label="木白，公司主页">
         <span class="brand-text">woodwhite@blog</span>
       </router-link>
+      <router-link to="/" class="brand-back">← 木白</router-link>
       <nav class="nav-links" :class="{ open: navOpen }" @click="navOpen = false">
         <router-link v-for="l in navLinks" :key="l.to" :to="l.to"> {{ l.label }}
         </router-link>

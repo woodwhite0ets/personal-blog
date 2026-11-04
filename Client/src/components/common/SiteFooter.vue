@@ -5,6 +5,7 @@
       <span class="footer-tagline">技术博客，全栈开发与开源分享</span>
     </div>
     <div class="footer-links">
+      <router-link to="/">木白 · 公司主页</router-link>
       <a href="https://github.com/woodwhite0ets" target="_blank" rel="noopener noreferrer">GitHub</a>
       <router-link to="/now">现在</router-link>
       <router-link to="/projects">项目</router-link>

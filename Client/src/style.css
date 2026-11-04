@@ -2954,3 +2954,20 @@ html {
 .post-detail-page > main, .post-detail-page > .post-article {
   position: relative; z-index: 1;
 }
+
+
+/* 博客顶栏里回公司主页的次入口（比导航项轻，不抢「首页」） */
+.brand-back {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: .06em;
+  color: var(--text-faint);
+  text-decoration: none;
+  padding: 4px 2px;
+  border: none;
+  border-bottom: 1px solid transparent;
+  white-space: nowrap;
+}
+.brand-back:hover { color: var(--text-bright); border-bottom-color: var(--border-strong); }
+.brand-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 420px) { .brand-back { display: none; } }
