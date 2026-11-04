@@ -2899,12 +2899,16 @@ html {
 .pl-page, .tl-page, .ad-page, .td-page, .about-page, .post-detail-page { position: relative; }
 
 .page-wash {
-  position: absolute; inset: 0 0 auto 0;
-  height: min(620px, 72vh);
+  /* 覆盖整页：颜色不止在顶部，往下滑也有，只是更淡 */
+  position: absolute; inset: 0;
   z-index: 0; pointer-events: none;
   overflow: hidden;
-  mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.62) 38%, rgba(0,0,0,.28) 68%, transparent 100%);
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.62) 38%, rgba(0,0,0,.28) 68%, transparent 100%);
+  background-image:
+    radial-gradient(ellipse 90% 32% at 10% 14%, var(--page-wash-a), transparent 78%),
+    radial-gradient(ellipse 80% 28% at 96% 38%, var(--page-wash-b), transparent 80%),
+    radial-gradient(ellipse 95% 30% at 20% 66%, var(--page-wash-a), transparent 80%),
+    radial-gradient(ellipse 85% 26% at 92% 90%, var(--page-wash-b), transparent 82%);
+  opacity: .72;
 }
 /* 两层各漂各的：合成器只处理 transform，不触发重绘 */
 .page-wash::before,
@@ -2913,13 +2917,13 @@ html {
   will-change: transform;
 }
 .page-wash::before {
-  inset: -14% 34% 18% -12%;
+  inset: -6% 40% 62% -10%;
   background: radial-gradient(ellipse 62% 72% at 32% 34%, var(--page-wash-a, rgba(110,145,200,.55)), transparent 72%);
   filter: blur(16px);
   animation: washDriftA 28s ease-in-out infinite alternate;
 }
 .page-wash::after {
-  inset: -16% -14% 10% 40%;
+  inset: -8% -12% 58% 42%;
   background: radial-gradient(ellipse 62% 72% at 68% 30%, var(--page-wash-b, rgba(150,160,90,.45)), transparent 74%);
   filter: blur(18px);
   animation: washDriftB 38s ease-in-out infinite alternate;
