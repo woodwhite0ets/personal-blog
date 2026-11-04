@@ -1,22 +1,7 @@
 <template>
   <div class="co-page">
     <div class="page-wash" aria-hidden="true"></div>
-    <header class="co-nav">
-      <router-link to="/" class="co-brand" aria-label="OPC 木白 woodwhite">
-        <img class="co-brand-symbol" src="/brand/opc-mark-color.svg" alt="" width="955" height="672" aria-hidden="true" />
-        <span class="co-brand-text">
-          <span class="co-brand-cn">木白</span>
-          <span class="co-brand-en">woodwhite</span>
-        </span>
-      </router-link>
-      <router-link to="/" class="co-back">← 首页</router-link>
-      <nav class="co-links" aria-label="站内">
-        <router-link to="/work">案例</router-link>
-        <router-link to="/stack">能力</router-link>
-        <router-link to="/contact">联系</router-link>
-        <router-link to="/blog">博客</router-link>
-      </nav>
-    </header>
+    <SiteNav variant="company" />
 
     <main class="co-main">
       <section class="co-sec" style="margin-top: 8px">
@@ -53,6 +38,7 @@
 </template>
 
 <script setup>
+import SiteNav from '../common/SiteNav.vue'
 import { projects } from '../../data/projects.js'
 
 const cases = projects
