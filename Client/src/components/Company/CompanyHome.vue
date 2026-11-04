@@ -66,24 +66,37 @@
       <!-- ③ 证据 -->
       <section class="co-sec">
         <h2 class="co-h2">做过什么</h2>
-        <ul class="co-proof">
-          <li>
-            <span class="co-proof-k">自建工作站</span>
-            <span class="co-proof-v">一台 24 核机器上自托管模型、检索、CI 与知识库，7×24 在跑</span>
-          </li>
-          <li>
-            <span class="co-proof-k">持续产出</span>
-            <span class="co-proof-v">AI 每日榜和工具库每天自动采集、清洗、打标；工具库共 560 条，其中 18 条是我自己挑的</span>
-          </li>
-          <li>
-            <span class="co-proof-k">可查的痕迹</span>
-            <span class="co-proof-v">踩过的坑和结论写在博客与知识库里</span>
+        <ul class="co-cases">
+          <li v-for="p in cases" :key="p.slug" class="co-case">
+            <router-link :to="`/projects/${p.slug}`" class="co-case-link">
+              <span class="co-case-head">
+                <span class="co-case-name">{{ p.name }}</span>
+                <span class="co-case-status">{{ p.status }}</span>
+                <time class="co-case-period">{{ p.period }}</time>
+              </span>
+              <span class="co-case-sub">{{ p.subtitle }}</span>
+              <span class="co-case-result">结果：{{ p.result }}</span>
+            </router-link>
           </li>
         </ul>
       </section>
 
       <!-- ④ 合作方式 -->
       <section class="co-sec">
+        <h2 class="co-h2">用什么做</h2>
+        <div class="co-infra">
+          <p class="co-infra-lead">
+            自己的机器，自己的链路：一台旧服务器上自托管模型、检索、CI 与知识库，7×24 在跑。
+            不需要向第三方买算力，也不把数据交出去。
+          </p>
+          <dl class="co-infra-facts">
+            <div><dt>算力</dt><dd>24 核 / 62G / NVMe+1.8T，本地推理三实例</dd></div>
+            <div><dt>检索</dt><dd>pgvector + 重排，知识库按项目分目录</dd></div>
+            <div><dt>交付链</dt><dd>自建 Git 与 CI，systemd 定时巡检与同步</dd></div>
+            <div><dt>暴露面</dt><dd>零入站端口，对外只走出站隧道</dd></div>
+          </dl>
+        </div>
+
         <h2 class="co-h2">怎么合作</h2>
         <div class="co-grid co-grid-2">
           <div class="co-card">
@@ -132,6 +145,9 @@
 </template>
 
 <script setup>
+import { projects } from '../../data/projects.js'
+
+const cases = projects.slice(0, 5)
 const year = new Date().getFullYear()
 </script>
 
@@ -177,6 +193,27 @@ const year = new Date().getFullYear()
 .co-btn-solid:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
 
 .co-sec { margin-top: 72px; }
+
+/* 案例列表 */
+.co-cases { list-style: none; margin: 0; padding: 0; }
+.co-case { border-bottom: 1px dotted var(--rule-dot-ink); }
+.co-case:last-child { border-bottom: none; }
+.co-case-link { display: block; padding: 16px 4px; text-decoration: none; transition: background-color var(--dur-hover) var(--ease-out); }
+.co-case-link:hover { background: var(--overlay-a2); }
+.co-case-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.co-case-name { font-family: "Noto Serif SC", var(--font-serif); font-size: 1.0625rem; font-weight: 500; color: var(--text-bright); }
+.co-case-status { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .04em; color: var(--text-faint); border: 1px solid var(--border-strong); border-radius: 3px; padding: 1px 6px; }
+.co-case-period { margin-left: auto; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-faint); }
+.co-case-sub { display: block; margin-top: 4px; font-size: 0.875rem; line-height: 1.6; color: var(--text-secondary); }
+.co-case-result { display: block; margin-top: 6px; font-family: var(--font-mono); font-size: 0.6875rem; line-height: 1.6; color: var(--text-faint); }
+
+/* 工作站 */
+.co-infra-lead { margin: 0 0 20px; font-size: 0.9375rem; line-height: 1.8; color: var(--text-secondary); max-width: 62ch; }
+.co-infra-facts { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--rule-dot-ink); border: 1px dotted var(--rule-dot-ink); }
+.co-infra-facts > div { background: var(--bg); padding: 16px 18px; }
+.co-infra-facts dt { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .06em; color: var(--text-faint); margin-bottom: 6px; }
+.co-infra-facts dd { margin: 0; font-size: 0.875rem; line-height: 1.65; color: var(--text); }
+@media (max-width: 700px) { .co-infra-facts { grid-template-columns: 1fr; } }
 .co-h2 { display: flex; align-items: baseline; gap: 12px; margin: 0 0 26px; padding-bottom: 10px;
   border-bottom: 1px dotted var(--rule-dot-ink);
   font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; letter-spacing: .02em; color: var(--text-secondary); }
