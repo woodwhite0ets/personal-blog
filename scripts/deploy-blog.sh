@@ -102,8 +102,9 @@ echo "==> 4/5 安装 Caddyfile + 校验 + 重载"
 # 重载时 caddy 用户写不进去会 400，所以校验后统一把 /var/log/caddy 还权给 caddy。
 ssh_run "sudo cp $BLOG_REPO/Server/deploy/Caddyfile /etc/caddy/Caddyfile && sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile >/dev/null && sudo chown -R caddy:caddy /var/log/caddy && sudo systemctl reload caddy && echo CADDY_OK"
 
-echo "==> 4.5/5 重启 blog（pm2）"
-ssh_run "pm2 restart blog >/dev/null && sleep 2 && pm2 list | grep 'blog.*online' >/dev/null && echo PM2_OK"
+echo "==> 4.5/5 重启 blog（pm2）并等就绪"
+# 启动要先跑 ensureDatabase / 邮件初始化（2-3s）；只 sleep 2 会在启动窗口里查出 502
+ssh_run "pm2 restart blog >/dev/null && for i in \$(seq 1 30); do curl -sf -o /dev/null http://127.0.0.1:3027/robots.txt && echo PM2_OK && exit 0; sleep 1; done; echo PM2_NOT_READY; exit 1"
 
 echo "==> 5/5 端到端验证"
 if [ "$DRY_RUN" = "0" ]; then
