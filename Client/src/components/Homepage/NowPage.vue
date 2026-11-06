@@ -17,7 +17,7 @@
         <h2 class="now-sec-title">在推的事</h2>
         <ul class="now-list">
           <li v-for="item in working" :key="item.what">
-            <router-link v-if="item.to" :to="item.to" class="now-link">{{ item.what }}</router-link>
+            <a v-if="item.to" :href="item.to" class="now-link">{{ item.what }}</a>
             <span v-else>{{ item.what }}</span>
             <span class="now-detail">{{ item.detail }}</span>
           </li>
@@ -82,12 +82,13 @@
 import { onMounted, ref } from 'vue'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
+import { SITE } from '../../data/routeMeta.js'
 
 // 手写部分：这一页的「现在」由人工维护
 const handUpdated = '2026-10-24'
 const working = [
-  { what: '给博客补前端能力', detail: '语义相关、笔记公开页、项目页、搜索加权', to: '/projects/blog' },
-  { what: '把知识库改造成 AI 好用的形态', detail: '主题全景、统一入口、引用体检', to: '/projects/notes' },
+  { what: '给博客补前端能力', detail: '语义相关、笔记公开页、项目页、搜索加权', to: `${SITE.company}/work/blog` },
+  { what: '把知识库改造成 AI 好用的形态', detail: '主题全景、统一入口、引用体检', to: `${SITE.company}/work/notes` },
   { what: '整理简历与实习材料', detail: '按岗位拆七个方向，公开内容留在简历库' },
 ]
 

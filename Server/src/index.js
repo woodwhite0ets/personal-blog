@@ -239,6 +239,14 @@ app.use(async (req, res, next) => {
   // entry point after a deployment, otherwise they can request removed chunks.
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
   const indexPath = path.join(__dirname, '../../Client/dist/index.html');
+  // 案例详情只保留公司域一份（woodwhite.top/work/:slug），旧的 /projects/:slug 永久跳过去
+  const legacyProject = req.path.replace(/\/+$/, '').match(/^\/projects\/([^/]+)$/);
+  if (legacyProject) {
+    const base = (process.env.COMPANY_URL || 'https://woodwhite.top').replace(/\/+$/, '');
+    let slug = legacyProject[1];
+    try { slug = decodeURIComponent(slug); } catch (e) { /* 保留原样 */ }
+    return res.redirect(301, `${base}/work/${encodeURIComponent(slug)}`);
+  }
   // 文章页与「公司页 / 案例 / 工具库 / AI 榜」都要注入各自的 meta。
   // 是否要注入直接问 meta 表（单一真源），别在这里再抄一份路径清单。
   const cleanPath = req.path.replace(/\/+$/, '') || '/';

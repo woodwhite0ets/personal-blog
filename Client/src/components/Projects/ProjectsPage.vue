@@ -12,7 +12,7 @@
 
       <ul class="pl-list">
         <li v-for="p in projects" :key="p.slug" class="pl-item">
-          <router-link :to="`/projects/${p.slug}`" class="pl-link">
+          <a :href="`${COMPANY}/work/${p.slug}`" class="pl-link">
             <div class="pl-line">
               <span class="pl-name">{{ p.name }}</span>
               <span class="pl-status">{{ p.status }}</span>
@@ -22,7 +22,7 @@
             <p class="pl-summary">{{ p.summary }}</p>
             <p v-if="p.result" class="pl-result">结果：{{ p.result }}</p>
             <p class="pl-stack">{{ p.stack.join(' · ') }}</p>
-          </router-link>
+          </a>
         </li>
       </ul>
     </main>
@@ -35,7 +35,13 @@
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 import { projects } from '../../data/projects.js'
+import { SITE } from '../../data/routeMeta.js'
+
+// 案例详情只在公司域（woodwhite.top/work/:slug）维护一份，这里直接外链过去
+const COMPANY = SITE.company
 </script>
+
+
 
 <style scoped>
 .pl-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }

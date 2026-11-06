@@ -120,11 +120,6 @@ const routes = [
     component: () => import('../components/Projects/ProjectsPage.vue'),
   },
   {
-    path: '/projects/:slug',
-    name: 'ProjectDetail',
-    component: () => import('../components/Projects/ProjectDetail.vue'),
-  },
-  {
     path: '/notes',
     name: 'Notes',
     component: () => import('../components/Homepage/NotesPage.vue'),

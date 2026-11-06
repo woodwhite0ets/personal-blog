@@ -1,15 +1,15 @@
 <template>
   <component :is="tag" :to="link" class="user-avatar" :class="[sizeClass, { clickable: !!link }]">
     <img
-      v-if="src" :src="src" :alt="alt" :width="px" :height="px"
-      class="avatar-img" loading="lazy" decoding="async"
+      v-if="effectiveSrc" :src="effectiveSrc" :alt="alt" :width="px" :height="px"
+      class="avatar-img" loading="lazy" decoding="async" @error="onImgError"
     />
     <span v-else class="avatar-char">{{ char }}</span>
   </component>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
   src: { type: String, default: '' },
@@ -31,6 +31,14 @@ const sizeMap = {
   xs: 'ava-xs', sm: 'ava-sm', md: 'ava-md', lg: 'ava-lg', xl: 'ava-xl',
 }
 const sizeClass = computed(() => sizeMap[props.size])
+
+// 加载失败就退回首字母，别把破图留在页面上；src 换了要重新给一次机会
+const imgFailed = ref(false)
+watch(() => props.src, () => { imgFailed.value = false })
+const effectiveSrc = computed(() => (imgFailed.value ? '' : props.src))
+function onImgError() {
+  imgFailed.value = true
+}
 </script>
 
 <style scoped>

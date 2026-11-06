@@ -1,4 +1,4 @@
-// 代码高亮（Shiki，JS 正则引擎免 WASM，双主题支持明/暗）
+// 代码高亮（Shiki，JS 正则引擎免 WASM；只有浅色一套主题，颜色直接内联）
 // 设计：按需预热。只有真的可能出代码的页面（/post /notes /editor）才会加载
 // 15 个语言包；公司页/榜单这类纯展示页直接跳过，不再为它等 ~110KB gz 的 JS。
 // 渲染时同步取用（未就绪先输出纯文本），就绪后 highlighterReady 变化会让
@@ -42,11 +42,9 @@ async function initHighlighter() {
       import('shiki/langs/html.mjs'), import('shiki/langs/css.mjs'), import('shiki/langs/markdown.mjs'),
       import('shiki/langs/yaml.mjs'), import('shiki/langs/dockerfile.mjs'), import('shiki/langs/diff.mjs'),
     ])
-    const [{ default: dark }, { default: light }] = await Promise.all([
-      import('shiki/themes/github-dark.mjs'), import('shiki/themes/github-light.mjs'),
-    ])
+    const [{ default: light }] = await Promise.all([import('shiki/themes/github-light.mjs')])
     hl = await createHighlighterCore({
-      themes: [dark, light],
+      themes: [light],
       langs: [js, ts, py, java, sql, bash, shell, json, html, css, md, yaml, dockerfile, diff],
       engine: createJavaScriptRegexEngine(),
     })
@@ -60,9 +58,19 @@ async function initHighlighter() {
 }
 
 /**
- * 把代码高亮成 HTML（双主题 CSS 变量，配合 style.css 的 [data-theme] 切换明暗）。
+ * 把代码高亮成 HTML。单主题，颜色内联在 pre 与各 span 上；只把 Shiki 写的
+ * <pre> 背景去掉，改用 .code-block 自己的底色（其余样式原样保留）。
  * 返回 null 表示未就绪/失败，调用方应回退为纯文本。
  */
+const stripPreBackground = {
+  pre(node) {
+    const s = node.properties.style
+    if (typeof s === 'string') {
+      node.properties.style = s.replace(/background-color:[^;]+;?/g, '').trim().replace(/;$/, '')
+    }
+  },
+}
+
 export function highlightToHtml(code, lang) {
   if (!enabled || !hl) return null
   const name = LANG_ALIAS[(lang || '').toLowerCase()] || (lang || '').toLowerCase()
@@ -70,8 +78,8 @@ export function highlightToHtml(code, lang) {
   try {
     return hl.codeToHtml(code, {
       lang: useLang,
-      themes: { light: 'github-light', dark: 'github-dark' },
-      defaultColor: false,
+      theme: 'github-light',
+      transformers: [stripPreBackground],
     })
   } catch {
     return null

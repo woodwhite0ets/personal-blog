@@ -190,7 +190,7 @@ html {
 
 /* ============================================================
    代码块（Shiki 高亮 + 语言标签 + 复制按钮）
-   明/暗由 [data-theme] 选择 --shiki-light / --shiki-dark 变量
+   颜色由 Shiki 直接内联在 span 上（单主题），这里只管块的外框与底色
    ============================================================ */
 .code-block {
   margin: 20px 0;
@@ -225,10 +225,7 @@ html {
   background: transparent;
 }
 
-/* 明/暗主题取不同 token 颜色（Shiki 双主题 CSS 变量，无需重渲染）*/
-.code-block .shiki span { color: var(--shiki-dark); }
 .code-block code { font-family: var(--font-mono); }
-.code-block .shiki span { color: var(--shiki-light); }
 
 /* 无障碍：键盘焦点可见（全站通用，组件里的 outline:none 不再导致失焦不可见） */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
@@ -341,7 +338,8 @@ html {
   background: none;
   border: none;
   padding: 0;
-  color: var(--text);
+  /* 继承 shiki 写在 <pre> 上的主题前景色；普通 pre 则落到正文色 */
+  color: inherit;
   font-size: 0.9em;
 }
 
@@ -1701,9 +1699,6 @@ body::after {
   --radius-md: 3px;
   --radius-lg: 4px;
 }
-
-/* ===== 新增主题的浅色配套（代码高亮 / 颗粒 / 光斑） ===== */
-.code-block .shiki span { color: var(--shiki-light); }
 
 body::after { opacity: 0.05; mix-blend-mode: multiply; }
 
