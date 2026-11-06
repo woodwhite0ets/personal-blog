@@ -109,7 +109,7 @@ router.get('/sitemap.xml', async (req, res) => {
     const [rows] = await pool.query(
       `SELECT slug, published_at FROM posts WHERE status = 'published'`
     );
-    const entries = ['/blog', '/archive', '/about', '/projects', '/tools', '/ai-daily']
+    const entries = ['/blog', '/archive', '/about', '/projects', '/tools', '/ai-daily', '/cocktails']
       .map((p) => ({ loc: SITE_URL + p }))
       .concat(rows.map((p) => ({
         loc: `${SITE_URL}/post/${p.slug}`,

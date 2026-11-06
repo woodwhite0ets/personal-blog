@@ -2578,3 +2578,12 @@ html {
 .brand { gap: 8px; align-items: center; }
 .brand-mark { display: block; height: 22px; width: auto; }
 @media (max-width: 560px) { .brand-mark { height: 18px; } }
+
+/* ============================================================
+   移动端横向溢出：关闭状态的抽屉用 translateX(100%) 停在视口外，
+   会把文档撑宽 300px（/now /notes /projects /tools 上都能量到）。
+   各页根统一裁掉横向溢出；clip 不建立滚动容器，粘性元素照常工作。
+   ============================================================ */
+.home-page, .forum-page, .tags-page, .archive-page, .about-page,
+.notes-page, .now-page, .series-page, .pl-page, .td-page, .tl-page, .ad-page,
+.post-detail-page, .ct-page { overflow-x: clip; }

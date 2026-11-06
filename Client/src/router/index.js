@@ -125,6 +125,16 @@ const routes = [
     component: () => import('../components/Homepage/NotesPage.vue'),
   },
   {
+    path: '/cocktails',
+    name: 'Cocktails',
+    component: () => import('../components/Cocktails/CocktailsPage.vue'),
+  },
+  {
+    path: '/cocktails/:slug',
+    name: 'CocktailDetail',
+    component: () => import('../components/Cocktails/CocktailsPage.vue'),
+  },
+  {
     path: '/series/:name',
     name: 'Series',
     component: () => import('../components/Homepage/SeriesPage.vue'),

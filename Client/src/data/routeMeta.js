@@ -39,6 +39,11 @@ export const ROUTE_META = {
     description: '全栈开发与 AI 工程笔记：Vue 3、Node.js、本地推理、检索与部署。',
     canonical: `${SITE.blog}/blog`,
   },
+  '/cocktails': {
+    title: '调酒 — 木白 woodwhite',
+    description: '家里那点工具能做的鸡尾酒：内格罗尼、得其利、古典、威士忌酸，写清材料比例、做法与变体。',
+    canonical: `${SITE.blog}/cocktails`,
+  },
   '/projects': {
     title: '案例 — 木白 woodwhite',
     description: '已上线的项目：充电桩检定监管平台、自建 AI 工作站、AI 每日榜、知识库、本站，每条写清问题、做法与结果。',

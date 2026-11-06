@@ -74,6 +74,7 @@ const blogLinks = [
   { to: '/tools', label: '工具' },
   { to: '/projects', label: '项目' },
   { to: '/now', label: '现在' },
+  { to: '/cocktails', label: '调酒' },
   { to: '/about', label: '关于' },
 ]
 const companyLinks = [
