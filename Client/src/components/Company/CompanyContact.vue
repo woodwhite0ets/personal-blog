@@ -1,15 +1,13 @@
 <template>
-  <div class="co-page">
-    <div class="page-wash" aria-hidden="true"></div>
-    <SiteNav variant="company" />
-
-    <main class="co-main">
-      <section class="co-sec" style="margin-top: 8px">
+  <CompanyShell>
+    <div class="co-main">
+      <section class="co-sec">
         <h1 class="co-page-title">联系</h1>
         <p class="co-lead">说清背景、目标和时间预期，一般一天内回。</p>
       </section>
+
       <section class="co-sec">
-        <h2 class="co-h2">怎么合作</h2>
+        <CompanySecHead title="怎么合作" note="TERMS" />
         <div class="co-grid co-grid-2">
           <div class="co-card">
             <h3>按项目</h3>
@@ -24,7 +22,7 @@
       </section>
 
       <section class="co-sec">
-        <h2 class="co-h2">联系</h2>
+        <CompanySecHead title="联系方式" note="CONTACT" />
         <p class="co-lead">邮件里写清背景、目标和时间预期就行；微信适合先把需求聊粗。</p>
         <dl class="co-contact-list">
           <div class="co-contact-line"><dt>邮箱</dt><dd><a href="mailto:1903784785@qq.com">1903784785@qq.com</a></dd></div>
@@ -32,20 +30,11 @@
           <div class="co-contact-line"><dt>GitHub</dt><dd><a href="https://github.com/woodwhite0ets" target="_blank" rel="noopener noreferrer">github.com/woodwhite0ets</a></dd></div>
         </dl>
       </section>
-
-    </main>
-
-    <footer class="co-foot">
-      <span>© {{ year }} 木白 woodwhite</span>
-      <span class="co-foot-links">
-        <router-link to="/blog">博客</router-link>
-        <a href="https://github.com/woodwhite0ets" target="_blank" rel="noopener noreferrer">GitHub</a>
-      </span>
-    </footer>
-  </div>
+    </div>
+  </CompanyShell>
 </template>
 
 <script setup>
-import SiteNav from '../common/SiteNav.vue'
-const year = new Date().getFullYear()
+import CompanyShell from './CompanyShell.vue'
+import CompanySecHead from './CompanySecHead.vue'
 </script>

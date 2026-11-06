@@ -1,13 +1,11 @@
 <template>
-  <div class="co-page">
-    <div class="page-wash" aria-hidden="true"></div>
-    <SiteNav variant="company" />
-
-    <main class="co-main">
-      <section class="co-sec" style="margin-top: 8px">
+  <CompanyShell>
+    <div class="co-main">
+      <section class="co-sec">
         <h1 class="co-page-title">能力与基础设施</h1>
         <p class="co-lead">不外包算力，也不把数据交出去：所有东西跑在自己的一台机器上。</p>
       </section>
+
       <section class="co-sec">
         <div class="co-infra">
           <p class="co-infra-lead">
@@ -24,27 +22,18 @@
       </section>
 
       <section class="co-sec">
-        <h2 class="co-h2">这套东西能带来什么</h2>
+        <CompanySecHead title="这套东西能带来什么" note="WHY" />
         <ul class="co-proof">
           <li><span class="co-proof-k">交付速度</span><span class="co-proof-v">依赖本地模型与自建 CI，不用等第三方额度，改动当天能上线。</span></li>
           <li><span class="co-proof-k">数据边界</span><span class="co-proof-v">模型与检索都在自己机器上，敏感数据不出内网。</span></li>
           <li><span class="co-proof-k">成本</span><span class="co-proof-v">固定硬件成本，没有按次计费的推理账单。</span></li>
         </ul>
       </section>
-
-    </main>
-
-    <footer class="co-foot">
-      <span>© {{ year }} 木白 woodwhite</span>
-      <span class="co-foot-links">
-        <router-link to="/blog">博客</router-link>
-        <a href="https://github.com/woodwhite0ets" target="_blank" rel="noopener noreferrer">GitHub</a>
-      </span>
-    </footer>
-  </div>
+    </div>
+  </CompanyShell>
 </template>
 
 <script setup>
-import SiteNav from '../common/SiteNav.vue'
-const year = new Date().getFullYear()
+import CompanyShell from './CompanyShell.vue'
+import CompanySecHead from './CompanySecHead.vue'
 </script>
