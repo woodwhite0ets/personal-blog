@@ -1,10 +1,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useAuth } from './stores/auth.js'
-import { useTheme } from './stores/theme.js'
 
 const { fetchMe } = useAuth()
-useTheme() // 实例化主题 store，确保 data-theme 被应用（默认 paper）
 
 // 滚动进度线由 CSS scroll-driven 动画驱动（见 style.css .scroll-progress）；
 // 「回到顶部」按钮的显隐用 IntersectionObserver 观察顶部哨兵，不再监听 scroll。

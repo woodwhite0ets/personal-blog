@@ -15,7 +15,6 @@
         </template>
       </nav>
       <div class="nav-actions">
-        <ThemeSwitcher v-if="!isCompany" />
         <slot name="search" />
         <!-- 公司站：右端只有一个主行动（跟博客「新文章」同一个按钮配方） -->
         <a v-if="isCompany" class="btn-write" href="mailto:1903784785@qq.com">说说你的项目</a>
@@ -57,7 +56,6 @@
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import UserAvatar from './UserAvatar.vue'
-import ThemeSwitcher from './ThemeSwitcher.vue'
 import { useAuth } from '../../stores/auth.js'
 
 const props = defineProps({
@@ -86,17 +84,6 @@ const companyLinks = [
   { to: '/blog', label: '博客' },
 ]
 const navLinks = computed(() => (isCompany.value ? companyLinks : blogLinks))
-
-const section = computed(() => {
-  const p = route.path
-  if (p.startsWith('/forum')) return 'forum'
-  if (p.startsWith('/archive')) return 'archive'
-  if (p.startsWith('/about')) return 'about'
-  if (p.startsWith('/post/')) return 'post'
-  if (p.startsWith('/user/')) return 'user'
-  if (p.startsWith('/editor')) return 'editor'
-  return 'main'
-})
 
 const navOpen = ref(false)
 const showUserMenu = ref(false)

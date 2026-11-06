@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="editorial">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" sizes="32x32" href="/brand/icon-blue-32.png" />
@@ -55,10 +55,9 @@
     <!-- 百度站长验证（到 https://ziyuan.baidu.com/ 添加站点后替换验证码） -->
     <!-- <meta name="baidu-site-verification" content="codeva-xxxxxxxxxxxx" /> -->
 
-    <!-- 自动检测暗色主题偏好 -->
-    <meta name="color-scheme" content="light dark" />
-    <!-- 防主题闪烁：外部脚本读本地/系统主题（CSP: self，无需哈希）-->
-    <script src="/theme-init.js"></script>
+    <!-- 站点只有浅色纸面一套：声明 light，避免系统深色时表单控件、滚动条被 UA 染黑 -->
+    <meta name="color-scheme" content="light" />
+
   </head>
   <body>
     <div id="app"></div>
