@@ -9,7 +9,7 @@ import './style.css'
 import App from './App.vue'
 import router from './router/index.js'
 import { initEnhance } from './utils/enhance.js'
-import { initHighlighter } from './utils/highlighter.js'
+import { ensureHighlighter } from './utils/highlighter.js'
 
 // 滚动位置策略：
 //  - 刷新 / 新开页 / 站内跳转 → 回顶部
@@ -132,8 +132,13 @@ app.directive('reveal', reveal)
 app.directive('count', count)
 app.use(router)
 if (typeof window !== 'undefined') { attachRipple(); attachCodeCopy() }
-// 先预热代码高亮（Shiki）再挂载，保证首屏代码块即高亮；失败也会 finally 挂载
-initHighlighter().finally(() => {
-  app.mount('#app')
-  if (typeof window !== 'undefined') initEnhance()
-})
+
+// 只有可能出代码的页面才预热 Shiki：公司页/榜单/工具库直接挂载，不等 15 个语言包。
+// 竞态由 utils/markdown.js 的 highlighterReady 兜住（晚到就重算一次，代码块升级成高亮）。
+const NEEDS_HIGHLIGHT = /^\/(post|notes|editor)(\/|$)/
+const warmHighlighter = (path) => { if (NEEDS_HIGHLIGHT.test(path)) ensureHighlighter() }
+
+app.mount('#app')
+if (typeof window !== 'undefined') initEnhance()
+warmHighlighter(window.location.pathname)
+router.afterEach((to) => warmHighlighter(to.path))

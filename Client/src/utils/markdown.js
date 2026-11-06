@@ -3,7 +3,7 @@
 // 流程：marked 出 HTML → DOMPurify 消毒 → 对已消毒的代码块做 Shiki 高亮（高亮产物为可信 HTML，避开消毒剥离 style）
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
-import { highlightToHtml, normalizeLang } from './highlighter.js'
+import { highlightToHtml, normalizeLang, highlighterReady } from './highlighter.js'
 
 // 正文图片延迟加载（loading=lazy，减少首屏流量）
 marked.use({
@@ -57,6 +57,8 @@ function stripFrontmatter(src) {
 // DOMPurify 配置：禁止 style/id/name 属性，只允许 http(s)/ftp/相对路径
 export function renderMarkdown(content, options = {}) {
   if (!content || typeof content !== 'string') return ''
+  // 读一次就绪信号：高亮器晚到时，调用方的 computed 会重算，代码块从纯文本升级成高亮
+  highlighterReady.value
   const raw = marked(stripFrontmatter(content))
   const clean = DOMPurify.sanitize(raw, {
     FORBID_ATTR: ['style', 'id', 'name'],

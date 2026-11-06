@@ -1,10 +1,18 @@
 // 代码高亮（Shiki，JS 正则引擎免 WASM，双主题支持明/暗）
-// 设计：应用启动时预热一次；渲染时同步取用（未就绪则回退为纯文本转义）。
+// 设计：按需预热。只有真的可能出代码的页面（/post /notes /editor）才会加载
+// 15 个语言包；公司页/榜单这类纯展示页直接跳过，不再为它等 ~110KB gz 的 JS。
+// 渲染时同步取用（未就绪先输出纯文本），就绪后 highlighterReady 变化会让
+// 调用方的 computed 重算一次（见 utils/markdown.js）。
+import { ref } from 'vue'
 import { createHighlighterCore } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 
 let hl = null
 let enabled = false
+let initPromise = null
+
+// 就绪信号：markdown 渲染对它有依赖，晚到的高亮也能补上
+export const highlighterReady = ref(false)
 
 // 语言别名 → Shiki 语言名
 const LANG_ALIAS = {
@@ -17,6 +25,12 @@ const LANG_ALIAS = {
 }
 
 export function isHighlighterReady() { return enabled }
+
+// 幂等预热：重复调用只跑一次
+export function ensureHighlighter() {
+  if (!initPromise) initPromise = initHighlighter()
+  return initPromise
+}
 
 export async function initHighlighter() {
   try {
@@ -38,6 +52,7 @@ export async function initHighlighter() {
       engine: createJavaScriptRegexEngine(),
     })
     enabled = true
+    highlighterReady.value = true
   } catch (e) {
     // 高亮失败不阻塞：回退为纯文本
     console.warn('[highlighter] init failed, fallback to plain:', e?.message || e)
