@@ -810,9 +810,9 @@ h1, h2, h3, h4, .hero-title, .panel-title, .section-title {
 .hm-h::before { content: none; }
 .hm-h { gap: 14px; }
 
-/* 3. 色带（2026-10-19 去掉点阵底纹） */
+/* 3. 色带：品牌暖白（企业站里唯一的色面，压住整页发灰） */
 .band-tint {
-  background-color: var(--bg-deeper);
+  background-color: #faf7f4;
   border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
 }
 
@@ -1491,11 +1491,9 @@ body::after {
    两个主题各自都有黑/白段落节奏，方向相反。
    ============================================================ */
 
-/* 面板段统一入口：不再反相成深色，浅底上用一级底色 + 描边区分 */
-.hero-band, .band-tint {
-  --ink: var(--text-bright);
-  background: var(--bg-elevated);
-}
+/* 首屏保持纯白；色带用品牌暖白（企业站唯一的色面） */
+.hero-band { --ink: var(--text-bright); background: var(--bg); }
+.band-tint { --ink: var(--text-bright); background: #faf7f4; }
 /* midnight：反相为浅色段 */
 /* terminal / solar 同样是深色站，首屏也需要反相成浅色，
    否则 #0B0B0B 的首屏压在 #0b0e14 的页面上，层次直接消失 */

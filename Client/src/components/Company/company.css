@@ -103,7 +103,7 @@
    首屏（首页）：与博客同一套「印在纸上的画」背景 + 左文 + 右交付清单
    ============================================================ */
 .co-hero-band { border-bottom: 1px solid var(--border); }
-.co-hero-band .hero-art { --wash-blur: 56px; --s1: 18%; --s2: 13%; --s3: 15%; opacity: .85; }
+.co-hero-band .hero-art { --wash-blur: 56px; --s1: 30%; --s2: 22%; --s3: 26%; opacity: .95; }
 .co-hero-in {
   max-width: 1160px; margin: 0 auto;
   grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
@@ -181,9 +181,12 @@
 /* ---------- 指标带 ---------- */
 .co-metrics {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-top: 1px solid var(--border-strong); border-bottom: 1px solid var(--border-strong);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  background: #fbf6f3;           /* 品牌暖白：一块可见但不刺眼的色面 */
+  border-radius: 12px;
+  padding: 4px 0;
 }
-.co-metric { padding: 22px 20px 20px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
+.co-metric { padding: 24px 24px 22px; border-right: 1px solid #eee4dd; display: flex; flex-direction: column; gap: 6px; }
 .co-metric:last-child { border-right: none; }
 .co-metric-v {
   font-family: var(--font-display); font-size: clamp(1.75rem, 2.8vw, 2.3rem);
@@ -285,33 +288,35 @@
   .co-faq-item summary::after { transition: color var(--dur-hover) var(--ease-out); }
 }
 
-/* ---------- 结尾 CTA ---------- */
+/* ---------- 结尾 CTA：全站唯一一块深色面 ----------
+   企业站的对比锚点。全白页面里没有一块深色，整页会读成"发灰"而不是"克制"。 */
 .co-cta {
   position: relative; overflow: hidden;
-  margin-top: 96px; padding: 46px 44px 40px; border-radius: 8px;
-  border: 1px solid var(--border-strong);
-  background: var(--bg-elevated);
+  margin-top: 96px; padding: 56px 48px 52px; border-radius: 16px;
+  border: 1px solid #1b1f26;
+  background: #0e1116;
+  color: #e9ebef;
 }
 .co-cta-in { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 56px; align-items: center; }
-.co-cta-contact { border-left: 1px solid var(--border); padding-left: 44px; }
-.co-cta-k { margin: 0 0 12px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .1em; color: var(--text-faint); }
-.co-cta-hint { margin: 14px 0 0; font-size: 0.875rem; line-height: 1.7; color: var(--text-secondary); max-width: 34ch; }
+.co-cta-contact { border-left: 1px solid rgba(255, 255, 255, .14); padding-left: 44px; }
+.co-cta-k { margin: 0 0 12px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .1em; color: rgba(255, 255, 255, .48); }
+.co-cta-hint { margin: 14px 0 0; font-size: 0.875rem; line-height: 1.7; color: rgba(255, 255, 255, .62); max-width: 34ch; }
 .co-cta-title {
-  margin: 0 0 10px; font-family: var(--font-display); font-weight: 500;
-  font-size: clamp(1.4rem, 2.6vw, 2rem); line-height: 1.25; letter-spacing: -0.02em;
-  color: var(--text-bright); text-wrap: balance;
+  margin: 0 0 10px; font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(1.5rem, 2.6vw, 2.125rem); line-height: 1.22; letter-spacing: -0.03em;
+  color: #ffffff; text-wrap: balance;
   word-break: keep-all; overflow-wrap: anywhere; /* 中文标题不在词中间断开 */
 }
 .co-cta-mail { margin: 0; }
 .co-cta-mail a {
   font-family: var(--font-mono); font-size: clamp(1.05rem, 1.8vw, 1.375rem);
-  letter-spacing: .01em; color: var(--text-bright); text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--text-bright) 26%, transparent);
+  letter-spacing: .01em; color: #ffffff; text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, .28);
   padding-bottom: 3px; transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
 }
-.co-cta-mail a:hover { color: var(--accent); border-color: var(--accent); }
-.co-cta-mail a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.co-cta .co-note { margin-top: 18px; }
+.co-cta-mail a:hover { color: #f0a48f; border-color: #f0a48f; }
+.co-cta-mail a:focus-visible { outline: 2px solid #f0a48f; outline-offset: 3px; }
+.co-cta .co-note { margin-top: 18px; color: rgba(255, 255, 255, .52); }
 
 /* ============================================================
    子页：案例 / 能力 / 联系
