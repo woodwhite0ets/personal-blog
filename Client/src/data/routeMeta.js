@@ -15,7 +15,7 @@ export const SITE = {
 // 表里没有的路径（文章页等）保持 index.html 的默认值，由页面自己接管
 export const ROUTE_META = {
   '/': {
-    title: '木白 woodwhite — 把 AI 接进你的业务，上线之后还跑着',
+    title: '木白 woodwhite — 把 AI 接进你的业务，交付到稳定运行',
     description: '一个人做，从需求、数据、模型到上线后的巡检：AI 应用的后端与检索、本地推理与自动化、全栈实现。交付代码、部署脚本、监控与运行手册，可开票。',
     canonical: `${SITE.company}/`,
   },

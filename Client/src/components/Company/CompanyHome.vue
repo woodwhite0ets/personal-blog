@@ -6,11 +6,11 @@
       <div class="hero-in co-hero-in">
         <div class="co-hero-main">
           <p class="co-badge"><span class="co-badge-dot" aria-hidden="true"></span>浙江乐清 · 可开票 · 一天内回信</p>
-          <h1 class="co-title">把 AI 接进你的业务，<br /><span class="co-title-key">上线之后还跑着</span></h1>
-          <p class="co-lead">从需求、数据、模型到部署与巡检，一个人跟到底。签合同、按阶段验收、可开票。</p>
+          <h1 class="co-title">把 AI 接进你的业务，<br /><span class="co-title-key">交付到稳定运行</span></h1>
+          <p class="co-lead">从需求、数据、模型到部署与巡检，全程一人负责。签合同、按阶段验收、可开票。</p>
           <div class="co-actions">
             <router-link class="co-btn co-btn-solid" to="/work">看 {{ caseCount }} 个案例</router-link>
-            <a class="co-btn" href="mailto:1903784785@qq.com">说说你的项目</a>
+            <a class="co-btn" href="mailto:1903784785@qq.com">项目咨询</a>
           </div>
           <ul class="co-stack-strip" aria-label="在用的技术">
             <li>Vue 3</li><li>Node.js</li><li>MySQL</li><li>向量检索</li><li>自建推理</li>
@@ -91,7 +91,7 @@
           <article class="co-svc co-svc-cta"><div class="co-svc-in paper-field">
             <h3>不确定属于哪一类？</h3>
             <p>把背景和目标发我，先判断值不值得做。</p>
-            <router-link class="co-svc-link" to="/contact">聊聊你的场景</router-link>
+            <router-link class="co-svc-link" to="/contact">说明需求</router-link>
           </div></article>
         </div>
       </section>
@@ -133,7 +133,7 @@
             </router-link>
           </li>
         </ul>
-        <p class="co-note">共 {{ caseCount }} 个项目在生产里跑着，每个都写清问题、做法与结果。<router-link to="/work" class="co-note-link">全部案例</router-link></p>
+        <p class="co-note">共 {{ caseCount }} 个项目在生产环境运行，每个都写清问题、做法与结果。<router-link to="/work" class="co-note-link">全部案例</router-link></p>
       </section>
 
       <!-- 03 为什么这样交付 -->
@@ -141,7 +141,7 @@
         <CompanySecHead title="为什么这样交付" />
         <div class="mkt-compare">
           <div class="paper-field"><h3>常见做法</h3><ul><li>先买一堆 SaaS，接口对不上再改</li><li>模型按次计费，用量一涨成本失控</li><li>数据交给第三方 API</li><li>交付一个演示，上线还要再找人</li></ul></div>
-          <div class="paper-field"><h3>我的做法</h3><ul><li>先跑通最窄的一条链路，再扩</li><li>自建推理，固定硬件成本</li><li>数据留在自己的机器上</li><li>交付到能自己维护，含监控与运行手册</li></ul></div>
+          <div class="paper-field"><h3>我的做法</h3><ul><li>先跑通最短链路，再逐步扩展</li><li>自建推理，硬件成本固定</li><li>数据保留在自有环境</li><li>交付后可自主维护，含监控与运行手册</li></ul></div>
         </div>
       </section>
 

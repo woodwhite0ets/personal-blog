@@ -143,8 +143,7 @@
 .co-aside-k { display: flex; align-items: baseline; flex: 1; min-width: 0; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); }
 .co-aside-k::after {
   content: ""; flex: 1; height: 1px; margin: 0 10px; align-self: center;
-  background-image: radial-gradient(circle, color-mix(in srgb, var(--text) 26%, transparent) .8px, transparent 1.1px);
-  background-size: 5px 2px; background-repeat: repeat-x;
+  background: var(--border);
 }
 .co-aside-v { flex: none; font-size: 0.875rem; color: var(--text-bright); }
 .co-aside-foot { margin: 12px 0 0; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .03em; color: var(--text-secondary); }
