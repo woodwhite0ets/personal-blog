@@ -1,11 +1,10 @@
 <template>
   <CompanyShell>
     <div class="co-main">
-      <section class="co-sec">
-        <h1 class="co-page-title">联系</h1>
-        <p class="co-lead">说清背景、目标和时间预期，一般一天内回。</p>
-      </section>
-
+      <CompanyMasthead
+        title="联系"
+        lead="说清背景、目标和时间预期，一般一天内回。"
+      />
       <section class="co-sec">
         <CompanySecHead title="怎么合作" note="TERMS" />
         <div class="co-grid co-grid-2">
@@ -36,5 +35,6 @@
 
 <script setup>
 import CompanyShell from './CompanyShell.vue'
+import CompanyMasthead from './CompanyMasthead.vue'
 import CompanySecHead from './CompanySecHead.vue'
 </script>

@@ -129,6 +129,7 @@
               <span class="co-proof-sub">{{ c.subtitle }}</span>
               <span class="co-proof-result">{{ c.result }}</span>
               <span class="co-proof-period">{{ c.period }}</span>
+              <span class="co-proof-arrow" aria-hidden="true">→</span>
             </router-link>
           </li>
         </ul>
@@ -199,11 +200,16 @@
       <!-- CTA -->
       <section class="co-cta paper-field">
         <div class="co-cta-in">
-          <h2 class="co-cta-title">把你的想法说清楚，剩下的我来落地</h2>
-          <p class="co-cta-lead">邮件里写清背景、目标和时间预期就行，一般一天内回。</p>
+          <div class="co-cta-copy">
+            <h2 class="co-cta-title">把你的想法说清楚，剩下的我来落地</h2>
+            <p class="co-note">签合同 · 可开票 · 按阶段验收 · 数据可留在自己机器上</p>
+          </div>
           <!-- 联系方式直接摆出来，不做成按钮 -->
-          <p class="co-cta-mail"><a href="mailto:1903784785@qq.com">1903784785@qq.com</a></p>
-          <p class="co-note">签合同 · 可开票 · 按阶段验收 · 数据可留在自己机器上</p>
+          <div class="co-cta-contact">
+            <p class="co-cta-k">写邮件</p>
+            <p class="co-cta-mail"><a href="mailto:1903784785@qq.com">1903784785@qq.com</a></p>
+            <p class="co-cta-hint">邮件里写清背景、目标和时间预期就行，一般一天内回。</p>
+          </div>
         </div>
       </section>
     </div>

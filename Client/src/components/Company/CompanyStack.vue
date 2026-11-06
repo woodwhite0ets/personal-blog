@@ -1,17 +1,13 @@
 <template>
   <CompanyShell>
     <div class="co-main">
-      <section class="co-sec">
-        <h1 class="co-page-title">能力与基础设施</h1>
-        <p class="co-lead">不外包算力，也不把数据交出去：所有东西跑在自己的一台机器上。</p>
-      </section>
-
+      <CompanyMasthead
+        title="能力与基础设施"
+        lead="不外包算力，也不把数据交出去：所有东西跑在自己的一台机器上。"
+      />
       <section class="co-sec">
         <div class="co-infra">
-          <p class="co-infra-lead">
-            自己的机器，自己的链路：一台旧服务器上自托管模型、检索、CI 与知识库，7×24 在跑。
-            不需要向第三方买算力，也不把数据交出去。
-          </p>
+          <p class="co-infra-lead">自己的机器，自己的链路：一台旧服务器上自托管模型、检索、CI 与知识库，7×24 在跑。不需要向第三方买算力，也不把数据交出去。</p>
           <dl class="co-infra-facts">
             <div><dt>算力</dt><dd>24 核 / 62G / NVMe+1.8T，本地推理三实例</dd></div>
             <div><dt>检索</dt><dd>pgvector + 重排，知识库按项目分目录</dd></div>
@@ -35,5 +31,6 @@
 
 <script setup>
 import CompanyShell from './CompanyShell.vue'
+import CompanyMasthead from './CompanyMasthead.vue'
 import CompanySecHead from './CompanySecHead.vue'
 </script>

@@ -26,7 +26,7 @@
 }
 .co-page-title {
   margin: 0 0 18px; font-family: "Noto Serif SC", var(--font-serif); font-weight: 600;
-  font-size: clamp(2.1rem, 4vw, 3rem); line-height: 1.15; letter-spacing: -0.03em;
+  font-size: clamp(2.3rem, 4.6vw, 3.4rem); line-height: 1.12; letter-spacing: -0.032em;
   color: var(--text-bright); text-wrap: balance;
 }
 .co-lead { margin: 0; font-size: 1rem; line-height: 1.8; color: var(--text-secondary); max-width: 56ch; text-wrap: pretty; }
@@ -225,8 +225,8 @@
 .co-proof-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border-strong); }
 .co-proof-list li { border-bottom: 1px dotted var(--rule-dot-ink); }
 .co-proof-row {
-  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.5fr) minmax(0, 1.25fr) auto;
-  align-items: baseline; gap: 20px; padding: 16px 4px; text-decoration: none;
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.5fr) minmax(0, 1.25fr) auto auto;
+  align-items: baseline; gap: 20px; padding: 16px 0; text-decoration: none;
   transition: background-color var(--dur-hover) var(--ease-out);
 }
 .co-proof-row:hover { background: color-mix(in srgb, var(--text) 3%, transparent); }
@@ -234,7 +234,14 @@
 .co-proof-name { font-family: "Noto Serif SC", var(--font-serif); font-size: 1.0625rem; color: var(--text-bright); }
 .co-proof-sub { font-size: 0.8125rem; line-height: 1.6; color: var(--text-secondary); }
 .co-proof-result { font-family: var(--font-mono); font-size: 0.6875rem; line-height: 1.6; letter-spacing: .01em; color: var(--accent); }
-.co-proof-period { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .04em; color: var(--text-faint); white-space: nowrap; }
+.co-proof-period { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .04em; color: var(--text-faint); white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* 可点性线索：悬停/键盘聚焦时才浮出一枚箭头，不占常驻视觉 */
+.co-proof-arrow {
+  font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-faint);
+  opacity: 0; translate: -4px 0;
+  transition: opacity var(--dur-hover) var(--ease-out), translate var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out);
+}
+.co-proof-row:hover .co-proof-arrow, .co-proof-row:focus-visible .co-proof-arrow { opacity: 1; translate: 0 0; color: var(--accent); }
 .co-note-link { margin-left: 10px; color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
 .co-note-link:hover { border-color: var(--accent); }
 
@@ -287,18 +294,22 @@
 /* ---------- 结尾 CTA ---------- */
 .co-cta {
   position: relative; overflow: hidden;
-  margin-top: 72px; padding: 44px 40px 38px; border-radius: 8px;
+  margin-top: 96px; padding: 46px 44px 40px; border-radius: 8px;
   border: 1px solid var(--border-strong);
   background: var(--bg-elevated);
 }
-.co-cta-in { position: relative; z-index: 1; }
+.co-cta-in { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.co-cta-contact { border-left: 1px dotted var(--rule-dot-ink); padding-left: 44px; }
+.co-cta-k { margin: 0 0 12px; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .1em; color: var(--text-faint); }
+.co-cta-hint { margin: 14px 0 0; font-size: 0.875rem; line-height: 1.7; color: var(--text-secondary); max-width: 34ch; }
 .co-cta-title {
   margin: 0 0 10px; font-family: "Noto Serif SC", var(--font-serif); font-weight: 500;
   font-size: clamp(1.4rem, 2.6vw, 2rem); line-height: 1.25; letter-spacing: -0.02em;
   color: var(--text-bright); text-wrap: balance;
+  word-break: keep-all; overflow-wrap: anywhere; /* 中文标题不在词中间断开 */
 }
 .co-cta-lead { margin: 0; font-size: 0.9375rem; line-height: 1.75; color: var(--text-secondary); max-width: 56ch; }
-.co-cta-mail { margin: 22px 0 0; }
+.co-cta-mail { margin: 0; }
 .co-cta-mail a {
   font-family: var(--font-mono); font-size: clamp(1.05rem, 1.8vw, 1.375rem);
   letter-spacing: .01em; color: var(--text-bright); text-decoration: none;
@@ -316,7 +327,7 @@
 .co-cases { list-style: none; margin: 0; padding: 0; }
 .co-case { border-bottom: 1px dotted var(--rule-dot-ink); }
 .co-case:last-child { border-bottom: none; }
-.co-case-link { display: block; padding: 16px 4px; text-decoration: none; transition: background-color var(--dur-hover) var(--ease-out); }
+.co-case-link { display: block; padding: 16px 0; text-decoration: none; transition: background-color var(--dur-hover) var(--ease-out); }
 .co-case-link:hover { background: var(--overlay-a2); }
 .co-case-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .co-case-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
@@ -513,4 +524,57 @@
 
 @media (max-width: 560px) {
   .co-actions .co-btn { padding: 11px 16px; font-size: 0.75rem; }
+}
+
+/* ============================================================
+   视觉打磨（2026-11-06）
+   ① 子页报头：标题 + 引导句 + 一串事实，替代「标题直接怼在列表上」
+   ② CTA 双栏：文案与联系方式分列，联系方式不再是悬空的一行
+   ③ 列表可点性：悬停/聚焦才浮出箭头
+   ④ 页脚补品牌标记，与顶栏对齐
+   ============================================================ */
+.co-mast { padding-bottom: 30px; border-bottom: 1px solid var(--border-strong); }
+.co-mast .co-page-title { margin-bottom: 14px; max-width: 22ch; }
+.co-mast .co-lead { max-width: 58ch; }
+.co-mast-meta { display: flex; flex-wrap: wrap; margin: 34px 0 0; padding: 0; }
+.co-mast-item { display: flex; flex-direction: column; gap: 5px; padding: 0 30px; border-left: 1px dotted var(--rule-dot-ink); }
+.co-mast-item:first-child { padding-left: 0; border-left: none; }
+.co-mast-item dt { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .08em; color: var(--text-faint); }
+.co-mast-item dd {
+  margin: 0; font-family: "Noto Serif SC", var(--font-serif); font-size: 1.0625rem;
+  line-height: 1.25; color: var(--text-bright); font-variant-numeric: tabular-nums;
+}
+.co-mast + .co-sec { margin-top: 48px; }
+
+/* 页脚：标记 + 文案同一行起手 */
+.co-foot-id { display: flex; align-items: center; gap: 10px; }
+.co-foot-mark { display: block; height: 22px; width: auto; opacity: .85; }
+
+/* 案例列表：箭头只在悬停/聚焦时出现，与首页证据条同一套手感 */
+.co-case-go {
+  font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-faint);
+  opacity: 0; translate: -4px 0;
+  transition: opacity var(--dur-hover) var(--ease-out), translate var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out);
+}
+.co-case-link:hover .co-case-go, .co-case-link:focus-visible .co-case-go { opacity: 1; translate: 0 0; color: var(--accent); }
+
+@media (max-width: 900px) {
+  .co-proof-arrow, .co-case-go { display: none; }
+  .co-cta-in { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .co-cta-contact { border-left: none; padding-left: 0; border-top: 1px dotted var(--rule-dot-ink); padding-top: 24px; }
+}
+@media (max-width: 620px) {
+  .co-mast { padding-bottom: 24px; }
+  .co-mast-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 20px; margin-top: 26px; }
+  .co-mast-item { padding: 0; border-left: none; }
+  .co-cta { margin-top: 64px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .co-proof-arrow, .co-case-go { transition: none; translate: none; }
+}
+
+/* 正文段落：避免最后一行只剩一两个字（中文按字断行，孤字很常见） */
+.co-lead, .co-sec-lead, .co-infra-lead, .co-cta-lead, .co-cta-hint,
+.co-svc p, .co-std p, .co-faq-item p, .co-card p, .co-proof-v, .co-proof-sub, .co-case-sub {
+  text-wrap: pretty;
 }
