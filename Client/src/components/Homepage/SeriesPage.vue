@@ -101,7 +101,7 @@ onMounted(reload)
 </script>
 
 <style scoped>
-.series-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
+.series-page { min-height: 100dvh; background-color: var(--bg); color: var(--text); }
 .series-main { max-width: 1200px; margin: 0 auto; padding: 64px 24px 104px; }
 .series-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
 .series-kicker { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: .08em; color: var(--text-dim); }

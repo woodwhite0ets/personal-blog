@@ -535,7 +535,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.ad-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
+.ad-page { min-height: 100dvh; background-color: var(--bg); color: var(--text); }
 .ad-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 /* 页头 */
@@ -567,7 +567,7 @@ onMounted(async () => {
 .ad-tab:hover { color: var(--text); }
 .ad-tab.active { color: var(--text); border-color: var(--border); }
 .ad-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.ad-tool-link { font-size: 0.75rem; color: var(--text-faint); text-decoration: none; border-bottom: 1px dotted var(--border-strong); }
+.ad-tool-link { font-size: 0.75rem; color: var(--text-faint); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
 .ad-tool-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .ad-tool-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
@@ -594,7 +594,7 @@ onMounted(async () => {
 .ad-h2 {
   display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
   margin: 30px 0 14px; padding-bottom: 8px;
-  border-bottom: 1px dotted var(--rule-dot-ink);
+  border-bottom: 1px solid var(--border);
   font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600;
   letter-spacing: .08em; color: var(--text-secondary);
 }
@@ -616,7 +616,7 @@ onMounted(async () => {
 .ad-list { list-style: none; margin: 0; padding: 0; }
 .ad-row {
   display: grid; grid-template-columns: 34px 1fr; gap: 10px;
-  padding: 15px 4px; border-bottom: 1px dotted var(--rule-dot-ink);
+  padding: 15px 4px; border-bottom: 1px solid var(--border);
   transition: background-color var(--dur-hover) var(--ease-out);
   content-visibility: auto; contain-intrinsic-size: auto 92px;
 }

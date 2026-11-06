@@ -1,10 +1,7 @@
 import { createApp } from 'vue'
 import '@fontsource-variable/geist'
-import '@fontsource-variable/eb-garamond'
-import '@fontsource/noto-serif-sc/400.css'
-// 说明：未引入 noto-serif-sc/700。CJK 粗体仅少量 UI 小字使用，代价 237KB，改由浏览器合成粗体
-import '@fontsource-variable/caveat'
-import 'lxgw-wenkai-screen-webfont/lxgwwenkaigbscreen.css'
+// 2026-11 企业站改版：全站无衬线。西文只留 Geist，中文交给系统字体（PingFang / 微软雅黑 /
+// Noto Sans CJK），不再为标题下载 CJK 衬线（原本一次要 300KB+ 才显示得出）。
 import './style.css'
 import App from './App.vue'
 import router from './router/index.js'

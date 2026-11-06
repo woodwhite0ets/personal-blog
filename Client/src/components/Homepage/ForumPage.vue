@@ -631,7 +631,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   display: flex; align-items: center; gap: 6px;
   padding: 0 0 8px;
   background: none;
-  border-bottom: 1px dotted var(--rule-dot-ink);
+  border-bottom: 1px solid var(--border);
 }
 
 .panel-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -666,7 +666,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   display: flex; align-items: center; gap: 8px;
   padding: 10px 16px; margin-bottom: 20px;
   background: transparent;
-  border-bottom: 1px dotted var(--rule-dot-ink);
+  border-bottom: 1px solid var(--border);
   border-top: none; border-left: none; border-right: none;
   border-radius: 6px; font-size: 0.75rem;
 }
@@ -677,7 +677,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   margin-bottom: 16px;
   padding: 10px 16px;
   background: transparent;
-  border-bottom: 1px dotted var(--rule-dot-ink);
+  border-bottom: 1px solid var(--border);
   border-top: none; border-left: none; border-right: none;
   border-radius: 6px;
 }
@@ -774,7 +774,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 /* 信笺统一：侧栏改为无卡片发丝线块（与首页右栏一致）*/
 .sidebar { gap: 0; }
-.sidebar-panel { background: transparent; border: none; border-bottom: 1px dotted var(--rule-dot-ink); border-radius: 0; box-shadow: none; padding: 0 0 24px; margin-bottom: 24px; }
+.sidebar-panel { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; box-shadow: none; padding: 0 0 24px; margin-bottom: 24px; }
 .sidebar-panel:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
 .panel-bar { border-bottom: none; background: transparent; padding: 0 0 12px; }
 .panel-body { padding: 0; }

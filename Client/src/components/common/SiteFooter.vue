@@ -70,7 +70,7 @@ defineProps({ command: { type: String, required: false, default: '' } })
   gap: 32px;
 }
 .footer-brand-col { display: flex; flex-direction: column; gap: 8px; max-width: 34ch; }
-.footer-wordmark { font-family: var(--font-serif); font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--text-bright); }
+.footer-wordmark { font-family: var(--font-display); font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--text-bright); }
 .footer-tagline { margin: 0; font-size: 0.8125rem; line-height: 1.7; color: var(--text-secondary); }
 .footer-status-line {
   display: inline-flex; align-items: center; gap: 7px; margin-top: 4px;
@@ -89,7 +89,7 @@ defineProps({ command: { type: String, required: false, default: '' } })
 
 .footer-bottom {
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-  margin-top: 32px; padding-top: 16px; border-top: 1px dotted var(--border);
+  margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border);
   font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .03em; color: var(--text-faint);
 }
 .beian-link { font-size: 0.6875rem; color: var(--text-faint); text-decoration: none; transition: color .2s; }

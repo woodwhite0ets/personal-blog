@@ -142,7 +142,7 @@ onMounted(async () => {
   margin: 22px 0 0; padding: 0;
 }
 .year-num {
-  font-family: "Noto Serif SC", var(--font-serif);
+  font-family: var(--font-display);
   font-size: 1.75rem; font-weight: 500; letter-spacing: -0.02em;
   line-height: 1; color: var(--text-bright); font-variant-numeric: tabular-nums;
 }
@@ -152,9 +152,9 @@ onMounted(async () => {
   grid-column: 2; grid-row: 1;
   display: flex; flex-direction: column;
   margin: 22px 0 0; padding-left: 24px;
-  border-left: 1px dotted var(--rule-dot-ink);
+  border-left: 1px solid var(--border);
 }
-.archive-item { display: flex; align-items: baseline; gap: 24px; padding: 11px 4px; text-decoration: none; border-bottom: 1px dotted var(--rule-dot-ink); transition: background-color var(--dur-hover) var(--ease-out); }
+.archive-item { display: flex; align-items: baseline; gap: 24px; padding: 11px 4px; text-decoration: none; border-bottom: 1px solid var(--border); transition: background-color var(--dur-hover) var(--ease-out); }
 .archive-item:hover { background: var(--overlay-a2); }
 .archive-item:last-child { border-bottom: none; }
 .arch-date { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em; color: var(--text-faint); min-width: 96px; font-variant-numeric: tabular-nums; }

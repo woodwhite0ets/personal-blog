@@ -65,7 +65,7 @@ onMounted(async () => {
 .ai-snip-list { list-style: none; margin: 0; padding: 0; }
 .ai-snip-item {
   display: grid; grid-template-columns: 30px 1fr auto; gap: 0 14px;
-  align-items: baseline; padding: 10px 2px; border-top: 1px dotted var(--rule-dot-ink);
+  align-items: baseline; padding: 10px 2px; border-top: 1px solid var(--border);
 }
 .ai-snip-item:last-child { border-bottom: none; }
 .ai-snip-rank {
@@ -85,7 +85,7 @@ onMounted(async () => {
   display: none;
 }
 .ai-snip-item.lead .ai-snip-name {
-  font-family: "Noto Serif SC", var(--font-serif);
+  font-family: var(--font-display);
   font-size: clamp(1.5rem, 2.4vw, 2rem);
   font-weight: 600;
   letter-spacing: -0.025em;

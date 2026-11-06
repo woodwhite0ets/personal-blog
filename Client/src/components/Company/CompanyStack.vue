@@ -18,7 +18,7 @@
       </section>
 
       <section class="co-sec">
-        <CompanySecHead title="这套东西能带来什么" note="WHY" />
+        <CompanySecHead title="这套东西能带来什么" />
         <ul class="co-proof">
           <li><span class="co-proof-k">交付速度</span><span class="co-proof-v">依赖本地模型与自建 CI，不用等第三方额度，改动当天能上线。</span></li>
           <li><span class="co-proof-k">数据边界</span><span class="co-proof-v">模型与检索都在自己机器上，敏感数据不出内网。</span></li>

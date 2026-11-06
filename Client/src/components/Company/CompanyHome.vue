@@ -9,8 +9,8 @@
           <h1 class="co-title">把 AI 接进你的业务，<br /><span class="co-title-key">做到能上线</span></h1>
           <p class="co-lead">从需求、数据、模型到部署与巡检，一个人跟到底。签合同、按阶段验收、可开票。</p>
           <div class="co-actions">
-            <a class="co-btn co-btn-solid" href="mailto:1903784785@qq.com">说说你的项目</a>
-            <router-link class="co-btn" to="/work">看 {{ caseCount }} 个案例</router-link>
+            <router-link class="co-btn co-btn-solid" to="/work">看 {{ caseCount }} 个案例</router-link>
+            <a class="co-btn" href="mailto:1903784785@qq.com">说说你的项目</a>
           </div>
           <ul class="co-stack-strip" aria-label="在用的技术">
             <li>Vue 3</li><li>Node.js</li><li>MySQL</li><li>向量检索</li><li>自建推理</li>
@@ -59,7 +59,7 @@
 
       <!-- 01 能接的活 -->
       <section id="scope" class="co-sec">
-        <CompanySecHead title="能接的活" note="SCOPE" />
+        <CompanySecHead title="能接的活" />
         <div class="co-cards">
           <article class="co-svc"><div class="co-svc-in paper-field">
             <h3>知识库与检索</h3>
@@ -91,14 +91,14 @@
           <article class="co-svc co-svc-cta"><div class="co-svc-in paper-field">
             <h3>不确定属于哪一类？</h3>
             <p>把背景和目标发我，先判断值不值得做。</p>
-            <a class="co-svc-link" href="mailto:1903784785@qq.com">写信描述需求</a>
+            <router-link class="co-svc-link" to="/contact">聊聊你的场景</router-link>
           </div></article>
         </div>
       </section>
 
       <!-- 02 交付标准 -->
       <section id="standard" class="co-sec">
-        <CompanySecHead title="三项交付标准" note="STANDARD" />
+        <CompanySecHead title="三项交付标准" />
         <p class="co-sec-lead">每个项目都按这三条验收，写进合同，不是口头承诺。</p>
         <div class="co-standards">
           <div class="co-std">
@@ -121,7 +121,7 @@
 
       <!-- 案例证据 -->
       <section id="proof" class="co-sec">
-        <CompanySecHead title="做过的几个" note="PROOF" />
+        <CompanySecHead title="做过的几个" />
         <ul class="co-proof-list">
           <li v-for="c in proofCases" :key="c.slug">
             <router-link :to="`/work/${c.slug}`" class="co-proof-row">
@@ -138,7 +138,7 @@
 
       <!-- 03 为什么这样交付 -->
       <section class="co-sec">
-        <CompanySecHead title="为什么这样交付" note="WHY" />
+        <CompanySecHead title="为什么这样交付" />
         <div class="mkt-compare">
           <div class="paper-field"><h3>常见做法</h3><ul><li>先买一堆 SaaS，接口对不上再改</li><li>模型按次计费，用量一涨成本失控</li><li>数据交给第三方 API</li><li>交付一个演示，上线还要再找人</li></ul></div>
           <div class="paper-field"><h3>我的做法</h3><ul><li>先跑通最窄的一条链路，再扩</li><li>自建推理，固定硬件成本</li><li>数据留在自己的机器上</li><li>交付到能上线，含监控与运行手册</li></ul></div>
@@ -147,7 +147,7 @@
 
       <!-- 04 怎么开始 -->
       <section id="process" class="co-sec">
-        <CompanySecHead title="怎么开始" note="PROCESS" />
+        <CompanySecHead title="怎么开始" />
         <ol class="mkt-steps">
           <li class="paper-field"><span>第 1 步</span><h3>聊一次</h3><p>背景、目标、时间点。不收费，需求不清晰也可以先聊。</p></li>
           <li class="paper-field"><span>第 2 步</span><h3>给方案与报价</h3><p>拆成阶段，每段有产物和验收标准，写清不做什么。</p></li>
@@ -158,7 +158,7 @@
 
       <!-- 05 合作方式 -->
       <section id="pricing" class="co-sec">
-        <CompanySecHead title="合作方式" note="TERMS" />
+        <CompanySecHead title="合作方式" />
         <table class="mkt-table">
           <thead><tr><th>方式</th><th>适合</th><th>怎么算</th></tr></thead>
           <tbody>
@@ -172,7 +172,7 @@
 
       <!-- 06 常见问题 -->
       <section id="faq" class="co-sec">
-        <CompanySecHead title="常见问题" note="FAQ" />
+        <CompanySecHead title="常见问题" />
         <div class="co-faq">
           <details class="co-faq-item" open>
             <summary>报价怎么算？</summary>

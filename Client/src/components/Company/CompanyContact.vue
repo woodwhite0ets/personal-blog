@@ -6,7 +6,7 @@
         lead="说清背景、目标和时间预期，一般一天内回。"
       />
       <section class="co-sec">
-        <CompanySecHead title="怎么合作" note="TERMS" />
+        <CompanySecHead title="怎么合作" />
         <div class="co-grid co-grid-2">
           <div class="co-card">
             <h3>按项目</h3>
@@ -21,7 +21,7 @@
       </section>
 
       <section class="co-sec">
-        <CompanySecHead title="联系方式" note="CONTACT" />
+        <CompanySecHead title="联系方式" />
         <p class="co-lead">邮件里写清背景、目标和时间预期就行；微信适合先把需求聊粗。</p>
         <dl class="co-contact-list">
           <div class="co-contact-line"><dt>邮箱</dt><dd><a href="mailto:1903784785@qq.com">1903784785@qq.com</a></dd></div>

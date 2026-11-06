@@ -138,19 +138,17 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   border-bottom: 1px solid var(--border);
 }
 .navbar-inner {
-  max-width: 1120px; margin: 0 auto; padding: 0 28px;
-  height: 74px; display: flex; align-items: center; gap: 38px;
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+  height: 64px; display: flex; align-items: center; gap: 40px;
 }
 .brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; text-decoration: none; font-size: 0.875rem; font-weight: 600; }
 .brand-bracket { color: var(--text-muted); }
-.brand-text { font-family: "EB Garamond Variable", "Noto Serif SC", Georgia, serif; font-size: 1.375rem; letter-spacing: -0.01em; color: var(--text-bright); white-space: nowrap; }
+.brand-text { font-family: var(--font-display); font-size: 1.1875rem; font-weight: 600; letter-spacing: -0.02em; color: var(--text-bright); white-space: nowrap; }
 .brand-caret { color: var(--accent); font-size: 0.75rem; margin-left: 1px; }
 .brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
-.nav-links { display: flex; gap: 28px; flex: 1; }
-.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 0.9375rem; font-weight: 400; color: var(--text-secondary); transition: color var(--dur-hover) var(--ease-out); position: relative; white-space: nowrap; }
-.nav-num { color: var(--text-faint); font-size: 0.625rem; font-weight: 700; }
+.nav-links { display: flex; gap: 32px; flex: 1; }
+.nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 0.9375rem; font-weight: 450; color: var(--text-secondary); transition: color var(--dur-hover) var(--ease-out); position: relative; white-space: nowrap; }
 .nav-links a:hover, .nav-links a.router-link-active { color: var(--text-bright); }
-.nav-links a.router-link-active .nav-num { color: var(--accent); }
 .nav-links a::after {
   content: ''; position: absolute; left: 0; bottom: -4px;
   width: 100%; height: 1px; background: var(--text-bright);
@@ -159,9 +157,9 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 }
 .nav-links a:hover::after, .nav-links a.router-link-active::after { transform: scaleX(1); }
 .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.btn-login { padding: 8px 18px; font: inherit; font-size: 0.875rem; font-weight: 400; color: var(--text-bright); text-decoration: none; border: 1px solid var(--border-strong); border-radius: 4px; transition: color .25s, background-color .25s, border-color .25s, opacity .25s, transform .25s, box-shadow .25s(--ease-spring); }
+.btn-login { display: inline-flex; align-items: center; height: 38px; padding: 0 16px; font: inherit; font-size: 0.875rem; font-weight: 500; color: var(--text-bright); text-decoration: none; border: 1px solid var(--border-strong); border-radius: 8px; transition: color .2s var(--ease-out), background-color .2s var(--ease-out), border-color .2s var(--ease-out); }
 .btn-login:hover { background: var(--text-bright); color: var(--bg); border-color: var(--text-bright); }
-.btn-write { display: flex; align-items: center; gap: 6px; padding: 9px 18px; font: inherit; font-size: 0.875rem; font-weight: 400; color: var(--bg); background: var(--text-bright); border-radius: 4px; text-decoration: none; transition: color .25s, background-color .25s, border-color .25s, opacity .25s, transform .25s, box-shadow .25s(--ease-spring); }
+.btn-write { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 18px; font: inherit; font-size: 0.875rem; font-weight: 500; color: var(--bg); background: var(--text-bright); border-radius: 8px; text-decoration: none; transition: color .2s var(--ease-out), background-color .2s var(--ease-out); }
 .btn-write:hover { background: var(--accent); color: var(--on-accent); }
 .btn-write-icon { font-size: 0.9375rem; font-weight: 700; }
 .user-menu-wrap { position: relative; }
@@ -176,7 +174,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 .dropdown-item.admin-link:hover { background: var(--accent-a6); }
 .dropdown-item.logout:hover { color: var(--err); }
 .dropdown-icon { font-size: 0.8125rem; }
-.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; background: none; border: 1px solid var(--border-strong); border-radius: 10px; cursor: pointer; padding: 0; }
 .nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
@@ -239,5 +237,6 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 .nav-links .nav-drawer-auth { display: none; }
 @media (max-width: 768px) {
   .nav-links .nav-drawer-auth { display: block; font-size: 0.875rem; padding: 14px 6px 0; color: var(--accent); }
+  .nav-actions .btn-write, .nav-actions .btn-login { height: 44px; }
 }
 </style>

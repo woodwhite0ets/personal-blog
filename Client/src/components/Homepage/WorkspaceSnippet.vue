@@ -213,14 +213,14 @@ const groups = [
   margin: 0 0 10px; padding-bottom: 7px;
   font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600;
   letter-spacing: .08em; color: var(--text-secondary);
-  border-bottom: 1px dotted var(--rule-dot-ink);
+  border-bottom: 1px solid var(--border);
 }
 .ws-group-idx { color: var(--text-faint); font-weight: 400; }
 .ws-list { margin: 0; padding: 0; }
 .ws-item {
   display: grid; grid-template-columns: 1fr; gap: 2px;
   padding: 8px 0; align-items: baseline;
-  border-bottom: 1px dotted color-mix(in srgb, var(--rule-dot-ink) 55%, transparent);
+  border-bottom: 1px solid var(--border);
 }
 .ws-item:last-child { border-bottom: none; }
 .ws-name {

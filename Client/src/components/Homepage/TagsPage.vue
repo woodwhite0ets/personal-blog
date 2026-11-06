@@ -57,7 +57,7 @@ onMounted(async () => {
 .tag-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; }
 .tag-row {
   display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
-  padding: 13px 4px; border-bottom: 1px dotted var(--rule-dot-ink); text-decoration: none;
+  padding: 13px 4px; border-bottom: 1px solid var(--border); text-decoration: none;
   transition: background-color var(--dur-hover) var(--ease-out);
   border-radius: 3px;
 }

@@ -129,7 +129,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.now-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
+.now-page { min-height: 100dvh; background-color: var(--bg); color: var(--text); }
 .now-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 .now-head { padding-bottom: 22px; }
@@ -150,7 +150,7 @@ onMounted(async () => {
 .now-list li {
   display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
   padding: 11px 2px; font-size: 0.9375rem; color: var(--text);
-  border-bottom: 1px dotted var(--rule-dot-ink);
+  border-bottom: 1px solid var(--border);
 }
 .now-link { color: var(--text-bright); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
 .now-link:hover { color: var(--text-bright); border-color: var(--text-bright); }

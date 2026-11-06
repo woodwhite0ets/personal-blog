@@ -131,7 +131,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.notes-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
+.notes-page { min-height: 100dvh; background-color: var(--bg); color: var(--text); }
 .notes-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 .notes-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); }

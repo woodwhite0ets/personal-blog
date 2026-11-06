@@ -44,7 +44,7 @@ const COMPANY = SITE.company
 
 
 <style scoped>
-.pl-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
+.pl-page { min-height: 100dvh; background-color: var(--bg); color: var(--text); }
 .pl-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 .pl-head { padding-bottom: 24px; border-bottom: 1px solid var(--border); }
 .pl-kicker { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: .08em; color: var(--text-dim); }

@@ -975,7 +975,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .pop-list { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--border-strong); }
 .pop-item {
   display: grid; grid-template-columns: 34px minmax(0, 1fr) 92px 84px; align-items: baseline; gap: 14px;
-  padding: 12px 2px; border-bottom: 1px dotted var(--border); text-decoration: none;
+  padding: 12px 2px; border-bottom: 1px solid var(--border); text-decoration: none;
   transition: background-color var(--dur-hover) var(--ease-out);
 }
 .pop-item:hover { background: var(--overlay-a2); }

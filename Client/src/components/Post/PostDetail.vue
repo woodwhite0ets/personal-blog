@@ -806,7 +806,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 }
 
 .post-title {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: clamp(2rem, 3.4vw, 2.75rem); font-weight: 600; line-height: 1.28;
   color: var(--text-bright); margin: 0 0 22px; letter-spacing: -0.025em;
   text-wrap: balance;
@@ -836,11 +836,11 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .author-name { font-size: 0.8125rem; font-weight: 600; color: var(--text-secondary); }
 
 .meta-sep { width: 1px; height: 12px; background: var(--border); }
-.meta-item { font-size: 0.6875rem; color: var(--text-muted); }
+.meta-item { font-size: 0.75rem; color: var(--text-muted); }
 
 /* ====== Markdown 正文（排版统一走全局 .markdown-body） ====== */
 .post-content {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: 1.0625rem;
   color: var(--text);
 }
@@ -922,7 +922,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .author-card-nick { font-size: 0.75rem; color: var(--text-dim); }
 
-.author-card-bio { font-size: 0.6875rem; color: var(--text-muted); }
+.author-card-bio { font-size: 0.75rem; color: var(--text-muted); }
 
 .author-card-arrow { font-size: 1rem; color: var(--text-muted); font-weight: 700; }
 
@@ -941,7 +941,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .section-prompt { color: var(--accent); font-weight: 700; font-size: 0.8125rem; }
 .section-title { flex: 1; font-size: 0.8125rem; font-weight: 600; color: var(--text); }
-.section-count { font-size: 0.6875rem; color: var(--text-muted); margin-left: auto; }
+.section-count { font-size: 0.75rem; color: var(--text-muted); margin-left: auto; }
 
 .comment-form { margin-bottom: 24px; }
 .comment-textarea {
@@ -978,7 +978,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .comment-err {
   display: block; margin-top: 6px;
-  font-size: 0.6875rem; color: var(--err);
+  font-size: 0.75rem; color: var(--err);
 }
 
 .comment-login-hint {
@@ -1019,10 +1019,10 @@ onBeforeUnmount(() => { resetSeoMeta() })
   display: flex; align-items: center; gap: 12px; margin-top: 8px;
 }
 .btn-reply {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 .btn-reply:hover { color: var(--accent); }
-.reply-count { font-size: 0.6875rem; color: var(--text-faint); }
+.reply-count { font-size: 0.75rem; color: var(--text-faint); }
 .btn-comment-delete {
   font-size: 0.625rem;
 }
@@ -1032,7 +1032,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .reply-list { margin-top: 12px; padding-left: 16px; border-left: 1px solid var(--border); }
 .reply-item { border-bottom: none; padding: 10px 0; }
-.reply-avatar { width: 26px; height: 26px; font-size: 0.6875rem; }
+.reply-avatar { width: 26px; height: 26px; font-size: 0.75rem; }
 
 .comment-empty {
   display: flex; flex-direction: column; align-items: center;
@@ -1118,7 +1118,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   color: var(--text-faint);
   border: 1px solid var(--border-strong);
   border-radius: 999px;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 
 .toc-list {
@@ -1179,7 +1179,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 /* ===== 信笺风覆盖（2026-10-11）===== */
 .post-article { max-width: 700px; padding: 96px 24px 40px; }
 .post-title { margin-bottom: 22px; }
-.post-meta-line, .post-meta-top { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em; color: var(--text-faint); gap: 14px; }
+.post-meta-line, .post-meta-top { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .04em; color: var(--text-faint); gap: 14px; }
 .post-tag { border-radius: 3px; padding: 2px 9px; font-size: 0.8125rem; }
 .comment-list, .comment-item { border-color: var(--border); }
 .comment-item { border-radius: 4px; }
@@ -1232,11 +1232,11 @@ onBeforeUnmount(() => { resetSeoMeta() })
 .cover-img { max-height: 360px; border-bottom: 1px solid var(--border); }
 .post-article, .comment-section, .author-card { max-width: 1000px; margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; }
 .post-article { padding-top: 64px; padding-bottom: 40px; }
-.post-title { font-family: "Noto Serif SC", var(--font-serif); font-weight: 500; font-size: clamp(2.1rem, 3.6vw, 3rem); line-height: 1.26; letter-spacing: -0.025em; text-align: left; padding-bottom: 18px; margin: 0 0 18px; text-wrap: balance; }
+.post-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.1rem, 3.6vw, 3rem); line-height: 1.26; letter-spacing: -0.025em; text-align: left; padding-bottom: 18px; margin: 0 0 18px; text-wrap: balance; }
 .post-meta-top { margin-bottom: 14px; }
 .post-tag, .post-badge { text-transform: none; letter-spacing: 0; border-radius: 0; padding: 0; }
 .post-meta-line { font-variant-numeric: tabular-nums; margin-bottom: 44px; padding-bottom: 18px; }
-.post-content { max-width: 760px; }
+.post-content { max-width: 40em; }
 .post-actions { border-top: 1px solid var(--border); }
 .btn, .btn-write, .toc-toggle { border-radius: 0; box-shadow: none; }
 .author-card { margin-bottom: 56px; }
@@ -1306,7 +1306,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
   display: flex; align-items: center; gap: 6px;
   margin: 0 0 14px; justify-content: flex-end;
 }
-.font-tools-label { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .06em; color: var(--text-faint); margin-right: 2px; }
+.font-tools-label { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .06em; color: var(--text-faint); margin-right: 2px; }
 .font-btn {
   border: 1px solid var(--border-strong); background: transparent;
   color: var(--text-dim); font-size: 0.75rem; line-height: 1;
@@ -1330,7 +1330,7 @@ onBeforeUnmount(() => { resetSeoMeta() })
 
 .post-content pre .code-copy {
   position: absolute; top: 8px; right: 8px; z-index: 2;
-  font-size: 0.6875rem; line-height: 1; padding: 5px 9px;
+  font-size: 0.75rem; line-height: 1; padding: 5px 9px;
   border-radius: 5px; cursor: pointer;
   color: var(--text-dim); background: var(--bg-float, var(--bg-elevated));
   border: 1px solid var(--border-strong);

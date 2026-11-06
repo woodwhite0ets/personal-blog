@@ -229,7 +229,7 @@ onMounted(reload)
 </script>
 
 <style scoped>
-.tl-page { min-height: 100vh; background-color: var(--bg); color: var(--text); }
+.tl-page { min-height: 100dvh; background-color: var(--bg); color: var(--text); }
 .tl-main { max-width: var(--page-w); margin: 0 auto; padding: 64px var(--page-pad) 104px; }
 
 .tl-head { padding-bottom: 18px; border-bottom: 1px solid var(--border); }
@@ -321,7 +321,7 @@ onMounted(reload)
 .tl-gain { color: var(--ok); margin-left: 2px; }
 
 .tl-tagline {
-  margin: 0; font-family: var(--font-serif); font-size: 1.0625rem; line-height: 1.55; color: var(--text-bright);
+  margin: 0; font-family: var(--font-display); font-size: 1.0625rem; line-height: 1.55; color: var(--text-bright);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   text-wrap: pretty;
 }
