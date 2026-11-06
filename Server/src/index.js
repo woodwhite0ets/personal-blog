@@ -248,6 +248,8 @@ app.use(async (req, res, next) => {
       return res.send(html);
     } catch (e) { /* fall back to static index.html */ }
   }
+  // 案例详情 slug 不存在时状态码要诚实：页面自己会渲染「没找到这个案例」，别让它变成软 404
+  if (/^\/work\/[^/]+$/.test(cleanPath)) return res.status(404).sendFile(indexPath);
   return res.sendFile(indexPath);
 });
 
