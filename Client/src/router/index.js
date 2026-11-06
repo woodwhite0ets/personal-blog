@@ -59,6 +59,11 @@ const routes = [
     component: () => import('../components/Company/CompanyWork.vue'),
   },
   {
+    path: '/work/:slug',
+    name: 'CompanyWorkDetail',
+    component: () => import('../components/Company/CompanyWorkDetail.vue'),
+  },
+  {
     path: '/stack',
     name: 'CompanyStack',
     component: () => import('../components/Company/CompanyStack.vue'),
@@ -220,14 +225,31 @@ const routes = [
 let initialNav = true
 
 
-// 带 #锚点：目标节点可能随懒加载路由晚一帧才挂上，先找不到就短暂轮询再滚
+// 带 #锚点：目标节点可能随懒加载路由晚一帧才挂上，先找不到就短暂轮询再滚。
+// 落点用「布局位置」而不是 getBoundingClientRect：公司站章节挂了滚动驱动动画
+// （animation-timeline: view()），视口外的章节带 translateY(28px)，按 rect 算会多滚 28px。
+const HASH_OFFSET = 84
+function hashPosition(hash) {
+  let el
+  try { el = document.querySelector(hash) } catch { return null }
+  if (!el) return null
+  let ty = 0
+  const t = getComputedStyle(el).transform
+  if (t && t !== 'none') {
+    try { ty = new DOMMatrixReadOnly(t).m42 } catch { ty = 0 }
+  }
+  const layoutTop = el.getBoundingClientRect().top + window.scrollY - ty
+  return { top: Math.max(0, Math.round(layoutTop - HASH_OFFSET)) }
+}
+
 function scrollToHash(hash) {
-  const found = () => { try { return document.querySelector(hash) } catch { return null } }
-  if (found()) return { el: hash, top: 84 }
+  const now = hashPosition(hash)
+  if (now) return now
   return new Promise((resolve) => {
     const t0 = performance.now()
     const tick = () => {
-      if (found()) return resolve({ el: hash, top: 84 })
+      const pos = hashPosition(hash)
+      if (pos) return resolve(pos)
       // 找不到就什么都不做；以前这里回 {top:0}，等于把正在往下滑的人拽回顶部
       if (performance.now() - t0 > 800) return resolve(false)
       requestAnimationFrame(tick)

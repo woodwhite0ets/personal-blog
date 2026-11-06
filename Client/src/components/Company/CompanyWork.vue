@@ -14,7 +14,7 @@
       <section class="co-sec">
         <ul class="co-cases">
           <li v-for="p in cases" :key="p.slug" class="co-case">
-            <router-link :to="`/projects/${p.slug}`" class="co-case-link">
+            <router-link :to="`/work/${p.slug}`" class="co-case-link">
               <span class="co-case-head">
                 <span class="co-case-name">{{ p.name }}</span>
                 <span class="co-case-status">{{ p.status }}</span>
@@ -26,7 +26,7 @@
             </router-link>
           </li>
         </ul>
-        <p class="co-note">想看某个项目的完整过程，点进项目页（在博客站打开）；技术细节写在博客里。</p>
+        <p class="co-note">想看某个项目的完整过程，点进项目页；技术细节写在博客里。</p>
       </section>
     </div>
   </CompanyShell>

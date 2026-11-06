@@ -40,6 +40,39 @@ function loadRouteMetaTable() {
   return routeMetaPromise;
 }
 
+// 案例详情 /work/:slug：标题与摘要来自项目档案，单一真源也在客户端数据文件里
+const PROJECTS_MODULE = path.join(__dirname, '../../Client/src/data/projects.js');
+const COMPANY_URL = (process.env.COMPANY_URL || 'https://woodwhite.top').replace(/\/+$/, '');
+let projectsPromise = null;
+function loadProjects() {
+  if (!projectsPromise) {
+    projectsPromise = import(pathToFileURL(PROJECTS_MODULE).href)
+      .then((mod) => mod.projects || [])
+      .catch((e) => {
+        console.error('[seo] projects 加载失败:', e.message);
+        return [];
+      });
+  }
+  return projectsPromise;
+}
+
+// 命中返回 meta 对象，slug 不存在返回 null（交给默认页面）
+async function caseMeta(pathname) {
+  const m = pathname.match(/^\/work\/([^/]+)$/);
+  if (!m) return null;
+  let slug;
+  try { slug = decodeURIComponent(m[1]); } catch (e) { return null; }
+  const list = await loadProjects();
+  const p = list.find((x) => x.slug === slug);
+  if (!p) return null;
+  const desc = String(p.summary || '').replace(/\s+/g, ' ').trim().slice(0, 160);
+  return {
+    title: `${p.name} — 案例 · 木白 woodwhite`,
+    description: desc || `${p.name}：${p.subtitle}`,
+    canonical: `${COMPANY_URL}/work/${encodeURIComponent(p.slug)}`,
+  };
+}
+
 function applyRouteMeta(html, meta) {
   const t = escapeHtml(meta.title);
   const d = escapeHtml(meta.description);
@@ -59,6 +92,9 @@ async function renderSeoHtml(req, baseHtml) {
   const ROUTE_META = await loadRouteMetaTable();
   const routeMeta = ROUTE_META[req.path === '' ? '/' : req.path.replace(/\/+$/, '') || '/'];
   if (routeMeta) return applyRouteMeta(baseHtml, routeMeta);
+
+  const caseInfo = await caseMeta(req.path === '' ? '/' : req.path.replace(/\/+$/, '') || '/');
+  if (caseInfo) return applyRouteMeta(baseHtml, caseInfo);
 
   const m = req.path.match(/^\/post\/([^/]+)\/?$/);
   if (!m) return baseHtml;
@@ -97,7 +133,8 @@ async function renderSeoHtml(req, baseHtml) {
 
 async function hasRouteMeta(pathname) {
   const table = await loadRouteMetaTable();
-  return Object.prototype.hasOwnProperty.call(table, pathname);
+  if (Object.prototype.hasOwnProperty.call(table, pathname)) return true;
+  return Boolean(await caseMeta(pathname));
 }
 
-module.exports = { renderSeoHtml, hasRouteMeta };
+module.exports = { renderSeoHtml, hasRouteMeta, loadProjects };

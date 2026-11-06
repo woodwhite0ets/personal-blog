@@ -16,10 +16,9 @@ function setMeta(selector, attr, value) {
   el.setAttribute(attr, value)
 }
 
-export function applyRouteMeta(path) {
-  const meta = findRouteMeta(path)
-  if (!meta) return // 文章页等自行接管，不要覆盖
-
+// 动态页面（案例详情等）自己算 meta，也走这一套
+export function applyPageMeta(meta) {
+  if (!meta) return
   document.title = meta.title
   setMeta('meta[name="description"]', 'content', meta.description)
   setMeta('meta[property="og:title"]', 'content', meta.title)
@@ -28,4 +27,8 @@ export function applyRouteMeta(path) {
   setMeta('meta[name="twitter:title"]', 'content', meta.title)
   setMeta('meta[name="twitter:description"]', 'content', meta.description)
   setMeta('link[rel="canonical"]', 'href', meta.canonical)
+}
+
+export function applyRouteMeta(path) {
+  applyPageMeta(findRouteMeta(path)) // 表里没有的路径（文章页等）自行接管，不要覆盖
 }

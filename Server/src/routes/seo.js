@@ -1,5 +1,6 @@
 const express = require('express');
 const pool = require('../config/db');
+const { loadProjects } = require('../injectSeo');
 
 const router = express.Router();
 
@@ -97,8 +98,11 @@ ${body}
 router.get('/sitemap.xml', async (req, res) => {
   try {
     if (isCompanyHost(req.hostname)) {
-      // 公司站只有四个页面，且都不会被 SPA 二次跳转
-      const entries = ['/', '/work', '/stack', '/contact'].map((p) => ({ loc: COMPANY_URL + p }));
+      // 四个固定页 + 每个案例详情（slug 来自项目档案，和页面用同一份数据）
+      const cases = (await loadProjects()).map((p) => ({ loc: `${COMPANY_URL}/work/${encodeURIComponent(p.slug)}` }));
+      const entries = ['/', '/work', '/stack', '/contact']
+        .map((p) => ({ loc: COMPANY_URL + p }))
+        .concat(cases);
       res.set('Content-Type', 'application/xml; charset=utf-8');
       return res.send(sitemapXml(entries));
     }

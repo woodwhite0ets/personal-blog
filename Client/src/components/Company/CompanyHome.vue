@@ -2,7 +2,7 @@
   <CompanyShell>
     <!-- 首屏：与博客同一套「印在纸上的画」背景 + 左文 + 右交付清单 -->
     <section class="hero-band co-hero-band">
-      <HeroBackdrop session-key="company-hero-art" :art-count="5" />
+      <HeroBackdrop session-key="company-hero-art" fixed-art="7" />
       <div class="hero-in co-hero-in">
         <div class="co-hero-main">
           <p class="co-badge"><span class="co-badge-dot" aria-hidden="true"></span>浙江乐清 · 可开票 · 一天内回信</p>
@@ -124,7 +124,7 @@
         <CompanySecHead title="做过的几个" note="PROOF" />
         <ul class="co-proof-list">
           <li v-for="c in proofCases" :key="c.slug">
-            <router-link :to="`/projects/${c.slug}`" class="co-proof-row">
+            <router-link :to="`/work/${c.slug}`" class="co-proof-row">
               <span class="co-proof-name">{{ c.name }}</span>
               <span class="co-proof-sub">{{ c.subtitle }}</span>
               <span class="co-proof-result">{{ c.result }}</span>
@@ -146,7 +146,7 @@
       </section>
 
       <!-- 04 怎么开始 -->
-      <section class="co-sec">
+      <section id="process" class="co-sec">
         <CompanySecHead title="怎么开始" note="PROCESS" />
         <ol class="mkt-steps">
           <li class="paper-field"><span>第 1 步</span><h3>聊一次</h3><p>背景、目标、时间点。不收费，需求不清晰也可以先聊。</p></li>
@@ -176,19 +176,19 @@
         <div class="co-faq">
           <details class="co-faq-item" open>
             <summary>报价怎么算？</summary>
-            <p>按范围拆阶段算。聊完给具体数字，写进合同；不做「先低价试水再加价」那套。</p>
+            <p>按范围拆阶段算。聊完给具体数字，写进合同；不做「先低价试水再加价」那套。档位见 <router-link to="/#pricing" class="co-faq-link">合作方式</router-link>。</p>
           </details>
           <details class="co-faq-item">
             <summary>我的数据会不会外传？</summary>
-            <p>默认留在你指定的机器上。确实需要接外部模型接口时，会提前写清哪一段数据出网、出到哪家。</p>
+            <p>默认留在你指定的机器上。确实需要接外部模型接口时，会提前写清哪一段数据出网、出到哪家；<router-link to="/stack" class="co-faq-link">能力与基础设施</router-link>里写了数据边界。</p>
           </details>
           <details class="co-faq-item">
             <summary>交付后我自己能维护吗？</summary>
-            <p>能。代码、部署脚本、监控配置和运行手册一起移交，交付后两周内答疑；之后按次或按月都行。</p>
+            <p>能。代码、部署脚本、监控配置和运行手册一起移交，交付后两周内答疑；之后按次或按月都行。验收方式见 <router-link to="/#standard" class="co-faq-link">三项交付标准</router-link>。</p>
           </details>
           <details class="co-faq-item">
             <summary>多快能开始？</summary>
-            <p>一般一周内能排上；着急的按次诊断通常一两天内给结论。先聊一次判断值不值得做，不收费。</p>
+            <p>一般一周内能排上；着急的按次诊断通常一两天内给结论。先聊一次判断值不值得做，不收费。流程见 <router-link to="/#process" class="co-faq-link">怎么开始</router-link>。</p>
           </details>
           <details class="co-faq-item">
             <summary>什么情况我不接？</summary>
