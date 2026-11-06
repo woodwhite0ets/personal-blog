@@ -155,10 +155,12 @@ const all = computed(() => {
   }))
   const mineSlugs = new Set(mine.map((c) => c.slug))
   const rest = catalog.value.filter((c) => !mineSlugs.has(c.slug))
+  // 中文名按拼音排，纯字母/数字开头的名字（252、24K 噩梦）挪到最后
+  const latin = (s) => (/^[\u4e00-\u9fa5]/.test(s) ? 0 : 1)
   rest.sort((a, b) => {
-    const az = a.nameZh ? 0 : 1
-    const bz = b.nameZh ? 0 : 1
-    return az !== bz ? az - bz : (a.nameZh || a.name).localeCompare(b.nameZh || b.name, 'zh')
+    const an = a.nameZh || a.name
+    const bn = b.nameZh || b.name
+    return latin(an) !== latin(bn) ? latin(an) - latin(bn) : an.localeCompare(bn, 'zh-Hans-CN-u-co-pinyin')
   })
   return mine.concat(rest)
 })

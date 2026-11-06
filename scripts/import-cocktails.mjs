@@ -154,6 +154,10 @@ const NAME_ZH = {
   'Ramos Gin Fizz': '拉莫斯金菲士', 'Mint Julep': '薄荷茱莉普', 'Rob Roy': '罗伯罗伊', 'Vesper': '维斯帕',
   'Alexander': '亚历山大', 'Grasshopper': '蚱蜢', 'B-52': 'B-52', 'Kamikaze': '神风特攻',
 }
+
+// 全库酒名的中文译名放在单独一份 JSON 里，补词直接改它，不用动脚本
+const NAME_ZH_FILE = path.join(path.dirname(new URL(import.meta.url).pathname), 'cocktail-names-zh.json')
+Object.assign(NAME_ZH, JSON.parse(fs.readFileSync(NAME_ZH_FILE, 'utf8')))
 const GLASS = {
   'Cocktail glass': '鸡尾酒杯', 'Martini Glass': '马天尼杯', 'Old-fashioned glass': '古典杯',
   'Highball glass': '高球杯', 'Collins glass': '柯林杯', 'Shot glass': '烈酒杯',
