@@ -100,6 +100,14 @@ app.use((req, res, next) => {
   });
   next();
 });
+// ====== 站点级路由（robots/sitemap/feed + 旧营销页跳转，必须先于静态文件） ======
+// 坑：robots.txt 若留在 Client/dist 里，express.static 会先命中，按域生成就失效了。
+app.use(require('./routes/seo'));
+
+// 营销内容已并入首页（提交 2645c85）：老链接 301 到公司首页，
+// 不要再返回 200 让 SPA 自己跳（爬虫会记下一个带博客默认 meta 的软页面）。
+const COMPANY_URL = (process.env.COMPANY_URL || 'https://woodwhite.top').replace(/\/+$/, '');
+app.use('/solutions', (req, res) => res.redirect(301, `${COMPANY_URL}/`));
 
 // 静态文件 — 上传目录
 app.use('/uploads', express.static(path.join(__dirname, '../uploads'), { maxAge: '7d', immutable: true }));
@@ -188,9 +196,6 @@ app.use('/api/users',  require('./routes/users'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/admin/tools', require('./routes/adminTools'));
 app.use('/api/admin',  require('./routes/admin'));
-
-// ====== SEO 路由（feed.xml / sitemap.xml，需在 SPA fallback 之前） ======
-app.use(require('./routes/seo'));
 
 // ====== SPA 兜底 + API 404（必须在 API 路由之后） ======
 // 非 API 的请求全部返回 index.html，由前端路由处理

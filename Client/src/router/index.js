@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { getToken, isGuest } from '../stores/auth.js';
+import { applyRouteMeta } from '../utils/seo.js'
 
 // 安全解码 JWT payload（兼容 base64url 的 - _ 字符）
 function decodeTokenPayload(token) {
@@ -214,6 +215,21 @@ const navType = (() => {
 const isReload = navType === 'reload'
 let firstNavDone = false
 
+// 带 #锚点：目标节点可能随懒加载路由晚一帧才挂上，先找不到就短暂轮询再滚
+function scrollToHash(hash) {
+  const found = () => { try { return document.querySelector(hash) } catch { return null } }
+  if (found()) return { el: hash, top: 84 }
+  return new Promise((resolve) => {
+    const t0 = performance.now()
+    const tick = () => {
+      if (found()) return resolve({ el: hash, top: 84 })
+      if (performance.now() - t0 > 800) return resolve({ top: 0 })
+      requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  })
+}
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -221,7 +237,7 @@ const router = createRouter({
     // 刷新时忽略 URL 里的 #锚点：否则停在页脚点过「常见问题」再刷新，会被带到 FAQ 那一屏
     const ignoreHash = isReload && !firstNavDone;
     // 带 #锚点 时滚到目标元素，留出固定导航栏高度
-    if (to.hash && !ignoreHash) return { el: to.hash, top: 84 };
+    if (to.hash && !ignoreHash) return scrollToHash(to.hash);
     // 前进/后退：vue-router 会给出该条历史记录上次的滚动位置。这里不让它自己滚
     // （它在页面过渡中滚，文档还没撑开高度，会被夹成很小一个值），改由 afterEach 补偿落位。
     if (savedPosition && typeof savedPosition.top === 'number') {
@@ -231,6 +247,12 @@ const router = createRouter({
     // 刷新 / 直接打开 / 站内跳转：一律回顶部
     return { top: 0 };
   },
+});
+
+// 首次导航完成，之后的站内跳转要正常吃 #锚点；同时同步 title/canonical
+router.afterEach((to) => {
+  firstNavDone = true
+  applyRouteMeta(to.path)
 });
 
 // ====== 路由守卫 ======
@@ -251,8 +273,8 @@ router.beforeEach((to, from, next) => {
   if (onBlog || onCompany) {
     const p = to.path
     const companyPath = p === '/' || COMPANY_PATHS.some((x) => p === x || p.startsWith(x + '/'))
-    if (onBlog && companyPath) { window.location.replace(`https://woodwhite.top${p === '/' ? '/' : p}`); return }
-    if (onCompany && !companyPath) { window.location.replace(`https://blog.woodwhite.top${p}`); return }
+    if (onBlog && companyPath) { window.location.replace(`https://woodwhite.top${p === '/' ? '/' : p}`); return false }
+    if (onCompany && !companyPath) { window.location.replace(`https://blog.woodwhite.top${p}`); return false }
   }
   const token = getToken();
 
@@ -261,12 +283,7 @@ router.beforeEach((to, from, next) => {
     try {
       const payload = decodeTokenPayload(token);
       if (payload.exp && Date.now() > payload.exp * 1000) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('token_expires');
-        localStorage.removeItem('remember_me');
-        localStorage.removeItem('guest_mode');
-        localStorage.removeItem('guest_user');
-        sessionStorage.clear();
+        clearStaleToken();
         return next({ path: '/login', query: { redirect: to.fullPath } });
       }
     } catch {

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { pathToFileURL } = require('url');
 const pool = require('./config/db');
 
 const SITE_URL = (process.env.SITE_URL || 'https://blog.woodwhite.top').replace(/\/+$/, '');
@@ -23,48 +24,25 @@ function postOgImage(post) {
   return DEFAULT_OG_IMAGE;
 }
 
-// 路由 → 独立 meta（公司页、工具库、案例、榜单）。不在这里的路径保持默认。
-const ROUTE_META = {
-  '/': {
-    title: '木白 woodwhite — 协助你做出期待的产品',
-    desc: '一个人做，从需求到上线：AI 应用的后端与检索、本地推理与自动化、全栈实现。可开票，按合同交付。',
-    canonical: 'https://woodwhite.top/',
-  },
-  '/work': {
-    title: '案例 — 木白 woodwhite',
-    desc: '五个已上线的项目：充电桩检定监管平台、自建 AI 工作站、AI 每日榜、知识库、本站，每条写清问题、做法与结果。',
-    canonical: 'https://woodwhite.top/work',
-  },
-  '/stack': {
-    title: '能力与基础设施 — 木白 woodwhite',
-    desc: '自托管的工作站：本地推理、pgvector 检索、自建 Git 与 CI、systemd 巡检，零入站端口，数据不出内网。',
-    canonical: 'https://woodwhite.top/stack',
-  },
-  '/contact': {
-    title: '联系 — 木白 woodwhite',
-    desc: '按项目或按月合作，签合同、可开票、按阶段验收。邮箱 1903784785@qq.com，微信 Woodwhite-0827。',
-    canonical: 'https://woodwhite.top/contact',
-  },
-  '/projects': {
-    title: '案例 — 木白 woodwhite',
-    desc: '五个已上线的项目：充电桩检定监管平台、自建 AI 工作站、AI 每日榜、知识库、本站，每条写清问题、做法与结果。',
-    canonical: 'https://woodwhite.top/projects',
-  },
-  '/tools': {
-    title: 'AI 工具库 — 木白 woodwhite',
-    desc: '按用途收录的 AI 工具，按分类、免费与否、是否需要自备 key 筛选，560 条持续更新。',
-    canonical: 'https://blog.woodwhite.top/tools',
-  },
-  '/ai-daily': {
-    title: 'AI 项目榜 — 每日 Star 增量榜',
-    desc: '每天从 GitHub 抓取 AI 相关项目，按 24 小时 Star 增量排名，中文介绍由本地模型生成。',
-    canonical: 'https://blog.woodwhite.top/ai-daily',
-  },
-};
+// 路由 → 独立 meta（公司页、工具库、案例、榜单）。表在客户端目录里，前后端共用一份：
+// 客户端站内转页也要用同一套 title/canonical（Client/src/utils/seo.js）。
+const ROUTE_META_MODULE = path.join(__dirname, '../../Client/src/data/routeMeta.js');
+let routeMetaPromise = null;
+function loadRouteMetaTable() {
+  if (!routeMetaPromise) {
+    routeMetaPromise = import(pathToFileURL(ROUTE_META_MODULE).href)
+      .then((mod) => mod.ROUTE_META || {})
+      .catch((e) => {
+        console.error('[seo] routeMeta 加载失败，保持默认 meta:', e.message);
+        return {};
+      });
+  }
+  return routeMetaPromise;
+}
 
 function applyRouteMeta(html, meta) {
   const t = escapeHtml(meta.title);
-  const d = escapeHtml(meta.desc);
+  const d = escapeHtml(meta.description);
   let out = html;
   out = out.replace(/<title>[^<]*<\/title>/, `<title>${t}</title>`);
   out = out.replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${d}" />`);
@@ -78,6 +56,7 @@ function applyRouteMeta(html, meta) {
 }
 
 async function renderSeoHtml(req, baseHtml) {
+  const ROUTE_META = await loadRouteMetaTable();
   const routeMeta = ROUTE_META[req.path === '' ? '/' : req.path.replace(/\/+$/, '') || '/'];
   if (routeMeta) return applyRouteMeta(baseHtml, routeMeta);
 

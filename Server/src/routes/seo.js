@@ -4,7 +4,10 @@ const pool = require('../config/db');
 const router = express.Router();
 
 // 站点配置（生产域名）
-const SITE_URL = process.env.SITE_URL || 'http://localhost:3027';
+const SITE_URL = (process.env.SITE_URL || 'http://localhost:3027').replace(/\/+$/, '');
+const COMPANY_URL = (process.env.COMPANY_URL || 'https://woodwhite.top').replace(/\/+$/, '');
+// 两个域各自只收录自己承载的页面（sitemap 里的 loc 必须与所在域一致）
+const isCompanyHost = (host = '') => host === 'woodwhite.top' || host === 'www.woodwhite.top';
 
 // 安全包装 CDATA 内容：转义 ]]> 防止 CDATA 注入
 function cdata(text) {
@@ -80,44 +83,70 @@ ${items}
   }
 });
 
-// ====== GET /sitemap.xml — sitemap ======
+// ====== GET /sitemap.xml — 按域名给各自的 sitemap ======
+function sitemapXml(entries) {
+  const body = entries.map((e) => `  <url>
+    <loc>${e.loc}</loc>${e.lastmod ? `\n    <lastmod>${e.lastmod}</lastmod>` : ''}
+  </url>`).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${body}
+</urlset>`;
+}
+
 router.get('/sitemap.xml', async (req, res) => {
   try {
+    if (isCompanyHost(req.hostname)) {
+      // 公司站只有四个页面，且都不会被 SPA 二次跳转
+      const entries = ['/', '/work', '/stack', '/contact'].map((p) => ({ loc: COMPANY_URL + p }));
+      res.set('Content-Type', 'application/xml; charset=utf-8');
+      return res.send(sitemapXml(entries));
+    }
     const [rows] = await pool.query(
       `SELECT slug, published_at FROM posts WHERE status = 'published'`
     );
-
-    const urls = rows.map(p => {
-      const lastmod = p.published_at ? new Date(p.published_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-      return `  <url>
-    <loc>${SITE_URL}/post/${p.slug}</loc>
-    <lastmod>${lastmod}</lastmod>
-  </url>`;
-    }).join('\n');
-
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${SITE_URL}/</loc>
-  </url>
-  <url>
-    <loc>${SITE_URL}/HomePage</loc>
-  </url>
-  <url>
-    <loc>${SITE_URL}/archive</loc>
-  </url>
-  <url>
-    <loc>${SITE_URL}/about</loc>
-  </url>
-${urls}
-</urlset>`;
-
+    const entries = ['/blog', '/archive', '/about', '/projects', '/tools', '/ai-daily']
+      .map((p) => ({ loc: SITE_URL + p }))
+      .concat(rows.map((p) => ({
+        loc: `${SITE_URL}/post/${p.slug}`,
+        lastmod: p.published_at ? new Date(p.published_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+      })));
     res.set('Content-Type', 'application/xml; charset=utf-8');
-    res.send(xml);
+    res.send(sitemapXml(entries));
   } catch (err) {
     console.error('sitemap error:', err);
     res.status(500).send('sitemap error');
   }
+});
+
+// ====== GET /robots.txt — 每个域指向自己的 sitemap ======
+router.get('/robots.txt', (req, res) => {
+  const company = isCompanyHost(req.hostname);
+  const base = company ? COMPANY_URL : SITE_URL;
+  const body = company
+    ? `# ${base}/robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: ${base}/sitemap.xml
+`
+    : `# ${base}/robots.txt
+User-agent: Baiduspider
+Disallow: /api/
+Disallow: /admin/
+Disallow: /editor
+Crawl-delay: 3
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /editor
+
+Sitemap: ${base}/sitemap.xml
+`;
+  res.set('Content-Type', 'text/plain; charset=utf-8');
+  res.send(body);
 });
 
 module.exports = router;
