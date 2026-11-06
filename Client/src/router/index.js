@@ -216,6 +216,9 @@ const routes = [
     component: () => import('../components/NotFound.vue'),
   },
 ];
+// 本次文档的初始导航只处理一次（刷新/直开）
+let initialNav = true
+
 
 // 带 #锚点：目标节点可能随懒加载路由晚一帧才挂上，先找不到就短暂轮询再滚
 function scrollToHash(hash) {
@@ -225,7 +228,8 @@ function scrollToHash(hash) {
     const t0 = performance.now()
     const tick = () => {
       if (found()) return resolve({ el: hash, top: 84 })
-      if (performance.now() - t0 > 800) return resolve({ top: 0 })
+      // 找不到就什么都不做；以前这里回 {top:0}，等于把正在往下滑的人拽回顶部
+      if (performance.now() - t0 > 800) return resolve(false)
       requestAnimationFrame(tick)
     }
     requestAnimationFrame(tick)
@@ -236,15 +240,21 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
+    // 第一次调用属于本次文档的初始导航（刷新 / 直开）。它要等懒加载路由就绪才跑，
+    // 慢网下可能是页面出来一两秒之后；这时再 scrollTo(0) 会把已经往下滑的人拽回顶部。
+    // 所以首屏一律不碰滚动位置：浏览器在哪就在哪，只有 hash 深链单独处理。
+    const firstNav = initialNav
+    initialNav = false
     // 带 #锚点 时滚到目标元素，留出固定导航栏高度（深链与刷新都尊重锚点）
     if (to.hash) return scrollToHash(to.hash);
+    if (firstNav) return false
     // 前进/后退：vue-router 会给出该条历史记录上次的滚动位置。这里不让它自己滚
     // （它在页面过渡中滚，文档还没撑开高度，会被夹成很小一个值），改由 afterEach 补偿落位。
     if (savedPosition && typeof savedPosition.top === 'number') {
       scheduleRestore(savedPosition.top);
       return false;
     }
-    // 刷新 / 直接打开 / 站内跳转：一律回顶部
+    // 站内跳转：回顶部
     return { top: 0 };
   },
 });
