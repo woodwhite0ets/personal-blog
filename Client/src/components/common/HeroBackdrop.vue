@@ -14,11 +14,9 @@ import { ref } from 'vue'
 const props = defineProps({
   sessionKey: { type: String, default: 'blog-hero-art' },
   artCount: { type: Number, default: 6 },
-  // 指定画（如公司站的 "7" 技术图纸）：不再随机、不写 sessionStorage
-  fixedArt: { type: [String, Number], default: '' },
 })
 
-const art = ref(props.fixedArt !== '' ? String(props.fixedArt) : pickArt())
+const art = ref(pickArt())
 
 function pickArt() {
   // ?art=1..N 可指定，方便对稿

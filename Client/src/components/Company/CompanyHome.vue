@@ -2,7 +2,7 @@
   <CompanyShell>
     <!-- 首屏：与博客同一套「印在纸上的画」背景 + 左文 + 右交付清单 -->
     <section class="hero-band co-hero-band">
-      <HeroBackdrop session-key="company-hero-art" fixed-art="7" />
+      <HeroBackdrop session-key="company-hero-art" :art-count="5" />
       <div class="hero-in co-hero-in">
         <div class="co-hero-main">
           <p class="co-badge"><span class="co-badge-dot" aria-hidden="true"></span>浙江乐清 · 可开票 · 一天内回信</p>
