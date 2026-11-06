@@ -14,7 +14,7 @@
   --page-wash-b: rgba(74, 111, 158, .04);
 }
 .co-main { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 40px 24px 96px; }
-.co-sec { margin-top: 72px; }
+.co-sec { margin-top: 84px; }
 /* 子页第一节贴顶（原来是每个页面写 style="margin-top: 8px"） */
 .co-sec:first-child { margin-top: 8px; }
 
@@ -250,7 +250,7 @@
 .co-std { padding: 22px 22px 20px 0; border-right: 1px dotted var(--rule-dot-ink); display: flex; flex-direction: column; gap: 6px; }
 .co-std:last-child { border-right: none; padding-right: 0; }
 .co-std-k { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .06em; color: var(--accent); }
-.co-std-v { font-family: "Noto Serif SC", var(--font-serif); font-size: 1.375rem; color: var(--accent); line-height: 1.2; }
+.co-std-v { font-family: "Noto Serif SC", var(--font-serif); font-size: 1.375rem; color: var(--text-bright); line-height: 1.2; }
 .co-std p { margin: 2px 0 0; font-size: 0.8125rem; line-height: 1.7; color: var(--text-secondary); }
 
 .co-svc p.co-svc-fit {
@@ -339,21 +339,27 @@
 
 /* 工作站 */
 .co-infra-lead { margin: 0 0 20px; font-size: 0.9375rem; line-height: 1.8; color: var(--text-secondary); max-width: 62ch; }
-.co-infra-facts { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--rule-dot-ink); border: 1px dotted var(--rule-dot-ink); }
-.co-infra-facts > div { background: var(--bg); padding: 16px 18px; }
-.co-infra-facts dt { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .06em; color: var(--text-faint); margin-bottom: 6px; }
-.co-infra-facts dd { margin: 0; font-size: 0.875rem; line-height: 1.65; color: var(--text); }
+/* 规格表：和案例行、页脚同一套「细线账本」，不再是 2×2 小盒子 */
+.co-infra-facts { margin: 0; display: block; border-top: 1px solid var(--border-strong); }
+.co-infra-facts > div {
+  display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 24px; align-items: baseline;
+  padding: 14px 0; border-bottom: 1px dotted var(--rule-dot-ink); background: none;
+}
+.co-infra-facts dt { margin: 0; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .06em; color: var(--text-faint); }
+.co-infra-facts dd { margin: 0; font-size: 0.9375rem; line-height: 1.65; color: var(--text); }
 .co-proof { list-style: none; margin: 0; padding: 0; }
-.co-proof li { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 20px; padding: 16px 0; border-bottom: 1px dotted var(--rule-dot-ink); align-items: baseline; }
+.co-proof li { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 24px; padding: 16px 0; border-bottom: 1px dotted var(--rule-dot-ink); align-items: baseline; }
 .co-proof li:last-child { border-bottom: none; }
 .co-proof-k { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .06em; color: var(--text-faint); }
 .co-proof-v { font-size: 0.9375rem; line-height: 1.7; color: var(--text); }
 
 /* 联系 */
-.co-grid { display: grid; gap: 1px; background: var(--rule-dot-ink); border: 1px dotted var(--rule-dot-ink); }
+/* 合作方式两栏：不要盒子，一根竖线分开，和「三项交付标准」同一套读法 */
+.co-grid { display: grid; gap: 0; background: none; border: none; border-top: 1px solid var(--border-strong); }
 .co-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .co-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.co-card { background-color: var(--bg); padding: 24px 22px 26px; display: flex; flex-direction: column; }
+.co-card { background: none; padding: 22px 26px 20px 0; display: flex; flex-direction: column; }
+.co-grid > .co-card + .co-card { border-left: 1px dotted var(--rule-dot-ink); padding-left: 26px; padding-right: 0; }
 .co-card h3 { margin: 0 0 10px; font-family: "Noto Serif SC", var(--font-serif); font-size: 1.125rem; font-weight: 500; color: var(--text-bright); }
 .co-card p { margin: 0; font-size: 0.875rem; line-height: 1.75; color: var(--text-secondary); }
 .co-contact-list { margin: 26px 0 0; }
@@ -413,12 +419,13 @@
   .co-proof-name { grid-column: 1; }
   .co-proof-period { grid-column: 2; justify-self: end; }
   .co-proof-sub { grid-column: 1 / -1; }
-  .co-proof-result { grid-column: 1 / -1; }
+  .co-infra-facts > div { grid-template-columns: 88px minmax(0, 1fr); gap: 16px; }
   .co-foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
-  .co-infra-facts { grid-template-columns: 1fr; }
 }
 @media (max-width: 820px) {
   .co-grid-3, .co-grid-2 { grid-template-columns: 1fr; }
+  /* 两栏合并后，竖线换成横线，别留一根悬空的左边线 */
+  .co-grid > .co-card + .co-card { border-left: none; border-top: 1px dotted var(--rule-dot-ink); padding-left: 0; padding-top: 18px; }
   .co-proof li { grid-template-columns: 1fr; gap: 4px; }
   .co-sec { margin-top: 64px; }
 }
