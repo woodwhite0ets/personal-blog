@@ -74,6 +74,14 @@ woodwhite.top {
 	reverse_proxy 127.0.0.1:3027
 }
 
+# www 只是别名：301 到裸域。此前没有站点块，DNS 解析了但 TLS 握手直接失败
+# （curl: tlsv1 alert internal error），而前端路由又把 www 当公司域处理。
+www.woodwhite.top {
+	import access_log /var/log/caddy/www-access.log
+	import security
+	redir https://woodwhite.top{uri} 301
+}
+
 blog.woodwhite.top {
 	import access_log /var/log/caddy/blog-access.log
 	import security
