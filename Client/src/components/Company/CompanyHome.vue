@@ -124,7 +124,7 @@
         <CompanySecHead title="做过的几个" note="PROOF" />
         <ul class="co-proof-list">
           <li v-for="c in proofCases" :key="c.slug">
-            <router-link to="/work" class="co-proof-row">
+            <router-link :to="`/projects/${c.slug}`" class="co-proof-row">
               <span class="co-proof-name">{{ c.name }}</span>
               <span class="co-proof-sub">{{ c.subtitle }}</span>
               <span class="co-proof-result">{{ c.result }}</span>

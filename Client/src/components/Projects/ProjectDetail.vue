@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
@@ -54,6 +54,12 @@ const next = computed(() => {
   if (!project.value) return null
   const i = projects.findIndex((p) => p.slug === project.value.slug)
   return i >= 0 && i + 1 < projects.length ? projects[i + 1] : null
+})
+
+// 项目详情走 SPA 兜底，服务端没有注入 meta；至少让标签页标题跟着项目走，
+// 别停在上一个页面的标题（/projects 列表的「案例」或博客默认标题）。
+watchEffect(() => {
+  if (project.value) document.title = `${project.value.name} — 木白 woodwhite`
 })
 </script>
 

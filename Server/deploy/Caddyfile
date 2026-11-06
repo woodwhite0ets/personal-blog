@@ -68,9 +68,15 @@ woodwhite.top {
 		file_server
 	}
 
-	# 公司域只承载公司页，其余交给博客域
-	@not_company not path / /solutions* /work* /stack* /contact* /api/* /uploads/* /healthz /mcp* /assets/* /brand/* /fonts/* /robots.txt /sitemap.xml /og-default* /favicon* *.js *.css *.json *.txt *.svg *.png *.jpg *.jpeg *.webp *.ico *.woff *.woff2 *.map *.xml *.webmanifest
-	redir @not_company https://blog.woodwhite.top{uri} 302
+	# 公司域只承载公司页：只有「博客专属路径」才送回博客域。
+	# 未知路径（打错的链接、旧地址）留在本站，由前端的公司版 404 接手——
+	# 以前这里写的是「除了公司路径全 302 到博客」，一个错链就把用户丢到另一个域名。
+	@blog_paths path /HomePage /admin /admin/* /blog /blog/* /post /post/* /forum /forum/* \
+		/archive /tags /about /now /projects /projects/* /notes /series /series/* \
+		/tools /tools/* /ai-daily /user /user/* /login /RegisterPage \
+		/verify-email /verify-email/* /forgot-password /reset-password /reset-password/* \
+		/editor /editor/*
+	redir @blog_paths https://blog.woodwhite.top{uri} 302
 	reverse_proxy 127.0.0.1:3027
 }
 

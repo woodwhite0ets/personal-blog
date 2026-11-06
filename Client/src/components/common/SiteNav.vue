@@ -6,7 +6,7 @@
         <span class="brand-text">{{ isCompany ? 'woodwhite' : 'woodwhite@blog' }}</span>
       </router-link>
       <router-link v-if="!isCompany" to="/" class="brand-back">← 木白</router-link>
-      <nav class="nav-links" :class="{ open: navOpen }" @click="navOpen = false">
+      <nav ref="navLinksRef" class="nav-links" :class="{ open: navOpen }" @click="navOpen = false">
         <router-link v-for="l in navLinks" :key="l.to" :to="l.to"> {{ l.label }}
         </router-link>
         <template v-if="!isCompany">
@@ -48,13 +48,13 @@
         </template>
         </template>
       </div>
-      <button class="nav-toggle" :class="{ open: navOpen }" @click="navOpen = !navOpen" aria-label="菜单" :aria-expanded="navOpen"><span></span><span></span><span></span></button>
+      <button ref="navToggleRef" class="nav-toggle" :class="{ open: navOpen }" @click="navOpen = !navOpen" aria-label="菜单" :aria-expanded="navOpen"><span></span><span></span><span></span></button>
     </div>
   </header>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import UserAvatar from './UserAvatar.vue'
 import ThemeSwitcher from './ThemeSwitcher.vue'
@@ -101,6 +101,8 @@ const section = computed(() => {
 const navOpen = ref(false)
 const showUserMenu = ref(false)
 const userMenuRef = ref(null)
+const navLinksRef = ref(null)
+const navToggleRef = ref(null)
 
 function handleLogout() {
   showUserMenu.value = false
@@ -109,10 +111,35 @@ function handleLogout() {
 
 function handleClickOutside(e) {
   if (userMenuRef.value && !userMenuRef.value.contains(e.target)) showUserMenu.value = false
+  if (!navOpen.value) return
+  // 抽屉在手机上铺满右侧，点遮罩就是点到这儿：收起
+  if (navLinksRef.value?.contains(e.target)) return
+  if (navToggleRef.value?.contains(e.target)) return
+  navOpen.value = false
 }
 
-onMounted(() => document.addEventListener('click', handleClickOutside))
-onUnmounted(() => document.removeEventListener('click', handleClickOutside))
+function handleKeydown(e) {
+  if (e.key === 'Escape' && navOpen.value) {
+    navOpen.value = false
+    navToggleRef.value?.focus() // 焦点回到触发按钮，别丢在页面顶上
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+  document.addEventListener('keydown', handleKeydown)
+})
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+  document.removeEventListener('keydown', handleKeydown)
+})
+// 抽屉打开后把焦点送进菜单；否则 Tab 会跳过它（抽屉在 DOM 里排在汉堡按钮之前）
+watch(navOpen, async (open) => {
+  if (!open) return
+  await nextTick()
+  // 抽屉靠 visibility 显隐，样式生效后再聚焦，否则 focus() 会被忽略
+  requestAnimationFrame(() => { navLinksRef.value?.querySelector('a')?.focus() })
+})
 watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = false })
 </script>
 
@@ -187,14 +214,15 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
     box-shadow: -8px 0 24px var(--shadow-soft);
     transform: translateX(100%); visibility: hidden;
     overscroll-behavior: contain;
-    transition: transform .3s cubic-bezier(.32,.72,0,1), visibility .3s;
+    /* 打开时立刻可见（首帧仍 hidden 时 focus() 会被浏览器拒绝）；关闭时等滑出结束再隐藏 */
+    transition: transform .3s cubic-bezier(.32,.72,0,1), visibility 0s linear .3s;
   }
   .nav-links::before {
     content: ''; position: fixed; inset: 0; background: var(--modal-overlay);
     opacity: 0; z-index: -1;
     transition: opacity .3s cubic-bezier(.32,.72,0,1);
   }
-  .nav-links.open { transform: none; visibility: visible; }
+  .nav-links.open { transform: none; visibility: visible; transition: transform .3s cubic-bezier(.32,.72,0,1), visibility 0s; }
   .nav-links.open::before { opacity: 1; }
   .nav-links a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   .nav-toggle { display: flex; flex: 0 0 34px; }

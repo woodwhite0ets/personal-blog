@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { getToken, isGuest } from '../stores/auth.js';
+import { isCompanyHost, isBlogHost } from '../utils/host.js';
 import { applyRouteMeta } from '../utils/seo.js'
 
 // 安全解码 JWT payload（兼容 base64url 的 - _ 字符）
@@ -18,9 +19,17 @@ function clearStaleToken() {
   localStorage.removeItem('guest_user');
   sessionStorage.clear();
 }
-
 // 公司站只认这几个路径，其余都属于博客
 const COMPANY_PATHS = ['/solutions', '/work', '/stack', '/contact']
+
+// 博客专属路径：公司域上遇到这些才换域，未知路径留在公司站由 404 接手
+const BLOG_PATHS = [
+  '/blog', '/post', '/forum', '/archive', '/tags', '/about', '/now', '/projects', '/notes',
+  '/series', '/tools', '/ai-daily', '/user', '/login', '/RegisterPage', '/verify-email',
+  '/forgot-password', '/reset-password', '/editor', '/admin', '/HomePage',
+]
+const isBlogPath = (p) => BLOG_PATHS.some((x) => p === x || p.startsWith(x + '/'))
+
 
 const routes = [
   {
@@ -208,13 +217,6 @@ const routes = [
   },
 ];
 
-// 本次文档加载是刷新还是直接打开（用于决定"刷新时忽略 URL 里的 #锚点"）
-const navType = (() => {
-  try { return performance.getEntriesByType('navigation')[0]?.type || 'navigate' } catch { return 'navigate' }
-})()
-const isReload = navType === 'reload'
-let firstNavDone = false
-
 // 带 #锚点：目标节点可能随懒加载路由晚一帧才挂上，先找不到就短暂轮询再滚
 function scrollToHash(hash) {
   const found = () => { try { return document.querySelector(hash) } catch { return null } }
@@ -234,10 +236,8 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    // 刷新时忽略 URL 里的 #锚点：否则停在页脚点过「常见问题」再刷新，会被带到 FAQ 那一屏
-    const ignoreHash = isReload && !firstNavDone;
-    // 带 #锚点 时滚到目标元素，留出固定导航栏高度
-    if (to.hash && !ignoreHash) return scrollToHash(to.hash);
+    // 带 #锚点 时滚到目标元素，留出固定导航栏高度（深链与刷新都尊重锚点）
+    if (to.hash) return scrollToHash(to.hash);
     // 前进/后退：vue-router 会给出该条历史记录上次的滚动位置。这里不让它自己滚
     // （它在页面过渡中滚，文档还没撑开高度，会被夹成很小一个值），改由 afterEach 补偿落位。
     if (savedPosition && typeof savedPosition.top === 'number') {
@@ -249,9 +249,8 @@ const router = createRouter({
   },
 });
 
-// 首次导航完成，之后的站内跳转要正常吃 #锚点；同时同步 title/canonical
+// 站内跳转后同步 title/canonical
 router.afterEach((to) => {
-  firstNavDone = true
   applyRouteMeta(to.path)
 });
 
@@ -267,14 +266,13 @@ function scheduleRestore(y) {
 
 router.beforeEach((to, from, next) => {
   // 两个域名各管各的，互相跳转，避免同一内容出现在两个域下（重复内容/权重分散）
+  // 用 assign 而不是 replace：换域后浏览器「返回」要能回到上一站，和 Caddy 的 302 保持一致
   const host = window.location.hostname
-  const onBlog = host.startsWith('blog.')
-  const onCompany = host === 'woodwhite.top' || host === 'www.woodwhite.top'
-  if (onBlog || onCompany) {
+  if (isCompanyHost(host) || isBlogHost(host)) {
     const p = to.path
     const companyPath = p === '/' || COMPANY_PATHS.some((x) => p === x || p.startsWith(x + '/'))
-    if (onBlog && companyPath) { window.location.replace(`https://woodwhite.top${p === '/' ? '/' : p}`); return false }
-    if (onCompany && !companyPath) { window.location.replace(`https://blog.woodwhite.top${p}`); return false }
+    if (isBlogHost(host) && companyPath) { window.location.assign(`https://woodwhite.top${p}`); return false }
+    if (isCompanyHost(host) && !companyPath && isBlogPath(p)) { window.location.assign(`https://blog.woodwhite.top${p}`); return false }
   }
   const token = getToken();
 
