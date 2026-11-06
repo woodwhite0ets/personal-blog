@@ -97,7 +97,42 @@ const ING = {
   'Schweppes Russchian': '怡泉粉红汤力', 'Kool-Aid': '果味冲剂',
   'Rosemary Syrup': '迷迭香糖浆', 'Raspberry syrup': '覆盆子糖浆', 'Roses sweetened lime juice': '青柠糖浆',
   'Lime juice cordial': '青柠糖浆', 'Fresh Lime Juice': '鲜青柠汁', 'Fresh Lemon Juice': '鲜柠檬汁',
-  'Orange Bitters': '橙味苦精',
+  'Orange Bitters': '橙味苦精', 'Orange Curacao': '橙皮甜酒', 'Mint syrup': '薄荷糖浆', 'Ginger Syrup': '姜糖浆', 'Jagermeister': '野格',
+  /* —— 第三批：全库跑完后剩下的长尾 —— */
+  'Ginger': '姜', 'Food coloring': '食用色素', 'Wine': '葡萄酒', 'Añejo rum': '陈年朗姆',
+  'Creme de Banane': '香蕉利口酒', 'Grain alcohol': '谷物酒精', 'Chocolate ice-cream': '巧克力冰淇淋',
+  'Allspice': '多香果', 'Godiva liqueur': '歌帝梵利口酒', 'Anise': '茴香酒', 'Bitter lemon': '苦柠檬汽水',
+  'Absolut Kurant': '绝对伏特加（黑加仑）', 'Fruit juice': '果汁', 'Almond flavoring': '杏仁香精',
+  'Angelica root': '当归根', 'Coriander': '香菜', 'Berries': '浆果', 'Passion fruit syrup': '百香果糖浆',
+  'Celery salt': '芹菜盐', 'Advocaat': '蛋黄利口酒', 'Peachtree schnapps': '桃子利口酒',
+  'Watermelon': '西瓜', 'Kirschwasser': '樱桃蒸馏酒', 'Licorice root': '甘草根',
+  'Peppermint schnapps': '薄荷利口酒', 'Lemon vodka': '柠檬伏特加', 'Kummel': '葛缕子利口酒',
+  'Guava juice': '番石榴汁', 'Apricot': '杏', 'Glycerine': '甘油', 'Almond': '杏仁',
+  'Marjoram leaves': '马郁兰叶', 'Carrot': '胡萝卜', 'Grape soda': '葡萄汽水', 'Candy': '糖果',
+  'Cantaloupe': '哈密瓜', 'Raisins': '葡萄干', 'caramel sauce': '焦糖酱', 'chocolate sauce': '巧克力酱',
+  'Mini-snickers bars': '迷你士力架', 'Erin Cream': '爱尔兰奶油利口酒', 'Raspberry Vodka': '覆盆子伏特加',
+  'Cornstarch': '玉米淀粉', 'Cherry Grenadine': '樱桃石榴糖浆', 'Chocolate milk': '巧克力牛奶',
+  'Caramel coloring': '焦糖色素', 'blackstrap rum': '黑糖朗姆', 'Cranberries': '蔓越莓',
+  'Peppermint extract': '薄荷精', 'demerara Sugar': '德梅拉拉糖', 'Blackcurrant cordial': '黑加仑糖浆',
+  'Olive Brine': '橄榄盐水', 'Dubonnet Rouge': '红杜本内', 'Pineapple Syrup': '菠萝糖浆',
+  'St. Germain': '圣日耳曼接骨木花利口酒', 'Vanilla syrup': '香草糖浆', 'Firewater': '烈酒',
+  'Absolut Peppar': '绝对伏特加（胡椒）', 'Figs': '无花果', 'Dr. Pepper': '胡椒博士汽水',
+  'Sarsaparilla': '菝葜汽水', 'Raspberry Liqueur': '覆盆子利口酒', 'Lillet': '利莱酒', 'Rose': '玫瑰',
+  'Apricot Nectar': '杏子果浆', 'Pomegranate juice': '石榴汁', 'Sirup of roses': '玫瑰糖浆',
+  'Melon liqueur': '蜜瓜利口酒', 'Grapes': '葡萄', 'Cherry Juice': '樱桃汁', 'Red Chili Flakes': '辣椒碎',
+  'Carbonated soft drink': '汽水', 'Corn syrup': '玉米糖浆', 'Butter': '黄油', 'Marshmallows': '棉花糖',
+  'Coconut syrup': '椰子糖浆', 'Peach brandy': '桃子白兰地', 'Tennessee whiskey': '田纳西威士忌',
+  'Jello': '果冻粉', 'Cranberry vodka': '蔓越莓伏特加', 'Apfelkorn': '苹果谷物酒',
+  'Kiwi liqueur': '猕猴桃利口酒', 'Papaya': '木瓜', 'Cumin seed': '孜然', 'Asafoetida': '阿魏',
+  'Cayenne pepper': '卡宴辣椒粉', 'Tropicana': '纯果乐', 'Black pepper': '黑胡椒',
+  'Pina colada mix': '椰林飘香预调', 'Daiquiri mix': '得其利预调', 'Oreo cookie': '奥利奥饼干',
+  'Blended Scotch': '调和苏格兰威士忌', 'Islay single malt Scotch': '艾雷岛单一麦芽',
+  'Cherry liqueur': '樱桃利口酒', 'Coffee brandy': '咖啡白兰地', 'Lime vodka': '青柠伏特加',
+  'Black Sambuca': '黑珊布卡', 'Fennel seeds': '小茴香籽', 'Blackcurrant squash': '黑加仑浓缩汁',
+  'Amaro Montenegro': '黑山阿玛罗', 'Ruby Port': '宝石波特酒', 'Blood Orange': '血橙',
+  'Anisette': '茴香甜酒', 'Cherries': '樱桃', 'Aquavit': '阿夸维特', 'Fresca': '芙蕾斯卡汽水',
+  'Yukon Jack': '育空杰克', 'Creme De Banane': '香蕉利口酒', 'Rosso Vermouth': '红味美思',
+  'Melon Liqueur': '蜜瓜利口酒', 'Limeade': '青柠水', 'Pernod': '保乐茴香酒', 'Ouzo': '乌佐',
 }
 
 // 常见酒名的中文译名（不在表里的保留英文原名）
@@ -159,6 +194,93 @@ const zhIng = (name) => {
   return ING_LC[key] || String(name || '').trim()
 }
 const zhGlass = (g) => GLASS_LC[String(g || '').trim().toLowerCase()] || g || ''
+// 量词归一：oz / cl 折成 ml，茶匙汤匙等保留分数写法，装饰类改成中文短语
+const NUM_VAL = (s) => {
+  let v = 0
+  for (const p of String(s).trim().split(/\s+/)) {
+    if (/^\d+(\.\d+)?$/.test(p)) v += parseFloat(p)
+    else if (/^\d+\/\d+$/.test(p)) { const [a, b] = p.split('/'); v += +a / +b }
+    else return NaN
+  }
+  return v
+}
+const R1 = (v) => String(Math.round(v * 10) / 10)
+const MEASURE_ADJ = {
+  white: '白', dry: '干型', hot: '热', cold: '冰', pure: '纯', fresh: '新鲜', chilled: '冰镇',
+  ground: '研磨', ground_roasted: '烘焙研磨', sliced: '切片', cubed: '切块', crushed: '碎',
+  large: '大', small: '小', chopped: '切碎', superfine: '细砂糖', instant: '速溶',
+  sweetened: '加糖', unsweetened: '无糖', skimmed: '脱脂', boiling: '沸水', frozen: '冷冻',
+  ripe: '熟', dried: '干', whole: '整', light: '浅色', dark: '深色', sweet: '甜', beaten: '打散',
+  mild: '温和', black: '黑', green: '绿', red: '红', yellow: '黄', blue: '蓝', double: '双份奶油',
+}
+const METRIC_UNIT = { oz: 30, cl: 10, ml: 1, dl: 100, l: 1000, quart: 946, quarts: 946, qt: 946, gal: 3785, pint: 473, pints: 473, jigger: 45, jiggers: 45, fifth: 750, fifths: 750, gr: 1, g: 1, kg: 1000, lb: 454 }
+const CUP_UNIT = {
+  cup: '杯', cups: '杯', glass: '杯', shot: '份', shots: '份', part: '份', parts: '份', measure: '份', measures: '份',
+  tsp: '茶匙', tbsp: '汤匙', tblsp: '汤匙', tbl: '汤匙', tablespoon: '汤匙', tablespoons: '汤匙',
+  dash: '滴', dashes: '滴', drop: '滴', drops: '滴', can: '罐', cans: '罐', bottle: '瓶', bottles: '瓶',
+  slice: '片', slices: '片', wedge: '角', wedges: '角', sprig: '枝', sprigs: '枝', stick: '根', sticks: '根',
+  chunk: '块', chunks: '块', package: '包', packages: '包', scoop: '球', scoops: '球', spoon: '勺', spoons: '勺',
+  pinch: '少许', pinches: '少许', twist: '皮卷', twists: '皮卷', cube: '块', cubes: '块',
+}
+const MEASURE_RE = /^([\d./\s-]+?)\s*(oz|cl|ml|dl|l|tsp|tbsp|tblsp|tbl|tablespoons?|cup|cups|glass|shots?|parts?|dashes|dash|drops?|pints?|cans?|bottles?|slices?|wedges?|jiggers?|gr|g|kg|lb|quarts?|qt|gal|fifths?|sprigs?|sticks?|chunks?|packages?|scoops?|spoons?|pinches?|measures?|twists?|cubes?)\b\.?\s*(.*)$/i
+const zhMeasure = (raw) => {
+  let s = String(raw || '').trim()
+  if (!s) return ''
+  s = s.replace(/^(add|about|around rim put|over|fill to top with)\s+/i, '')
+  const low = s.toLowerCase().replace(/\s+/g, ' ')
+  const bareAdj = MEASURE_ADJ[low]
+  if (bareAdj) return bareAdj
+  if (low === 'lots') return '适量'
+  if (/^garnish( with)?$/.test(low)) return '装饰用'
+  if (/^fill( with| to top( with)?)?$/.test(low) || low === 'to fill') return '加至满'
+  if (/^top( it)? up( with)?$/.test(low) || low === 'top') return '加满'
+  if (/^(add|to taste|by taste)$/.test(low)) return '适量'
+  if (low === 'cubes') return '冰块'
+  if (low === 'twist of') return '皮卷'
+  if (low === 'splash' || low === '1 splash') return '少许'
+  if (/^\(?if needed\)?$/.test(low)) return '按需'
+  // 单个量词没有数字（"Dash" / "Pinch" / "Sprig"）
+  if (CUP_UNIT[low] && !CUP_UNIT[low].includes('.')) return `1 ${CUP_UNIT[low]}`
+  if (/^2 or 3$/.test(low)) return '2–3'
+  const jo = low.match(/^juice of ([\d/\s]+)(?: ?(wedges?|limes?|lemons?))?$/)
+  if (jo) {
+    const n = NUM_VAL(jo[1])
+    return `${n === 0.5 ? '半' : n === 0.25 ? '四分之一' : R1(n)} ${jo[2] ? '角' : '个'}的汁`
+  }
+
+  // "1 Large Sprig" / "1 fresh"：先把形容词挪到后面再解析
+  const tokens = s.split(/\s+/)
+  let adjFromPrefix = ''
+  if (/^[\d]/.test(s)) {
+    const idx = tokens.findIndex((t, i) => i > 0 && MEASURE_ADJ[t.toLowerCase().replace(/-/g, '_')])
+    if (idx > 0) {
+      adjFromPrefix = MEASURE_ADJ[tokens[idx].toLowerCase().replace(/-/g, '_')]
+      tokens.splice(idx, 1)
+    }
+  }
+  const cleaned = tokens.join(' ')
+
+  const m = cleaned.match(MEASURE_RE)
+  if (!m) {
+    // "4 fresh" 这种只有数字 + 形容词
+    const onlyAdj = cleaned.match(/^([\d./\s-]+?)\s*$/)
+    if (onlyAdj && adjFromPrefix) return `${onlyAdj[1].trim()}（${adjFromPrefix}）`
+    return s
+  }
+  const rawQty = m[1].trim().replace('-', '–')
+  const unit = m[2].toLowerCase()
+  const rest = (m[3] || '').trim().toLowerCase().replace(/\s+/g, '_')
+  const adj = adjFromPrefix || (rest ? MEASURE_ADJ[rest.replace(/^(finely|fresh|or)_?/, '')] || MEASURE_ADJ[rest.split('_')[0]] || '' : '')
+  const suffix = adj ? `（${adj}）` : ''
+  if (METRIC_UNIT[unit] !== undefined) {
+    const parts = rawQty.split('–').map(NUM_VAL)
+    if (parts.some((p) => Number.isNaN(p))) return s
+    const grams = /^(g|gr|kg|lb)$/.test(unit)
+    return `${parts.map((p) => R1(p * METRIC_UNIT[unit])).join('–')} ${grams ? 'g' : 'ml'}${suffix}`
+  }
+  const zhUnit = CUP_UNIT[unit]
+  return zhUnit ? `${rawQty} ${zhUnit}${suffix}` : s
+}
 const slugify = (s) => s.toLowerCase().normalize('NFKD').replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-').slice(0, 60)
 // 基酒要在翻译前用原始英文名判断，否则 "金酒" 命不中 /gin/
 const detectBase = (rawNames) => {
@@ -268,7 +390,7 @@ for (const d of raw) {
     if (!name || !String(name).trim()) continue
     const measure = (d[`strMeasure${i}`] || '').trim()
     rawNames.push(String(name).trim())
-    ingredients.push([zhIng(String(name).trim()), measure])
+    ingredients.push([zhIng(String(name).trim()), zhMeasure(measure)])
   }
   if (!ingredients.length) continue
 
