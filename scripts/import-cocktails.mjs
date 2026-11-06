@@ -148,7 +148,7 @@ const BASES = [
   ['龙舌兰', /tequila|mezcal/i],
   ['伏特加', /vodka/i],
   ['白兰地', /brandy|cognac|armagnac|pisco|calvados/i],
-  ['利口酒', /liqueur|schnapps|vermouth|curacao|amaretto|kahlua|cointreau|triple sec|chartreuse/i],
+  ['利口酒', /liqueur|schnapps|vermouth|curacao|amaretto|kahlua|cointreau|triple sec|chartreuse|creme de|crème|sambuca|baileys|irish cream|drambuie/i],
   ['葡萄酒', /wine|champagne|prosecco|cava|sherry|port|sake|\bale\b|lager|stout|cider|beer/i],
 ]
 
@@ -186,22 +186,38 @@ async function get(letter) {
   return json.drinks || []
 }
 
+// 接口偶尔返回空 / 429，重试两次，避免每次跑出来的条数不一样
+const withRetry = async (fn, tries = 3) => {
+  for (let i = 0; i < tries; i++) {
+    const r = await fn()
+    if (r) return r
+    await new Promise((res) => setTimeout(res, 300 * (i + 1)))
+  }
+  return null
+}
+
 // 字母搜索每个字母只回 25 条；分类 / 杯型 / 酒精度数三种过滤能补全剩下的
 async function listIds(url) {
-  try {
-    const res = await fetch(url)
-    if (!res.ok) return []
-    const json = await res.json()
-    return (json.drinks || []).map((d) => String(d.idDrink))
-  } catch { return [] }
+  const ids = await withRetry(async () => {
+    try {
+      const res = await fetch(url)
+      if (!res.ok) return null
+      const json = await res.json()
+      const list = (json.drinks || []).map((d) => String(d.idDrink))
+      return list.length ? list : null
+    } catch { return null }
+  })
+  return ids || []
 }
 
 async function lookup(id) {
-  try {
-    const res = await fetch(BASE + 'lookup.php?i=' + id)
-    const json = await res.json()
-    return (json.drinks || [])[0] || null
-  } catch { return null }
+  return withRetry(async () => {
+    try {
+      const res = await fetch(BASE + 'lookup.php?i=' + id)
+      const json = await res.json()
+      return (json.drinks || [])[0] || null
+    } catch { return null }
+  })
 }
 
 const letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9']
@@ -215,19 +231,26 @@ for (const l of letters) {
 const CATS = ['Beer','Cocktail','Cocoa','Coffee / Tea','Homemade Liqueur','Ordinary Drink','Other / Unknown','Punch / Party Drink','Shake','Shot','Soft Drink']
 const GLASSES = ['Cocktail glass','Martini Glass','Old-fashioned glass','Highball glass','Collins glass','Shot glass','Champagne flute','Wine Glass','Margarita glass','Hurricane glass','Pint glass','Beer mug','Coffee mug','Irish coffee cup','Punch bowl','Pitcher','Copper Mug','Mason jar','Coupe Glass','Balloon Glass','Beer Glass','Whiskey sour glass','Cordial glass','Nick and Nora Glass','Brandy snifter','Jar','Pousse cafe glass']
 const ALC = ['Alcoholic','Non_Alcoholic','Optional_alcohol']
-
-const idSet = new Set()
-for (const c of CATS) (await listIds(BASE + 'filter.php?c=' + encodeURIComponent(c))).forEach((id) => idSet.add(id))
-for (const g of GLASSES) (await listIds(BASE + 'filter.php?g=' + encodeURIComponent(g))).forEach((id) => idSet.add(id))
-for (const a of ALC) (await listIds(BASE + 'filter.php?a=' + a)).forEach((id) => idSet.add(id))
-
+// 反复收集直到候选集合不再增长：接口每次返回的截断位置不一样，跑两三轮才能收全
 const have = new Set(raw.map((d) => String(d.idDrink)))
-const missing = [...idSet].filter((id) => !have.has(id))
-console.log(`\n候选 ${idSet.size}，已有详情 ${have.size}，补 ${missing.length}`)
-for (let i = 0; i < missing.length; i += 8) {
-  const got = await Promise.all(missing.slice(i, i + 8).map((id) => lookup(id)))
-  got.forEach((d) => d && raw.push(d))
-  process.stdout.write('.')
+for (let pass = 0; pass < 6; pass++) {
+  const idSet = new Set()
+  for (const c of CATS) (await listIds(BASE + 'filter.php?c=' + encodeURIComponent(c))).forEach((id) => idSet.add(id))
+  for (const g of GLASSES) (await listIds(BASE + 'filter.php?g=' + encodeURIComponent(g))).forEach((id) => idSet.add(id))
+  for (const a of ALC) (await listIds(BASE + 'filter.php?a=' + a)).forEach((id) => idSet.add(id))
+
+  const missing = [...idSet].filter((id) => !have.has(id))
+  console.log(`第 ${pass + 1} 轮：候选 ${idSet.size}，已有 ${have.size}，补 ${missing.length}`)
+  if (!missing.length) break
+  for (let i = 0; i < missing.length; i += 8) {
+    const got = await Promise.all(missing.slice(i, i + 8).map((id) => lookup(id)))
+    got.forEach((d) => {
+      if (!d) return
+      have.add(String(d.idDrink))
+      raw.push(d)
+    })
+    process.stdout.write('.')
+  }
 }
 console.log(`\n合计 ${raw.length} 条（含重复）`)
 
