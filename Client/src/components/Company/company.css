@@ -308,7 +308,6 @@
   color: var(--text-bright); text-wrap: balance;
   word-break: keep-all; overflow-wrap: anywhere; /* 中文标题不在词中间断开 */
 }
-.co-cta-lead { margin: 0; font-size: 0.9375rem; line-height: 1.75; color: var(--text-secondary); max-width: 56ch; }
 .co-cta-mail { margin: 0; }
 .co-cta-mail a {
   font-family: var(--font-mono); font-size: clamp(1.05rem, 1.8vw, 1.375rem);
@@ -356,7 +355,6 @@
 /* 联系 */
 /* 合作方式两栏：不要盒子，一根竖线分开，和「三项交付标准」同一套读法 */
 .co-grid { display: grid; gap: 0; background: none; border: none; border-top: 1px solid var(--border-strong); }
-.co-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .co-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .co-card { background: none; padding: 22px 26px 20px 0; display: flex; flex-direction: column; }
 .co-grid > .co-card + .co-card { border-left: 1px dotted var(--rule-dot-ink); padding-left: 26px; padding-right: 0; }
@@ -423,7 +421,7 @@
   .co-foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
 }
 @media (max-width: 820px) {
-  .co-grid-3, .co-grid-2 { grid-template-columns: 1fr; }
+  .co-grid-2 { grid-template-columns: 1fr; }
   /* 两栏合并后，竖线换成横线，别留一根悬空的左边线 */
   .co-grid > .co-card + .co-card { border-left: none; border-top: 1px dotted var(--rule-dot-ink); padding-left: 0; padding-top: 18px; }
   .co-proof li { grid-template-columns: 1fr; gap: 4px; }
@@ -580,9 +578,7 @@
   .co-proof-arrow, .co-case-go { transition: none; translate: none; }
 }
 
-/* 正文段落：避免最后一行只剩一两个字（中文按字断行，孤字很常见） */
-.co-lead, .co-sec-lead, .co-infra-lead, .co-cta-lead, .co-cta-hint,
-.co-svc p, .co-std p, .co-faq-item p, .co-card p, .co-proof-v, .co-proof-sub, .co-case-sub {
+.co-lead, .co-sec-lead, .co-infra-lead, .co-cta-hint, .co-svc p, .co-std p, .co-faq-item p, .co-card p, .co-proof-v, .co-proof-sub, .co-case-sub {
   text-wrap: pretty;
 }
 
