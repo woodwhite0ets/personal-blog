@@ -2,14 +2,14 @@
   <component :is="tag" :to="link" class="user-avatar" :class="[sizeClass, { clickable: !!link }]">
     <img
       v-if="src" :src="src" :alt="alt" :width="px" :height="px"
-      class="avatar-img" loading="lazy" decoding="async" @error="onImgError"
+      class="avatar-img" loading="lazy" decoding="async"
     />
     <span v-else class="avatar-char">{{ char }}</span>
   </component>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   src: { type: String, default: '' },
@@ -17,11 +17,6 @@ const props = defineProps({
   size: { type: String, default: 'sm', validator: v => ['xs', 'sm', 'md', 'lg', 'xl'].includes(v) },
   link: { type: [String, Object], default: '' },
 })
-
-const imgFailed = ref(false)
-
-// src 变化时重置加载失败状态（坏头像不再永久遮挡后续有效头像）
-watch(() => props.src, () => { imgFailed.value = false })
 
 const tag = computed(() => (props.link ? 'router-link' : 'span'))
 const char = computed(() => {
@@ -36,15 +31,6 @@ const sizeMap = {
   xs: 'ava-xs', sm: 'ava-sm', md: 'ava-md', lg: 'ava-lg', xl: 'ava-xl',
 }
 const sizeClass = computed(() => sizeMap[props.size])
-
-const effectiveSrc = computed(() => {
-  if (imgFailed.value) return ''
-  return props.src || ''
-})
-
-function onImgError() {
-  imgFailed.value = true
-}
 </script>
 
 <style scoped>

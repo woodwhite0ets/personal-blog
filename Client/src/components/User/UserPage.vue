@@ -253,7 +253,6 @@ import UserAvatar from '../common/UserAvatar.vue'
 import { useAuth, getToken } from '../../stores/auth.js'
 
 const route = useRoute()
-const navOpen = ref(false)
 const { currentUser, isLoggedIn, fetchMe } = useAuth()
 
 const API_BASE = '/api'

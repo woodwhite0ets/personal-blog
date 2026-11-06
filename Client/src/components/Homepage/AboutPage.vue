@@ -148,7 +148,6 @@ import SiteFooter from '../common/SiteFooter.vue'
 
 // 从后端动态获取头像，与用户主页头像保持同步
 const profile = ref(null)
-const navOpen = ref(false)
 
 onMounted(async () => {
   try {

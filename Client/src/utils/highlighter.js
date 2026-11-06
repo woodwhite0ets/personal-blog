@@ -24,7 +24,6 @@ const LANG_ALIAS = {
   dockerfile: 'dockerfile', docker: 'dockerfile', diff: 'diff', patch: 'diff',
 }
 
-export function isHighlighterReady() { return enabled }
 
 // 幂等预热：重复调用只跑一次
 export function ensureHighlighter() {
@@ -32,7 +31,7 @@ export function ensureHighlighter() {
   return initPromise
 }
 
-export async function initHighlighter() {
+async function initHighlighter() {
   try {
     const [{ default: js }, { default: ts }, { default: py }, { default: java }, { default: sql },
       { default: bash }, { default: shell }, { default: json }, { default: html }, { default: css },

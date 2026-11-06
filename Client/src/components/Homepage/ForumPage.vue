@@ -184,9 +184,8 @@ const readLabel = (p) => {
   const m = String(p.read_time || '').match(/(\d+)/)
   return m ? `${m[1]} 分钟` : '短读'
 }
-const navOpen = ref(false)
 const router = useRouter()
-const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
+const { currentUser, isLoggedIn, isAdmin } = useAuth()
 
 // ====== 用户菜单 ======
 const showUserMenu = ref(false)
@@ -216,10 +215,6 @@ function hl(text) {
 }
 const searchInput = ref(null)
 
-function handleLogout() {
-  showUserMenu.value = false
-  logout()
-}
 
 function handleClickOutside(e) {
   if (userMenuRef.value && !userMenuRef.value.contains(e.target)) {

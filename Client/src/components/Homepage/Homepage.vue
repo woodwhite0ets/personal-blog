@@ -227,7 +227,6 @@
 <script setup>
 import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { stripMarkdown } from '../../utils/excerpt.js'
 import SiteNav from '../common/SiteNav.vue'
 import HeroBackdrop from '../common/HeroBackdrop.vue'
 import SiteFooter from '../common/SiteFooter.vue'
@@ -238,9 +237,8 @@ import { useAuth } from '../../stores/auth.js'
 import { usePosts } from '../../composables/usePosts.js'
 
 const route = useRoute()
-const navOpen = ref(false)
 const router = useRouter()
-const { currentUser, isLoggedIn, isAdmin, logout } = useAuth()
+const { currentUser, isLoggedIn, isAdmin } = useAuth()
 
 // 站点统计 + 热门文章
 const stats = ref({ posts: 0, views: 0, comments: 0, tags: 0, byMonth: [] })
@@ -248,7 +246,6 @@ const featuredTools = ref([])
 const popular = ref([])
 // 数字加千分位：21300 → 21,300
 const fmt = (n) => Number(n || 0).toLocaleString('en-US')
-const maxMonth = computed(() => Math.max(1, ...(stats.value.byMonth || []).map(m => m.c)))
 async function loadExtra() {
   try {
     const [a, c, d] = await Promise.all([
@@ -274,12 +271,9 @@ const {
   switchSort, loadMore, fetchPosts, refresh,
 } = usePosts()
 
-// 摘要纯文本化（数据库存量 excerpt 含 markdown 标记，渲染时剥离）
-const cleanExcerpt = (txt) => stripMarkdown(txt, 180)
 // 主题标签（首屏"这里写什么" + 关于区块分布图）
 const topTags = computed(() => [...tags.value].sort((a, b) => Number(b.post_count) - Number(a.post_count)).slice(0, 5))
 const topTags6 = computed(() => [...tags.value].sort((a, b) => Number(b.post_count) - Number(a.post_count)).slice(0, 6))
-const maxTagCount = computed(() => Math.max(1, ...tags.value.map(t => Number(t.post_count) || 0)))
 
 // ====== 用户菜单 ======
 const showUserMenu = ref(false)
@@ -290,10 +284,6 @@ const searchActive = ref(false)
 const searchQuery = ref('')
 const searchInput = ref(null)
 
-function handleLogout() {
-  showUserMenu.value = false
-  logout()
-}
 
 function handleClickOutside(e) {
   if (userMenuRef.value && !userMenuRef.value.contains(e.target)) {
@@ -301,9 +291,6 @@ function handleClickOutside(e) {
   }
 }
 
-function scrollToPosts() {
-  document.querySelector('.main-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-}
 
 // ====== 首屏光标跟随光晕 ======
 // 只写两个 px 变量去 translate 一个固定的渐变层（走合成器），

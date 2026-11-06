@@ -313,7 +313,6 @@ import UserAvatar from '../common/UserAvatar.vue'
 import { useComments } from '../../composables/useComments.js'
 
 const route = useRoute()
-const navOpen = ref(false)
 const router = useRouter()
 const { currentUser, isLoggedIn, isAdmin } = useAuth()
 

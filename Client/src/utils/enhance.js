@@ -1,13 +1,13 @@
 // Markdown 正文通用增强：代码块复制按钮 + 图片灯箱
 let __lbEsc = null
 
-export function closeLightbox() {
+function closeLightbox() {
   const lb = document.getElementById('img-lightbox')
   if (lb) lb.classList.remove('open')
   if (__lbEsc) { document.removeEventListener('keydown', __lbEsc); __lbEsc = null }
 }
 
-export function openLightbox(src, alt) {
+function openLightbox(src, alt) {
   let lb = document.getElementById('img-lightbox')
   if (!lb) {
     lb = document.createElement('div')

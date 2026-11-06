@@ -25,11 +25,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import SiteNav from '../common/SiteNav.vue'
 import SiteFooter from '../common/SiteFooter.vue'
 const tags = ref([]); const total = ref(0); const loading = ref(true)
-const maxCount = computed(() => Math.max(1, ...tags.value.map(t => Number(t.post_count) || 0)))
 onMounted(async () => {
   try {
     const r = await fetch('/api/tags'); const d = await r.json()
