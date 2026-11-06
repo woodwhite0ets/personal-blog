@@ -6,7 +6,7 @@
           <img class="co-foot-mark" src="/brand/opc-mark-gray.svg" alt="" width="955" height="672" aria-hidden="true" />
           <span class="co-foot-name">木白 woodwhite</span>
         </span>
-        <p>把 AI 接进业务，做到能上线。一个人从头跟到尾。</p>
+        <p>把 AI 接进业务，上线之后还跑着。一个人从头跟到尾。</p>
         <span class="co-foot-copy">© {{ year }} 木白 woodwhite</span>
       </div>
       <nav class="co-foot-col" aria-label="服务">

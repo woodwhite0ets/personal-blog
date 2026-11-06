@@ -3,9 +3,9 @@
     <div class="co-main">
       <CompanyMasthead
         title="案例"
-        :lead="`${cases.length} 个已上线的项目，每条写清解决什么问题、怎么做的、结果是什么。`"
+        :lead="`${cases.length} 个项目在生产里跑着，每条写清解决什么问题、怎么做的、结果是什么。`"
         :meta="[
-          { k: '已上线', v: `${cases.length} 个` },
+          { k: '在运行', v: `${cases.length} 个` },
           { k: '交付', v: '代码 · 部署 · 文档' },
           { k: '结算', v: '按阶段验收' },
         ]"
