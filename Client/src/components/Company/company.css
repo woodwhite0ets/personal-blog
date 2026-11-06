@@ -440,8 +440,8 @@
   .co-case-period { margin-left: 0; }
 }
 
-/* 中文断行：标题、表格、正文不要把词拆开 */
-.co-title, .co-lead, .mkt-table td { word-break: keep-all; overflow-wrap: anywhere; }
+/* 中文段落只在标点处换行，避免「不 / 需要」这种词被拆成两行 */
+.co-title, .co-lead, .co-sec-lead, .co-infra-lead, .mkt-table td { word-break: keep-all; overflow-wrap: anywhere; }
 
 /* 首页营销版块：合作方式表格 / 两栏对照 / 四步
    原先散落在全局 style.css 里叠了三十来层同名规则（只有最后一层真正生效），
