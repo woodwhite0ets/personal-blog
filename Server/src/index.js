@@ -7,7 +7,7 @@ require('dotenv').config();
 require('./config/logger'); // 激活内存日志捕获（尽早加载）
 const { ensureDatabase } = require('./config/db');
 const pool = require('./config/db');
-const { renderSeoHtml } = require('./injectSeo');
+const { renderSeoHtml, hasRouteMeta } = require('./injectSeo');
 const { globalLimiter } = require('./config/rateLimit');
 
 const app = express();
@@ -239,10 +239,10 @@ app.use(async (req, res, next) => {
   // entry point after a deployment, otherwise they can request removed chunks.
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
   const indexPath = path.join(__dirname, '../../Client/dist/index.html');
-  // 文章页与「公司页 / 案例 / 工具库 / AI 榜」都要注入各自的 meta
-  const SEO_PATHS = new Set(['/', '/work', '/stack', '/contact', '/projects', '/tools', '/ai-daily']);
+  // 文章页与「公司页 / 案例 / 工具库 / AI 榜」都要注入各自的 meta。
+  // 是否要注入直接问 meta 表（单一真源），别在这里再抄一份路径清单。
   const cleanPath = req.path.replace(/\/+$/, '') || '/';
-  if (req.path.startsWith('/post/') || SEO_PATHS.has(cleanPath)) {
+  if (req.path.startsWith('/post/') || await hasRouteMeta(cleanPath)) {
     try {
       const html = await renderSeoHtml(req, fs.readFileSync(indexPath, 'utf8'));
       return res.send(html);

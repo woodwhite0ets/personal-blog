@@ -95,4 +95,9 @@ async function renderSeoHtml(req, baseHtml) {
   return html;
 }
 
-module.exports = { renderSeoHtml };
+async function hasRouteMeta(pathname) {
+  const table = await loadRouteMetaTable();
+  return Object.prototype.hasOwnProperty.call(table, pathname);
+}
+
+module.exports = { renderSeoHtml, hasRouteMeta };
