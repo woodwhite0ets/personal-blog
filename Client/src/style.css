@@ -1555,7 +1555,7 @@ body::after {
 
 /* ② 反相段（首屏/项目区）的 --text-faint 在深底和浅底上都低于 4.5:1。
       只提升最弱一档，保持层级不被拉平。 */
-.hero-band, .band-tint { --text-faint: #7a7a7a; }
+.hero-band, .band-tint { --text-faint: #666d76; }  /* 暖色带上仍需 ≥4.5 */
 /* 首屏「最新」列表：栏目标题与日期是要读的元信息，不用最弱一档 */
 .hr-head { color: var(--text-dim); font-size: 0.75rem; }
 .hr-date { color: var(--text-dim); }
@@ -1593,9 +1593,9 @@ body::after {
   --text-bright: #0a0b0d;
   --text-dim: #565d66;
   --text-muted: #646b74;
-  --text-faint: #6f7680;
+  --text-faint: #687078;
   --text-secondary: #4c535b;
-  --text-hint: #6f7680;
+  --text-hint: #687078;
 
   --accent: #b8452f;
   --accent-hover: #9c3327;
@@ -1702,6 +1702,10 @@ h3,
   letter-spacing: -0.012em;
 }
 body { line-height: 1.75; }
+
+/* 中文排版：标点不落行首（避头尾）、汉字与西文之间自动留空隙。
+   两个属性都按“支持就生效、不支持就忽略”处理。 */
+body { line-break: strict; text-autospace: normal; }
 
 /* Swiss：等宽数字 + 紧字距 + 更轻的阴影，直角靠线而不是靠投影分层 */
 
