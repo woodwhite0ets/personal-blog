@@ -2587,3 +2587,14 @@ html {
 .home-page, .forum-page, .tags-page, .archive-page, .about-page,
 .notes-page, .now-page, .series-page, .pl-page, .td-page, .tl-page, .ad-page,
 .post-detail-page, .ct-page { overflow-x: clip; }
+
+/* ============================================================
+   圆角一律用 iOS 的连续曲率（squircle），而不是正圆弧。
+   corner-shape 只有较新浏览器支持，不支持的会自动退回普通圆角，
+   所以这里只加声明、不改任何 border-radius 数值。
+   ============================================================ */
+@supports (corner-shape: squircle) {
+  *, *::before, *::after { corner-shape: squircle; }
+  /* 圆点、头像、加载环本来就是正圆，保持正圆 */
+  .co-badge-dot, .loading, .spinner, .dot { corner-shape: round; }
+}
