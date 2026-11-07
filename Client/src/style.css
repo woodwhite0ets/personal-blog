@@ -2595,6 +2595,10 @@ html {
    ============================================================ */
 @supports (corner-shape: squircle) {
   *, *::before, *::after { corner-shape: squircle; }
-  /* 圆点、头像、加载环本来就是正圆，保持正圆 */
-  .co-badge-dot, .loading, .spinner, .dot { corner-shape: round; }
+  /* 50% 半径的元素在 squircle 下会变成圆角方块，所以显式还原成正圆。
+     新增圆形元素时把类名补进这一行。 */
+  .badge-dot, .co-badge-dot, .footer-dot, .hero-badge-dot,
+  .indicator-dot, .panel-dot, .status-dot, .terminal-dot, .tl-cat::before,
+  .lightbox-close, .img-lightbox-close, .notfound-icon, .ripple-ink,
+  .spinner, .spinner-guest, .step-num, .success-icon, .verify-icon, .state.success { corner-shape: round; }
 }
