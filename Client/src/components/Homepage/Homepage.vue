@@ -391,7 +391,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .hm-h { margin-bottom: 18px; }
 .hm-proj .bezel-core { padding: 26px 28px; }
 .hm-proj .proj-svg { margin-bottom: 16px; }
-.hm-text { font-size: 0.9062rem; line-height: 1.7; }
+.hm-text { font-size: 0.875rem; line-height: 1.7; }
 .ai-snip-sec { padding: 40px 0 30px; }
 /* .hm 默认带 112px 底部 padding；首页拆成多个 .hm 容器后每段都会多出来，统一去掉，
    底部留白交给最后一个板块自己控制 */
@@ -472,15 +472,15 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
   color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px;
 }
 
-.nav-num { color: var(--text-faint); font-size: 0.625rem; font-weight: 700; }
+.nav-num { color: var(--text-faint); font-size: 0.6875rem; font-weight: 700; }
 
 .nav-links a:hover,
 .nav-links a.router-link-active { color: var(--text); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
-.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
-.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 8px; cursor: pointer; padding: 0; }
+.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 4px; transition: transform 0.2s, opacity 0.2s; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
@@ -500,7 +500,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 
 .search-wrap.active .btn-search {
   border-right: none;
-  border-radius: 6px 0 0 6px;
+  border-radius: 8px 0 0 6px;
   border-color: var(--accent); color: var(--accent);
 }
 
@@ -529,7 +529,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
   display: flex; align-items: center; gap: 6px;
   padding: 6px 16px;
   font-family: inherit; font-size: 0.75rem; font-weight: 600;
-  color: var(--on-accent); background: var(--accent); border-radius: 6px;
+  color: var(--on-accent); background: var(--accent); border-radius: 8px;
   text-decoration: none; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
@@ -560,13 +560,13 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
   display: flex; align-items: center; justify-content: center;
   background: var(--accent); color: var(--on-accent);
   font-weight: 700; font-size: 0.75rem;
-  border-radius: 6px; text-transform: uppercase;
+  border-radius: 8px; text-transform: uppercase;
 }
 
 .user-name { font-weight: 500; color: var(--text-secondary); }
 
 .user-caret {
-  font-size: 0.625rem; color: var(--text-muted); transition: transform 0.2s;
+  font-size: 0.6875rem; color: var(--text-muted); transition: transform 0.2s;
 }
 
 .user-caret.open { transform: rotate(180deg); }
@@ -706,7 +706,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .dim { opacity: 0.3; }
 
 .panel-title {
-  flex: 1; font-size: 0.625rem;
+  flex: 1; font-size: 0.6875rem;
   font-family: var(--font-hand); font-weight: 400; letter-spacing: 0; font-weight: 400;
   color: var(--text-muted); text-align: center;
   letter-spacing: 1.5px; text-transform: lowercase;
@@ -732,7 +732,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
   padding: 10px 16px; margin-bottom: 20px;
   background: var(--accent-a4);
   border: 1px solid var(--accent-a15);
-  border-radius: 6px; font-size: 0.75rem;
+  border-radius: 8px; font-size: 0.75rem;
 }
 
 .sort-bar {
@@ -742,10 +742,10 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
   padding: 10px 16px;
   background: var(--accent-a4);
   border: 1px solid var(--accent-a15);
-  border-radius: 6px;
+  border-radius: 8px;
 }
 .sort-label {
-  font-size: 0.625rem; text-transform: uppercase; letter-spacing: 1px;
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 1px;
   color: var(--text-muted);
 }
 .sort-btn {
@@ -763,7 +763,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 
 
 .filter-prompt { color: var(--accent); font-weight: 700; }
-.filter-label { color: var(--text-muted); text-transform: uppercase; font-size: 0.625rem; letter-spacing: 1px; }
+.filter-label { color: var(--text-muted); text-transform: uppercase; font-size: 0.6875rem; letter-spacing: 1px; }
 .filter-tag { color: var(--accent); font-weight: 600; }
 .filter-clear {
   margin-left: auto;
@@ -787,7 +787,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .tag.lg { font-size: 0.8125rem; font-weight: 600; }
 .tag.md { font-size: 0.75rem; }
 .tag.sm { font-size: 0.6875rem; }
-.tag.xs { font-size: 0.625rem; opacity: 0.7; }
+.tag.xs { font-size: 0.6875rem; opacity: 0.7; }
 
 .link-item {
   display: flex; align-items: center; gap: 8px;
@@ -814,14 +814,14 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
   width: 20px; height: 20px;
   display: flex; align-items: center; justify-content: center;
   background: var(--accent-a10); color: var(--accent);
-  border-radius: 4px; font-size: 0.625rem; font-weight: 700;
+  border-radius: 4px; font-size: 0.6875rem; font-weight: 700;
   text-transform: uppercase;
 }
 
 .contributor-name { flex: 1; }
 
 .contributor-count {
-  font-size: 0.625rem; color: var(--text-muted);
+  font-size: 0.6875rem; color: var(--text-muted);
   font-weight: 600;
 }
 
@@ -890,7 +890,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .project-name { font-size: 1.1875rem; font-weight: 600; color: var(--text-bright); margin: 0 0 8px; }
 .project-desc { font-size: 1rem; line-height: 1.85; color: var(--text-secondary); margin: 0 0 12px; max-width: 620px; }
 .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.project-tags span { font-size: 0.8125rem; color: var(--text-dim); border: 1px solid var(--border); border-radius: 3px; padding: 2px 10px; }
+.project-tags span { font-size: 0.8125rem; color: var(--text-dim); border: 1px solid var(--border); border-radius: 4px; padding: 2px 10px; }
 
 /* 信笺统一（组件内，替代原全局 !important）*/
 .sidebar-panel { background: transparent; border: 1px solid var(--border); border-radius: 4px; box-shadow: none; padding: 6px; }
@@ -935,7 +935,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .popular-meta { font-size: 0.8125rem; color: var(--text-dim); margin-top: auto; }
 .activity-grid { display: flex; align-items: flex-end; gap: 10px; height: 84px; margin-bottom: 14px; }
 .activity-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.activity-bar { width: 22px; background: var(--accent); border-radius: 2px; opacity: .85; }
+.activity-bar { width: 22px; background: var(--accent); border-radius: 4px; opacity: .85; }
 .activity-label { font-size: 0.75rem; color: var(--text-dim); }
 .activity-sum { font-size: 0.875rem; color: var(--text-dim); margin: 0; font-variant-numeric: tabular-nums; }
 @media (max-width: 700px) { .popular-grid { grid-template-columns: 1fr; } }
@@ -961,7 +961,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 
 /* 板块小标签：先给分类，再给标题（同 teamorouter 的「价格 · PRICE」） */
 .hm-eyebrow {
-  margin: 0 0 10px; font-family: var(--font-mono); font-size: 0.625rem;
+  margin: 0 0 10px; font-family: var(--font-mono); font-size: 0.6875rem;
   letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint);
 }
 .hm-eyebrow + .hm-h { margin-top: 2px; }
@@ -983,7 +983,7 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .pop-rank { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-faint); }
 .pop-title { font-size: 0.9375rem; line-height: 1.55; color: var(--text-bright); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pop-item:hover .pop-title { color: var(--accent); }
-.pop-date, .pop-views { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .02em; color: var(--text-faint); text-align: right; }
+.pop-date, .pop-views { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .02em; color: var(--text-faint); text-align: right; }
 @media (max-width: 700px) {
   .pop-item { grid-template-columns: 26px minmax(0, 1fr) 72px; gap: 10px; }
   .pop-date { display: none; }

@@ -181,7 +181,7 @@ onMounted(fetchStats)
 /* 表格 */
 .data-table { width: 100%; border-collapse: collapse; }
 .data-table th {
-  font-size: 0.625rem; font-weight: 600; color: var(--text-muted);
+  font-size: 0.6875rem; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px;
   text-align: left; padding: 10px 14px 10px 0;
   border-bottom: 1px solid var(--border);
@@ -197,8 +197,8 @@ onMounted(fetchStats)
 .user-link:hover { opacity: 0.8; }
 
 .role-badge, .status-badge {
-  font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;
-  padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 1px;
+  padding: 2px 8px; border-radius: 4px; text-transform: uppercase;
 }
 .role-badge.admin { color: var(--accent); background: var(--accent-a8); border: 1px solid var(--accent-a20); }
 .role-badge.author { color: var(--ok); background: var(--ok-a8); border: 1px solid var(--ok-a20); }

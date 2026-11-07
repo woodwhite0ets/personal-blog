@@ -54,13 +54,13 @@ onMounted(async () => {
 .ai-snip-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
 .ai-snip-head .hm-h { flex: 1; margin-bottom: 6px; }
 .ai-snip-more {
-  font-size: 0.7812rem; color: var(--text-dim); text-decoration: none;
+  font-size: 0.8125rem; color: var(--text-dim); text-decoration: none;
   border-bottom: 1px solid var(--border-strong); padding-bottom: 1px;
   white-space: nowrap;
 }
 .ai-snip-more:hover { color: var(--text-bright); border-color: var(--text-bright); }
-.ai-snip-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
-.ai-snip-sub { margin: 0 0 10px; font-size: 0.7812rem; color: var(--text-dim); }
+.ai-snip-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.ai-snip-sub { margin: 0 0 10px; font-size: 0.8125rem; color: var(--text-dim); }
 
 .ai-snip-list { list-style: none; margin: 0; padding: 0; }
 .ai-snip-item {
@@ -107,9 +107,9 @@ onMounted(async () => {
   text-decoration: none; word-break: break-word;
 }
 .ai-snip-name:hover { color: var(--text-secondary); }
-.ai-snip-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+.ai-snip-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 .ai-snip-desc {
-  margin: 3px 0 0; font-size: 0.7812rem; line-height: 1.55; color: var(--text-secondary);
+  margin: 3px 0 0; font-size: 0.8125rem; line-height: 1.55; color: var(--text-secondary);
   display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical;
   overflow: hidden;
 }

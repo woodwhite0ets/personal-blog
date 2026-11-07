@@ -195,7 +195,7 @@ async function handleGuestLogin() {
   max-width: 92vw;
   background-color: var(--bg-float);
   border: 1px solid var(--border-strong);
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 0 60px var(--shadow), 0 0 0 1px var(--overlay-a3) inset;
   overflow: hidden;
 }
@@ -252,7 +252,7 @@ async function handleGuestLogin() {
 .pw-toggle {
   position: absolute; right: 8px;
   font: inherit; font-size: 0.75rem; padding: 4px 8px;
-  border-radius: 5px; border: 1px solid transparent;
+  border-radius: 4px; border: 1px solid transparent;
   background: none; color: var(--text-dim); cursor: pointer;
 }
 .pw-toggle:hover { color: var(--text); border-color: var(--border); }
@@ -267,7 +267,7 @@ async function handleGuestLogin() {
   color: var(--text-bright);
   background-color: var(--bg-elevated);
   border: 1px solid var(--border-strong);
-  border-radius: 6px;
+  border-radius: 8px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   caret-color: var(--accent);
@@ -330,7 +330,7 @@ async function handleGuestLogin() {
   background: var(--err-a6);
   border: 1px solid var(--err-a15);
   padding: 10px 14px;
-  border-radius: 6px;
+  border-radius: 8px;
   margin: 0;
 }
  

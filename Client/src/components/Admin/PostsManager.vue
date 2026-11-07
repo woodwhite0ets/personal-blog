@@ -275,7 +275,7 @@ onMounted(() => fetchPosts())
 
 .post-table { width: 100%; border-collapse: collapse; }
 .post-table th {
-  font-size: 0.625rem; font-weight: 600; color: var(--text-muted);
+  font-size: 0.6875rem; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px;
   text-align: left; padding: 10px 14px 10px 0;
   border-bottom: 1px solid var(--border);
@@ -294,15 +294,15 @@ onMounted(() => fetchPosts())
 .author-link:hover { color: var(--accent); }
 
 .pinned-tag {
-  font-size: 0.5625rem; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 1px;
   color: var(--warn); padding: 1px 6px;
   background: var(--warn-a8); border: 1px solid var(--warn-a20);
-  border-radius: 3px; margin-left: 6px; vertical-align: middle;
+  border-radius: 4px; margin-left: 6px; vertical-align: middle;
 }
 
 .status-badge {
-  font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;
-  padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 1px;
+  padding: 2px 8px; border-radius: 4px; text-transform: uppercase;
 }
 .status-badge.published { color: var(--ok); background: var(--ok-a8); border: 1px solid var(--ok-a20); }
 .status-badge.draft { color: var(--warn); background: var(--warn-a8); border: 1px solid var(--warn-a20); }

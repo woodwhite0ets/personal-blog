@@ -154,13 +154,13 @@ onMounted(async () => {
 }
 .now-link { color: var(--text-bright); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
 .now-link:hover { color: var(--text-bright); border-color: var(--text-bright); }
-.now-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+.now-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 .now-detail { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
 .now-stats { margin: 0; display: grid; gap: 10px; }
 .now-stats > div { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: baseline; }
-.now-stats dt { font-size: 0.7812rem; color: var(--text-dim); }
-.now-stats dd { margin: 0; font-size: 0.8438rem; color: var(--text-secondary); }
+.now-stats dt { font-size: 0.8125rem; color: var(--text-dim); }
+.now-stats dd { margin: 0; font-size: 0.875rem; color: var(--text-secondary); }
 .now-inline-link {
   margin-left: 10px; font-size: 0.75rem; color: var(--accent);
   text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);

@@ -796,7 +796,7 @@ watch(
 .toast {
   position: fixed; top: 72px; right: 24px; z-index: 999;
   display: flex; align-items: center; gap: 8px;
-  padding: 10px 20px; border-radius: 6px;
+  padding: 10px 20px; border-radius: 8px;
   font-family: inherit; font-size: 0.75rem; font-weight: 600;
   box-shadow: 0 4px 24px var(--shadow);
   pointer-events: none;
@@ -835,13 +835,13 @@ watch(
 .nav-actions { display: flex; align-items: center; gap: 12px; }
 
 .auto-save-hint {
-  font-size: 0.5625rem; color: var(--text-muted); font-weight: 600;
+  font-size: 0.6875rem; color: var(--text-muted); font-weight: 600;
   letter-spacing: 0.5px; white-space: nowrap;
 }
 
 .draft-indicator {
   display: flex; align-items: center; gap: 6px;
-  font-size: 0.625rem; font-weight: 700; letter-spacing: 1.5px;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.5px;
   color: var(--warn); padding: 4px 12px;
   background: var(--warn-a8);
   border: 1px solid var(--warn-a20);
@@ -868,7 +868,7 @@ watch(
 .action-icon { font-size: 0.75rem; }
 
 .btn-shortcut {
-  font-size: 0.5625rem; opacity: 0.45; letter-spacing: 0.5px;
+  font-size: 0.6875rem; opacity: 0.45; letter-spacing: 0.5px;
   margin-left: 2px;
 }
 
@@ -901,14 +901,14 @@ watch(
 .input-title.error { border-bottom-color: var(--err); }
 
 .label-hint {
-  font-size: 0.625rem; font-weight: 600; color: var(--text-muted);
+  font-size: 0.6875rem; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1.5px;
   margin-bottom: -14px;
   display: flex; align-items: center; gap: 6px;
 }
 
 .tag-count {
-  font-size: 0.5625rem; color: var(--text-faint); font-weight: 400;
+  font-size: 0.6875rem; color: var(--text-faint); font-weight: 400;
 }
 
 /* 标签输入 */
@@ -918,7 +918,7 @@ watch(
   display: flex; flex-wrap: wrap; gap: 6px;
   align-items: center; padding: 8px 12px;
   background-color: var(--bg-elevated); border: 1px solid var(--border-strong);
-  border-radius: 6px; min-height: 42px;
+  border-radius: 8px; min-height: 42px;
   transition: border-color 0.2s;
 }
 
@@ -968,7 +968,7 @@ watch(
 
 .cover-preview {
   width: 100%; max-height: 180px; object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .dropzone-icon { font-size: 1.75rem; opacity: 0.5; }
@@ -983,7 +983,7 @@ watch(
   width: 100%; padding: 12px 14px;
   font-family: inherit; font-size: 0.8125rem; color: var(--text);
   background-color: var(--bg-elevated); border: 1px solid var(--border-strong);
-  border-radius: 6px; outline: none; resize: none;
+  border-radius: 8px; outline: none; resize: none;
   caret-color: var(--accent); transition: border-color 0.2s;
 }
 
@@ -1059,7 +1059,7 @@ watch(
   letter-spacing: 1px;
 }
 
-.preview-hint { font-size: 0.625rem; color: var(--text-faint); }
+.preview-hint { font-size: 0.6875rem; color: var(--text-faint); }
 
 .preview-scroll {
   flex: 1; overflow-y: auto; padding: 32px 36px;

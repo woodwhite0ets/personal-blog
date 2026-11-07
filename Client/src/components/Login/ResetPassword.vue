@@ -130,7 +130,7 @@ async function handleReset() {
   width: 100%; max-width: 420px;
   background-color: var(--bg-elevated);
   border: 1px solid var(--border-strong);
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--shadow-deep);
 }
@@ -153,7 +153,7 @@ async function handleReset() {
 .input-wrap input {
   width: 100%; padding: 12px 14px;
   background-color: var(--bg-deeper); color: var(--text);
-  border: 1px solid var(--border-strong); border-radius: 6px;
+  border: 1px solid var(--border-strong); border-radius: 8px;
   font-family: inherit; font-size: 0.875rem; outline: none;
   transition: border-color 0.2s;
 }

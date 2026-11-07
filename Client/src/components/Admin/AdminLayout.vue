@@ -120,7 +120,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .nav-actions { display: flex; align-items: center; gap: 12px; position: relative; }
 
 .admin-badge {
-  font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 1px;
   color: var(--warn); padding: 4px 10px;
   background: var(--warn-a8); border: 1px solid var(--warn-a20);
   border-radius: 4px; text-transform: uppercase;
@@ -172,7 +172,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   border-bottom: 1px solid var(--border);
 }
 .panel-title {
-  flex: 1; font-size: 0.625rem; font-weight: 600;
+  flex: 1; font-size: 0.6875rem; font-weight: 600;
   color: var(--text-muted); text-align: center; letter-spacing: 1.5px; text-transform: lowercase;
 }
 
@@ -215,7 +215,7 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 .navbar-inner { max-width: 1120px; margin: 0 auto; padding: 0 28px; height: 74px; display: flex; align-items: center; gap: 24px; }
 .brand-text { font-family: var(--font-hand); font-size: 1.3125rem; color: var(--text-bright); }
 .brand-suffix { font-size: 0.8125rem; color: var(--text-dim); margin-left: 8px; }
-.admin-badge { font-size: 0.8125rem; color: var(--text-dim); border: 1px solid var(--border); border-radius: 3px; padding: 2px 8px; }
+.admin-badge { font-size: 0.8125rem; color: var(--text-dim); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
 .nav-link { font-size: 0.9375rem; color: var(--text-secondary); text-decoration: none; }
 .nav-link:hover { color: var(--text-bright); }
 .btn-user { border-radius: 4px; }

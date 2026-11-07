@@ -202,12 +202,12 @@ onMounted(async () => {
 .brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
 .nav-links { display: flex; gap: 28px; flex: 1; }
 .nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 0.75rem; font-weight: 500; color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px; }
-.nav-num { color: var(--text-faint); font-size: 0.625rem; font-weight: 700; }
+.nav-num { color: var(--text-faint); font-size: 0.6875rem; font-weight: 700; }
 .nav-links a:hover, .nav-links a.router-link-active { color: var(--text); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 .nav-actions { display: flex; align-items: center; gap: 12px; }
-.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
-.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 8px; cursor: pointer; padding: 0; }
+.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 4px; transition: transform 0.2s, opacity 0.2s; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
@@ -257,7 +257,7 @@ onMounted(async () => {
 .project-desc { font-size: 0.75rem; line-height: 1.7; color: var(--text-secondary); margin: 0 0 10px; }
 .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .ptag {
-  display: inline-block; font-size: 0.7188rem; padding: 3px 10px;
+  display: inline-block; font-size: 0.75rem; padding: 3px 10px;
   color: var(--tag-fg); background: var(--tag-bg);
   border: 1px solid var(--tag-bd);
   border-radius: 999px;

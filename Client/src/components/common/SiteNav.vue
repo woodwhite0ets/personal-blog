@@ -167,7 +167,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 .btn-user { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; font: inherit; font-size: 0.75rem; color: var(--text); background: var(--overlay-a4); border: 1px solid var(--border-strong); border-radius: 999px; cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s; }
 .btn-user:hover { border-color: var(--accent); background: var(--accent-a6); }
 .user-name { font-weight: 500; color: var(--text-secondary); }
-.user-caret { font-size: 0.625rem; color: var(--text-muted); transition: transform 0.2s; }
+.user-caret { font-size: 0.6875rem; color: var(--text-muted); transition: transform 0.2s; }
 .user-caret.open { transform: rotate(180deg); }
 .user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; transform-origin: top right; min-width: 180px; background-color: var(--bg-float); border: 1px solid var(--border-strong); border-radius: 8px; overflow: hidden; box-shadow: 0 12px 40px var(--shadow); z-index: 200; }
 .dropdown-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; font: inherit; font-size: 0.75rem; font-weight: 500; color: var(--text-secondary); background: none; border: none; text-decoration: none; cursor: pointer; transition: color 0.15s, background-color 0.15s, border-color 0.15s, opacity 0.15s, transform 0.15s, box-shadow 0.15s; }
@@ -175,8 +175,8 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 .dropdown-item.admin-link:hover { background: var(--accent-a6); }
 .dropdown-item.logout:hover { color: var(--err); }
 .dropdown-icon { font-size: 0.8125rem; }
-.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; background: none; border: 1px solid var(--border-strong); border-radius: 10px; cursor: pointer; padding: 0; }
-.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; background: none; border: 1px solid var(--border-strong); border-radius: 12px; cursor: pointer; padding: 0; }
+.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 4px; transition: transform 0.2s, opacity 0.2s; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }

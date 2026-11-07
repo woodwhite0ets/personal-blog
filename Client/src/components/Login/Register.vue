@@ -474,7 +474,7 @@ async function handleResend() {
 }
 
 .avatar-hint {
-  font-size: 0.625rem; color: var(--text-muted);
+  font-size: 0.6875rem; color: var(--text-muted);
   letter-spacing: 1px; text-transform: lowercase;
 }
 
@@ -485,7 +485,7 @@ async function handleResend() {
   max-width: 92vw;
   background-color: var(--bg-float);
   border: 1px solid var(--border-strong);
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 0 60px var(--shadow), 0 0 0 1px var(--overlay-a3) inset;
   overflow: hidden;
 }
@@ -541,7 +541,7 @@ async function handleResend() {
 }
  
 .step-label {
-  font-size: 0.625rem; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase;
+  font-size: 0.6875rem; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase;
 }
  
 .step.active .step-label { color: var(--accent); }
@@ -577,7 +577,7 @@ async function handleResend() {
 }
  
 .field label {
-  font-size: 0.625rem; font-weight: 600; color: var(--text-dim);
+  font-size: 0.6875rem; font-weight: 600; color: var(--text-dim);
   text-transform: uppercase; letter-spacing: 1.5px;
   display: flex; align-items: center; gap: 6px;
 }
@@ -593,7 +593,7 @@ async function handleResend() {
   color: var(--text-bright);
   background-color: var(--bg-elevated);
   border: 1px solid var(--border-strong);
-  border-radius: 6px;
+  border-radius: 8px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   caret-color: var(--accent);
@@ -620,7 +620,7 @@ async function handleResend() {
  
 .toggle-pw {
   position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-  font-family: inherit; font-size: 0.625rem; font-weight: 600;
+  font-family: inherit; font-size: 0.6875rem; font-weight: 600;
   color: var(--text-muted); background: none; border: none;
   cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
   transition: color 0.2s;
@@ -634,7 +634,7 @@ async function handleResend() {
 }
  
 .strength-bar {
-  width: 100%; height: 3px; background: var(--border); border-radius: 2px;
+  width: 100%; height: 3px; background: var(--border); border-radius: 4px;
   transition: background 0.3s;
 }
  
@@ -644,7 +644,7 @@ async function handleResend() {
 .strength-bar.bar-strong { background: var(--accent); }
  
 .strength-text {
-  font-size: 0.625rem; margin-left: 6px; color: var(--text-muted); min-width: 24px;
+  font-size: 0.6875rem; margin-left: 6px; color: var(--text-muted); min-width: 24px;
 }
  
 .field-error {
@@ -693,7 +693,7 @@ async function handleResend() {
   font-size: 0.75rem; color: var(--err);
   background: var(--err-a6);
   border: 1px solid var(--err-a15);
-  padding: 10px 14px; border-radius: 6px; margin: 0;
+  padding: 10px 14px; border-radius: 8px; margin: 0;
 }
  
 /* ====== 验证步骤 ====== */
@@ -746,7 +746,7 @@ async function handleResend() {
   display: flex; align-items: center; justify-content: center;
   background-color: var(--bg-elevated);
   border: 1px solid var(--border-strong);
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   overflow: hidden;
   padding: 0;
@@ -758,7 +758,7 @@ async function handleResend() {
 .captcha-img:active { transform: scale(0.98); }
 .captcha-img.loading { cursor: wait; opacity: 0.7; }
 .captcha-img svg { width: 100%; height: 100%; display: block; }
-.captcha-loading { font-size: 0.625rem; color: var(--text-muted); }
+.captcha-loading { font-size: 0.6875rem; color: var(--text-muted); }
 
 /* ====== 底部 ====== */
 .back-link {
@@ -775,7 +775,7 @@ async function handleResend() {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 14px;
   background-color: var(--bg-elevated); border-top: 1px solid var(--border-strong);
-  font-size: 0.625rem; color: var(--text-muted); letter-spacing: 1.5px;
+  font-size: 0.6875rem; color: var(--text-muted); letter-spacing: 1.5px;
 }
  
 .status-dot {

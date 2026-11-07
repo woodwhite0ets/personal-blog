@@ -123,7 +123,7 @@ onMounted(async () => {
   width: 420px; max-width: 92vw;
   background-color: var(--bg-float);
   border: 1px solid var(--border-strong);
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 0 60px var(--shadow), 0 0 0 1px var(--overlay-a3) inset;
   overflow: hidden;
 }
@@ -214,7 +214,7 @@ onMounted(async () => {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 14px;
   background-color: var(--bg-elevated); border-top: 1px solid var(--border-strong);
-  font-size: 0.625rem; color: var(--text-muted); letter-spacing: 1.5px;
+  font-size: 0.6875rem; color: var(--text-muted); letter-spacing: 1.5px;
 }
 
 .status-dot {

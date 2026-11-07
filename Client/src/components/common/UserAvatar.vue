@@ -57,9 +57,9 @@ function onImgError() {
 
 /* 尺寸 */
 .ava-xs  { width: 24px; height: 24px; border-radius: 4px; }
-.ava-sm  { width: 36px; height: 36px; border-radius: 6px; }
+.ava-sm  { width: 36px; height: 36px; border-radius: 8px; }
 .ava-md  { width: 52px; height: 52px; border-radius: 8px; }
-.ava-lg  { width: 72px; height: 72px; border-radius: 10px; }
+.ava-lg  { width: 72px; height: 72px; border-radius: 12px; }
 .ava-xl  { width: 96px; height: 96px; border-radius: 12px; }
 
 /* 图片 */
@@ -77,7 +77,7 @@ function onImgError() {
   user-select: none;
 }
 
-.ava-xs .avatar-char { font-size: 0.625rem; }
+.ava-xs .avatar-char { font-size: 0.6875rem; }
 .ava-sm .avatar-char { font-size: 0.875rem; }
 .ava-md .avatar-char { font-size: 1.25rem; }
 .ava-lg .avatar-char { font-size: 1.75rem; }

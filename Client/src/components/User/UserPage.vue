@@ -606,15 +606,15 @@ watch(username, () => {
   color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px;
 }
 
-.nav-num { color: var(--text-faint); font-size: 0.625rem; font-weight: 700; }
+.nav-num { color: var(--text-faint); font-size: 0.6875rem; font-weight: 700; }
 
 .nav-links a:hover,
 .nav-links a.router-link-active { color: var(--text); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
-.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
-.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 8px; cursor: pointer; padding: 0; }
+.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 4px; transition: transform 0.2s, opacity 0.2s; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
@@ -622,7 +622,7 @@ watch(username, () => {
 .btn-search {
   width: 34px; height: 34px;
   display: flex; align-items: center; justify-content: center;
-  background: none; border: 1px solid var(--border-strong); border-radius: 6px;
+  background: none; border: 1px solid var(--border-strong); border-radius: 8px;
   color: var(--text-dim); cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
@@ -632,7 +632,7 @@ watch(username, () => {
   display: flex; align-items: center; gap: 6px;
   padding: 6px 16px;
   font-family: inherit; font-size: 0.75rem; font-weight: 600;
-  color: var(--on-accent); background: var(--accent); border-radius: 6px;
+  color: var(--on-accent); background: var(--accent); border-radius: 8px;
   text-decoration: none; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
@@ -739,7 +739,7 @@ watch(username, () => {
 }
 
 .stat-label {
-  font-size: 0.625rem; color: var(--text-muted);
+  font-size: 0.6875rem; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
 }
 
@@ -771,7 +771,7 @@ watch(username, () => {
 .dim { opacity: 0.3; }
 
 .panel-title {
-  flex: 1; font-size: 0.625rem; font-weight: 600;
+  flex: 1; font-size: 0.6875rem; font-weight: 600;
   color: var(--text-muted); text-align: center;
   letter-spacing: 1.5px; text-transform: lowercase;
 }
@@ -804,7 +804,7 @@ watch(username, () => {
 .tag.lg { font-size: 0.8125rem; font-weight: 600; }
 .tag.md { font-size: 0.75rem; }
 .tag.sm { font-size: 0.6875rem; }
-.tag.xs { font-size: 0.625rem; opacity: 0.7; }
+.tag.xs { font-size: 0.6875rem; opacity: 0.7; }
 
 .no-tags { font-size: 0.6875rem; color: var(--text-muted); }
 
@@ -834,9 +834,9 @@ watch(username, () => {
 .draft-count {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 18px; height: 18px; padding: 0 5px; margin-left: 6px;
-  font-size: 0.625rem; font-weight: 700; color: var(--text);
+  font-size: 0.6875rem; font-weight: 700; color: var(--text);
   background: var(--accent-a20); border: 1px solid var(--accent-a30);
-  border-radius: 9px;
+  border-radius: 8px;
 }
 .draft-item {
   display: flex; align-items: center; justify-content: space-between;
@@ -848,7 +848,7 @@ watch(username, () => {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .draft-link:hover { color: var(--accent); }
-.draft-date { font-size: 0.625rem; color: var(--text-faint); flex-shrink: 0; }
+.draft-date { font-size: 0.6875rem; color: var(--text-faint); flex-shrink: 0; }
 .no-drafts { font-size: 0.75rem; color: var(--text-faint); }
 
 /* 密码弹窗 */
@@ -876,7 +876,7 @@ watch(username, () => {
 .pwd-modal-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
 .pwd-field { display: flex; flex-direction: column; gap: 4px; }
 .pwd-field label {
-  font-size: 0.625rem; font-weight: 600; color: var(--text-muted);
+  font-size: 0.6875rem; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px;
 }
 .pwd-field input {
@@ -893,7 +893,7 @@ watch(username, () => {
   outline: none; caret-color: var(--accent); resize: vertical;
 }
 .pwd-field textarea:focus { border-color: var(--accent); }
-.pwd-hint { font-size: 0.625rem; color: var(--text-faint); }
+.pwd-hint { font-size: 0.6875rem; color: var(--text-faint); }
 .pwd-err {
   font-size: 0.6875rem; color: var(--err); display: flex; align-items: center; gap: 4px;
 }

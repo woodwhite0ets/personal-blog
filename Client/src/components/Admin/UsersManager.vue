@@ -302,7 +302,7 @@ onMounted(() => fetchUsers())
 
 .user-table { width: 100%; border-collapse: collapse; }
 .user-table th {
-  font-size: 0.625rem; font-weight: 600; color: var(--text-muted);
+  font-size: 0.6875rem; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px;
   text-align: left; padding: 10px 14px 10px 0;
   border-bottom: 1px solid var(--border);
@@ -321,16 +321,16 @@ onMounted(() => fetchUsers())
   width: 26px; height: 26px;
   display: flex; align-items: center; justify-content: center;
   background: var(--accent-a8); color: var(--accent);
-  border-radius: 6px; font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
+  border-radius: 8px; font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
 }
 
 .user-link { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
 .user-link:hover { opacity: 0.8; }
 
 .self-tag {
-  font-size: 0.5625rem; font-weight: 700; color: var(--text-dim);
+  font-size: 0.6875rem; font-weight: 700; color: var(--text-dim);
   padding: 1px 6px; background: var(--overlay-a4);
-  border: 1px solid var(--overlay-a8); border-radius: 3px;
+  border: 1px solid var(--overlay-a8); border-radius: 4px;
   margin-left: 6px; vertical-align: middle;
 }
 
@@ -342,8 +342,8 @@ onMounted(() => fetchUsers())
 .role-select option { background-color: var(--bg-float); color: var(--text); }
 
 .role-badge {
-  font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;
-  padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 1px;
+  padding: 2px 8px; border-radius: 4px; text-transform: uppercase;
 }
 .role-badge.admin { color: var(--accent); background: var(--accent-a8); border: 1px solid var(--accent-a20); }
 .role-badge.author { color: var(--ok); background: var(--ok-a8); border: 1px solid var(--ok-a20); }

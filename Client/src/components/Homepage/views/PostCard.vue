@@ -1,5 +1,9 @@
 <template>
   <article class="post-card">
+    <img
+      v-if="post.cover_image" :src="post.cover_image" alt=""
+      class="post-cover" loading="lazy" decoding="async" width="640" height="360"
+    />
     <h2 class="post-title">
       <router-link :to="`/post/${post.slug || post.id}`">{{ post.title }}</router-link>
     </h2>
@@ -39,6 +43,12 @@ defineProps({
   padding: 34px 0 30px;
   border-bottom: 1px solid var(--border);
 }
+.post-cover {
+  display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+  margin-bottom: 16px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--bg-deeper);
+}
+
 .post-title {
   font-family: var(--font-sans);
   font-size: 1.4375rem;

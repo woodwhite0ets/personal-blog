@@ -259,7 +259,7 @@ onMounted(() => {
 .search-input { font-family: inherit; font-size: 0.75rem; color: var(--text); background: none; border: none; outline: none; min-width: 200px; caret-color: var(--accent); }
 
 .select {
-  font-family: inherit; font-size: 0.75rem; padding: 5px 8px; border-radius: 5px;
+  font-family: inherit; font-size: 0.75rem; padding: 5px 8px; border-radius: 4px;
   border: 1px solid var(--border); background-color: var(--bg-elevated); color: var(--text);
 }
 .select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -296,7 +296,7 @@ onMounted(() => {
 
 .th-num { width: 76px; }
 .num-input {
-  width: 66px; font-family: inherit; font-size: 0.75rem; padding: 4px 6px; border-radius: 5px;
+  width: 66px; font-family: inherit; font-size: 0.75rem; padding: 4px 6px; border-radius: 4px;
   border: 1px solid var(--border); background-color: var(--bg-elevated); color: var(--text);
   font-variant-numeric: tabular-nums;
 }
@@ -304,7 +304,7 @@ onMounted(() => {
 
 .text-input {
   width: 100%; min-width: 180px; font-family: inherit; font-size: 0.75rem; line-height: 1.55;
-  padding: 6px 8px; border-radius: 5px; border: 1px solid var(--border);
+  padding: 6px 8px; border-radius: 4px; border: 1px solid var(--border);
   background-color: var(--bg-elevated); color: var(--text); resize: vertical;
 }
 .text-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -312,7 +312,7 @@ onMounted(() => {
 
 .th-actions { width: 110px; text-align: right; }
 .save-btn {
-  font-family: inherit; font-size: 0.6875rem; padding: 4px 10px; border-radius: 5px; cursor: pointer;
+  font-family: inherit; font-size: 0.6875rem; padding: 4px 10px; border-radius: 4px; cursor: pointer;
   border: 1px solid var(--border-strong); background: none; color: var(--text);
 }
 .save-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -323,7 +323,7 @@ onMounted(() => {
 
 .pager { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px; font-size: 0.75rem; }
 .pager-btn {
-  font-family: inherit; font-size: 0.75rem; padding: 5px 12px; border-radius: 5px; cursor: pointer;
+  font-family: inherit; font-size: 0.75rem; padding: 5px 12px; border-radius: 4px; cursor: pointer;
   border: 1px solid var(--border); background: none; color: var(--text-dim);
 }
 .pager-btn:hover:not(:disabled) { color: var(--text); border-color: var(--border-strong); }

@@ -60,7 +60,7 @@
 .co-btn {
   display: inline-flex; align-items: center; height: 44px; padding: 0 20px;
   font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 500; letter-spacing: 0;
-  border: 1px solid var(--border-strong); color: var(--text-bright); text-decoration: none; border-radius: 10px;
+  border: 1px solid var(--border-strong); color: var(--text-bright); text-decoration: none; border-radius: 12px;
   transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out),
               background-color var(--dur-hover) var(--ease-out), translate var(--dur-hover) var(--ease-out);
   translate: none;
@@ -200,7 +200,7 @@
 .co-svc-cta { grid-column: span 6; }
 .co-svc {
   display: flex; min-width: 0;
-  padding: 4px; border: 1px solid var(--border-strong); border-radius: 10px;
+  padding: 4px; border: 1px solid var(--border-strong); border-radius: 12px;
   background: color-mix(in srgb, var(--text) 3%, transparent);
   transition: border-color var(--dur-hover) var(--ease-out), translate var(--dur-hover) var(--ease-out),
               background-color var(--dur-hover) var(--ease-out), box-shadow var(--dur-hover) var(--ease-out);
@@ -291,7 +291,7 @@
    企业站的对比锚点。全白页面里没有一块深色，整页会读成"发灰"而不是"克制"。 */
 .co-cta {
   position: relative; overflow: hidden;
-  margin-top: 96px; padding: 56px 48px 52px; border-radius: 16px;
+  margin-top: 96px; padding: 56px 48px 52px; border-radius: 12px;
   border: 1px solid #1b1f26;
   background: #0e1116;
   color: #e9ebef;
@@ -329,7 +329,7 @@
 .co-case-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .co-case-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .co-case-name { font-family: var(--font-display); font-size: 1.0625rem; font-weight: 500; color: var(--text-bright); }
-.co-case-status { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .04em; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent); border-radius: 3px; padding: 1px 6px; }
+.co-case-status { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .04em; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent); border-radius: 4px; padding: 1px 6px; }
 .co-case-period { margin-left: auto; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-faint); }
 .co-case-sub { display: block; margin-top: 4px; font-size: 0.875rem; line-height: 1.6; color: var(--text-secondary); }
 .co-case-result { display: block; margin-top: 6px; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.6; color: var(--text-faint); }
@@ -447,7 +447,7 @@
   font-size: 0.875rem;
   background: var(--bg-elevated);
   border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
-  border-radius: 10px; padding: 18px 20px;
+  border-radius: 12px; padding: 18px 20px;
 }
 .mkt-table th {
   font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .08em; font-weight: 600;
@@ -469,7 +469,7 @@
 .mkt-compare > div {
   background: var(--bg-elevated);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
-  border-radius: 10px; padding: 18px 20px; box-shadow: none;
+  border-radius: 12px; padding: 18px 20px; box-shadow: none;
 }
 .mkt-compare > div:first-child {
   background: color-mix(in srgb, var(--text) 4%, var(--bg-elevated));
@@ -499,7 +499,7 @@
 .mkt-steps li {
   background: var(--bg-elevated);
   border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
-  border-radius: 10px; padding: 18px 20px; box-shadow: none;
+  border-radius: 12px; padding: 18px 20px; box-shadow: none;
 }
 .mkt-steps span { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .06em; color: var(--accent); }
 .mkt-steps h3 { margin: 8px 0 6px; font-family: var(--font-display); font-weight: 500; font-size: 1rem; color: var(--text-bright); }

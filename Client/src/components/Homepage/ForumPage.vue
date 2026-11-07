@@ -446,15 +446,15 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px;
 }
 
-.nav-num { color: var(--text-faint); font-size: 0.625rem; font-weight: 700; }
+.nav-num { color: var(--text-faint); font-size: 0.6875rem; font-weight: 700; }
 
 .nav-links a:hover,
 .nav-links a.router-link-active { color: var(--text); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
-.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 6px; cursor: pointer; padding: 0; }
-.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 8px; cursor: pointer; padding: 0; }
+.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 4px; transition: transform 0.2s, opacity 0.2s; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
@@ -473,7 +473,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .search-wrap.active .btn-search {
   border-right: none;
-  border-radius: 6px 0 0 6px;
+  border-radius: 8px 0 0 6px;
   border-color: var(--accent); color: var(--accent);
 }
 
@@ -502,7 +502,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   display: flex; align-items: center; gap: 6px;
   padding: 6px 16px;
   font-family: inherit; font-size: 0.75rem; font-weight: 600;
-  color: var(--on-accent); background: var(--accent); border-radius: 6px;
+  color: var(--on-accent); background: var(--accent); border-radius: 8px;
   text-decoration: none; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
@@ -531,7 +531,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .user-name { font-weight: 500; color: var(--text-secondary); }
 
 .user-caret {
-  font-size: 0.625rem; color: var(--text-muted); transition: transform 0.2s;
+  font-size: 0.6875rem; color: var(--text-muted); transition: transform 0.2s;
 }
 
 .user-caret.open { transform: rotate(180deg); }
@@ -581,7 +581,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  font-size: 0.625rem; font-weight: 700; letter-spacing: 2px;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 2px;
   color: var(--text-dim); margin-bottom: 16px; text-transform: uppercase;
 }
 
@@ -668,7 +668,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   background: transparent;
   border-bottom: 1px solid var(--border);
   border-top: none; border-left: none; border-right: none;
-  border-radius: 6px; font-size: 0.75rem;
+  border-radius: 8px; font-size: 0.75rem;
 }
 
 .sort-bar {
@@ -679,24 +679,24 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   background: transparent;
   border-bottom: 1px solid var(--border);
   border-top: none; border-left: none; border-right: none;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 .sort-label {
-  font-size: 0.625rem; text-transform: uppercase; letter-spacing: 1px;
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 1px;
   color: var(--text-muted);
 }
 .sort-btn {
   padding: 4px 12px;
   font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; letter-spacing: .06em;
   color: var(--text-dim); background: transparent;
-  border: 1px solid var(--border); border-radius: 3px;
+  border: 1px solid var(--border); border-radius: 4px;
   cursor: pointer; transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
 }
 .sort-btn:hover { border-color: var(--border-strong); color: var(--text); }
 .sort-btn.active { color: var(--text-bright); border-color: var(--text-bright); background: transparent; }
 
 .filter-prompt { font-family: var(--font-mono); color: var(--text-faint); font-weight: 600; letter-spacing: .06em; }
-.filter-label { color: var(--text-muted); text-transform: uppercase; font-size: 0.625rem; letter-spacing: 1px; }
+.filter-label { color: var(--text-muted); text-transform: uppercase; font-size: 0.6875rem; letter-spacing: 1px; }
 .filter-tag { color: var(--accent); font-weight: 600; }
 .filter-clear {
   margin-left: auto;
@@ -711,7 +711,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   font-size: 0.6875rem; padding: 4px 11px;
   background: transparent;
   border: 1px solid var(--border-strong);
-  border-radius: 3px;
+  border-radius: 4px;
   color: var(--text-secondary); cursor: pointer;
   transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
   text-decoration: none;
@@ -722,7 +722,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .tag.lg { font-size: 0.8125rem; font-weight: 600; }
 .tag.md { font-size: 0.75rem; }
 .tag.sm { font-size: 0.6875rem; }
-.tag.xs { font-size: 0.625rem; opacity: 0.7; }
+.tag.xs { font-size: 0.6875rem; opacity: 0.7; }
 
 .link-item {
   display: flex; align-items: center; gap: 8px;
@@ -748,7 +748,7 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
 .contributor-name { flex: 1; }
 
 .contributor-count {
-  font-size: 0.625rem; color: var(--text-muted);
+  font-size: 0.6875rem; color: var(--text-muted);
   font-weight: 600;
 }
 
@@ -812,6 +812,6 @@ onMounted(() => { fetchPosts(); fetchTags(); fetchContributors() })
   background: color-mix(in srgb, var(--accent) 24%, transparent);
   color: inherit;
   padding: 0 1px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 </style>

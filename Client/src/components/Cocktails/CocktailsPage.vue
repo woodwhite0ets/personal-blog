@@ -77,12 +77,34 @@
         </div>
       </div>
 
+      <div v-if="!loading && !failed" class="ct-dist" role="group" aria-label="按基酒分布">
+        <button
+          v-for="row in distribution" :key="row.base" type="button"
+          class="ct-dist-row" :class="{ active: base === row.base }"
+          :aria-pressed="base === row.base"
+          @click="base = base === row.base ? '' : row.base"
+        >
+          <span class="ct-dist-name">{{ row.base }}</span>
+          <span class="ct-dist-track"><span class="ct-dist-fill" :style="{ width: row.pct + '%' }" /></span>
+          <span class="ct-dist-num">{{ row.count }}</span>
+        </button>
+      </div>
+
       <p class="ct-count">
-        <template v-if="loading">正在加载配方…</template>
+        <template v-if="loading">正在加载配方</template>
+        <template v-else-if="failed">配方数据没加载出来</template>
         <template v-else>{{ filtered.length }} 条<template v-if="filtered.length !== total"> / 共 {{ total }} 条</template></template>
       </p>
 
-      <ul v-if="!loading" class="ct-list">
+      <div v-if="failed" class="ct-fail">
+        <p class="ct-fail-text">列表文件没有取到，可能是网络中断或缓存损坏。</p>
+        <button type="button" class="ct-more-btn" @click="loadCatalog">重试</button>
+      </div>
+
+      <ul v-else-if="loading" class="ct-list" aria-hidden="true">
+        <li v-for="n in 6" :key="n" class="ct-skel-row"><span class="ct-skel-line" /></li>
+      </ul>
+      <ul v-else class="ct-list">
         <li v-for="c in paged" :key="c.slug">
           <router-link :to="`/cocktails/${c.slug}`" class="ct-item">
             <span class="ct-item-head">
@@ -100,11 +122,11 @@
         </li>
       </ul>
 
-      <div v-if="!loading && paged.length < filtered.length" class="ct-more">
+      <div v-if="!loading && !failed && paged.length < filtered.length" class="ct-more">
         <button type="button" class="ct-more-btn" @click="shown += PAGE">再加载 {{ Math.min(PAGE, filtered.length - paged.length) }} 条</button>
       </div>
 
-      <p v-if="!loading && !filtered.length" class="ct-note">没有匹配的配方，换个词试试。</p>
+      <p v-if="!loading && !failed && !filtered.length" class="ct-note">没有匹配的配方，换个词试试。</p>
 
       <p v-if="!loading" class="ct-note">
         配方数据来自 <a href="https://www.thecocktaildb.com" target="_blank" rel="noopener noreferrer">TheCocktailDB</a>，中文做法为官方译文；
@@ -133,18 +155,26 @@ const q = ref('')
 const base = ref('')
 const shown = ref(PAGE)
 
+const failed = ref(false)
 
-onMounted(async () => {
+async function loadCatalog() {
+  loading.value = true
+  failed.value = false
   try {
     const res = await fetch('/cocktails.json')
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const json = await res.json()
     catalog.value = json.drinks || []
+    if (!catalog.value.length) throw new Error('empty')
   } catch {
     catalog.value = []
+    failed.value = true
   } finally {
     loading.value = false
   }
-})
+}
+
+onMounted(loadCatalog)
 
 // 手工校订的几杯覆盖同 slug 的导入条目；排序先校订、再中文名、最后按名称
 const all = computed(() => {
@@ -168,6 +198,15 @@ const all = computed(() => {
 const bases = computed(() => [...new Set(all.value.map((c) => c.base))].filter(Boolean))
 const total = computed(() => all.value.length)
 const curatedCount = computed(() => curated.length)
+
+// 按基酒统计，给索引页做一条横向分布图（点击即筛选）
+const distribution = computed(() => {
+  const count = new Map()
+  for (const c of all.value) if (c.base) count.set(c.base, (count.get(c.base) || 0) + 1)
+  const rows = [...count.entries()].sort((a, b) => b[1] - a[1]).map(([b, n]) => ({ base: b, count: n }))
+  const max = rows[0]?.count || 1
+  return rows.map((r) => ({ ...r, pct: Math.max(4, Math.round((r.count / max) * 100)) }))
+})
 
 const filtered = computed(() => {
   const needle = q.value.trim().toLowerCase()
@@ -232,7 +271,7 @@ watchEffect(() => {
 .ct-search input {
   width: 100%; height: 40px; padding: 0 12px; font: inherit; font-size: 0.9375rem;
   color: var(--text); background: var(--bg-elevated);
-  border: 1px solid var(--border); border-radius: 10px;
+  border: 1px solid var(--border); border-radius: 12px;
   transition: border-color var(--dur-hover) var(--ease-out);
 }
 .ct-search input::placeholder { color: var(--text-faint); }
@@ -250,6 +289,35 @@ watchEffect(() => {
 .ct-filter:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .ct-count { margin: 16px 0 0; font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-faint); }
+
+/* 基酒分布：一行一根，点即筛选 */
+.ct-dist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 28px; margin: 20px 0 0; max-width: 660px; }
+.ct-dist-row {
+  display: grid; grid-template-columns: 64px 1fr 40px; align-items: center; gap: 12px;
+  padding: 4px 6px; margin: 0 -6px; background: none; border: 0; border-radius: 8px;
+  font: inherit; text-align: left; cursor: pointer; color: var(--text-secondary);
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out);
+}
+.ct-dist-row:hover { background: var(--surface-2); color: var(--text-bright); }
+.ct-dist-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.ct-dist-name { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .02em; }
+.ct-dist-track { height: 4px; border-radius: 4px; background: var(--border); overflow: hidden; }
+.ct-dist-fill { display: block; height: 100%; border-radius: 4px; background: color-mix(in srgb, var(--text) 26%, transparent); transition: background-color var(--dur-hover) var(--ease-out); }
+.ct-dist-row.active .ct-dist-fill { background: var(--accent); }
+.ct-dist-row.active .ct-dist-name { color: var(--accent); }
+.ct-dist-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-faint); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* 载入失败 */
+.ct-fail { margin: 20px 0 0; padding: 28px 24px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-elevated); }
+.ct-fail-text { margin: 0 0 16px; font-size: 0.875rem; color: var(--text-secondary); }
+
+/* 载入骨架 */
+.ct-skel-row { padding: 16px 0; border-bottom: 1px solid var(--border); }
+.ct-skel-line {
+  display: block; height: 12px; width: 46%; border-radius: 4px;
+  background: linear-gradient(90deg, var(--bg-deeper) 25%, var(--surface-2) 50%, var(--bg-deeper) 75%);
+  background-size: 200% 100%; animation: shimmer 1.5s infinite;
+}
 
 /* 清单 */
 .ct-list { list-style: none; margin: 8px 0 0; padding: 0; }
@@ -275,7 +343,7 @@ watchEffect(() => {
 .ct-more-btn {
   height: 40px; padding: 0 20px; font: inherit; font-size: 0.875rem;
   color: var(--text-bright); background: none; border: 1px solid var(--border-strong);
-  border-radius: 10px; cursor: pointer; transition: border-color var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out);
+  border-radius: 12px; cursor: pointer; transition: border-color var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out);
 }
 .ct-more-btn:hover { border-color: var(--text-bright); background: var(--surface-2); }
 .ct-note { margin: 24px 0 0; font-size: 0.875rem; line-height: 1.7; color: var(--text-faint); }
@@ -309,5 +377,6 @@ watchEffect(() => {
   .ct-item { padding: 14px 0; margin: 0; }
   .ct-item-meta { margin-left: 0; width: 100%; gap: 12px; }
   .ct-search { flex-basis: 100%; }
+  .ct-dist { grid-template-columns: minmax(0, 1fr); max-width: none; }
 }
 </style>

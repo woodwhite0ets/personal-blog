@@ -141,7 +141,7 @@ onMounted(async () => {
   letter-spacing: -0.025em; color: var(--text-bright); text-wrap: balance;
 }
 .notes-lead { margin: 14px 0 0; max-width: 66ch; font-size: 0.875rem; line-height: 1.75; color: var(--text-secondary); text-wrap: pretty; }
-.notes-meta { margin: 10px 0 0; font-size: 0.7812rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.notes-meta { margin: 10px 0 0; font-size: 0.8125rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
 .notes-tools {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
@@ -150,7 +150,7 @@ onMounted(async () => {
 .notes-filters { display: flex; gap: 6px; flex-wrap: wrap; }
 .filter-btn {
   border: 1px solid var(--border-strong); background: transparent; color: var(--text-dim);
-  font-size: 0.7812rem; padding: 5px 11px; border-radius: 999px; cursor: pointer;
+  font-size: 0.8125rem; padding: 5px 11px; border-radius: 999px; cursor: pointer;
 }
 .filter-btn:hover { color: var(--text); border-color: var(--text-dim); }
 .filter-btn.active { color: var(--accent); border-color: var(--accent); }
@@ -185,7 +185,7 @@ onMounted(async () => {
 .notes-empty-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .note-title { text-decoration: none; }
 .note-title:hover { color: var(--accent); }
-.note-title:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+.note-title:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 
 /* 详情视图 */
 .notes-detail { max-width: 820px; }
@@ -200,7 +200,7 @@ onMounted(async () => {
 }
 .detail-meta {
   display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  margin: 12px 0 26px; font-size: 0.7812rem; color: var(--text-faint);
+  margin: 12px 0 26px; font-size: 0.8125rem; color: var(--text-faint);
   padding-bottom: 16px; border-bottom: 1px solid var(--border);
 }
 .detail-tags { letter-spacing: .02em; }
@@ -211,10 +211,10 @@ onMounted(async () => {
 .detail-body :deep(h3) { margin: 22px 0 10px; font-size: 1rem; color: var(--text-bright); }
 .detail-body :deep(pre) {
   background-color: var(--bg-code); border: 1px solid var(--border); border-radius: 8px;
-  padding: 14px 16px; overflow-x: auto; font-size: 0.7812rem; line-height: 1.6;
+  padding: 14px 16px; overflow-x: auto; font-size: 0.8125rem; line-height: 1.6;
 }
 .detail-body :deep(code) { font-family: ui-monospace, monospace; font-size: .92em; }
-.detail-body :deep(p code) { background-color: var(--bg-elevated); padding: 1px 5px; border-radius: 3px; }
+.detail-body :deep(p code) { background-color: var(--bg-elevated); padding: 1px 5px; border-radius: 4px; }
 .detail-body :deep(table) { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.8125rem; }
 .detail-body :deep(th), .detail-body :deep(td) { border: 1px solid var(--border); padding: 7px 10px; text-align: left; }
 .detail-body :deep(blockquote) {
@@ -223,7 +223,7 @@ onMounted(async () => {
 }
 .detail-note {
   margin: 36px 0 0; padding-top: 16px; border-top: 1px solid var(--border);
-  font-size: 0.7812rem; color: var(--text-faint);
+  font-size: 0.8125rem; color: var(--text-faint);
 }
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

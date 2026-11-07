@@ -110,10 +110,10 @@ onMounted(reload)
   letter-spacing: -0.02em; color: var(--text-bright); text-wrap: balance;
 }
 .series-meta {
-  margin: 10px 0 0; font-size: 0.7812rem; color: var(--text-faint);
+  margin: 10px 0 0; font-size: 0.8125rem; color: var(--text-faint);
   font-variant-numeric: tabular-nums;
 }
-.series-desc { margin: 6px 0 0; max-width: 62ch; font-size: 0.8438rem; line-height: 1.7; color: var(--text-dim); }
+.series-desc { margin: 6px 0 0; max-width: 62ch; font-size: 0.875rem; line-height: 1.7; color: var(--text-dim); }
 .series-empty { padding: 40px 2px; font-size: 0.875rem; color: var(--text-dim); }
 .series-back { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; }
 @media (max-width: 720px) { .series-main { padding: 40px 20px 72px; } }

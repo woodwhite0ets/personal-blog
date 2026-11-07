@@ -206,7 +206,7 @@ onUnmounted(() => {
 .btn-sm {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 4px 10px; font-family: inherit; font-size: 0.6875rem; font-weight: 600;
-  border-radius: 3px; cursor: pointer;
+  border-radius: 4px; cursor: pointer;
   transition: color 0.2s, border-color 0.2s, background-color 0.2s;
   border: 1px solid var(--border); background: none; color: var(--text-dim);
 }
@@ -229,7 +229,7 @@ onUnmounted(() => {
 .caddy-cols {
   display: grid; grid-template-columns: 150px 130px 60px 1fr 60px 60px;
   gap: 10px; padding: 7px 16px;
-  font-size: 0.625rem; font-weight: 700; letter-spacing: 1px;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 1px;
   color: var(--text-muted); text-transform: uppercase;
   border-bottom: 1px solid var(--border);
 }
@@ -257,8 +257,8 @@ onUnmounted(() => {
 }
 
 .log-level {
-  font-size: 0.5625rem; font-weight: 700; letter-spacing: 1px;
-  padding: 1px 6px; border-radius: 3px; flex-shrink: 0;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 1px;
+  padding: 1px 6px; border-radius: 4px; flex-shrink: 0;
   min-width: 48px; text-align: center;
 }
 .badge-info  { color: var(--accent); background: var(--accent-a8); border: 1px solid var(--accent-a20); }

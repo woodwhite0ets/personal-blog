@@ -59,7 +59,7 @@ onMounted(async () => {
   display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
   padding: 13px 4px; border-bottom: 1px solid var(--border); text-decoration: none;
   transition: background-color var(--dur-hover) var(--ease-out);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 .tag-name { font-size: 1rem; color: var(--text); transition: color var(--dur-hover) var(--ease-out); }
 .tag-row:hover { background: var(--overlay-a2); }

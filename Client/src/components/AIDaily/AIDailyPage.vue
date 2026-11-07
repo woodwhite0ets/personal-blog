@@ -560,7 +560,7 @@ onMounted(async () => {
 /* 一级导航 */
 .ad-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
 .ad-tab {
-  appearance: none; background: none; border: 1px solid transparent; border-radius: 6px;
+  appearance: none; background: none; border: 1px solid transparent; border-radius: 8px;
   padding: 6px 14px; font-size: 0.875rem; color: var(--text-dim); cursor: pointer;
   transition: color .12s ease, border-color .12s ease;
 }
@@ -579,7 +579,7 @@ onMounted(async () => {
 .ad-date-label { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em; color: var(--text-faint); }
 .ad-meta > span:not(.ad-date-label):not(.ad-updated) { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em; color: var(--text-faint); }
 .ad-select {
-  font: inherit; font-size: 0.8125rem; padding: 5px 8px; border-radius: 6px;
+  font: inherit; font-size: 0.8125rem; padding: 5px 8px; border-radius: 8px;
   border: 1px solid var(--border); background: transparent; color: var(--text);
 }
 .ad-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -599,7 +599,7 @@ onMounted(async () => {
   letter-spacing: .08em; color: var(--text-secondary);
 }
 .ad-h2:first-child { margin-top: 0; }
-.ad-h2 em { font-style: normal; font-family: var(--font-mono); font-size: 0.625rem; font-weight: 400; color: var(--text-faint); letter-spacing: .04em; }
+.ad-h2 em { font-style: normal; font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 400; color: var(--text-faint); letter-spacing: .04em; }
 .ad-footnote {
   margin: 26px 0 0; padding-top: 14px; border-top: 1px solid var(--border);
   font-size: 0.75rem; color: var(--text-dim); font-variant-numeric: tabular-nums;
@@ -631,7 +631,7 @@ onMounted(async () => {
   overflow-wrap: anywhere;
 }
 .ad-name:hover { text-decoration: underline; }
-.ad-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+.ad-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 .ad-lang {
   font-size: 0.6875rem; color: var(--text-dim); border: 1px solid var(--border);
   border-radius: 4px; padding: 1px 6px;
@@ -676,16 +676,16 @@ onMounted(async () => {
 .ad-state-body { margin: 0; font-size: 0.8125rem; line-height: 1.7; color: var(--text-dim); }
 .ad-retry {
   margin-top: 14px; font: inherit; font-size: 0.8125rem; padding: 6px 14px; cursor: pointer;
-  border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text);
 }
 .ad-retry:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* 骨架 */
 .ad-skeleton { display: flex; flex-direction: column; gap: 18px; padding: 20px 0; }
 .ad-skel-row { display: grid; grid-template-columns: 34px 1fr; gap: 10px; }
-.ad-skel-rank { width: 14px; height: 10px; background: var(--border); border-radius: 2px; }
+.ad-skel-rank { width: 14px; height: 10px; background: var(--border); border-radius: 4px; }
 .ad-skel-body { display: flex; flex-direction: column; gap: 8px; }
-.ad-skel-line { display: block; height: 10px; border-radius: 2px; background: var(--border); }
+.ad-skel-line { display: block; height: 10px; border-radius: 4px; background: var(--border); }
 .ad-skel-line.w40 { width: 40%; }
 .ad-skel-line.w80 { width: 80%; }
 .sr-only {

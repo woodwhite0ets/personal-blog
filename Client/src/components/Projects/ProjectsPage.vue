@@ -66,9 +66,9 @@ const COMPANY = SITE.company
   border: 1px solid var(--border); border-radius: 999px;
 }
 .pl-period { margin-left: auto; font-size: 0.75rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
-.pl-sub { margin: 6px 0 0; font-size: 0.8438rem; color: var(--text-secondary); }
+.pl-sub { margin: 6px 0 0; font-size: 0.875rem; color: var(--text-secondary); }
 .pl-result { margin: 6px 0 0; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.6; color: var(--text-secondary); }
-.pl-summary { margin: 8px 0 0; font-size: 0.8438rem; line-height: 1.7; color: var(--text-secondary); max-width: 80ch; }
+.pl-summary { margin: 8px 0 0; font-size: 0.875rem; line-height: 1.7; color: var(--text-secondary); max-width: 80ch; }
 .pl-stack { margin: 8px 0 0; font-size: 0.6875rem; color: var(--text-faint); font-family: ui-monospace, monospace; }
 
 @media (max-width: 720px) {

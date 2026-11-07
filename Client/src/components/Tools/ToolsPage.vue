@@ -242,7 +242,7 @@ onMounted(reload)
 .tl-search-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
 .tl-search-label { font-size: 0.8125rem; color: var(--text-dim); white-space: nowrap; }
 .tl-search {
-  flex: 1; min-width: 0; font: inherit; font-size: 0.875rem; padding: 8px 12px; border-radius: 6px;
+  flex: 1; min-width: 0; font: inherit; font-size: 0.875rem; padding: 8px 12px; border-radius: 8px;
   border: 1px solid var(--border); background-color: var(--bg-elevated); color: var(--text);
 }
 .tl-search::placeholder { color: var(--text-faint); }
@@ -250,7 +250,7 @@ onMounted(reload)
 
 .tl-cats { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; }
 .tl-cat {
-  appearance: none; background: none; border: 1px solid transparent; border-radius: 6px;
+  appearance: none; background: none; border: 1px solid transparent; border-radius: 8px;
   padding: 5px 11px 5px 20px; font: inherit; font-size: 0.8125rem; color: var(--text-dim); cursor: pointer;
   transition: color .12s ease, border-color .12s ease;
 }
@@ -267,12 +267,12 @@ onMounted(reload)
 .tl-spacer { flex: 1; }
 .tl-sort-label { font-size: 0.8125rem; color: var(--text-dim); }
 .tl-sort {
-  font: inherit; font-size: 0.8125rem; padding: 5px 8px; border-radius: 6px;
+  font: inherit; font-size: 0.8125rem; padding: 5px 8px; border-radius: 8px;
   border: 1px solid var(--border); background: transparent; color: var(--text);
 }
 .tl-sort:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .tl-mode {
-  appearance: none; font: inherit; font-size: 0.8125rem; padding: 5px 12px; border-radius: 6px;
+  appearance: none; font: inherit; font-size: 0.8125rem; padding: 5px 12px; border-radius: 8px;
   border: 1px solid var(--border); background: none; color: var(--text-dim); cursor: pointer;
   transition: color .12s ease, border-color .12s ease;
 }
@@ -285,7 +285,7 @@ onMounted(reload)
 .tl-empty { padding: 40px 0; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 0.875rem; line-height: 1.8; }
 .tl-empty p { margin: 0 0 12px; }
 .tl-empty-btn {
-  appearance: none; font: inherit; font-size: 0.8125rem; padding: 7px 14px; border-radius: 6px;
+  appearance: none; font: inherit; font-size: 0.8125rem; padding: 7px 14px; border-radius: 8px;
   border: 1px solid var(--border-strong); background: none; color: var(--text); cursor: pointer;
 }
 .tl-empty-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -347,7 +347,7 @@ onMounted(reload)
 
 .tl-more-wrap { display: flex; justify-content: center; margin-top: 28px; }
 .tl-more {
-  appearance: none; font: inherit; font-size: 0.8125rem; padding: 8px 20px; border-radius: 6px;
+  appearance: none; font: inherit; font-size: 0.8125rem; padding: 8px 20px; border-radius: 8px;
   border: 1px solid var(--border-strong); background: none; color: var(--text); cursor: pointer;
 }
 .tl-more:hover { border-color: var(--accent); color: var(--accent); }

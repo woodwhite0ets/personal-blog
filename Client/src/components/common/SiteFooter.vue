@@ -74,13 +74,13 @@ defineProps({ command: { type: String, required: false, default: '' } })
 .footer-tagline { margin: 0; font-size: 0.8125rem; line-height: 1.7; color: var(--text-secondary); }
 .footer-status-line {
   display: inline-flex; align-items: center; gap: 7px; margin-top: 4px;
-  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .04em; color: var(--text-faint);
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .04em; color: var(--text-faint);
 }
 .footer-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex: none; }
 
 .footer-col { display: flex; flex-direction: column; gap: 8px; }
 .footer-col h3 {
-  margin: 0 0 4px; font-family: var(--font-mono); font-size: 0.625rem; font-weight: 600;
+  margin: 0 0 4px; font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600;
   letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint);
 }
 .footer-col a { font-size: 0.8125rem; color: var(--text-secondary); text-decoration: none; transition: color var(--dur-hover) var(--ease-out); }
@@ -90,7 +90,7 @@ defineProps({ command: { type: String, required: false, default: '' } })
 .footer-bottom {
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
   margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border);
-  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .03em; color: var(--text-faint);
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .03em; color: var(--text-faint);
 }
 .beian-link { font-size: 0.6875rem; color: var(--text-faint); text-decoration: none; transition: color .2s; }
 .beian-link:hover { color: var(--accent); }

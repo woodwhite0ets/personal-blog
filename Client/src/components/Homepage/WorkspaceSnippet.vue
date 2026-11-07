@@ -225,7 +225,7 @@ const groups = [
 .ws-item:last-child { border-bottom: none; }
 .ws-name {
   font-family: ui-monospace, "Noto Sans Mono CJK SC", monospace;
-  font-size: 0.7812rem; font-weight: 600; line-height: 1.45;
+  font-size: 0.8125rem; font-weight: 600; line-height: 1.45;
   word-break: break-word;
 }
 .ws-name a {
@@ -234,7 +234,7 @@ const groups = [
   transition: color var(--dur-hover) var(--ease-out);
 }
 .ws-name a:hover { color: var(--accent); }
-.ws-name a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+.ws-name a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 .ws-name-plain { color: var(--text-dim); }
 .ws-use {
   margin: 0; font-size: 0.75rem; line-height: 1.65; color: var(--text-secondary);
@@ -242,7 +242,7 @@ const groups = [
 }
 .ws-note {
   margin: 28px 0 0; padding-top: 16px; border-top: 1px solid var(--border);
-  font-size: 0.7812rem; line-height: 1.7; color: var(--text-dim); max-width: 84ch;
+  font-size: 0.8125rem; line-height: 1.7; color: var(--text-dim); max-width: 84ch;
 }
 
 @media (max-width: 900px) {
