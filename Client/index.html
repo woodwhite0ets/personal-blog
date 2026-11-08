@@ -7,27 +7,14 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/brand/icon-blue-180.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/brand/icon-blue-512.png" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-400.woff2" crossorigin />
-    <!-- 首屏必现字体预加载（只 preload 少量 latin 片，避免过多分片）：
-         EB Garamond=正文/标题 latin；JetBrains Mono 400=代码块（全站无 700 字重等宽文本）。
-         这些文件由 @fontsource 打包进 /assets 并带内容哈希；升级字体包时需同步更新。
-
-         已移除两项「零字形」预加载（实测 Playwright + CDP CSS.getPlatformFontsForNode，
-         首页暗下 94.6KB 纯粹浪费，详见下方注释）：
-         1) caveat-latin：--font-hand 写的是 'Caveat'，而 @fontsource-variable/caveat
-            声明的家族名是 'Caveat Variable' → @font-face 永不匹配，全站渲染 0 字形
-            （document.fonts 中 4 个 Caveat face 始终 unloaded）。
-         2) jetbrains-mono-700：首页/文章页/关于页所有等宽元素计算字重均为 400，
-            700 face 始终 unloaded。
-         若日后把 --font-hand 家族名修正为 'Caveat Variable'（需改 style.css），
-         已修正 --font-hand 家族名(Caveat→Caveat Variable)并恢复 caveat-latin 预加载。 -->
-    <link rel="preload" as="font" type="font/woff2" href="/assets/eb-garamond-latin-wght-normal-CRpggXlh.woff2" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="/assets/caveat-latin-wght-normal-C1hSzPvX.woff2" crossorigin />
+    <!-- 字体预加载只保留实际用到的这一款：站点等宽字体（自托管）。
+         Geist 走 @fontsource 的 unicode-range 分片，浏览器只取 latin，不需要手动 preload。
+         曾被删掉的 EB Garamond / Caveat 的 preload 仍留在这里，线上每次访问都 404，已清理。 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>woodwhite@blog — 技术博客 | 全栈开发 | 开源分享</title>
 
     <!-- SEO 基础 -->
     <meta name="description" content="woodwhite@blog 是一个技术博客与社区论坛，分享全栈开发、Vue 3、Express 5、MySQL 等技术文章。支持 Markdown 写作、多主题切换、游客浏览。" />
-    <meta name="keywords" content="技术博客,全栈开发,Vue3,Express,MySQL,Node.js,前端,后端,开源,WoodWhite" />
     <meta name="author" content="WoodWhite" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
 

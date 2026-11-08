@@ -667,3 +667,17 @@
 /* FAQ 里的小交叉引用 */
 .co-faq-link { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
 .co-faq-link:hover { border-color: var(--accent); }
+
+/* 联系页：邮箱 / 微信号一键复制 */
+.co-contact-line dd { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.co-copy-value { font-family: var(--font-mono); }
+.co-copy {
+  height: 24px; padding: 0 8px; font: inherit; font-size: 0.75rem; line-height: 1;
+  color: var(--text-dim); background: none; border: 1px solid var(--border-strong);
+  border-radius: 4px; cursor: pointer;
+  transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
+}
+.co-copy:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+.co-copy:active { transform: translateY(0.5px) scale(0.985); }
+.co-copy-status { margin: 10px 0 0; min-height: 1.2em; font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); }
+.co-copy-status:empty { min-height: 0; }

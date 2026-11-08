@@ -73,6 +73,35 @@ async function caseMeta(pathname) {
   };
 }
 
+// 公司页的社交卡片沿用博客模板的 og:site_name，分享出去显示「woodwhite@blog」，与站点不符
+const COMPANY_NAME = '木白 woodwhite';
+
+// 公司站的结构化数据：一个人接单的实体服务，地址/服务区域来自站点文案
+const COMPANY_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: COMPANY_NAME,
+  alternateName: 'woodwhite',
+  url: COMPANY_URL,
+  description: '一个人负责的 AI 应用交付：需求、数据、模型、部署与巡检，交付代码、部署脚本、监控与运行手册。',
+  areaServed: [
+    { '@type': 'City', name: '乐清' },
+    { '@type': 'City', name: '温州' },
+    { '@type': 'Country', name: '中国' },
+  ],
+  email: '1903784785@qq.com',
+  founder: { '@type': 'Person', name: 'WoodWhite', alternateName: '木白' },
+  knowsAbout: ['AI 应用', '向量检索', '本地模型推理', 'Vue 3', 'Node.js', 'PostgreSQL'],
+  makesOffer: {
+    '@type': 'Offer',
+    itemOffered: { '@type': 'Service', name: 'AI 应用与系统定制开发' },
+  },
+};
+
+function companyJsonLdTag() {
+  return `<script type="application/ld+json">${JSON.stringify(COMPANY_JSON_LD)}<\/script>`;
+}
+
 function applyRouteMeta(html, meta) {
   const t = escapeHtml(meta.title);
   const d = escapeHtml(meta.description);
@@ -85,6 +114,14 @@ function applyRouteMeta(html, meta) {
   out = out.replace(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${d}" />`);
   out = out.replace(/<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${meta.canonical}" />`);
   out = out.replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${meta.canonical}" />`);
+  if (String(meta.canonical || '').startsWith(COMPANY_URL)) {
+    out = out.replace(/<meta property="og:site_name" content="[^"]*" \/>/, `<meta property="og:site_name" content="${COMPANY_NAME}" />`);
+    // 分享卡换成公司站自己的图（模板里默认是博客的 og-default.jpg）
+    const ogImage = `${COMPANY_URL}/og-company.jpg`;
+    out = out.replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${ogImage}" />`);
+    out = out.replace(/<meta name="twitter:image" content="[^"]*" \/>/, `<meta name="twitter:image" content="${ogImage}" />`);
+    out = out.replace('</head>', `  ${companyJsonLdTag()}\n  </head>`);
+  }
   return out;
 }
 
