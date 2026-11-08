@@ -681,3 +681,50 @@
 .co-copy:active { transform: translateY(0.5px) scale(0.985); }
 .co-copy-status { margin: 10px 0 0; min-height: 1.2em; font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); }
 .co-copy-status:empty { min-height: 0; }
+
+/* 合作方式表格：起步价单列，弱信息用小字压在下面 */
+.mkt-table .mkt-price { color: var(--accent); font-weight: 600; white-space: nowrap; }
+.mkt-price-sub { display: block; margin-top: 2px; font-weight: 400; font-size: 0.75rem; color: var(--text-faint); white-space: normal; }
+@media (max-width: 720px) {
+  .mkt-table .mkt-price { white-space: normal; }
+}
+
+/* 联系表单：与全站同一套发丝线与暖白底 */
+.co-form { display: flex; flex-direction: column; gap: 16px; max-width: 34em; }
+.co-form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.co-field { display: flex; flex-direction: column; gap: 6px; }
+.co-field-k { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: .06em; color: var(--text-faint); }
+.co-field input, .co-field textarea {
+  width: 100%; padding: 10px 12px; font: inherit; font-size: 0.9375rem; line-height: 1.6;
+  color: var(--text); background: var(--bg-elevated);
+  border: 1px solid var(--border-strong); border-radius: 8px;
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+.co-field textarea { resize: vertical; min-height: 96px; }
+.co-field input::placeholder, .co-field textarea::placeholder { color: var(--text-faint); }
+.co-field input:focus-visible, .co-field textarea:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent);
+}
+/* 蜜罐：移出视口而不是 display:none，自动填充脚本仍会填它 */
+.co-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.co-form-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.co-form-hint { font-size: 0.8125rem; color: var(--text-faint); }
+.co-form-status { margin: 0; min-height: 1.2em; font-size: 0.875rem; color: var(--accent); }
+.co-form-status:empty { min-height: 0; }
+@media (max-width: 620px) {
+  .co-form-row { grid-template-columns: minmax(0, 1fr); }
+  .co-form { max-width: none; }
+}
+
+/* 能力页规格表：左侧术语，右侧可核对的事实 */
+.co-spec { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+.co-spec th {
+  width: 96px; padding: 14px 20px 14px 0; text-align: left; vertical-align: top;
+  font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; letter-spacing: .06em;
+  color: var(--text-faint); border-bottom: 1px solid var(--border);
+}
+.co-spec td { padding: 14px 0; line-height: 1.75; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
+.co-spec tr:last-child th, .co-spec tr:last-child td { border-bottom: none; }
+@media (max-width: 620px) {
+  .co-spec th { width: 72px; padding-right: 12px; }
+}

@@ -18,6 +18,20 @@
       </section>
 
       <section class="co-sec">
+        <CompanySecHead title="在跑的东西" />
+        <table class="co-spec">
+          <tbody>
+            <tr><th>算力</th><td>24 核 Xeon · 62G 内存 · NVMe + 1.8T，旧服务器，7×24 连续运行 95 天未重启</td></tr>
+            <tr><th>推理</th><td>llama.cpp 三个实例：对话、嵌入、重排。没有按次计费的推理账单</td></tr>
+            <tr><th>检索</th><td>bge-m3 向量 + bge-reranker 重排，pgvector 存索引；知识库按项目分目录，52 条手写结论</td></tr>
+            <tr><th>自动化</th><td>六个 systemd timer：巡检、索引重建、跨端同步、会话清理、日报；GitHub 项目榜每天 08:00 自动出榜</td></tr>
+            <tr><th>安全</th><td>SSH 仅密钥、ufw 默认拒绝入站、零入站端口，对外服务只走出站隧道</td></tr>
+            <tr><th>交付链</th><td>自建 Git（Forgejo）+ CI，改动当天可上线；部署脚本带健康检查与回滚步骤</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="co-sec">
         <CompanySecHead title="这套东西能带来什么" />
         <ul class="co-proof">
           <li><span class="co-proof-k">交付速度</span><span class="co-proof-v">依赖本地模型与自建 CI，不用等第三方额度，改动当天能上线。</span></li>

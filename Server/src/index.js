@@ -8,6 +8,7 @@ require('./config/logger'); // 激活内存日志捕获（尽早加载）
 const { ensureDatabase } = require('./config/db');
 const pool = require('./config/db');
 const { renderSeoHtml, hasRouteMeta } = require('./injectSeo');
+const { companyBodyHtml, isCrawler } = require('./prerender');
 const { globalLimiter } = require('./config/rateLimit');
 
 const app = express();
@@ -189,6 +190,8 @@ app.get('/api/stats', async (req, res) => {
 });
 
 app.use('/api/posts',  require('./routes/posts'));
+// 公司站联系表单：走单独的严格限流（每 IP 十分钟 3 条），只发信不落库
+app.use('/api/contact', require('./config/rateLimit').contactLimiter, require('./routes/contact'));
 app.use('/api/ai-daily', require('./routes/aiDaily'));
 app.use('/api/ai-tools', require('./routes/aiTools'));
 app.use('/api/notes', require('./routes/notes'));
@@ -252,7 +255,13 @@ app.use(async (req, res, next) => {
   const cleanPath = req.path.replace(/\/+$/, '') || '/';
   if (req.path.startsWith('/post/') || await hasRouteMeta(cleanPath)) {
     try {
-      const html = await renderSeoHtml(req, fs.readFileSync(indexPath, 'utf8'));
+      let html = await renderSeoHtml(req, fs.readFileSync(indexPath, 'utf8'));
+      // 公司站的案例页：#app 默认是空的，爬虫执行不了 JS 就抓不到正文。
+      // 对爬虫把数据驱动生成的语义化正文塞进去，人仍然拿到正常 SPA。
+      if (isCrawler(req)) {
+        const body = await companyBodyHtml(cleanPath);
+        if (body) html = html.replace('<div id="app"></div>', `<div id="app">${body}</div>`);
+      }
       return res.send(html);
     } catch (e) { /* fall back to static index.html */ }
   }

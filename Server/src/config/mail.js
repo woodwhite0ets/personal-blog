@@ -112,4 +112,35 @@ async function sendResetPasswordEmail(to, username, token) {
   });
 }
 
-module.exports = { transporter, sendVerificationEmail, sendResetPasswordEmail };
+// ====== 公司站联系表单：转发到站长邮箱，回复地址是访客留的联系方式 ======
+async function sendContactEmail({ name, contact, message, meta }) {
+  assertMailRate();
+  const owner = process.env.MAIL_USER || process.env.MAIL_FROM;
+  if (!owner) throw new Error('mail not configured');
+
+  const esc = (v) => String(v == null ? '' : v)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const isEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact);
+
+  const html = `
+    <div style="font-family:-apple-system,'PingFang SC',sans-serif;max-width:560px;margin:0 auto;padding:28px;background:#faf8f5;color:#16181c;border:1px solid #e6e8ec;border-radius:12px;">
+      <div style="font-size:15px;font-weight:700;color:#b8452f;margin-bottom:18px;">woodwhite.top 收到一条咨询</div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;line-height:1.7;">
+        <tr><td style="width:76px;color:#687078;">称呼</td><td>${esc(name)}</td></tr>
+        <tr><td style="color:#687078;">联系</td><td>${esc(contact)}</td></tr>
+        <tr><td style="color:#687078;">来源</td><td>${esc(meta || '未知')}</td></tr>
+      </table>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid #e6e8ec;font-size:14px;line-height:1.8;white-space:pre-wrap;">${esc(message)}</div>
+    </div>
+  `;
+
+  return transporter.sendMail({
+    from: process.env.MAIL_FROM || owner,
+    to: owner,
+    replyTo: isEmail ? contact : undefined,
+    subject: `[woodwhite.top] 咨询：${String(name).slice(0, 20)}`,
+    html,
+  });
+}
+
+module.exports = { transporter, sendVerificationEmail, sendResetPasswordEmail, sendContactEmail };

@@ -21,6 +21,35 @@
       </section>
 
       <section class="co-sec">
+        <CompanySecHead title="留个需求" />
+        <form class="co-form" novalidate @submit.prevent="submit">
+          <div class="co-form-row">
+            <label class="co-field">
+              <span class="co-field-k">称呼</span>
+              <input v-model="form.name" type="text" name="name" autocomplete="name" maxlength="40" placeholder="怎么称呼你……" required />
+            </label>
+            <label class="co-field">
+              <span class="co-field-k">联系方式</span>
+              <input v-model="form.contact" type="text" name="contact" autocomplete="email" maxlength="80" placeholder="邮箱或微信号……" required />
+            </label>
+          </div>
+          <label class="co-field">
+            <span class="co-field-k">需求</span>
+            <textarea v-model="form.message" name="message" rows="4" maxlength="2000" placeholder="想做什么、现在卡在哪、希望什么时候上线……" required></textarea>
+          </label>
+          <!-- 蜜罐：正常用户看不到 -->
+          <input v-model="form.website" class="co-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="co-form-foot">
+            <button type="submit" class="co-btn co-btn-solid" :disabled="state === 'sending'">
+              {{ state === 'sending' ? '发送中…' : '发送' }}
+            </button>
+            <span class="co-form-hint">一般一天内回信；不想填表也可以直接发邮件。</span>
+          </div>
+          <p class="co-form-status" role="status" aria-live="polite">{{ statusText }}</p>
+        </form>
+      </section>
+
+      <section class="co-sec">
         <CompanySecHead title="联系方式" />
         <p class="co-lead">邮件里写清背景、目标和时间预期就行；微信适合先把需求聊粗。</p>
         <dl class="co-contact-list">
@@ -54,7 +83,44 @@
 import CompanyShell from './CompanyShell.vue'
 import CompanyMasthead from './CompanyMasthead.vue'
 import CompanySecHead from './CompanySecHead.vue'
-import { ref, onBeforeUnmount } from 'vue'
+import { ref, computed, onBeforeUnmount } from 'vue'
+
+// 联系表单：POST /api/contact，只发信不落库；蜜罐字段挡机器人
+const form = ref({ name: '', contact: '', message: '', website: '' })
+const state = ref('idle')
+const formError = ref('')
+
+const statusText = computed(() => {
+  if (state.value === 'sending') return ''
+  if (state.value === 'sent') return '已收到，会用你留的方式回信。'
+  if (state.value === 'error') return formError.value
+  return ''
+})
+
+async function submit() {
+  if (state.value === 'sending') return
+  const { name, contact, message } = form.value
+  if (!name.trim() || !contact.trim() || message.trim().length < 5) {
+    state.value = 'error'
+    formError.value = '称呼、联系方式、需求都填一下，需求至少写五个字。'
+    return
+  }
+  state.value = 'sending'
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form.value),
+    })
+    const data = await res.json().catch(() => ({}))
+    if (!res.ok) throw new Error(data.message || '发送失败，稍后再试')
+    state.value = 'sent'
+    form.value = { name: '', contact: '', message: '', website: '' }
+  } catch (e) {
+    state.value = 'error'
+    formError.value = `${e.message}。也可以直接发邮件或加微信。`
+  }
+}
 
 // 微信号/邮箱一键复制：手机上从网页里手动选中一串 ID 很别扭
 const EMAIL = '1903784785@qq.com'

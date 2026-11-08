@@ -36,6 +36,15 @@ const resendVerifyLimiter = rateLimit({
   message: { message: 'too many email requests — try again in 1 minute' },
 });
 
+// ====== 严格限制：公司站联系表单（防刷邮件配额，按 IP 计数） ======
+const contactLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 3,               // 每 IP 十分钟最多 3 条，够正常咨询，挡不住刷子也要挡住撞库式群发
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: '提交太频繁，请十分钟后再试' },
+});
+
 // ====== 宽松限制：上传文件 ======
 const uploadLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -77,6 +86,7 @@ const commentLimiter = rateLimit({
 });
 
 module.exports = {
+  contactLimiter,
   globalLimiter,
   postCreateLimiter,
   commentLimiter,

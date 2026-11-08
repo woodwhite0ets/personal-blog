@@ -161,14 +161,17 @@
       <section id="pricing" class="co-sec co-sec--band">
         <CompanySecHead title="合作方式" />
         <table class="mkt-table">
-          <thead><tr><th>方式</th><th>适合</th><th>怎么算</th></tr></thead>
+          <thead><tr><th>方式</th><th>适合</th><th>怎么算</th><th>起步</th></tr></thead>
           <tbody>
-            <tr><td>按项目</td><td>需求清楚、边界明确的功能或系统</td><td>按范围报价，分阶段结算</td></tr>
-            <tr><td>按月</td><td>已有产品，需要长期迭代或运维</td><td>每周固定投入，月结</td></tr>
-            <tr><td>按次诊断</td><td>已有系统出问题或要评估可行性</td><td>单次评估 + 书面结论</td></tr>
+            <tr v-for="p in pricing" :key="p.mode">
+              <td>{{ p.mode }}</td>
+              <td>{{ p.fit }}</td>
+              <td>{{ p.how }}</td>
+              <td class="mkt-price">{{ p.from }}<span class="mkt-price-sub">{{ p.typical }}</span></td>
+            </tr>
           </tbody>
         </table>
-        <p class="co-note">价格随范围浮动，聊完给具体数字。签合同、可开票、按阶段验收。</p>
+        <p class="co-note">{{ pricingNote }}</p>
       </section>
 
       <!-- 06 常见问题 -->
@@ -223,6 +226,7 @@ import HeroBackdrop from '../common/HeroBackdrop.vue'
 import CompanyShell from './CompanyShell.vue'
 import CompanySecHead from './CompanySecHead.vue'
 import CaseFigure from './CaseFigure.vue'
+import { pricing, pricingNote } from '../../data/pricing.js'
 import { projects } from '../../data/projects.js'
 
 // 首页只放三条证据，其余去 /work；数量一律从数据源算，别在文案里写死
