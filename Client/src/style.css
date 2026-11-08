@@ -1938,29 +1938,27 @@ body { line-break: strict; text-autospace: normal; }
   );
 }
 
-/* ---- 五套画：1 水彩 / 2 蓝图 / 3 极光 / 4 墨迹 / 5 日落 ---- */
-.hero-art[data-art="1"] { --h1: #6e91c8; --h2: #96a05a; --h3: #f2e8d5; }
+/* ---- 五套画：统一暖色（沙丘 / 陶土 / 橄榄纸 / 玫瑰灰 / 石灰岩），随机换的是位置与浓度，不是色相 ---- */
+.hero-art[data-art="1"] { --h1: #e8d9c4; --h2: #d8bda8; --h3: #e2d6c6; }
 
 .hero-art[data-art="2"] {
-  --h1: #2f6d8f; --h2: #4b5fa8; --h3: #cfe3ef;
+  --h1: #ddbaa6; --h2: #e6cdb8; --h3: #cbb9a6; --s1: 34%; --s2: 26%; --s3: 30%;
 }
 .hero-art[data-art="2"] .hero-halftone { opacity: 0; }
 
 .hero-art[data-art="3"] {
-  --h1: #7a5cc0; --h2: #2f9b9b; --h3: #c98b5a; --wash-blur: 40px;
-  /* 极光这套彩度最高：浓度按同一"观感"压一档，免得比别的画浓一截 */
-  --s1: 44%; --s2: 36%; --s3: 48%;
+  --h1: #d9d4b6; --h2: #cbbf9e; --h3: #e4dcc9; --wash-blur: 48px;
+  --s1: 38%; --s2: 30%; --s3: 34%;
 }
 
 .hero-art[data-art="4"] {
-  --h1: #1e2740; --h2: #a3563c; --h3: #e7dccb;
-  --s1: 46%; --s2: 30%; --s3: 22%;
+  --h1: #e6c8c1; --h2: #d8b3ac; --h3: #e8d8ce;
+  --s1: 32%; --s2: 24%; --s3: 26%;
 }
 
 .hero-art[data-art="5"] {
-  --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; --wash-blur: 34px;
-  /* 日落这套同理，压到和极光一档 */
-  --s1: 42%; --s2: 34%; --s3: 46%;
+  --h1: #d8d4cc; --h2: #c9c3b8; --h3: #e6e0d6; --wash-blur: 56px;
+  --s1: 40%; --s2: 32%; --s3: 28%;
 }
 
 /* ---- 第 6 套：位图样例（自己画的 SVG 渲染成 webp，浅/深各一张） ---- */
@@ -1979,10 +1977,8 @@ body { line-break: strict; text-autospace: normal; }
   opacity: .95;
 }
 
-/* 深底专用：3 极光 / 5 日落 这两套彩度最高，单独换成低饱和墨色，
-   避免在近黑背景上读成霓虹灯 */
-.hero-art[data-art="3"] { --h1: #7a5cc0; --h2: #2f9b9b; --h3: #c98b5a; --wash-blur: 40px; }
-.hero-art[data-art="5"] { --h1: #d98b3f; --h2: #b0436f; --h3: #3a4f8f; --wash-blur: 34px; }
+/* 深底备用：彩度最高的那几套换成低饱和墨色，避免读成霓虹（当前只有亮色主题） */
+.hero-art[data-art="3"], .hero-art[data-art="5"] { --wash-blur: 48px; }
 
 /* 窄屏收缝宽，避免内容区被挤太窄 */
 @media (max-width: 640px) {

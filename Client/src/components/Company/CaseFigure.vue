@@ -107,7 +107,7 @@ defineProps({
 .case-fig {
   margin: 0;
   display: block;
-  color: var(--text-faint);
+  color: var(--text-secondary);
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -115,5 +115,6 @@ defineProps({
 }
 .case-fig svg { display: block; width: 100%; height: 100%; }
 .case-fig--md { width: 168px; aspect-ratio: 16 / 10; flex: none; }
+.case-fig--lg { width: 100%; max-width: 460px; aspect-ratio: 16 / 10; margin: 32px 0 0; }
 .case-fig--sm { width: 76px; aspect-ratio: 16 / 10; flex: none; border-radius: 8px; }
 </style>

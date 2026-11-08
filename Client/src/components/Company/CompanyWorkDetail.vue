@@ -8,6 +8,8 @@
           :meta="[{ k: '状态', v: project.status }, { k: '时间', v: project.period }]"
         />
 
+        <CaseFigure :slug="project.slug" size="lg" />
+
         <div class="co-proj-body">
           <div class="co-proj-main">
             <p class="co-proj-lead">{{ project.summary }}</p>
@@ -57,6 +59,7 @@
 import { computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import CompanyShell from './CompanyShell.vue'
+import CaseFigure from './CaseFigure.vue'
 import CompanyMasthead from './CompanyMasthead.vue'
 import CompanySecHead from './CompanySecHead.vue'
 import { findProject, projects } from '../../data/projects.js'
