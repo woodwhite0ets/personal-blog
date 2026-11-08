@@ -119,8 +119,8 @@
 /* 公司页首屏固定用暖色团：沙、陶土、石灰，跟品牌红和暖白色带同一温度。
    博客首页那套随机冷色留给博客，这里不参与随机。 */
 .co-hero-band .hero-art {
-  --h1: #e6dccb; --h2: #d9bfae; --h3: #cfd0c4;
-  --wash-blur: 64px; --s1: 52%; --s2: 40%; --s3: 34%; opacity: 1;
+  --h1: #e9dcc6; --h2: #dcc0ac; --h3: #cdd0c2;
+  --wash-blur: 70px; --s1: 64%; --s2: 50%; --s3: 42%; opacity: 1;
 }
 /* 品牌色只在两个角上淡淡沾一下，和红色按钮形成呼应 */
 .co-hero-band::after {
