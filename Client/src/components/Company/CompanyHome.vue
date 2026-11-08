@@ -97,7 +97,7 @@
       </section>
 
       <!-- 02 交付标准 -->
-      <section id="standard" class="co-sec">
+      <section id="standard" class="co-sec co-sec--band">
         <CompanySecHead title="三项交付标准" />
         <p class="co-sec-lead">每个项目都按这三条验收，写进合同，不是口头承诺。</p>
         <div class="co-standards">
@@ -137,7 +137,7 @@
       </section>
 
       <!-- 03 为什么这样交付 -->
-      <section class="co-sec">
+      <section class="co-sec co-sec--band">
         <CompanySecHead title="为什么这样交付" />
         <div class="mkt-compare">
           <div class="paper-field"><h3>常见做法</h3><ul><li>先买一堆 SaaS，接口对不上再改</li><li>模型按次计费，用量一涨成本失控</li><li>数据交给第三方 API</li><li>交付一个演示，上线还要再找人</li></ul></div>
@@ -157,7 +157,7 @@
       </section>
 
       <!-- 05 合作方式 -->
-      <section id="pricing" class="co-sec">
+      <section id="pricing" class="co-sec co-sec--band">
         <CompanySecHead title="合作方式" />
         <table class="mkt-table">
           <thead><tr><th>方式</th><th>适合</th><th>怎么算</th></tr></thead>

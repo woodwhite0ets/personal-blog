@@ -15,6 +15,18 @@
 }
 .co-main { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 56px 32px 112px; }
 .co-sec { margin-top: 96px; }
+
+/* 色带：交替给段落上极浅暖白，整页纯白被切成有节奏的块。
+   用伪元素左右各拉 50vw 做满宽，内容仍与栅格对齐。 */
+.co-sec--band { position: relative; padding-block: 64px; margin-top: 64px; }
+.co-sec--band::before {
+  content: ""; position: absolute; z-index: -1; inset: 0;
+  left: 50%; width: 100vw; transform: translateX(-50%);
+  background: var(--band-warm, #faf8f5);
+  border-block: 1px solid var(--border);
+}
+@media (max-width: 900px) { .co-sec--band { padding-block: 44px; margin-top: 44px; } }
+
 /* 子页第一节贴顶（原来是每个页面写 style="margin-top: 8px"） */
 .co-sec:first-child { margin-top: 8px; }
 

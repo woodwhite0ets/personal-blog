@@ -6,3 +6,5 @@ stack: [node]
 services: [ai-daily, blog-derived]
 ports: []
 knowledge: true
+state: 静态博客（Vue 客户端 → Express:3027 出 dist），域名 woodwhite.top / blog.woodwhite.top；部署：本地 npm run build → rsync 到 blog:~/personal-blog/Client/dist → pm2 restart blog
+verified: 2026-11-07

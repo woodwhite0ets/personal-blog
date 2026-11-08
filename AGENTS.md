@@ -1,6 +1,10 @@
 <!-- proj:auto -->
 # blog
 
+## 当前状态（截至 2026-11-07）
+
+静态博客（Vue 客户端 → Express:3027 出 dist），域名 woodwhite.top / blog.woodwhite.top；部署：本地 npm run build → rsync 到 blog:~/personal-blog/Client/dist → pm2 restart blog
+
 - 技术栈：node
 - 关联服务：ai-daily, blog-derived
 - 仓库：https://github.com/woodwhite0ets/personal-blog.git

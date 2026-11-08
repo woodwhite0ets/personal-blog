@@ -62,6 +62,8 @@
 
   /* 悬浮层半透明底（hover 高亮用，替代旧 --surface-2 命名） */
   --surface-2: rgba(127, 127, 127, 0.08);
+  /* 公司页交替色带（极浅暖白，比 --bg-deeper 更暖一点） */
+  --band-warm: #faf8f5;
 
   /* 标签柔和底色（minimalist-ui：强调色只用于标签/行内代码，用褪色 pastel） */
   --tag-bg: transparent;      --tag-fg: var(--text-secondary);
