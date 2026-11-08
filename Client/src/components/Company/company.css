@@ -114,8 +114,21 @@
 /* ============================================================
    首屏（首页）：与博客同一套「印在纸上的画」背景 + 左文 + 右交付清单
    ============================================================ */
-.co-hero-band { border-bottom: 1px solid var(--border); }
-.co-hero-band .hero-art { --wash-blur: 56px; --s1: 30%; --s2: 22%; --s3: 26%; opacity: .95; }
+.co-hero-band { border-bottom: 1px solid var(--border); position: relative; }
+/* 首屏色团比博客首页更实一点：企业站需要一点“有东西”，但又不能变成海报 */
+/* 公司页首屏固定用暖色团：沙、陶土、石灰，跟品牌红和暖白色带同一温度。
+   博客首页那套随机冷色留给博客，这里不参与随机。 */
+.co-hero-band .hero-art {
+  --h1: #e6dccb; --h2: #d9bfae; --h3: #cfd0c4;
+  --wash-blur: 64px; --s1: 52%; --s2: 40%; --s3: 34%; opacity: 1;
+}
+/* 品牌色只在两个角上淡淡沾一下，和红色按钮形成呼应 */
+.co-hero-band::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 40% 48% at 90% 10%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%),
+    radial-gradient(ellipse 32% 38% at 4% 92%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 72%);
+}
 .co-hero-in {
   max-width: 1160px; margin: 0 auto;
   grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
@@ -235,8 +248,8 @@
 .co-proof-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border-strong); }
 .co-proof-list li { border-bottom: 1px solid var(--border); }
 .co-proof-row {
-  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.5fr) minmax(0, 1.25fr) auto auto;
-  align-items: baseline; gap: 20px; padding: 16px 0; text-decoration: none;
+  display: grid; grid-template-columns: auto minmax(0, 1.05fr) minmax(0, 1.5fr) minmax(0, 1.25fr) auto auto;
+  align-items: center; gap: 20px; padding: 14px 0; text-decoration: none;
   transition: background-color var(--dur-hover) var(--ease-out);
 }
 .co-proof-row:hover { background: color-mix(in srgb, var(--text) 3%, transparent); }
@@ -336,7 +349,12 @@
 .co-cases { list-style: none; margin: 0; padding: 0; }
 .co-case { border-bottom: 1px solid var(--border); }
 .co-case:last-child { border-bottom: none; }
-.co-case-link { display: block; padding: 16px 0; text-decoration: none; transition: background-color var(--dur-hover) var(--ease-out); }
+.co-case-link {
+  display: flex; align-items: center; gap: 20px;
+  padding: 18px 0; text-decoration: none;
+  transition: background-color var(--dur-hover) var(--ease-out);
+}
+.co-case-body { display: block; min-width: 0; flex: 1 1 auto; }
 .co-case-link:hover { background: var(--overlay-a2); }
 .co-case-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .co-case-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
@@ -423,10 +441,13 @@
   .co-standards { grid-template-columns: minmax(0, 1fr); }
   .co-std { border-right: none; padding-right: 0; border-bottom: 1px solid var(--border); }
   .co-std:last-child { border-bottom: none; }
-  .co-proof-row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; }
-  .co-proof-name { grid-column: 1; }
-  .co-proof-period { grid-column: 2; justify-self: end; }
-  .co-proof-sub { grid-column: 1 / -1; }
+  .co-proof-row { grid-template-columns: auto minmax(0, 1fr) auto; row-gap: 4px; align-items: start; }
+  .co-proof-name { grid-column: 2; }
+  .co-proof-row .case-fig { grid-column: 1; grid-row: 1 / span 3; }
+  .co-proof-sub { grid-column: 2 / -1; }
+  .co-proof-result { grid-column: 2 / -1; }
+  .co-proof-arrow { display: none; }
+  .co-proof-period { grid-column: 3; justify-self: end; }
   .co-infra-facts > div { grid-template-columns: 88px minmax(0, 1fr); gap: 16px; }
   .co-foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
 }
@@ -471,7 +492,7 @@
   border: none; border-bottom: 1px solid var(--border);
   color: var(--text); vertical-align: top; line-height: 1.6;
 }
-.mkt-table td:first-child { color: var(--text-bright); font-weight: 500; white-space: nowrap; }
+.mkt-table td:first-child { color: var(--accent); font-weight: 600; white-space: nowrap; }
 .mkt-table tr:last-child td { border-bottom: none; }
 
 .mkt-compare {
@@ -575,6 +596,8 @@
 
 @media (max-width: 900px) {
   .co-proof-arrow, .co-case-go { display: none; }
+  .co-case-link { gap: 14px; }
+  .co-case-link .case-fig { width: 96px; }
   .co-cta-in { grid-template-columns: minmax(0, 1fr); gap: 26px; }
   .co-cta-contact { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 24px; }
 }

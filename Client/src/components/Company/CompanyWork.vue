@@ -15,6 +15,8 @@
         <ul class="co-cases">
           <li v-for="p in cases" :key="p.slug" class="co-case">
             <router-link :to="`/work/${p.slug}`" class="co-case-link">
+              <CaseFigure :slug="p.slug" size="md" />
+              <span class="co-case-body">
               <span class="co-case-head">
                 <span class="co-case-name">{{ p.name }}</span>
                 <span class="co-case-status">{{ p.status }}</span>
@@ -23,6 +25,7 @@
               </span>
               <span class="co-case-sub">{{ p.subtitle }}</span>
               <span class="co-case-result">结果：{{ p.result }}</span>
+              </span>
             </router-link>
           </li>
         </ul>
@@ -34,6 +37,7 @@
 
 <script setup>
 import CompanyShell from './CompanyShell.vue'
+import CaseFigure from './CaseFigure.vue'
 import CompanyMasthead from './CompanyMasthead.vue'
 import { projects } from '../../data/projects.js'
 

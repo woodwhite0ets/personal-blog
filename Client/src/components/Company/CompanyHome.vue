@@ -125,6 +125,7 @@
         <ul class="co-proof-list">
           <li v-for="c in proofCases" :key="c.slug">
             <router-link :to="`/work/${c.slug}`" class="co-proof-row">
+              <CaseFigure :slug="c.slug" size="sm" />
               <span class="co-proof-name">{{ c.name }}</span>
               <span class="co-proof-sub">{{ c.subtitle }}</span>
               <span class="co-proof-result">{{ c.result }}</span>
@@ -221,6 +222,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import HeroBackdrop from '../common/HeroBackdrop.vue'
 import CompanyShell from './CompanyShell.vue'
 import CompanySecHead from './CompanySecHead.vue'
+import CaseFigure from './CaseFigure.vue'
 import { projects } from '../../data/projects.js'
 
 // 首页只放三条证据，其余去 /work；数量一律从数据源算，别在文案里写死
