@@ -895,7 +895,7 @@
 .mkt-table td:first-child { color: var(--text-bright); }
 .mkt-table td:first-child { font-weight: 620; }
 
-/* 首屏：标题行宽放到 15em，让「把 AI 接进你的业务，」占一整行；
+/* 首屏：标题行宽放到 15em，让标题第一句占一整行；
    指标数字回落到墨色——四个大数字都上红，等于把强调色摊平了。 */
 
 .co-metric-v { color: var(--text-bright); }
