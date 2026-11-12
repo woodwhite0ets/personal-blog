@@ -1911,3 +1911,28 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 .co-h2-ghost-wrap { display: none; }
 .co-h2 > *:not(.co-h2-ghost) { position: relative; z-index: 1; }
 @media (max-width: 900px) { .co-h2-ghost { display: none; } }
+
+/* 幽灵数字：按鹰角的做法——不淡出，而是被版面边缘「硬切」。
+   一个裁切窗口贴在章节头顶部，窗口下沿落在标题下方 10px，
+   数字整块画满、在窗口下沿被切平；正文从标题下方 24px 才开始，
+   所以永远不会压在正文上。 */
+.co-h2 { position: relative; }
+.co-h2-ghost-wrap {
+  position: absolute; left: -6px; right: 0;
+  /* 窗口高度固定为标题字号的 1.45 倍，下沿比标题行底再往下 0.45em（约 13px）；
+     正文从标题行底往下 24px 才开始，所以永远够不到正文 */
+  bottom: -0.45em; height: 1.45em;
+  overflow: hidden; pointer-events: none; z-index: 0;
+}
+.co-h2-ghost {
+  position: absolute; left: 0; bottom: 0;
+  margin: 0; padding: 0;
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: clamp(56px, 8vw, 120px); line-height: 0.92;
+  letter-spacing: -0.04em; color: var(--text-bright);
+  opacity: 0.085; white-space: nowrap;
+  user-select: none;
+  -webkit-mask-image: none; mask-image: none;
+}
+.co-h2 > *:not(.co-h2-ghost-wrap) { position: relative; z-index: 1; }
+@media (max-width: 900px) { .co-h2-ghost-wrap { display: none; } }
