@@ -69,6 +69,11 @@ const routes = [
     component: () => import('../components/Company/CompanyStack.vue'),
   },
   {
+    path: '/startup',
+    name: 'CompanyStartup',
+    component: () => import('../components/Company/CompanyStartup.vue'),
+  },
+  {
     path: '/contact',
     name: 'CompanyContact',
     component: () => import('../components/Company/CompanyContact.vue'),

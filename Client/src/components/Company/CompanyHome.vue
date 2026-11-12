@@ -165,13 +165,26 @@
           <tbody>
             <tr v-for="p in pricing" :key="p.mode">
               <td>{{ p.mode }}</td>
-              <td>{{ p.fit }}</td>
-              <td>{{ p.how }}</td>
-              <td class="mkt-price">{{ p.from }}<span class="mkt-price-sub">{{ p.typical }}</span></td>
+              <td data-th="适合">{{ p.fit }}</td>
+              <td data-th="怎么算">{{ p.how }}</td>
+              <td class="mkt-price" data-th="起步">{{ p.from }}<span class="mkt-price-sub">{{ p.typical }}</span></td>
             </tr>
           </tbody>
         </table>
         <p class="co-note">{{ pricingNote }}</p>
+
+        <!-- 初创版官网：与上面的定制线分开计价，所以不并进表格，也不进 pricing.js。
+             首页只做指向（不放价目），细节与档位在 /startup；微信转发直接给 /#startup-hint -->
+        <aside id="startup-hint" class="co-sideline" aria-labelledby="sideline-title">
+          <div class="co-sideline-copy">
+            <h3 id="sideline-title" class="co-sideline-title">初创版官网</h3>
+            <p class="co-sideline-lead">给刚注册、刚出产品的团队：一版把「你在做什么」讲清楚的官网。范围与交期固定，域名、托管和代码都在客户名下——上面三档做的是能长期运行的系统，两者分开计价。</p>
+            <p class="co-sideline-fine">按页数与产品数量分档；在校创办的公司另有价目。</p>
+          </div>
+          <div class="co-sideline-side">
+            <router-link class="co-sideline-go" to="/startup">看初创版官网</router-link>
+          </div>
+        </aside>
       </section>
 
       <!-- 06 常见问题 -->
@@ -193,6 +206,10 @@
           <details class="co-faq-item">
             <summary>多快能开始？</summary>
             <p>一般一周内能排上；着急的按次诊断通常一两天内给结论。先聊一次判断值不值得做，不收费。流程见 <router-link to="/#process" class="co-faq-link">怎么开始</router-link>。</p>
+          </details>
+          <details class="co-faq-item">
+            <summary>初创版官网和上面的定制项目是一回事吗？</summary>
+            <p>不是。初创版做的是门面，范围与交期固定，域名与代码归你；上面的定制项目按范围算，从 3 万起，做的是能长期运行的系统。两边计价分开，<router-link to="/startup" class="co-faq-link">初创版的档位写在这里</router-link>。</p>
           </details>
           <details class="co-faq-item">
             <summary>什么情况我不接？</summary>

@@ -223,6 +223,11 @@
 .co-svc:nth-child(1), .co-svc:nth-child(2) { grid-column: span 3; }
 .co-svc:nth-child(3), .co-svc:nth-child(4), .co-svc:nth-child(5) { grid-column: span 2; }
 .co-svc-cta { grid-column: span 6; }
+
+/* 只有三张卡的页面：不走首页的 bento 错位（那里 6 张靠 span 拼版），直接三等分。
+   必须写在这组 nth-child 之后，否则同权重会被上面覆盖。 */
+.co-cards.co-cards--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.co-cards.co-cards--3 .co-svc { grid-column: auto; }
 .co-svc {
   display: flex; min-width: 0;
   padding: 4px; border: 1px solid var(--border-strong); border-radius: 12px;
@@ -495,6 +500,37 @@
 .mkt-table td:first-child { color: var(--accent); font-weight: 600; white-space: nowrap; }
 .mkt-table tr:last-child td { border-bottom: none; }
 
+/* ---------- 初创版官网：首页里的指向块 ----------
+   合作方式价目表下方的从属块：不进表格、不做成卡片，不放价目，
+   让「3 万起」这个锚点由上面的表格独占；档位与细节都在 /startup。 */
+.co-sideline {
+  margin-top: 32px; padding-top: 26px;
+  border-top: 1px solid var(--border);
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px;
+  align-items: end;
+}
+.co-sideline-title {
+  margin: 0 0 10px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;
+  letter-spacing: .08em; color: var(--accent);
+}
+.co-sideline-lead {
+  margin: 0; font-size: 0.9375rem; line-height: 1.8; color: var(--text-secondary);
+  max-width: 46em; text-wrap: pretty;
+}
+.co-sideline-fine { margin: 10px 0 0; font-size: 0.8125rem; line-height: 1.65; color: var(--text-faint); max-width: 46em; }
+.co-sideline-go {
+  display: inline-block; white-space: nowrap; font-size: 0.875rem; font-weight: 600;
+  color: var(--accent); text-decoration: none; padding-bottom: 2px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+.co-sideline-go:hover { border-color: var(--accent); }
+.co-sideline-go:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+@media (max-width: 900px) {
+  .co-sideline { grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
+}
+
 .mkt-compare {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px; border: none; background: none; overflow: visible;
@@ -549,13 +585,22 @@
 @media (max-width: 620px) {
   .mkt-steps { grid-template-columns: 1fr; }
 }
+/* 窄屏不挤四列表格：整表改块状，列名靠 td[data-th] 打头。
+   以前是缩字号 + 定宽，结果「起步」列被压成单字竖排（1200 起 / 次 竖着排）。 */
 @media (max-width: 560px) {
-  .mkt-table { font-size: 0.75rem; table-layout: fixed; }
-  .mkt-table th, .mkt-table td { padding: 10px 8px 10px 0; word-break: break-word; }
-  .mkt-table td:first-child { white-space: normal; }
-  .mkt-table th:first-child, .mkt-table td:first-child { width: 30%; }
-  .mkt-table th:nth-child(2), .mkt-table td:nth-child(2) { width: 40%; }
-  .mkt-table th:nth-child(3), .mkt-table td:nth-child(3) { width: 30%; }
+  .mkt-table { display: block; table-layout: auto; padding: 4px 16px; }
+  .mkt-table thead { display: none; }
+  .mkt-table tbody, .mkt-table tr, .mkt-table td { display: block; width: 100%; }
+  .mkt-table tr { padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .mkt-table tr:last-child { border-bottom: none; }
+  .mkt-table td { padding: 3px 0; border: none; font-size: 0.875rem; white-space: normal; word-break: normal; }
+  .mkt-table td:first-child { padding-top: 0; font-size: 0.9375rem; }
+  .mkt-table td:last-child { padding-bottom: 0; }
+  .mkt-table td[data-th]::before {
+    content: attr(data-th); display: block; margin-bottom: 1px;
+    font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .06em;
+    color: var(--text-faint);
+  }
 }
 
 @media (max-width: 560px) {
