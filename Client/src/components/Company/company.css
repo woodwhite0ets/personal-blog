@@ -1553,3 +1553,110 @@ body:has(.co-page)::after {
 }
 body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 @media (max-width: 900px) { .co-rail { display: none; } }
+
+/* ============================================================
+   首屏改版 + 顶栏透明（2026-11-12 晚，第八轮）
+   1) 首屏不再靠放大字：标题收到 2.1rem 左右，主视觉换成「五张真实案例图的拼版」
+   2) 顶栏透明压在首屏上，滚动 40px 后变实底
+   3) 状态四连与拼版沿用前面那套结构件（方角、刻度、等宽数字）
+   ============================================================ */
+
+/* 顶栏：透明态与滚动后的实底 */
+.co-page .navbar {
+  background: transparent;
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+  transition: background-color 220ms ease, border-color 220ms ease, backdrop-filter 220ms ease;
+}
+.co-page.is-scrolled .navbar {
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  border-bottom-color: var(--co-line);
+  backdrop-filter: saturate(1.1) blur(10px);
+}
+/* 顶栏透明后，首屏内容要给它让出高度 */
+.co-hero-band { padding-top: 0; }
+.co-hero-in { padding-top: 76px; }
+
+/* 首屏排版：左文右数，标题收小 */
+.co-hero-in {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
+  gap: 32px 40px;
+  align-items: end;
+  padding-bottom: 40px;
+}
+.co-hero-main { grid-column: 1; }
+.co-hero-in .co-title {
+  font-size: clamp(1.6rem, 2.2vw + 0.6rem, 2.3rem);
+  line-height: 1.25; letter-spacing: -0.02em; max-width: 26em;
+}
+.co-hero-in .co-lead { margin-top: 14px; max-width: 34em; font-size: 1rem; }
+.co-hero-in .co-actions { margin-top: 22px; }
+
+/* 右侧状态四连：竖排小表，刻度线收口 */
+.co-hero-stats {
+  grid-column: 2; margin: 0; align-self: end;
+  border: 1px solid var(--co-line);
+  background: var(--bg-elevated);
+}
+.co-hero-stats > div {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 10px 14px; border-bottom: 1px solid var(--co-line);
+}
+.co-hero-stats > div:last-child { border-bottom: 0; }
+.co-hero-stats dt {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-faint);
+}
+.co-hero-stats dd {
+  margin: 0; font-family: var(--font-mono); font-size: 0.875rem; color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.co-hero-stats dd span { font-size: 1.25rem; font-weight: 600; color: var(--text-bright); margin-right: 2px; }
+
+/* 五张案例拼版：通栏一条，六格（五案例 + 全部案例） */
+.co-hero-board {
+  grid-column: 1 / -1;
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+  border: 1px solid var(--co-line-strong);
+  background: var(--bg-elevated);
+  margin-top: 4px;
+}
+.co-board-tile {
+  position: relative; display: flex; flex-direction: column; justify-content: space-between;
+  gap: 10px; padding: 14px 14px 12px; min-height: 148px;
+  border-right: 1px solid var(--co-line);
+  text-decoration: none; color: inherit; overflow: hidden;
+  transition: background-color 180ms ease;
+}
+.co-board-tile:last-child { border-right: 0; }
+.co-board-tile:hover { background: color-mix(in srgb, var(--text-bright) 3.5%, transparent); }
+.co-board-tile :is(figure, svg, img) { filter: grayscale(1) contrast(1.05); width: 100%; height: auto; }
+.co-board-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.co-board-name {
+  font-size: 0.8125rem; font-weight: 600; color: var(--text-bright);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.co-board-period {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-faint);
+}
+.co-board-more { justify-content: flex-end; background: color-mix(in srgb, var(--text-bright) 3%, transparent); }
+.co-board-more-v {
+  font-family: var(--font-mono); font-size: clamp(2rem, 3vw, 2.75rem); font-weight: 700;
+  line-height: 1; color: var(--accent); letter-spacing: -0.03em;
+}
+
+@media (max-width: 1100px) {
+  .co-hero-board { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .co-board-tile:nth-child(3n) { border-right: 0; }
+  .co-board-tile { border-bottom: 1px solid var(--co-line); }
+  .co-board-tile:nth-last-child(-n+3) { border-bottom: 0; }
+}
+@media (max-width: 900px) {
+  .co-hero-in { grid-template-columns: minmax(0, 1fr); padding-top: 64px; }
+  .co-hero-stats { grid-column: 1; }
+  .co-hero-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .co-board-tile:nth-child(3n) { border-right: 1px solid var(--co-line); }
+  .co-board-tile:nth-child(2n) { border-right: 0; }
+}

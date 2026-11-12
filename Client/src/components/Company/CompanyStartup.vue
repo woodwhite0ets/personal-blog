@@ -12,7 +12,7 @@
       />
 
       <section class="co-sec">
-        <CompanySecHead title="这一版解决什么" />
+        <CompanySecHead title="这一版解决什么" index="01" latin="WHAT IT SOLVES" />
         <div class="co-cards co-cards--3">
           <article class="co-svc"><div class="co-svc-in paper-field">
             <h3>一句话就能看懂</h3>
@@ -33,7 +33,7 @@
       </section>
 
       <section class="co-sec co-sec--band">
-        <CompanySecHead title="一次交付包含什么" />
+        <CompanySecHead title="一次交付包含什么" index="02" latin="DELIVERABLES" />
         <p class="co-sec-lead">写进服务确认单，按同一份清单验收。</p>
         <div class="co-standards">
           <div class="co-std">
@@ -55,7 +55,7 @@
       </section>
 
       <section id="tiers" class="co-sec">
-        <CompanySecHead title="三档" />
+        <CompanySecHead title="三档" index="03" latin="TIERS" />
         <table class="mkt-table">
           <thead><tr><th>档</th><th>适合</th><th>包含</th><th>起步</th></tr></thead>
           <tbody>
@@ -83,7 +83,7 @@
       </section>
 
       <section class="co-sec co-sec--band">
-        <CompanySecHead title="流程" />
+        <CompanySecHead title="流程" index="04" latin="PROCESS" />
         <ol class="mkt-steps">
           <li class="paper-field"><span>第 1 步</span><h3>一封信</h3><p>公司叫什么，一句话介绍，三到六个产品。有域名就说，没有我给建议。</p></li>
           <li class="paper-field"><span>第 2 步</span><h3>确认与首付</h3><p>范围和改几轮写在确认单上，也写清什么时候算开工。付一半，素材齐了开始算工期。</p></li>
@@ -93,7 +93,7 @@
       </section>
 
       <section class="co-sec">
-        <CompanySecHead title="域名、托管、备案" />
+        <CompanySecHead title="域名、托管、备案" index="05" latin="DOMAIN / HOST" />
         <table class="mkt-table">
           <thead><tr><th>事项</th><th>做法</th><th>谁持有</th></tr></thead>
           <tbody>
@@ -106,7 +106,7 @@
       </section>
 
       <section class="co-sec co-sec--band">
-        <CompanySecHead title="什么不太适合" />
+        <CompanySecHead title="什么不太适合" index="06" latin="NOT A FIT" />
         <div class="mkt-compare">
           <div class="paper-field">
             <h3>建议另找专业的人</h3>
@@ -130,7 +130,7 @@
       </section>
 
       <section class="co-sec">
-        <CompanySecHead title="常见问题" />
+        <CompanySecHead title="常见问题" index="07" latin="FAQ" />
         <div class="co-faq">
           <details class="co-faq-item" open>
             <summary>和首页那三档定制项目有什么区别？</summary>

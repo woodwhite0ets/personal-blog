@@ -31,7 +31,7 @@
       </section>
 
       <section class="co-sec co-sec--band">
-        <CompanySecHead title="两条线的区别" />
+        <CompanySecHead title="两条线的区别" index="01" latin="COMPARE" />
         <table class="mkt-table">
           <thead><tr><th>对比项</th><th>定制交付</th><th>初创版官网</th></tr></thead>
           <tbody>
@@ -46,7 +46,7 @@
       </section>
 
       <section class="co-sec">
-        <CompanySecHead title="两条线共用的三条" />
+        <CompanySecHead title="两条线共用的三条" index="02" latin="SHARED RULES" />
         <p class="co-sec-lead">不论范围大小，这三条一样，写进确认单。</p>
         <div class="co-standards">
           <div class="co-std">
@@ -68,7 +68,7 @@
       </section>
 
       <section class="co-sec">
-        <CompanySecHead title="怎么开始" />
+        <CompanySecHead title="怎么开始" index="03" latin="PROCESS" />
         <ol class="mkt-steps">
           <li class="paper-field"><span>第 1 步</span><h3>写一封</h3><p>说说背景和想解决的事。不收费，想不清楚也可以先聊。</p></li>
           <li class="paper-field"><span>第 2 步</span><h3>选线</h3><p>要长期跑的系统，还是先要一个地址。选哪条我会直说。</p></li>

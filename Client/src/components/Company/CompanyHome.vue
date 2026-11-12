@@ -6,45 +6,43 @@
       <div class="hero-in co-hero-in">
         <div class="co-hero-main">
           <p class="co-badge"><span class="co-badge-dot" aria-hidden="true"></span>厦门翔安 · 可开票 · 一天内回信</p>
-          <h1 class="co-title">给已经在跑的业务加 AI 能力，<br /><span class="co-title-key">从需求做到上线后的巡检</span></h1>
-          <p class="co-lead">签合同，按阶段验收，可以开票。需求没想清楚也可以先聊。</p>
+          <h1 class="co-title">给已经在跑的业务加 AI 能力</h1>
+          <p class="co-lead">知识库检索、模型接入、本地推理与带后台的业务系统。从需求做到上线后的巡检，签合同，按阶段验收。</p>
           <div class="co-actions">
-            <router-link class="co-btn co-btn-solid" to="/work">看 {{ caseCount }} 个案例</router-link>
-            <a class="co-btn" href="mailto:1903784785@qq.com">项目咨询</a>
+            <a class="co-btn co-btn-solid" href="mailto:1903784785@qq.com">项目咨询</a>
+            <router-link class="co-btn" to="/business">两条业务线</router-link>
           </div>
-          <ul class="co-stack-strip" aria-label="在用的技术">
-            <li>Vue 3</li><li>Node.js</li><li>MySQL</li><li>向量检索</li><li>自建推理</li>
-          </ul>
         </div>
 
-        <aside class="co-aside" aria-label="交付清单">
-          <div class="co-aside-block">
-            <p class="co-aside-head">交付清单 · 一次项目</p>
-            <ul class="co-aside-list">
-              <li><span class="co-aside-k">代码</span><span class="co-aside-v">含提交历史</span></li>
-              <li><span class="co-aside-k">部署</span><span class="co-aside-v">脚本 + 回滚步骤</span></li>
-              <li><span class="co-aside-k">监控</span><span class="co-aside-v">告警与巡检</span></li>
-              <li><span class="co-aside-k">文档</span><span class="co-aside-v">运行手册</span></li>
-            </ul>
-            <p class="co-aside-foot">随项目移交，不锁在你手里</p>
-            <router-link class="co-aside-more" to="/work">全部案例</router-link>
-          </div>
+        <dl class="co-hero-stats" aria-label="机器与项目现状">
+          <div><dt>在跑的项目</dt><dd><span>{{ caseCount }}</span> 个</dd></div>
+          <div><dt>连续运行</dt><dd><span>95</span> 天</dd></div>
+          <div><dt>定时巡检</dt><dd><span>6</span> 项</dd></div>
+          <div><dt>入站端口</dt><dd><span>0</span> 个</dd></div>
+        </dl>
 
-          <!-- 交付路径：一条线四个节点（占博客右栏雷达图那个位置） -->
-          <figure class="co-aside-fig">
-            <svg viewBox="0 0 300 86" aria-hidden="true" focusable="false">
-              <line x1="14" y1="40" x2="286" y2="40" class="fig-line" />
-              <circle cx="14" cy="40" r="3" class="fig-dot" />
-              <circle cx="104" cy="40" r="3" class="fig-dot" />
-              <circle cx="196" cy="40" r="3" class="fig-dot" />
-              <circle cx="286" cy="40" r="4.5" class="fig-dot-key" />
-              <text x="14" y="66" class="fig-t">需求</text>
-              <text x="104" y="66" class="fig-t">数据</text>
-              <text x="196" y="66" class="fig-t">模型</text>
-              <text x="286" y="66" class="fig-t" text-anchor="end">上线</text>
-            </svg>
-          </figure>
-        </aside>
+        <!-- 作品即门面：五张真实案例图的拼版，不放大字 -->
+        <div class="co-hero-board">
+          <router-link
+            v-for="c in proofCases"
+            :key="c.slug"
+            :to="`/work/${c.slug}`"
+            class="co-board-tile"
+          >
+            <CaseFigure :slug="c.slug" size="md" />
+            <span class="co-board-meta">
+              <span class="co-board-name">{{ c.name }}</span>
+              <span class="co-board-period">{{ c.period }}</span>
+            </span>
+          </router-link>
+          <router-link to="/work" class="co-board-tile co-board-more">
+            <span class="co-board-more-v">{{ caseCount }}</span>
+            <span class="co-board-meta">
+              <span class="co-board-name">全部案例</span>
+              <span class="co-board-period">每个都写了结果</span>
+            </span>
+          </router-link>
+        </div>
       </div>
     </section>
 

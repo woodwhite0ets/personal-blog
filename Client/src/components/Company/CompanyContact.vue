@@ -6,7 +6,7 @@
         lead="说清背景、目标和时间预期，一般一天内回。"
       />
       <section class="co-sec">
-        <CompanySecHead title="怎么合作" />
+        <CompanySecHead title="怎么合作" index="01" latin="HOW TO WORK" />
         <div class="co-grid co-grid-2">
           <div class="co-card">
             <h3>按项目</h3>
@@ -21,7 +21,7 @@
       </section>
 
       <section class="co-sec co-sec--band">
-        <CompanySecHead title="留个需求" />
+        <CompanySecHead title="留个需求" index="02" latin="BRIEF" />
         <form class="co-form" novalidate @submit.prevent="submit">
           <div class="co-form-row">
             <label class="co-field">

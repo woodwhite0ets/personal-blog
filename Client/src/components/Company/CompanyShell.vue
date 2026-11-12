@@ -1,5 +1,5 @@
 <template>
-  <div class="co-page">
+  <div class="co-page" :class="{ 'is-scrolled': scrolled }">
     <div class="page-wash" aria-hidden="true"></div>
     <SiteNav variant="company" />
     <slot />
@@ -37,6 +37,7 @@ const railLabel = computed(() => {
   return ''
 })
 
+const scrolled = ref(false)
 const fillRef = ref(null)
 let raf = 0
 
@@ -44,6 +45,7 @@ function onScroll() {
   if (raf) return
   raf = requestAnimationFrame(() => {
     raf = 0
+    scrolled.value = window.scrollY > 40
     const el = fillRef.value
     if (!el) return
     const max = document.documentElement.scrollHeight - window.innerHeight
