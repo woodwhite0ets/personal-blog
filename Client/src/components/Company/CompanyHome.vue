@@ -181,9 +181,7 @@
             <p class="co-sideline-lead">给刚注册、刚出产品的团队：一版把「你在做什么」讲清楚的官网。范围与交期固定，域名、托管和代码都在客户名下——上面三档做的是能长期运行的系统，两者分开计价。</p>
             <p class="co-sideline-fine">按页数与产品数量分档；在校创办的公司另有价目。</p>
           </div>
-          <div class="co-sideline-side">
-            <router-link class="co-sideline-go" to="/startup">看初创版官网</router-link>
-          </div>
+          <router-link class="co-sideline-go" to="/startup">看初创版官网</router-link>
         </aside>
       </section>
 

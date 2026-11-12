@@ -506,12 +506,11 @@
 .co-sideline {
   margin-top: 32px; padding-top: 26px;
   border-top: 1px solid var(--border);
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px;
-  align-items: end;
+  max-width: 46em;
 }
 .co-sideline-title {
   margin: 0 0 10px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;
-  letter-spacing: .08em; color: var(--accent);
+  letter-spacing: .08em; color: var(--text-bright);
 }
 .co-sideline-lead {
   margin: 0; font-size: 0.9375rem; line-height: 1.8; color: var(--text-secondary);
@@ -519,7 +518,7 @@
 }
 .co-sideline-fine { margin: 10px 0 0; font-size: 0.8125rem; line-height: 1.65; color: var(--text-faint); max-width: 46em; }
 .co-sideline-go {
-  display: inline-block; white-space: nowrap; font-size: 0.875rem; font-weight: 600;
+  display: inline-block; margin-top: 14px; white-space: nowrap; font-size: 0.875rem; font-weight: 600;
   color: var(--accent); text-decoration: none; padding-bottom: 2px;
   border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
   transition: border-color var(--dur-hover) var(--ease-out);
@@ -527,9 +526,7 @@
 .co-sideline-go:hover { border-color: var(--accent); }
 .co-sideline-go:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-@media (max-width: 900px) {
-  .co-sideline { grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
-}
+
 
 .mkt-compare {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
