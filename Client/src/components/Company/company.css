@@ -1070,3 +1070,32 @@
   .co-form { padding: 20px 18px; }
   .co-cases { padding: 4px 16px; }
 }
+
+/* ============================================================
+   纸面层次修正（2026-11-12 晚，第三轮）
+   上一轮加的东西你看不见，原因在 token：--bg 与 --bg-elevated 都是纯白，
+   纸卡画在白纸上，色带又只是白里掺 3% 暖色，等于什么都没画。
+   这里给公司域重新定义三层纸：页面纸 / 纸卡 / 色带，彼此拉开能看见的差值。
+   ============================================================ */
+.co-page {
+  --bg: #faf7f2;           /* 页面：纸色，比纯白暖一档 */
+  --bg-elevated: #ffffff;  /* 纸卡：纯白，坐在纸色上才浮得起来 */
+  --band-warm: #f2ebdf;    /* 色带：再深一档，用来切分段落 */
+}
+
+/* 开场色带用实色，不再和白掺 */
+.co-mast::before { background: var(--band-warm); }
+
+/* 交替色带同样用实色 */
+.co-sec--band::before {
+  background: var(--band-warm);
+  border-block-color: color-mix(in srgb, var(--text) 10%, transparent);
+}
+
+/* 纸卡补一点极轻的投影，只在静止时也有层次；不是发光也不是渐变 */
+.co-spec, .co-cases, .co-form, .co-grid > .co-card {
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--text) 5%, transparent);
+}
+
+/* 表格里的行线与表头在一张纸上要更清楚一点 */
+.co-spec th { color: color-mix(in srgb, var(--text) 62%, transparent); }
