@@ -1,5 +1,5 @@
 <template>
-  <div class="co-page" :class="{ 'is-scrolled': scrolled }">
+  <div class="co-page" :class="{ 'is-scrolled': scrolled, 'force-motion': forceMotion }">
     <div class="page-wash" aria-hidden="true"></div>
     <SiteNav variant="company" />
     <slot />
@@ -38,6 +38,7 @@ const railLabel = computed(() => {
 })
 
 const scrolled = ref(false)
+const forceMotion = ref(false)
 const fillRef = ref(null)
 let raf = 0
 
@@ -78,6 +79,18 @@ function revealInit() {
 }
 
 onMounted(() => {
+  // ?motion=on 可强制开启动效，用于系统级「减少动态效果」打开时的验证与演示
+  try {
+    const q = new URLSearchParams(window.location.search)
+    if (q.get('motion') === 'on') {
+      forceMotion.value = true
+      localStorage.setItem('co-motion', 'on')
+    } else if (q.get('motion') === 'off') {
+      localStorage.removeItem('co-motion')
+    } else if (localStorage.getItem('co-motion') === 'on') {
+      forceMotion.value = true
+    }
+  } catch (e) { /* 隐私模式下 localStorage 不可用，忽略 */ }
   window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('resize', onScroll, { passive: true })
   onScroll()
