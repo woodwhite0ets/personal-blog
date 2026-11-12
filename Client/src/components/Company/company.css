@@ -1716,3 +1716,52 @@
 .co-page--contact .co-grid-2 { grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .co-page--contact .co-form { max-width: none; }
 .co-page--contact .co-form-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* ============================================================
+   P1 剩余两项（2026-11-12）
+   一、形状语义：切角只表示「机械 / 权限 / 外部」，
+       按钮不再切角，回到直角——否则切角只是个装饰习惯。
+   二、mono 只留给编号、坐标、数值；成句的标签回到正文无衬线。
+   ============================================================ */
+
+/* 一、按钮去切角，直角 + 平面 */
+.co-page .co-btn,
+.co-page .co-btn-solid,
+.co-page .btn-write {
+  clip-path: none;
+  border-radius: 0;
+}
+/* 切角留给「外部 / 权限」这类动作 */
+.co-page .is-utility {
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+/* 二、mono 收回到数据层 */
+.co-page .co-std-k,
+.co-page .co-foot-k,
+.co-page .mkt-table th,
+.co-page .co-spec th,
+.co-page .co-meter-k,
+.co-page .co-gauge-cell dt,
+.co-page .co-case-status {
+  font-family: var(--font-sans);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-size: 0.75rem;
+}
+/* 让这些标签靠字重与颜色分层，而不是靠等宽字形 */
+.co-page .co-std-k,
+.co-page .co-foot-k { font-weight: 600; color: var(--text-secondary); }
+.co-page .mkt-table th,
+.co-page .co-spec th { font-weight: 600; color: var(--text-faint); }
+
+/* 保留 mono 的：章节编号、拉丁注记、数值、期间、页码式元数据 */
+.co-page .co-h2-idx,
+.co-page .co-h2-lat,
+.co-page .co-gauge-v,
+.co-page .co-gauge-u,
+.co-page .co-meter-v,
+.co-page .co-lib-kind,
+.co-page .co-lib-period,
+.co-page .co-mast-item dd,
+.co-page .co-lab-meta dd { font-family: var(--font-mono); }
