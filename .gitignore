@@ -55,7 +55,3 @@ Client/dist/
 
 # 本地 serena 工具缓存
 .serena/
-
-# design-taste-frontend 的走查产物
-.taste-skill/
-Client/.taste-skill/

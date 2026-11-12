@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",
-    "@fontsource-variable/literata": "^5.3.0",
     "dompurify": "^3.4.12",
     "marked": "^18.0.6",
     "shiki": "^4.5.0",
