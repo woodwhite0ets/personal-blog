@@ -1679,3 +1679,118 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
   .co-page { --co-navh: 60px; }
   .co-hero-in { padding-top: calc(var(--co-navh) + 20px); }
 }
+
+/* ============================================================
+   动效层（2026-11-12 晚）
+   原则：只动 transform / opacity / clip-path / background-position；
+   全部动效都尊重 prefers-reduced-motion；滚动触发用 view() 时间线，
+   不支持时元素默认可见（不会因为动效失败而空白）。
+   ============================================================ */
+
+@keyframes coFadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes coWipeIn { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes coLineGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes coSweep { from { transform: translateX(-120%); } to { transform: translateX(220%); } }
+@keyframes coStripe { from { background-position: 0 0; } to { background-position: 32px 0; } }
+@keyframes coGridDrift { from { background-position: 0 0, 0 0; } to { background-position: 24px 24px, 24px 24px; } }
+@keyframes coPulse { 0%, 100% { opacity: .35; } 50% { opacity: .9; } }
+@keyframes coCaret { 0%, 45% { opacity: 1; } 50%, 95% { opacity: 0; } 100% { opacity: 1; } }
+
+/* 一、章节头：编号斜切块擦入，刻度尺从右往左拉开，幽灵数字淡入 */
+.co-h2-idx { animation: coWipeIn .5s cubic-bezier(.16, 1, .3, 1) both; }
+.co-h2-ruler { transform-origin: right center; animation: coLineGrow .6s cubic-bezier(.16, 1, .3, 1) both .12s; }
+.co-h2-ghost { animation: coFadeUp .8s cubic-bezier(.16, 1, .3, 1) both; }
+
+/* 二、首屏网格缓慢漂移：像一块活着的面板，不是贴图 */
+.co-hero-band { animation: coGridDrift 24s linear infinite; }
+
+/* 三、卡片与行：进入视口时依次落位（入场用 view() 时间线，逐个子元素错开） */
+@supports (animation-timeline: view()) {
+  .co-svc, .co-biz-item, .co-case, .co-std, .co-proof-row, .co-gauge-cell,
+  .co-meter li, .co-step, .co-card, .mkt-steps li, .co-faq-item {
+    animation: coFadeUp linear both;
+    animation-timeline: view();
+    animation-range: entry 2% entry 22%;
+  }
+  .co-svc:nth-child(2) { animation-range: entry 4% entry 24%; }
+  .co-svc:nth-child(3) { animation-range: entry 6% entry 26%; }
+  .co-svc:nth-child(4) { animation-range: entry 8% entry 28%; }
+  .co-svc:nth-child(5) { animation-range: entry 10% entry 30%; }
+  .co-svc:nth-child(6) { animation-range: entry 12% entry 32%; }
+}
+
+/* 四、按钮：hover 时一道细光扫过（切角按钮的“扫描”感） */
+.co-btn, .co-btn-solid, .btn-write { position: relative; overflow: hidden; }
+.co-btn::after, .co-btn-solid::after, .btn-write::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .45), transparent);
+  transform: translateX(-120%); pointer-events: none;
+}
+.co-btn:hover::after, .co-btn-solid:hover::after, .btn-write:hover::after {
+  animation: coSweep .7s cubic-bezier(.16, 1, .3, 1);
+}
+
+/* 五、案例拼版：hover 时图轻微推近，红线从左展开 */
+.co-board-tile :is(figure, svg, img) { transition: transform .5s cubic-bezier(.16, 1, .3, 1); }
+.co-board-tile:hover :is(figure, svg, img) { transform: scale(1.04); }
+.co-board-tile::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left center;
+  transition: transform .35s cubic-bezier(.16, 1, .3, 1);
+}
+.co-board-tile:hover::after { transform: scaleX(1); }
+
+/* 六、斜纹流动：收尾面板与进度条里的斜纹缓慢行进 */
+.co-cta {
+  animation: coStripe 6s linear infinite;
+}
+.co-meter-bar i { animation: coStripe 3s linear infinite; }
+
+/* 七、表格行：hover 时左侧红线滑入（不用整行变色抢视线） */
+.mkt-table tbody tr { position: relative; }
+.mkt-table tbody tr td:first-child { position: relative; }
+.mkt-table tbody tr td:first-child::before {
+  content: ""; position: absolute; left: -10px; top: 6px; bottom: 6px; width: 2px;
+  background: var(--accent); transform: scaleY(0); transform-origin: center;
+  transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+}
+.mkt-table tbody tr:hover td:first-child::before { transform: scaleY(1); }
+
+/* 八、文字链接：下划线从左长出来，而不是整条出现 */
+.co-note-link, .co-svc-link, .co-sideline-go, .co-aside-more {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 1px;
+  transition: background-size .28s cubic-bezier(.16, 1, .3, 1), color .2s ease;
+  text-decoration: none;
+}
+.co-note-link:hover, .co-svc-link:hover, .co-sideline-go:hover, .co-aside-more:hover {
+  background-size: 100% 1px;
+}
+
+/* 九、四角准星：缓慢呼吸，提示这是一层界面 */
+.co-frame {
+  animation: coPulse 4.5s ease-in-out infinite;
+}
+
+/* 十、右侧进度轨：填充条带一点流动光 */
+.co-rail-track i {
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+/* 十一、首屏状态四连的数字：加载时依次亮起（不用计数脚本） */
+.co-hero-stats dd span { animation: coFadeUp .5s cubic-bezier(.16, 1, .3, 1) both; }
+.co-hero-stats > div:nth-child(2) dd span { animation-delay: .08s; }
+.co-hero-stats > div:nth-child(3) dd span { animation-delay: .16s; }
+.co-hero-stats > div:nth-child(4) dd span { animation-delay: .24s; }
+
+/* 十二、全部动效在 reduced-motion 下停掉 */
+@media (prefers-reduced-motion: reduce) {
+  .co-h2-idx, .co-h2-ruler, .co-h2-ghost, .co-hero-band, .co-frame,
+  .co-hero-stats dd span, .co-cta, .co-meter-bar i,
+  .co-svc, .co-biz-item, .co-case, .co-std, .co-proof-row, .co-gauge-cell,
+  .co-meter li, .co-step, .co-card, .mkt-steps li, .co-faq-item {
+    animation: none !important;
+  }
+  .co-board-tile:hover :is(figure, svg, img) { transform: none; }
+  .co-btn::after, .co-btn-solid::after, .btn-write::after { display: none; }
+}
