@@ -9,17 +9,13 @@
           <h1 class="co-title">给已经在跑的业务加 AI 能力</h1>
           <p class="co-lead">知识库检索、模型接入、本地推理与带后台的业务系统。从需求做到上线后的巡检，签合同，按阶段验收。</p>
           <div class="co-actions">
-            <a class="co-btn co-btn-solid" href="mailto:1903784785@qq.com">项目咨询</a>
-            <router-link class="co-btn" to="/business">两条业务线</router-link>
+            <a class="co-btn co-btn-solid" href="mailto:1903784785@qq.com">询价</a>
+            <router-link class="co-btn" to="/work">看案例</router-link>
           </div>
         </div>
 
-        <dl class="co-hero-stats" aria-label="机器与项目现状">
-          <div><dt>在跑的项目</dt><dd><span>{{ caseCount }}</span> 个</dd></div>
-          <div><dt>连续运行</dt><dd><span>95</span> 天</dd></div>
-          <div><dt>定时巡检</dt><dd><span>6</span> 项</dd></div>
-          <div><dt>入站端口</dt><dd><span>0</span> 个</dd></div>
-        </dl>
+        <HeroStatus />
+
 
         <!-- 作品即门面：五张真实案例图的拼版，不放大字 -->
         <div class="co-hero-board">
@@ -43,6 +39,13 @@
             </span>
           </router-link>
         </div>
+        <ol class="co-quote" aria-label="合作方式与起步价">
+          <li><span class="co-quote-k">01 诊断</span><span class="co-quote-v">1,200 起</span><span class="co-quote-n">两三天给结论</span></li>
+          <li><span class="co-quote-k">02 定制</span><span class="co-quote-v">3 万起</span><span class="co-quote-n">按阶段验收</span></li>
+          <li><span class="co-quote-k">03 官网</span><span class="co-quote-v">699 起</span><span class="co-quote-n">5–10 个工作日</span></li>
+          <li><span class="co-quote-k">交期</span><span class="co-quote-v">5–10 天</span><span class="co-quote-n">材料齐起算</span></li>
+          <li class="co-quote--cta"><a href="mailto:1903784785@qq.com">发需求单 →</a></li>
+        </ol>
       </div>
     </section>
 
@@ -253,6 +256,7 @@ import CompanyShell from './CompanyShell.vue'
 import CompanySecHead from './CompanySecHead.vue'
 import CompanyCta from './CompanyCta.vue'
 import CaseFigure from './CaseFigure.vue'
+import HeroStatus from './HeroStatus.vue'
 import { pricing, pricingNote } from '../../data/pricing.js'
 import { projects } from '../../data/projects.js'
 

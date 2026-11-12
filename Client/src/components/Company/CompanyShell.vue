@@ -12,6 +12,8 @@
 // 样式从 company.css 引入 → 只随公司路由加载，博客页面不再携带这一层。
 import { ref, onMounted, onUnmounted } from 'vue'
 import './company.css'
+import './direction-paper.css'
+import './direction-v2.css'
 import SiteNav from '../common/SiteNav.vue'
 import CompanyFooter from './CompanyFooter.vue'
 

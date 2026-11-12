@@ -1,0 +1,309 @@
+/* ============================================================
+   公司站 · 设计方向 v2「工程文档」（2026-11-12 定）
+   ------------------------------------------------------------
+   为什么重定：前六轮我一直在往页面上加「游戏 UI 装置」——黄色横带、
+   切角、角括号、chips、幽灵数字——每一层单看都没错，叠在一起就成了
+   戏服：它像游戏界面，不像一家软件公司的官网。
+
+   这个方向只做四件事：
+   1. 一种底色（纸白）+ 一种墨色 + 一个强调色（品牌红，只给可点的东西）
+   2. 四级字号，其余全部落在正文与元数据两档
+   3. 用「线 + 留白」分节，不用底色块、不用卡片包围每一块内容
+   4. 数值一律等宽对齐，真实数据当版面主体
+
+   它借的是终末地 skill 里那条最容易被忽略的规矩：
+   Specificity over costume —— 先由内容决定结构，再决定要不要加母题。
+   ============================================================ */
+
+body .co-page {
+  --d-paper: #f7f5f1;
+  --d-panel: #ffffff;
+  --d-ink: #17181a;
+  --d-ink-soft: #2c2e33;
+  --d-muted: #5c5f66;
+  --d-faint: #8a8e96;
+  --d-line: rgba(23, 24, 26, 0.13);
+  --d-line-strong: rgba(23, 24, 26, 0.28);
+  --d-accent: #c8202a;
+  --d-accent-deep: #a3151d;
+
+  /* 覆盖旧 token */
+  --bg: var(--d-paper);
+  --bg-elevated: var(--d-panel);
+  --band-warm: transparent;
+  --text: var(--d-ink-soft);
+  --text-bright: var(--d-ink);
+  --text-secondary: var(--d-muted);
+  --text-faint: var(--d-faint);
+  --border: var(--d-line);
+  --border-strong: var(--d-line-strong);
+  --accent: var(--d-accent);
+  --accent-hover: var(--d-accent-deep);
+  --co-line: var(--d-line);
+  --co-line-strong: var(--d-line-strong);
+
+  /* 四级字号 + 两级行高 */
+  --t-display: clamp(2.4rem, 4.2vw, 3.5rem);
+  --t-head: clamp(1.5rem, 2.1vw, 1.875rem);
+  --t-body: 1rem;
+  --t-meta: 0.8125rem;
+
+  background: var(--d-paper);
+  color: var(--d-ink-soft);
+}
+
+/* ---------- 排版骨架 ---------- */
+body .co-page { font-size: var(--t-body); line-height: 1.7; }
+body .co-page p,
+body .co-page li,
+body .co-page dd { font-size: var(--t-body); line-height: 1.7; }
+body .co-page small,
+body .co-page .co-note,
+body .co-page .co-meta { font-size: var(--t-meta); }
+
+/* 标题：只有两级，其余靠字重区分 */
+body .co-page .co-title,
+body .co-page .co-page-title { font-size: var(--t-display); font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+
+/* ---------- 章节头：一条线，不带底色 ---------- */
+body .co-page .co-h2 {
+  display: flex; align-items: baseline; gap: 16px;
+  height: auto; margin: 0 0 28px; padding: 0 0 14px;
+  border-bottom: 2px solid var(--d-ink);
+}
+body .co-page .co-h2-idx {
+  background: none; color: var(--d-accent);
+  font-family: var(--font-mono); font-size: var(--t-meta); letter-spacing: 0.08em;
+  padding: 0; border: 0; height: auto;
+}
+body .co-page .co-h2-t {
+  background: none; color: var(--d-ink); clip-path: none;
+  font-size: var(--t-head); font-weight: 700; letter-spacing: -0.02em;
+  padding: 0; height: auto;
+}
+body .co-page .co-h2-lat {
+  background: none; color: var(--d-faint); clip-path: none;
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.2em;
+  padding: 0; height: auto; margin-left: auto; order: 3;
+}
+body .co-page .co-h2-rule,
+body .co-page .co-h2-ruler { display: none; }
+body .co-page .co-h2-ghost,
+body .co-page .co-h2-ghost-wrap { display: none; }
+
+/* ---------- 色带：全部取消 ------------------------- */
+body .co-page .co-sec--band { padding-block: 56px; margin-top: 0; }
+body .co-page .co-sec--band::before { display: none; }
+body .co-page .co-sec--band::after { display: none; }
+body .co-page .co-sec { margin-top: 64px; }
+body .co-page .co-sec--band { margin-top: 64px; }
+body .co-page--home .co-cards { display: block; }
+
+/* ---------- 服务条目：表格行，不是卡片 ---------- */
+body .co-page .co-svc {
+  display: block; background: none; border: 0; border-radius: 0;
+  border-top: 1px solid var(--d-line);
+  padding: 0;
+}
+body .co-page .co-svc:first-child { border-top: 1px solid var(--d-line-strong); }
+body .co-page .co-svc-in {
+  display: grid;
+  grid-template-columns: minmax(0, 15em) minmax(0, 1.4fr) minmax(0, 1fr);
+  column-gap: 28px; row-gap: 4px;
+  align-items: baseline;
+  padding: 20px 0 18px; min-height: 0; background: none;
+}
+body .co-page .co-svc-in h3 {
+  grid-column: 1; grid-row: 1; margin: 0;
+  font-size: 1.0625rem; font-weight: 700; color: var(--d-ink); line-height: 1.45;
+}
+body .co-page .co-svc-in > p {
+  grid-column: 2; grid-row: 1; margin: 0;
+  color: var(--d-muted); font-size: var(--t-body);
+}
+body .co-page .co-svc-fit {
+  grid-column: 2; grid-row: 2; margin: 6px 0 0;
+  padding: 0; border: 0;
+  color: var(--d-faint); font-size: var(--t-meta); line-height: 1.6;
+}
+body .co-page .co-svc-meta {
+  grid-column: 3; grid-row: 1 / span 2; margin: 0;
+  color: var(--d-faint); font-size: var(--t-meta); text-align: right;
+}
+body .co-page .co-svc:hover { background: none; }
+body .co-page .co-svc:hover h3 { color: var(--d-accent); }
+
+/* 最后那条行动项：一行黑条，不再是卡片 */
+body .co-page .co-svc-cta { background: var(--d-ink); border-top: 0; margin-top: 20px; }
+body .co-page .co-svc-cta .co-svc-in { padding: 18px 22px; grid-template-columns: minmax(0, 1fr) auto; }
+body .co-page .co-svc-cta h3 { color: #fff; grid-column: 1; grid-row: 1; }
+body .co-page .co-svc-cta p { color: rgba(255,255,255,.7); grid-column: 1; grid-row: 2; }
+body .co-page .co-svc-cta .co-svc-link {
+  grid-column: 2; grid-row: 1 / span 2; align-self: center; color: #fff;
+  border-bottom: 2px solid var(--d-accent); padding-bottom: 2px; background: none;
+}
+
+/* ---------- 指标带：贴顶粗线 + 等宽数字 ---------- */
+body .co-page .co-hero-stats {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 0; border-top: 2px solid var(--d-ink);
+  background: none; margin: 28px 0 0;
+}
+body .co-page .co-hero-stats > div {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 12px 20px 12px 0; border: 0; border-right: 1px solid var(--d-line);
+}
+body .co-page .co-hero-stats > div:last-child { border-right: 0; }
+body .co-page .co-hero-stats dd {
+  margin: 0; order: 1;
+  font-family: var(--font-mono); font-size: var(--t-meta); color: var(--d-muted);
+  font-variant-numeric: tabular-nums;
+}
+body .co-page .co-hero-stats dd span { font-size: clamp(1.75rem, 2.2vw, 2.25rem); font-weight: 700; color: var(--d-ink); }
+body .co-page .co-hero-stats dt { order: 2; font-size: var(--t-meta); color: var(--d-faint); letter-spacing: 0; font-family: var(--font-sans); }
+
+/* ---------- 行动元素：只用品牌红 ---------- */
+body .co-page .co-btn-solid,
+body .co-page .btn-write {
+  background: var(--d-accent); border-color: var(--d-accent); color: #fff;
+  clip-path: none; border-radius: 0; font-weight: 600;
+}
+body .co-page .co-btn-solid:hover,
+body .co-page .btn-write:hover { background: var(--d-accent-deep); border-color: var(--d-accent-deep); color: #fff; }
+body .co-page .co-btn { background: transparent; border: 1px solid var(--d-line-strong); color: var(--d-ink); border-radius: 0; }
+body .co-page .co-btn:hover { border-color: var(--d-ink); color: var(--d-ink); }
+body .co-page .co-svc-link,
+body .co-page .co-lib-more,
+body .co-page .co-note-link { color: var(--d-accent); background: none; border-bottom: 1px solid color-mix(in srgb, var(--d-accent) 45%, transparent); }
+
+/* ---------- 案例库：网格但去掉卡片边框 ---------- */
+body .co-page .co-lib-card {
+  background: none; border: 0; border-top: 1px solid var(--d-line-strong);
+  border-radius: 0; padding-top: 0;
+}
+body .co-page .co-lib-card:hover { border-color: var(--d-ink); transform: none; }
+body .co-page .co-lib-thumb { background: none; padding: 14px 0 10px; border: 0; }
+body .co-page .co-lib-thumb .case-fig { color: var(--d-ink); }
+body .co-page .co-lib-body { padding: 0 0 18px; }
+body .co-page .co-lib-name { color: var(--d-ink); }
+
+/* ---------- 表格 ---------- */
+body .co-page .mkt-table { border: 0; border-top: 2px solid var(--d-ink); background: none; padding: 0; border-radius: 0; }
+body .co-page .mkt-table th { background: none; border-bottom: 1px solid var(--d-line-strong); color: var(--d-faint); font-size: var(--t-meta); }
+body .co-page .mkt-table td { border-bottom: 1px solid var(--d-line); color: var(--d-muted); }
+body .co-page .mkt-table td:first-child { color: var(--d-ink); }
+body .co-page .mkt-table .is-primary { background: color-mix(in srgb, var(--d-accent) 5%, transparent); }
+
+/* ---------- 收尾：唯一的深色块 ---------- */
+body .co-page .co-cta {
+  background: var(--d-ink); color: #f6f5f1; border: 0; border-radius: 0; clip-path: none;
+  margin-top: 88px;
+}
+body .co-page .co-cta-title { color: #fff; font-size: clamp(1.375rem, 2.2vw, 1.875rem); font-weight: 700; letter-spacing: -0.02em; }
+body .co-page .co-cta .co-note,
+body .co-page .co-cta .co-cta-k,
+body .co-page .co-cta .co-cta-hint { color: rgba(255,255,255,.62); font-size: var(--t-meta); }
+body .co-page .co-cta-mail a { color: #fff; text-decoration: none; border-bottom: 2px solid var(--d-accent); padding-bottom: 2px; }
+
+/* ---------- 页脚 ---------- */
+body .co-page .co-foot { background: transparent; border-top: 1px solid var(--d-line-strong); padding-top: 40px; }
+body .co-page .co-foot-k { background: none; color: var(--d-faint); font-size: var(--t-meta); letter-spacing: 0; padding: 0; }
+body .co-page .co-foot-k::before { display: none; }
+body .co-page .co-foot-col a { color: var(--d-muted); font-size: var(--t-meta); }
+body .co-page .co-foot-col a:hover { color: var(--d-accent); }
+
+/* ---------- 页头（子页） ---------- */
+body .co-page .co-mast { padding: 28px 0 24px; }
+body .co-page .co-mast::before { display: none; }
+body .co-page .co-mast-meta { border-top: 1px solid var(--d-line-strong); margin-top: 18px; padding-top: 12px; }
+body .co-page .co-mast-item dt { color: var(--d-faint); font-size: var(--t-meta); }
+body .co-page .co-mast-item dd { color: var(--d-ink); font-size: var(--t-meta); font-variant-numeric: tabular-nums; }
+
+/* ---------- 首屏 ---------- */
+body .co-page .co-hero-band { background: var(--d-paper); border-bottom: 1px solid var(--d-line-strong); }
+body .co-page .co-hero-in { padding-top: calc(var(--co-navh) + 30px); padding-bottom: 30px; }
+body .co-page .co-hero-in .co-title { font-size: var(--t-display); max-width: 22em; }
+body .co-page .co-hero-in .co-lead { margin-top: 14px; max-width: 30em; color: var(--d-muted); }
+body .co-page .co-badge {
+  background: none; border: 0; border-radius: 0; padding: 0; margin-bottom: 16px;
+  color: var(--d-faint); font-size: var(--t-meta); letter-spacing: 0.04em;
+}
+body .co-page .co-badge-dot { background: var(--d-accent); border-radius: 50%; }
+body .co-page .co-hero-board { border-top: 2px solid var(--d-ink); margin-top: 26px; }
+body .co-page .co-board-tile {
+  background: none; border-right: 1px solid var(--d-line); padding: 14px 14px 12px;
+}
+body .co-page .co-board-tile :is(figure, svg, img) { background: none; padding: 0; filter: none; }
+body .co-page .co-board-tile .case-fig { color: var(--d-ink); }
+body .co-page .co-board-more { background: var(--d-ink); }
+body .co-page .co-board-more .co-board-name,
+body .co-page .co-board-more-v { color: #fff; }
+body .co-page .co-board-period { color: var(--d-faint); }
+
+/* ---------- 动效收敛 ---------- */
+body .co-page .co-h2-idx,
+body .co-page .co-h2-ruler,
+body .co-page .co-hero-band,
+body .co-page .co-cta { animation: none !important; }
+body .co-page .co-reveal { transition: opacity .45s ease, transform .45s ease; }
+
+/* 修：通用 > p 规则把 .co-svc-fit 也抓了进去，
+   于是正文与「适合」两段叠在同一格里（截图里能直接看到重影）。 */
+body .co-page .co-svc-in > p:not(.co-svc-fit):not(.co-svc-meta) {
+  grid-column: 2; grid-row: 1; margin: 0;
+}
+body .co-page .co-svc-in > p.co-svc-fit {
+  grid-column: 2; grid-row: 2;
+}
+body .co-page .co-svc-in > p.co-svc-meta {
+  grid-column: 3; grid-row: 1 / span 2;
+}
+
+/* 标题下沿已有 2px 墨线，第一条行不要再压一条，否则是双线 */
+body .co-page .co-cards > .co-svc:first-child { border-top: 0; }
+body .co-page .co-cards { margin-top: 4px; }
+body .co-page .co-h2 { margin-bottom: 10px; }
+body .co-page .co-svc-in { padding-top: 22px; }
+
+/* ---------- 收尾修正 ---------- */
+
+/* 主按钮必须走品牌红：旧层的「首屏第一个按钮=黄」优先级更高，这里压回去 */
+body .co-page .co-hero-in .co-actions .co-btn:first-child,
+body .co-page .co-actions .co-btn-solid {
+  background: var(--d-accent);
+  border-color: var(--d-accent);
+  color: #fff;
+  clip-path: none;
+}
+body .co-page .co-hero-in .co-actions .co-btn:first-child:hover {
+  background: var(--d-accent-deep); border-color: var(--d-accent-deep); color: #fff;
+}
+
+/* 黑条里正文与动作不能叠：正文限宽，动作独占右侧列 */
+body .co-page .co-svc-cta .co-svc-in {
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 32px;
+}
+body .co-page .co-svc-cta p { padding-right: 20px; }
+body .co-page .co-svc-cta .co-svc-link { white-space: nowrap; }
+
+/* 首屏横向溢出 47px：让 hero 自己裁掉装饰层 */
+body .co-page .co-hero-band { overflow: clip; }
+
+/* 黑块里的标签 chip 简化成细字，不再是小黑块 */
+body .co-page .co-std-k {
+  background: none; padding: 0;
+  color: var(--d-accent);
+  font-size: var(--t-meta); letter-spacing: 0.06em;
+}
+body .co-page .co-std-k::before { display: none; }
+
+/* 首页案例网格里那格「全部案例」也用黑底，和首屏一致 */
+body .co-page .co-lib-card--more {
+  background: var(--d-ink); border-top-color: var(--d-ink);
+  padding: 16px 18px; justify-content: center;
+}
+body .co-page .co-lib-card--more .co-lib-name,
+body .co-page .co-lib-card--more .co-lib-sub,
+body .co-page .co-lib-card--more .co-lib-kind { color: #fff; }
+body .co-page .co-lib-card--more .co-lib-kind { color: rgba(255,255,255,.6); }

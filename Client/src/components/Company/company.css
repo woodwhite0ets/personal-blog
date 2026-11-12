@@ -2174,3 +2174,395 @@
   }
   .co-page--business .co-svc-link { justify-self: start; }
 }
+
+/* ============================================================
+   终末地语法层（2026-11-12）——按 endfield-design 的官网分节语法
+   之前只做了「清理」，把游戏语言全删掉了，结果变成通用模板。
+   这一层按 skill 的语法补回来，且只用它确认过的装置：
+     · 纸白 / 混凝土灰 / 近黑三层信息面
+     · 系统黄 = 导航 · 选中 · 进度（唯一的行动色）
+     · 章节头黄色横带（切角）+ 编号
+     · 区块标签 chip + 多色注册微条 + 微文字
+     · 巨型 // 幽灵字做区块分隔
+     · 角形按钮（强行动）
+     · 红只表示危险／未开，蓝只表示量值
+   ============================================================ */
+.co-page {
+  --sys-yellow: #ffd429;
+  --sys-yellow-deep: #f2b100;
+  --ink: #14150f;
+  --paper: #f2f1ec;
+  --concrete: #e4e3dc;
+  --danger: #ff4757;
+  --data-blue: #4da8da;
+
+  --bg: var(--paper);
+  --bg-elevated: #fbfaf6;
+  --band-warm: var(--concrete);
+  --text: #24251d;
+  --text-bright: var(--ink);
+  --text-secondary: #55564c;
+  --text-faint: #82837a;
+  --border: rgba(20, 21, 15, 0.18);
+  --border-strong: rgba(20, 21, 15, 0.34);
+  --accent: var(--sys-yellow-deep);   /* 行动色只留给可点元素 */
+  --co-line: rgba(20, 21, 15, 0.14);
+  --co-line-strong: rgba(20, 21, 15, 0.3);
+}
+
+/* 章节头：黄色横带 + 切角右端 + 编号 + 拉丁注记 */
+.co-page .co-h2 {
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  margin: 0 0 26px;
+}
+.co-page .co-h2-idx,
+.co-page .co-h2-t,
+.co-page .co-h2-lat {
+  background: var(--sys-yellow);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  border: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.co-page .co-h2-idx {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  padding: 0 12px;
+  border-right: 2px solid var(--ink);
+}
+.co-page .co-h2-lat {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  color: rgba(20, 21, 15, 0.62);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+  padding-right: 28px;
+}
+.co-page .co-h2-rule {
+  flex: 1;
+  height: 1px;
+  margin-left: 14px;
+  background: var(--co-line-strong);
+}
+
+/* 区块标签 chip：黑底白字 + 左侧多色注册微条 */
+.co-page .co-std-k,
+.co-page .co-foot-k,
+.co-page .co-lib-kind,
+.co-page .co-mst-k {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--ink); color: #f7f6f0;
+  padding: 3px 9px 3px 7px;
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.co-page .co-std-k::before,
+.co-page .co-foot-k::before {
+  content: ""; width: 3px; height: 10px;
+  background: linear-gradient(180deg, var(--sys-yellow) 33%, var(--danger) 33% 66%, var(--data-blue) 66%);
+}
+
+/* 角形按钮：强行动用切角 */
+.co-page .co-btn-solid,
+.co-page .btn-write {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  background: var(--sys-yellow);
+  color: var(--ink);
+  border-color: var(--sys-yellow);
+  font-weight: 700;
+}
+.co-page .co-btn-solid:hover,
+.co-page .btn-write:hover { background: var(--ink); color: var(--sys-yellow); border-color: var(--ink); }
+.co-page .co-btn { border: 1px solid var(--border-strong); background: transparent; }
+
+/* 巨型 // 幽灵字：区块分隔（内容型页面最多用两次） */
+.co-page .co-sec--band::after {
+  content: "//";
+  position: absolute; right: 18px; top: -14px;
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: clamp(64px, 9vw, 132px); line-height: 1;
+  color: var(--ink); opacity: 0.06;
+  pointer-events: none;
+}
+
+/* 选中态：角括号而不是换底色 */
+.co-page .co-lib-chip.is-on,
+.co-page .co-lib-toggle.is-on {
+  background: transparent; color: var(--ink);
+  border-color: transparent;
+  box-shadow: inset 2px 0 0 var(--sys-yellow), inset -2px 0 0 var(--sys-yellow);
+}
+.co-page .co-lib-chip.is-on::before { content: "["; margin-right: 4px; color: var(--sys-yellow-deep); }
+.co-page .co-lib-chip.is-on::after { content: "]"; margin-left: 4px; color: var(--sys-yellow-deep); }
+
+/* 进度/量值：黄做进度，蓝做量值 */
+.co-page .co-meter-bar i { background-color: var(--data-blue); }
+.co-page .co-hero-stats dd span { color: var(--ink); }
+
+/* ---------- 看到截图后的修正（终末地语法层 · 第二轮） ---------- */
+
+/* a) 首屏拼版必须通栏：之前被塞在左列里，右边空掉 1/3 */
+.co-page--home .co-hero-in { grid-template-columns: minmax(0, 1fr) 300px; }
+.co-page--home .co-hero-board { grid-column: 1 / -1; width: 100%; }
+.co-page--home .co-hero-stats { grid-column: 2; grid-row: 1; }
+
+/* b) 状态四连改成通栏数据带，跟拼版上下呼应，不再是右侧孤立卡片 */
+.co-page--home .co-hero-stats {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: flex;
+  gap: 0;
+  border: 0;
+  border-top: 2px solid var(--ink);
+  background: transparent;
+  margin-top: 6px;
+}
+.co-page--home .co-hero-stats > div {
+  flex: 1 1 0;
+  border: 0;
+  border-right: 1px solid var(--co-line);
+  padding: 10px 16px 10px 0;
+}
+.co-page--home .co-hero-stats > div:last-child { border-right: 0; }
+.co-page--home .co-hero-stats dt { font-size: 0.6875rem; letter-spacing: 0.12em; }
+.co-page--home .co-hero-stats dd { font-size: 0.8125rem; }
+.co-page--home .co-hero-stats dd span { font-size: 1.5rem; }
+.co-page--home .co-hero-board { grid-row: 3; }
+
+/* c) 章节头：SCOPE 在黄底上看不清 → 改成深墨，字距收一点 */
+.co-page .co-h2-lat { color: rgba(20, 21, 15, 0.72); letter-spacing: 0.14em; }
+
+/* d) 卡片统一成「纯白 + 1px 墨线」，间距拉开，去掉灰底拼贴感 */
+.co-page .co-cards { gap: 10px; }
+.co-page .co-svc {
+  background: #ffffff;
+  border: 1px solid var(--co-line-strong);
+  border-radius: 0;
+}
+.co-page .co-svc-in { padding: 22px 22px 20px; }
+.co-page .co-svc h3 { font-size: 1.0625rem; }
+.co-page .co-svc p { font-size: 0.9375rem; }
+.co-page .co-svc:hover { border-color: var(--ink); }
+
+/* 案例卡同样：白底 + 墨线，缩略图区加浅灰底衬托线稿 */
+.co-page .co-lib-card { background: #ffffff; border-color: var(--co-line-strong); }
+.co-page .co-lib-thumb { background: var(--concrete); padding: 16px 16px 12px; }
+.co-page .co-lib-card:hover { border-color: var(--ink); }
+
+/* 首屏重排（.co-hero-* 不在 .co-main 里，之前用 .co-page--home 前缀的选择器全部没命中） */
+.co-page .co-hero-in {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 0;
+  padding-top: calc(var(--co-navh) + 26px);
+  padding-bottom: 32px;
+}
+.co-page .co-hero-main { grid-column: 1; max-width: 46em; }
+.co-page .co-hero-in .co-title { font-size: clamp(1.9rem, 2.6vw + 0.8rem, 2.75rem); line-height: 1.18; max-width: 20em; }
+.co-page .co-hero-in .co-lead { margin-top: 12px; font-size: 1.0625rem; max-width: 34em; }
+.co-page .co-hero-in .co-actions { margin-top: 20px; }
+
+/* 状态四连：通栏数据带，2px 墨线收口 */
+.co-page .co-hero-stats {
+  grid-column: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 26px 0 0;
+  padding: 0;
+  border: 0;
+  border-top: 2px solid var(--ink);
+  background: transparent;
+}
+.co-page .co-hero-stats > div {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 12px 18px 12px 0;
+  border: 0; border-right: 1px solid var(--co-line);
+}
+.co-page .co-hero-stats > div:last-child { border-right: 0; }
+.co-page .co-hero-stats dt {
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.12em;
+  color: var(--text-faint); order: 2;
+}
+.co-page .co-hero-stats dd {
+  margin: 0; display: flex; align-items: baseline; gap: 4px;
+  font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-secondary); order: 1;
+}
+.co-page .co-hero-stats dd span { font-size: 1.75rem; font-weight: 700; color: var(--ink); }
+
+/* 拼版：紧跟数据带，高度加大 */
+.co-page .co-hero-board { grid-column: 1; margin-top: 22px; }
+.co-page .co-board-tile { min-height: 176px; padding: 14px 14px 12px; }
+.co-page .co-board-name { font-size: 0.875rem; }
+
+/* ---------- 第三轮：按截图看出的事实修 ---------- */
+
+/* a) 首屏主按钮必须是黄的（现在两个按钮长得一样，没有主次） */
+.co-page .co-hero-in .co-actions .co-btn:first-child,
+.co-page .co-actions .co-btn-solid {
+  background: var(--sys-yellow);
+  border-color: var(--sys-yellow);
+  color: var(--ink);
+  font-weight: 700;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+.co-page .co-hero-in .co-actions .co-btn:first-child:hover { background: var(--ink); color: var(--sys-yellow); border-color: var(--ink); }
+
+/* b) 标题加大，右侧不留半屏空白：标题与说明限宽但字更大 */
+.co-page .co-hero-in .co-title { font-size: clamp(2.1rem, 3vw + 1rem, 3.25rem); max-width: 16em; letter-spacing: -0.02em; }
+.co-page .co-hero-in .co-lead { max-width: 30em; color: var(--text-secondary); }
+
+/* c) 拼版缩略图放到浅灰底上，线稿才立得住 */
+.co-page .co-board-tile { background: #ffffff; }
+.co-page .co-board-tile :is(figure, svg, img) {
+  background: var(--concrete);
+  padding: 10px;
+  filter: grayscale(1) contrast(1.25);
+}
+.co-page .co-board-more { background: var(--concrete); }
+
+/* d) 顶栏：字号与选中态加强 */
+.co-page .nav-links a { font-size: 0.875rem; color: var(--text-secondary); }
+.co-page .nav-links a:hover { color: var(--ink); }
+.co-page .nav-links a.router-link-active { color: var(--ink); font-weight: 600; }
+.co-page .nav-links a.router-link-active::after { background: var(--sys-yellow); height: 3px; }
+
+/* e) 章节头：黄带拉满到右侧细线，右端切角 */
+.co-page .co-h2 { display: flex; align-items: center; }
+.co-page .co-h2-t { padding-right: 22px; clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%); }
+.co-page .co-h2-lat { color: rgba(20,21,15,.66); }
+.co-page .co-h2-rule { background: var(--ink); opacity: .28; height: 2px; margin-left: 0; }
+
+/* ---------- 第四轮：首屏补上真正的视觉锚 ---------- */
+
+/* 标题做成巨型排印，铺满整宽（终末地官网的「截断大字」手法） */
+.co-page .co-hero-in .co-title {
+  font-size: clamp(2.6rem, 5.4vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  max-width: none;
+  text-wrap: balance;
+}
+/* 说明与按钮做成一行：左说明、右按钮，宽度铺开 */
+.co-page .co-hero-main { max-width: none; }
+.co-page .co-hero-in .co-lead { max-width: 26em; font-size: 1.0625rem; }
+
+/* 拼版：缩略图放浅灰底 + 提高对比，格子等高 */
+.co-page .co-hero-board { border-top: 2px solid var(--ink); padding-top: 0; }
+.co-page .co-board-tile {
+  min-height: 188px;
+  justify-content: space-between;
+  background: var(--concrete);
+  border-right: 1px solid var(--co-line-strong);
+  border-bottom: 0;
+}
+.co-page .co-board-tile :is(figure, svg, img) {
+  background: #ffffff;
+  padding: 8px;
+  filter: grayscale(1) contrast(1.6);
+}
+.co-page .co-board-tile:hover :is(figure, svg, img) { filter: grayscale(1) contrast(1.8); }
+.co-page .co-board-more { background: var(--sys-yellow); }
+.co-page .co-board-more .co-board-name { color: var(--ink); font-weight: 700; }
+.co-page .co-board-more-v { color: var(--ink); }
+
+/* 状态带：把数字提到最大，形成第二层节奏 */
+.co-page .co-hero-stats dd span { font-size: clamp(1.75rem, 2.4vw, 2.5rem); }
+.co-page .co-hero-stats dt { margin-top: 2px; }
+
+/* ---------- 第五轮：缩略图被滤镜洗白了 ---------- */
+.co-page .co-board-tile :is(figure, svg, img) {
+  background: #ffffff;
+  padding: 10px;
+  filter: none;
+}
+.co-page .co-board-tile .case-fig { color: var(--ink); }
+.co-page .co-board-tile .case-fig svg { display: block; width: 100%; height: auto; }
+/* 线稿里的强调色改成系统黄，和整站一致 */
+.co-page .co-board-tile .case-fig svg [fill="var(--accent)"] { fill: var(--sys-yellow-deep); }
+
+/* 章节头：黄带做成完整一段，右端切角，后面接细线 */
+.co-page .co-h2 {
+  display: flex;
+  align-items: stretch;
+  height: 42px;
+  margin: 0 0 24px;
+}
+.co-page .co-h2-idx,
+.co-page .co-h2-t,
+.co-page .co-h2-lat {
+  display: inline-flex; align-items: center;
+  height: auto;
+  background: var(--sys-yellow);
+  color: var(--ink);
+  padding: 0 18px;
+  font-size: 1.0625rem; font-weight: 700;
+  letter-spacing: 0;
+}
+.co-page .co-h2-idx {
+  font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: .12em;
+  padding: 0 14px; border-right: 2px solid var(--ink);
+}
+.co-page .co-h2-t { clip-path: none; padding-right: 20px; }
+.co-page .co-h2-lat {
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .18em;
+  color: rgba(20,21,15,.7);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+  padding-right: 30px;
+}
+.co-page .co-h2-rule { flex: 1; align-self: center; height: 1px; background: var(--co-line-strong); margin: 0; }
+
+/* 章节头黄带：去掉块间白缝，切角只切最右端 */
+.co-page .co-h2 { gap: 0; }
+.co-page .co-h2-lat { padding-right: 34px; clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%); }
+.co-page .co-h2-rule { margin-left: 16px; }
+
+/* ---------- 第六轮 ---------- */
+
+/* 1) 行动色统一到系统黄（之前链接还是红的，与「红=危险」冲突） */
+.co-page { --role-action: var(--sys-yellow-deep); --role-action-hover: var(--ink); }
+.co-page a:hover,
+.co-page .co-note-link,
+.co-page .co-svc-link,
+.co-page .co-lib-more { color: var(--ink); }
+.co-page .co-svc-link,
+.co-page .co-lib-more {
+  background-image: linear-gradient(var(--sys-yellow), var(--sys-yellow));
+  background-repeat: no-repeat; background-position: 0 100%; background-size: 100% 3px;
+  text-decoration: none;
+}
+.co-page .co-svc-link:hover,
+.co-page .co-lib-more:hover { background-size: 100% 100%; }
+
+/* 2) 能接的活：改成 3×2 等宽网格，去掉那条又短又长的通栏卡 */
+.co-page--home .co-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.co-page--home .co-svc,
+.co-page--home .co-svc-cta { grid-column: span 1; }
+.co-page--home .co-svc-in { min-height: 168px; }
+
+/* 3) 第六张卡做成黑色行动条（黄字），和别的卡片形成主次 */
+.co-page .co-svc-cta { background: var(--ink); border-color: var(--ink); }
+.co-page .co-svc-cta .co-svc-in { justify-content: space-between; }
+.co-page .co-svc-cta h3 { color: var(--sys-yellow); }
+.co-page .co-svc-cta p { color: rgba(255,255,255,.72); }
+.co-page .co-svc-cta .co-svc-link {
+  color: var(--sys-yellow); background: none; border-bottom: 2px solid var(--sys-yellow);
+  display: inline-block; width: fit-content; padding-bottom: 2px;
+}
+
+/* 4) 卡内节奏：标题 → 正文 → 间距 → 适合 → 交付 */
+.co-page .co-svc-in { gap: 8px; }
+.co-page .co-svc p.co-svc-fit { margin-top: 8px; padding-top: 12px; }
+.co-page .co-svc-meta { margin-top: 4px; }
+
+/* 5) 章节头 SCOPE：提高对比 */
+.co-page .co-h2-lat { color: rgba(20, 21, 15, 0.78); }
