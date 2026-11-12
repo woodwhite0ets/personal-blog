@@ -1,10 +1,23 @@
 <template>
   <CompanyShell>
     <div class="co-main co-lab">
-      <CompanyMasthead
-        title="能力与基础设施"
-        lead="不外包算力，也不把数据交出去：所有东西跑在自己的一台机器上。"
-      />
+      <!-- 档案封面：编号 + 系统名 + 状态行，照着「内部数据库 / 访问记录」的体裁写，不是营销页头 -->
+      <header class="co-lab-cover">
+        <div class="co-lab-cover-top">
+          <span class="co-lab-code">WB-INFRA-01</span>
+          <span class="co-lab-badge">INTERNAL RECORD</span>
+        </div>
+        <h1 class="co-lab-title">
+          自托管基础设施
+          <span class="co-lab-title-en">SELF-HOSTED INFRASTRUCTURE</span>
+        </h1>
+        <dl class="co-lab-meta">
+          <div><dt>版本</dt><dd>v2026.11</dd></div>
+          <div><dt>更新</dt><dd>2026-11-12</dd></div>
+          <div><dt>保管</dt><dd>木白 woodwhite</dd></div>
+          <div><dt>状态</dt><dd class="is-on">SYSTEM ONLINE</dd></div>
+        </dl>
+      </header>
       <section class="co-sec">
         <CompanySecHead title="自己的机器" index="01" latin="SELF HOSTED" />
         <div class="co-infra">

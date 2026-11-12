@@ -1768,9 +1768,8 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 }
 
 /* 九、四角准星：缓慢呼吸，提示这是一层界面 */
-.co-frame {
-  animation: coPulse 4.5s ease-in-out infinite;
-}
+/* 外框不再整体呼吸：opacity 动画会把 1px 的角标一起做没 */
+.co-frame { animation: none; }
 
 /* 十、右侧进度轨：填充条带一点流动光 */
 .co-rail-track i {
@@ -1842,7 +1841,7 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 @media (prefers-reduced-motion: reduce) {
   .co-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
   .co-badge-dot, .co-h2-idx::before,
-  .co-hero-band, .co-cta, .co-meter-bar i, .co-frame { animation: none !important; }
+  .co-hero-band, .co-cta, .co-meter-bar i { animation: none !important; }
 }
 
 /* 强制开启动效：?motion=on 时忽略系统级「减少动态效果」。
@@ -2036,3 +2035,103 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 
 /* 幽灵数字改成部门代号的同款配色，不抢章节标题 */
 .co-lab .co-h2-ghost { font-weight: 700; letter-spacing: .02em; }
+
+/* ---------- 莱茵生命的「体裁」层：不是配色，是文件体裁 ---------- */
+
+/* 档案封面 */
+.co-lab-cover { padding: 14px 0 30px; }
+.co-lab-cover-top {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 22px;
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.2em;
+}
+.co-lab-code { color: var(--accent); }
+.co-lab-badge {
+  padding: 2px 8px; border: 1px solid var(--co-line-strong);
+  color: var(--text-faint);
+}
+.co-lab-title {
+  margin: 0; display: flex; flex-direction: column; gap: 10px;
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem); font-weight: 650; letter-spacing: -0.02em;
+  color: var(--text-bright); line-height: 1.1;
+}
+.co-lab-title-en {
+  font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 500;
+  letter-spacing: 0.34em; color: var(--text-faint);
+}
+.co-lab-meta {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0;
+  margin: 30px 0 0; border-top: 1px solid var(--co-line-strong);
+}
+.co-lab-meta > div {
+  padding: 12px 16px 0 0; border-right: 1px solid var(--co-line);
+}
+.co-lab-meta > div:last-child { border-right: 0; }
+.co-lab-meta dt {
+  font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px;
+}
+.co-lab-meta dd {
+  margin: 0; font-family: var(--font-mono); font-size: 0.8125rem;
+  color: var(--text-bright); font-variant-numeric: tabular-nums;
+}
+.co-lab-meta dd.is-on { color: var(--accent); }
+@media (max-width: 700px) { .co-lab-meta { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+
+/* 章节头：方括号编号 + 引导线拉到左标 + 部门代号 */
+.co-lab .co-h2-idx {
+  background: none; color: var(--accent);
+  font-size: 0.75rem; letter-spacing: 0.16em;
+}
+.co-lab .co-h2-idx::before { content: "["; margin-right: 4px; color: var(--text-faint); }
+.co-lab .co-h2-idx::after { content: "]"; margin-left: 4px; color: var(--text-faint); }
+.co-lab .co-h2-rule {
+  height: 1px; background: var(--co-line-strong);
+}
+.co-lab .co-h2-lat { letter-spacing: 0.3em; font-size: 0.5625rem; }
+
+/* 参数块改成密集的 label / value 行，带点线引导（档案表格的读法） */
+.co-lab .co-gauge {
+  display: block; border: 0; background: transparent;
+  border-top: 1px solid var(--co-line-strong); margin-top: 26px;
+}
+.co-lab .co-gauge-cell {
+  display: grid; grid-template-columns: 7em minmax(0, 1fr) auto;
+  align-items: baseline; gap: 12px; padding: 11px 0;
+  border-right: 0; border-bottom: 1px solid var(--co-line);
+}
+.co-lab .co-gauge-cell::after { content: none; }
+.co-lab .co-gauge-cell dt {
+  font-size: 0.5625rem; letter-spacing: 0.2em; color: var(--text-faint);
+}
+.co-lab .co-gauge-cell dd { display: flex; align-items: baseline; gap: 6px; }
+.co-lab .co-gauge-v { font-size: 1.125rem; color: var(--text-bright); }
+.co-lab .co-gauge-u { font-size: 0.625rem; letter-spacing: 0.16em; }
+.co-lab .co-gauge-cell p {
+  margin: 0; font-size: 0.8125rem; color: var(--text-secondary);
+  text-align: right; grid-column: 3;
+}
+@media (max-width: 700px) {
+  .co-lab .co-gauge-cell { grid-template-columns: 6em minmax(0,1fr); }
+  .co-lab .co-gauge-cell p { grid-column: 1 / -1; text-align: left; padding-left: 6em; }
+}
+
+/* 定位十字：把页面四角的 L 形准星换成十字（registration marks） */
+.co-lab ~ * .co-frame, .co-page:has(.co-lab) .co-frame {
+  border-color: color-mix(in srgb, var(--text) 0.9%, transparent);
+}
+
+/* 定位十字（registration marks）：页面四角的小十字，取代原来的 L 形准星。
+   开源的莱茵生命复刻包（dsh-rhine-splash）里这一层就叫 "Registration marks"。 */
+.co-page:has(.co-lab) .co-frame {
+  border-color: color-mix(in srgb, var(--text) 12%, transparent);
+  --t: var(--text-bright);
+  background:
+    linear-gradient(var(--t), var(--t)) 12px 18px / 14px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) 18px 12px / 1px 14px no-repeat,
+    linear-gradient(var(--t), var(--t)) calc(100% - 26px) 18px / 14px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) calc(100% - 19px) 12px / 1px 14px no-repeat,
+    linear-gradient(var(--t), var(--t)) 12px calc(100% - 18px) / 14px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) 18px calc(100% - 26px) / 1px 14px no-repeat,
+    linear-gradient(var(--t), var(--t)) calc(100% - 26px) calc(100% - 18px) / 14px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) calc(100% - 19px) calc(100% - 26px) / 1px 14px no-repeat;
+}
