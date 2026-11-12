@@ -1925,7 +1925,7 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
   overflow: hidden; pointer-events: none; z-index: 0;
 }
 .co-h2-ghost {
-  position: absolute; left: 0; bottom: 0;
+  position: absolute; left: 0; top: 0;
   margin: 0; padding: 0;
   font-family: var(--font-mono); font-weight: 700;
   font-size: clamp(56px, 8vw, 120px); line-height: 0.92;
@@ -1936,3 +1936,83 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 }
 .co-h2 > *:not(.co-h2-ghost-wrap) { position: relative; z-index: 1; }
 @media (max-width: 900px) { .co-h2-ghost-wrap { display: none; } }
+
+.co-h2-ghost { color: #ff0000 !important; opacity: 1 !important; }
+
+/* ============================================================
+   莱茵生命（Rhine Lab）试点 —— 只作用于 /stack（.co-lab）
+   冷白底 + 单点青绿，实验室记录式的装置：校准十字、样本编号、行号列、条码。
+   其余页面仍是暖纸白 + 红，方便对比后再决定要不要全站铺。
+   ============================================================ */
+.co-lab {
+  --bg: #f4f6f6;
+  --bg-elevated: #ffffff;
+  --bg-deeper: #eaeeef;
+  --band-warm: #e9eef0;
+  --text: #101719;
+  --text-bright: #06090a;
+  --text-secondary: #4a5457;
+  --text-faint: #7d878a;
+  --border: rgba(10, 26, 28, 0.16);
+  --border-strong: rgba(10, 26, 28, 0.26);
+  --accent: #00b39a;
+  --accent-hover: #009580;
+  --co-line: rgba(10, 26, 28, 0.14);
+  --co-line-strong: rgba(10, 26, 28, 0.24);
+}
+
+/* 章节编号：红斜块 → 青绿方块 + RH- 前缀（样本编号） */
+.co-lab .co-h2-idx { transform: none; background: var(--accent); color: #fff; }
+.co-lab .co-h2-idx::before { background: none; }
+.co-lab .co-h2-idx::after { content: "RH-"; }
+/* 幽灵数字也走样本编号语汇，字号收小一点，避免和编号重复 */
+.co-lab .co-h2-ghost { font-weight: 600; letter-spacing: 0; opacity: .06; }
+
+/* 校准十字：墨色细十字，放在纸面与外框的角上（实验记录纸的做法） */
+.co-lab .co-mast::after,
+.co-lab .co-gauge::after {
+  content: ""; position: absolute; width: 13px; height: 13px; pointer-events: none;
+  background:
+    linear-gradient(var(--accent), var(--accent)) center/13px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) center/1px 13px no-repeat;
+  opacity: .75;
+}
+.co-lab .co-mast::after { left: 14px; top: 14px; }
+.co-lab .co-gauge::after { right: 14px; bottom: 14px; }
+.co-lab .co-gauge { position: relative; }
+
+/* 表格加行号列：01/02/03，像实验记录 */
+.co-lab .co-spec { counter-reset: labrow; }
+.co-lab .co-spec tr { counter-increment: labrow; }
+.co-lab .co-spec th::before {
+  content: counter(labrow, decimal-leading-zero) "  ";
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .1em;
+  color: var(--accent); opacity: .9; margin-right: 6px;
+}
+
+/* 条码条：一条等宽竖纹，放在页头右侧 */
+.co-lab .co-mast { position: relative; }
+.co-lab .co-mast::before {
+  background-image: repeating-linear-gradient(90deg,
+    color-mix(in srgb, var(--text) 26%, transparent) 0 2px, transparent 2px 5px,
+    color-mix(in srgb, var(--text) 14%, transparent) 5px 6px, transparent 6px 11px);
+  background-repeat: no-repeat;
+  background-position: right 22px top 22px;
+  background-size: 92px 20px;
+}
+
+/* 数据条：青绿斜纹 */
+.co-lab .co-meter-bar i {
+  background-color: color-mix(in srgb, var(--accent) 82%, transparent);
+}
+
+/* 节次色带：冷灰，不用暖色 */
+.co-lab .co-sec--band::before { background: var(--band-warm); }
+
+/* 收尾面板仍是深色，但强调色换青绿 */
+.co-lab .co-cta { background: var(--text-bright); }
+.co-lab .co-cta-mail a { border-bottom-color: var(--accent); }
+
+/* 试点页的整页底色也从冷白开始（.co-main 不画底色，底色来自 .co-page） */
+.co-page:has(.co-lab) { background-color: #f4f6f6; }
+.co-page:has(.co-lab) .navbar { background: transparent; }
