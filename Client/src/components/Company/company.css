@@ -1131,3 +1131,234 @@
   .co-mast { padding-inline: 20px; }
   .co-mast::before { border-radius: 14px; }
 }
+
+/* ============================================================
+   鹰角式工业版式（浅色版，2026-11-12 晚，第六轮）
+   不是把页面涂黑——那版已回滚。这次只取鹰角的结构语言，底色仍是浅的：
+     · 近直角与切角，而不是圆角
+     · 1px 细框 + 角上的 L 形标记，而不是阴影
+     · 等宽大写小标签、宽字距（技术界面感）
+     · 灰白页面 + 近白面板，把「纯白刺眼」换成「灰底白面」
+     · 一点红只做强调，其余全是墨与灰
+   同样只作用于公司域；博客不动。
+   ============================================================ */
+.co-page {
+  --bg: #efefec;            /* 页面：灰白，把刺眼的白压下去 */
+  --bg-elevated: #fbfbf9;   /* 面板：近白，坐在灰底上 */
+  --bg-deeper: #e7e7e3;
+  --band-warm: #e9e9e4;
+  --text: #191b1d;
+  --text-bright: #0d0e0f;
+  --text-secondary: #565b61;
+  --text-faint: #83888e;
+  --border: rgba(20, 22, 24, 0.16);
+  --border-strong: rgba(20, 22, 24, 0.26);
+  --accent: #c8202a;        /* 一点红 */
+  --accent-hover: #a5151f;
+  --navbar-bg: rgba(239, 239, 236, 0.9);
+  --co-line: rgba(20, 22, 24, 0.14);
+  --co-line-strong: rgba(20, 22, 24, 0.26);
+  --co-r-card: 0px;
+  --co-r-inner: 0px;
+  color-scheme: light;
+}
+
+/* 首屏：暖色画压到很淡，只当纸张纹理 */
+.co-hero-band { background: var(--bg); border-bottom: 1px solid var(--co-line-strong); }
+.co-hero-band .hero-art { opacity: 0.35; filter: saturate(0.25) contrast(0.95); }
+.co-hero-band::after { display: none; }
+
+/* 纸面与卡片：直角 + 1px 框，全部去掉圆角与阴影 */
+.co-mast::before,
+.co-sec--band::before {
+  background: var(--bg-elevated);
+  border: 1px solid var(--co-line-strong);
+  border-radius: 0;
+}
+.co-svc, .mkt-table, .co-spec, .co-cases, .co-form,
+.co-grid > .co-card, .co-grid > .co-card + .co-card,
+.mkt-compare > div, .mkt-compare > div:first-child,
+.mkt-steps li, .co-metrics {
+  background: var(--bg-elevated);
+  border: 1px solid var(--co-line-strong);
+  border-radius: 0;
+  box-shadow: none;
+}
+.co-metrics { padding: 0; }
+.co-metric { border-right: 1px solid var(--co-line); border-bottom: 0; padding: 26px 26px 24px; }
+
+/* 卡角上的 L 形标记：技术图纸的定位角，只在卡片类元素上出现 */
+.co-svc, .co-spec, .co-cases, .co-form, .co-grid > .co-card { position: relative; }
+.co-svc::before, .co-spec::before, .co-cases::before,
+.co-form::before, .co-grid > .co-card::before {
+  content: ""; position: absolute; top: -1px; left: -1px;
+  width: 10px; height: 10px;
+  border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
+  pointer-events: none;
+}
+
+/* 等宽小标签：鹰角那套技术字距，只用于说明性文字，不用于正文 */
+.co-std-k, .co-aside-k, .co-aside-head, .co-foot-k, .co-field-k,
+.mkt-table th, .co-spec th, .co-mast-item dt, .co-biz-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.co-std-k { color: var(--accent); }
+
+/* 表格：外框 1px，内部只有横向线，没有竖线 */
+.mkt-table { border-collapse: collapse; }
+.mkt-table th { border-bottom: 1px solid var(--co-line-strong); }
+.mkt-table td { border-bottom: 1px solid var(--co-line); }
+.mkt-table td:first-child { color: var(--text-bright); font-weight: 600; }
+
+/* 按钮：直角，主按钮黑底白字，次按钮细框；hover 才上红 */
+.co-btn { border-radius: 0; border-color: var(--border-strong); background: transparent; color: var(--text-bright); }
+.co-btn:hover { border-color: var(--accent); color: var(--accent); }
+.co-btn-solid { background: var(--text-bright); border-color: var(--text-bright); color: #ffffff; }
+.co-btn-solid:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-write { border-radius: 0; background: var(--text-bright); color: #fff; }
+.btn-write:hover { background: var(--accent); }
+
+/* 输入框：直角、灰底、聚焦变红 */
+.co-field input, .co-field textarea {
+  border-radius: 0; background: var(--bg);
+  border-color: var(--co-line-strong); color: var(--text-bright);
+}
+.co-field input:focus-visible, .co-field textarea:focus-visible {
+  outline: 2px solid var(--accent); border-color: var(--accent);
+}
+
+/* 收尾带：浅底面板 + 右上切角 + 一条红竖线，动作仍是下划线 */
+.co-cta {
+  background: var(--text-bright);
+  color: #f7f7f5;
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%);
+}
+.co-cta-title { color: #ffffff; }
+.co-cta .co-note, .co-cta .co-cta-hint, .co-cta-k { color: rgba(255, 255, 255, 0.62); }
+.co-cta-mail a { color: #ffffff; border-bottom: 2px solid var(--accent); text-decoration: none; }
+
+/* FAQ：只留横线，去圆角 */
+.co-faq { border-top: 1px solid var(--co-line-strong); }
+.co-faq-item { border-bottom: 1px solid var(--co-line); }
+
+/* 页脚：比页面深一档的灰，顶部 2px 黑线当封边 */
+.co-page .co-foot { background: var(--bg-deeper); border-top: 2px solid var(--text-bright); }
+.co-foot-copy { color: var(--text-faint); }
+
+/* 徽标与焦点环 */
+.co-badge { border-radius: 0; border-color: var(--co-line-strong); color: var(--text-secondary); }
+.co-badge-dot { border-radius: 0; background: var(--accent); }
+.co-metric-v { color: var(--text-bright); }
+.co-proof-result { color: var(--accent); }
+.co-page :where(a, button, summary, input, textarea):focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 0;
+}
+
+/* ============================================================
+   鹰角式结构件（2026-11-12 晚，第七轮）
+   这一轮不动配色，只上结构：页面 HUD 外框与四角准星、章节编号与拉丁注记、
+   右侧刻度尺、参数三件套、工业斜纹与切角。目的是让页面「有工程感」，
+   而不是换一层颜色。
+   ============================================================ */
+
+/* 一、整页外框 + 四角准星：页面像一块正在被测量的板 */
+.co-page::before {
+  content: ""; position: fixed; inset: 10px; z-index: 90; pointer-events: none;
+  border: 1px solid var(--co-line);
+}
+.co-page::after {
+  content: ""; position: fixed; inset: 6px; z-index: 91; pointer-events: none;
+  --t: var(--text-bright);
+  background:
+    linear-gradient(var(--t), var(--t)) left top / 16px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) left top / 1px 16px no-repeat,
+    linear-gradient(var(--t), var(--t)) right top / 16px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) right top / 1px 16px no-repeat,
+    linear-gradient(var(--t), var(--t)) left bottom / 16px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) left bottom / 1px 16px no-repeat,
+    linear-gradient(var(--t), var(--t)) right bottom / 16px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) right bottom / 1px 16px no-repeat;
+}
+@media (max-width: 900px) { .co-page::before { inset: 6px; } .co-page::after { inset: 4px; } }
+
+/* 二、章节头：编号 + 标题 + 拉丁注记 + 细线 + 刻度尺 */
+.co-h2 { gap: 14px; align-items: baseline; }
+.co-h2-idx {
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.14em;
+  color: var(--accent); align-self: center;
+  padding-right: 12px; border-right: 1px solid var(--co-line-strong);
+}
+.co-h2-lat {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--text-faint); align-self: center;
+}
+.co-h2-ruler {
+  flex: none; width: 84px; height: 9px; align-self: center;
+  background-image: repeating-linear-gradient(90deg, var(--co-line-strong) 0 1px, transparent 1px 7px);
+  opacity: 0.9;
+}
+@media (max-width: 900px) { .co-h2-lat, .co-h2-ruler { display: none; } }
+
+/* 三、参数三件套：数值 / 单位 / 标签，底部一条刻度线 */
+.co-gauge {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 32px 0 0; border: 1px solid var(--co-line-strong); border-radius: 0;
+  background: var(--bg-elevated);
+}
+.co-gauge-cell {
+  padding: 20px 20px 18px; border-right: 1px solid var(--co-line);
+  display: flex; flex-direction: column; gap: 6px; position: relative;
+}
+.co-gauge-cell:last-child { border-right: 0; }
+.co-gauge-cell::after {
+  content: ""; position: absolute; left: 20px; right: 20px; bottom: 0; height: 6px;
+  background-image: repeating-linear-gradient(90deg, var(--co-line-strong) 0 1px, transparent 1px 6px);
+}
+.co-gauge-cell dt {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--text-faint);
+}
+.co-gauge-cell dd { display: flex; align-items: baseline; gap: 6px; margin: 0; }
+.co-gauge-v {
+  font-family: var(--font-mono); font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+  font-weight: 600; letter-spacing: -0.03em; color: var(--text-bright);
+  font-variant-numeric: tabular-nums; line-height: 1;
+}
+.co-gauge-u {
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em;
+  color: var(--text-faint); text-transform: uppercase;
+}
+.co-gauge-cell p { margin: 0; font-size: 0.8125rem; line-height: 1.5; color: var(--text-secondary); }
+@media (max-width: 900px) { .co-gauge { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* 四、收尾带：工业斜纹 + 右上切角（斜纹是结构，不是装饰渐变） */
+.co-cta {
+  background-image: repeating-linear-gradient(45deg,
+    rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 8px);
+}
+
+/* 五、数据与数字：全站等宽，便于对齐 */
+.co-proof-v, .co-case-result, .co-std p, .mkt-price, .co-gauge-v { font-variant-numeric: tabular-nums; }
+
+/* 页面外框改成 outline：fixed 伪元素会被 .co-page 的 overflow-x:clip 裁掉，
+   outline 画在元素自身、不受裁剪影响，负偏移把框推进页内 10px。 */
+.co-page { outline: 1px solid var(--co-line); outline-offset: -10px; }
+.co-page::before, .co-page::after { content: none; }
+
+/* 角标记改挂在两个可用的伪元素上：开场带上左角 + 交替带右下角，各两个 L */
+.co-mast::after {
+  content: ""; position: absolute; left: 8px; top: 8px; width: 14px; height: 14px;
+  border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
+  pointer-events: none;
+}
+.co-sec--band::after {
+  content: ""; position: absolute; right: 8px; bottom: 8px; width: 14px; height: 14px;
+  border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent);
+  pointer-events: none;
+}
+

@@ -6,19 +6,20 @@
         lead="不外包算力，也不把数据交出去：所有东西跑在自己的一台机器上。"
       />
       <section class="co-sec">
+        <CompanySecHead title="自己的机器" index="01" latin="SELF HOSTED" />
         <div class="co-infra">
           <p class="co-infra-lead">自己的机器，自己的链路：一台旧服务器上自托管模型、检索、CI 与知识库，7×24 在跑。不需要向第三方买算力，也不把数据交出去。</p>
-          <dl class="co-infra-facts">
-            <div><dt>算力</dt><dd>24 核 / 62G / NVMe+1.8T，本地推理三实例</dd></div>
-            <div><dt>检索</dt><dd>pgvector + 重排，知识库按项目分目录</dd></div>
-            <div><dt>交付链</dt><dd>自建 Git 与 CI，systemd 定时巡检与同步</dd></div>
-            <div><dt>暴露面</dt><dd>零入站端口，对外只走出站隧道</dd></div>
+          <dl class="co-gauge">
+            <div class="co-gauge-cell"><dt>核</dt><dd><span class="co-gauge-v">24</span><span class="co-gauge-u">Xeon</span></dd><p>本地推理三实例</p></div>
+            <div class="co-gauge-cell"><dt>内存</dt><dd><span class="co-gauge-v">62</span><span class="co-gauge-u">G</span></dd><p>三实例并发不换页</p></div>
+            <div class="co-gauge-cell"><dt>存储</dt><dd><span class="co-gauge-v">1.8</span><span class="co-gauge-u">T</span></dd><p>NVMe 系统盘 + 数据盘</p></div>
+            <div class="co-gauge-cell"><dt>入站端口</dt><dd><span class="co-gauge-v">0</span><span class="co-gauge-u">—</span></dd><p>对外只走出站隧道</p></div>
           </dl>
         </div>
       </section>
 
       <section class="co-sec co-sec--band">
-        <CompanySecHead title="在跑的东西" />
+        <CompanySecHead title="在跑的东西" index="02" latin="WHAT RUNS" />
         <table class="co-spec">
           <tbody>
             <tr><th>算力</th><td>24 核 Xeon · 62G 内存 · NVMe + 1.8T，旧服务器，7×24 连续运行 95 天未重启</td></tr>
@@ -32,7 +33,7 @@
       </section>
 
       <section class="co-sec">
-        <CompanySecHead title="这套东西能带来什么" />
+        <CompanySecHead title="这套东西能带来什么" index="03" latin="WHAT IT BUYS" />
         <ul class="co-proof">
           <li><span class="co-proof-k">交付速度</span><span class="co-proof-v">依赖本地模型与自建 CI，不用等第三方额度，改动当天能上线。</span></li>
           <li><span class="co-proof-k">数据边界</span><span class="co-proof-v">模型与检索都在自己机器上，敏感数据不出内网。</span></li>
