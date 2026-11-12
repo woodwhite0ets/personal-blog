@@ -1099,3 +1099,35 @@
 
 /* 表格里的行线与表头在一张纸上要更清楚一点 */
 .co-spec th { color: color-mix(in srgb, var(--text) 62%, transparent); }
+
+/* ============================================================
+   色带不再通栏（2026-11-12 晚，第四轮）
+   原来用 100vw 拉满两侧做「横向打通」，在纸色底上就是三条横杠，
+   长页里读起来像被切开。改成收进栅格的纸面：左右与正文同边距，
+   圆角 20px，一页里像几张压着的纸，而不是几条色条。
+   ============================================================ */
+.co-sec--band { padding-block: 56px; margin-top: 56px; }
+.co-sec--band::before {
+  left: 0; width: auto; transform: none; inset: 0;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
+  border-block: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
+}
+/* 纸面里的内容要对齐回正文栅格，靠 section 自身的内距 */
+.co-sec--band { padding-inline: clamp(20px, 3vw, 40px); }
+
+/* 开场色带同样收进来，和下面的纸面同一套圆角 */
+.co-mast::before {
+  left: 0; width: auto; transform: none; inset: 0;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
+}
+.co-mast { padding-inline: clamp(20px, 3vw, 40px); }
+
+@media (max-width: 900px) {
+  .co-sec--band { padding-block: 40px; padding-inline: 20px; margin-top: 40px; }
+  .co-sec--band::before { border-radius: 14px; }
+  .co-mast { padding-inline: 20px; }
+  .co-mast::before { border-radius: 14px; }
+}
