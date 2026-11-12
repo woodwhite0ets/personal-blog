@@ -32,6 +32,13 @@
   --t-signal-hover: #0f9f93;
   --t-signal-ink: #076b66;
   --t-ok: #0b8f84;
+  /* 结构色（第二强调）：只给「编号 / 分类 / 单位」这类骨架信息，
+     与信号青（可点的行动、在线状态）分工，不混用 */
+  --t-indigo: #26489b;
+  --t-indigo-ink: #1d3d8a;
+  --t-indigo-on-dark: #9fb4f7;
+  --t-indigo-tint: rgba(38, 72, 155, 0.45);
+  --t-on-dark: #f3f4f4;
   --t-danger: #c62431;
   --t-grid: rgba(12, 14, 16, 0.045);
   --t-hatch: repeating-linear-gradient(135deg, rgba(12, 14, 16, 0.055) 0 1px, transparent 1px 7px);
@@ -219,8 +226,8 @@
   align-items: center;
   height: 22px;
   padding: 0 14px 0 10px;
-  background: var(--t-signal);
-  color: var(--t-ink);
+  background: var(--t-indigo);
+  color: var(--t-on-dark);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
@@ -237,7 +244,7 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--t-faint);
+  color: var(--t-indigo-ink);
 }
 .co-h2-lat::before { content: "// "; color: var(--t-line-2); }
 .co-h2-rule { flex: 1; height: 1px; background: var(--t-line); }
@@ -533,7 +540,7 @@
   font-weight: 700;
   line-height: 0.9;
   letter-spacing: -0.05em;
-  color: var(--t-signal);
+  color: var(--t-indigo-on-dark);
   font-variant-numeric: tabular-nums;
 }
 .co-board-more-v i {
@@ -683,6 +690,7 @@
     repeating-linear-gradient(to right, rgba(235, 237, 238, 0.28) 0 1px, transparent 1px 40px);
 }
 .co-sec.lab-dark .co-sec-lead { color: rgba(235, 237, 238, 0.66); }
+.co-sec.lab-dark .co-h2-idx { background: var(--t-indigo-on-dark); color: var(--t-ink); }
 
 .co-standards {
   display: grid;
@@ -722,7 +730,7 @@
   background: transparent;
   border-color: rgba(235, 237, 238, 0.26);
 }
-.co-sec.lab-dark .co-std-k { color: var(--t-signal); }
+.co-sec.lab-dark .co-std-k { color: var(--t-indigo-on-dark); }
 .co-sec.lab-dark .co-std-v { color: #f6f7f7; }
 .co-sec.lab-dark .co-std p { color: rgba(235, 237, 238, 0.72); }
 
@@ -832,10 +840,12 @@
 .co-lib-body { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
 .co-lib-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .co-lib-kind {
+  padding: 1px 6px 0;
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--t-muted);
+  color: var(--t-indigo-ink);
+  border: 1px solid var(--t-indigo-tint);
 }
 .co-lib-period { font-size: 11px; letter-spacing: 0.08em; color: var(--t-faint); }
 .co-lib-name {
@@ -935,7 +945,7 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.04em;
-  color: var(--t-line-2);
+  color: var(--t-indigo-tint);
   font-variant-numeric: tabular-nums;
 }
 .mkt-steps > li > span {
@@ -1235,7 +1245,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.1em;
-  color: var(--t-signal-ink);
+  color: var(--t-indigo-ink);
 }
 .co-proj-p { margin: 0; font-size: 0.9375rem; line-height: 1.8; color: var(--t-muted); }
 .co-proj-note { margin: 12px 0 0; font-size: 0.75rem; color: var(--t-faint); }
@@ -1339,7 +1349,7 @@
   color: var(--t-ink);
   font-variant-numeric: tabular-nums;
 }
-.co-gauge-u { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--t-signal-ink); }
+.co-gauge-u { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--t-indigo-ink); }
 .co-gauge-cell p { margin: 4px 0 0; font-size: 0.75rem; line-height: 1.55; color: var(--t-muted); }
 
 .co-meter { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--t-line-2); }
