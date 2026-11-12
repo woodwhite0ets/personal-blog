@@ -6,8 +6,11 @@
         <p class="co-note">{{ note }}</p>
       </div>
       <div class="co-cta-contact">
-        <p class="co-cta-k">写邮件</p>
-        <p class="co-cta-mail"><a href="mailto:1903784785@qq.com">1903784785@qq.com</a></p>
+        <p class="co-cta-k">下一步</p>
+        <div class="co-cta-actions">
+          <router-link class="co-btn co-btn-solid" to="/contact#brief">填需求单</router-link>
+          <a class="co-cta-mail" href="mailto:1903784785@qq.com">或发邮件 1903784785@qq.com</a>
+        </div>
         <p class="co-cta-hint">{{ hint }}</p>
       </div>
     </div>

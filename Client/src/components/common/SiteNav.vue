@@ -17,7 +17,7 @@
       <div class="nav-actions">
         <slot name="search" />
         <!-- 公司站：右端只有一个主行动（跟博客「新文章」同一个按钮配方） -->
-        <a v-if="isCompany" class="btn-write" href="mailto:1903784785@qq.com">项目咨询</a>
+        <router-link v-if="isCompany" class="btn-write" to="/contact">项目咨询</router-link>
         <template v-else>
         <router-link v-if="!isLoggedIn" to="/login" class="btn-login">登录</router-link>
         <template v-else>

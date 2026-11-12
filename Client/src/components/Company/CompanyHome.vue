@@ -17,7 +17,7 @@
           <h1 class="co-title">给已经在跑的业务加 AI 能力</h1>
           <p class="co-lead">知识库检索、模型接入、本地推理与带后台的业务系统。从需求做到上线后的巡检，签合同，按阶段验收。</p>
           <div class="co-actions">
-            <a class="co-btn co-btn-solid" href="mailto:1903784785@qq.com">询价</a>
+            <router-link class="co-btn co-btn-solid" to="/contact#brief">询价</router-link>
             <router-link class="co-link-arrow" to="/#pricing">看价格与交期</router-link>
             <router-link class="co-link-arrow" to="/work">看案例</router-link>
           </div>
@@ -197,7 +197,7 @@
         <p class="co-note">{{ pricingNote }}</p>
 
         <div class="co-actions">
-          <a class="co-btn co-btn-solid" href="mailto:1903784785@qq.com">发需求单</a>
+          <router-link class="co-btn co-btn-solid" to="/contact#brief">发需求单</router-link>
           <router-link class="co-link-arrow" to="/contact">先聊一次</router-link>
         </div>
 

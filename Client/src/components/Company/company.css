@@ -1110,17 +1110,18 @@
   text-transform: uppercase;
   color: var(--t-faint);
 }
-.co-cta-mail { margin: 0 0 8px; }
-.co-cta-mail a {
+.co-cta-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0 0 10px; }
+.co-cta-mail { font-size: 0.8125rem; }
+.co-cta-mail {
   font-family: var(--font-mono);
-  font-size: 1rem;
   letter-spacing: -0.01em;
-  color: var(--t-ink);
+  color: var(--t-ink-2);
   text-decoration: none;
   border-bottom: 1px solid var(--t-signal);
   padding-bottom: 2px;
 }
-.co-cta-mail a:hover { color: var(--t-signal-ink); }
+.co-cta-mail:hover { color: var(--t-signal-ink); }
+.co-cta-mail:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 2px; }
 .co-cta-hint { margin: 0; font-size: 0.8125rem; line-height: 1.6; color: var(--t-muted); }
 
 .co-sideline {
