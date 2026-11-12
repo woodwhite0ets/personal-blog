@@ -6,8 +6,8 @@
       <div class="hero-in co-hero-in">
         <div class="co-hero-main">
           <p class="co-badge"><span class="co-badge-dot" aria-hidden="true"></span>厦门翔安 · 可开票 · 一天内回信</p>
-          <h1 class="co-title">把 AI 接进你的业务，<br /><span class="co-title-key">交付到稳定运行</span></h1>
-          <p class="co-lead">从需求到上线后的巡检，都由同一个人负责。签合同，按阶段验收，可以开票。</p>
+          <h1 class="co-title">给已经在跑的业务加 AI 能力，<br /><span class="co-title-key">从需求做到上线后的巡检</span></h1>
+          <p class="co-lead">签合同，按阶段验收，可以开票。需求没想清楚也可以先聊。</p>
           <div class="co-actions">
             <router-link class="co-btn co-btn-solid" to="/work">看 {{ caseCount }} 个案例</router-link>
             <a class="co-btn" href="mailto:1903784785@qq.com">项目咨询</a>
@@ -134,7 +134,7 @@
             </router-link>
           </li>
         </ul>
-        <p class="co-note">共 {{ caseCount }} 个项目在生产环境运行。每个都写了问题、做法和结果。<router-link to="/work" class="co-note-link">全部案例</router-link></p>
+        <p class="co-note">{{ caseCount }} 个项目在生产环境运行，每个都写了问题、做法和结果。<router-link to="/work" class="co-note-link">全部案例</router-link></p>
       </section>
 
       <!-- 03 为什么这样交付 -->
@@ -142,7 +142,7 @@
         <CompanySecHead title="为什么这样交付" />
         <div class="mkt-compare">
           <div class="paper-field"><h3>常见做法</h3><ul><li>先买一堆 SaaS，接口对不上再改</li><li>模型按次计费，用量一涨成本失控</li><li>数据交给第三方 API</li><li>交付一个演示，上线还要再找人</li></ul></div>
-          <div class="paper-field"><h3>我的做法</h3><ul><li>先跑通最短链路，再逐步扩展</li><li>自建推理，硬件成本固定</li><li>数据保留在自有环境</li><li>交付后可自主维护，含监控与运行手册</li></ul></div>
+          <div class="paper-field"><h3>我的做法</h3><ul><li>先跑通最短那条链路，再往上加</li><li>自建推理，硬件成本固定，没有按次账单</li><li>数据留在客户自己的机器上</li><li>监控配置和运行手册随项目一起交</li></ul></div>
         </div>
       </section>
 
@@ -191,19 +191,19 @@
         <div class="co-faq">
           <details class="co-faq-item" open>
             <summary>报价怎么算？</summary>
-            <p>按范围拆阶段算。聊完给具体数字，写进合同；不做「先低价试水再加价」那套。档位见 <router-link to="/#pricing" class="co-faq-link">合作方式</router-link>。</p>
+            <p>按范围拆成阶段算，聊完给具体数字，写进合同。档位见 <router-link to="/#pricing" class="co-faq-link">合作方式</router-link>。</p>
           </details>
           <details class="co-faq-item">
             <summary>我的数据会不会外传？</summary>
-            <p>默认留在你指定的机器上。确实需要接外部模型接口时，会提前写清哪一段数据出网、出到哪家；<router-link to="/stack" class="co-faq-link">能力与基础设施</router-link>里写了数据边界。</p>
+            <p>默认留在你指定的机器上。需要接外部模型接口时，会提前写清哪一段数据出网、出到哪家。<router-link to="/stack" class="co-faq-link">能力与基础设施</router-link>里写了数据边界。</p>
           </details>
           <details class="co-faq-item">
             <summary>交付后我自己能维护吗？</summary>
-            <p>能。代码、部署脚本和运行手册一起移交，交付后两周内答疑；之后按次或按月都行。验收方式见 <router-link to="/#standard" class="co-faq-link">三项交付标准</router-link>。</p>
+            <p>能。代码、部署脚本和运行手册一起移交，交付后两周内答疑，之后按次或按月都行。验收方式见 <router-link to="/#standard" class="co-faq-link">三项交付标准</router-link>。</p>
           </details>
           <details class="co-faq-item">
             <summary>多快能开始？</summary>
-            <p>一般一周内能排上；着急的按次诊断通常一两天内给结论。先聊一次判断值不值得做，不收费。流程见 <router-link to="/#process" class="co-faq-link">怎么开始</router-link>。</p>
+            <p>一般一周内能排上，着急的按次诊断通常一两天给结论。先聊一次不收费，聊完判断值不值得做。流程见 <router-link to="/#process" class="co-faq-link">怎么开始</router-link>。</p>
           </details>
           <details class="co-faq-item">
             <summary>初创版官网和上面的定制项目是一回事吗？</summary>
@@ -220,14 +220,14 @@
       <section class="co-cta paper-field">
         <div class="co-cta-in">
           <div class="co-cta-copy">
-            <h2 class="co-cta-title">把你的想法说清楚，剩下的我来落地</h2>
-            <p class="co-note">签合同 · 可开票 · 按阶段验收 · 数据可留在自己机器上</p>
+            <h2 class="co-cta-title">说说你在做什么，我给方案和报价</h2>
+            <p class="co-note">签合同，可开票，按阶段验收。数据可以留在你自己的机器上。</p>
           </div>
           <!-- 联系方式直接摆出来，不做成按钮 -->
           <div class="co-cta-contact">
             <p class="co-cta-k">写邮件</p>
             <p class="co-cta-mail"><a href="mailto:1903784785@qq.com">1903784785@qq.com</a></p>
-            <p class="co-cta-hint">邮件里写清背景、目标和时间预期就行，一般一天内回。</p>
+            <p class="co-cta-hint">写清背景、目标和时间预期就行，一般一天内回。</p>
           </div>
         </div>
       </section>

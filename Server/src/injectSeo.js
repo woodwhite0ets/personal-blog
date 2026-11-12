@@ -83,7 +83,7 @@ const COMPANY_JSON_LD = {
   name: COMPANY_NAME,
   alternateName: 'woodwhite',
   url: COMPANY_URL,
-  description: '一个人负责的 AI 应用交付：需求、数据、模型、部署与巡检，交付代码、部署脚本、监控与运行手册。',
+  description: '一个人负责的 AI 应用交付：知识库检索、模型接入、本地推理、带后台的业务系统，从需求做到上线后的巡检。',
   address: {
     '@type': 'PostalAddress',
     addressRegion: '福建省',
