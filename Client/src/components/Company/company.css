@@ -1667,3 +1667,15 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
   font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.12em;
   color: #fff; background: var(--accent); transform: skewX(-12deg);
 }
+
+/* 顶栏透明要真的「压在」首屏上：
+   之前导航是 sticky，首屏从导航下方开始，透明后看到的是同一片页面底色，
+   所以看起来和实底没区别。把首屏上提要一个导航高度，网格底纹才会透到导航底下。 */
+.co-page { --co-navh: 68px; }
+.co-hero-band { margin-top: calc(-1 * var(--co-navh)); padding-top: var(--co-navh); }
+.co-hero-in { padding-top: calc(var(--co-navh) + 28px); }
+
+@media (max-width: 900px) {
+  .co-page { --co-navh: 60px; }
+  .co-hero-in { padding-top: calc(var(--co-navh) + 20px); }
+}
