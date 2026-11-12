@@ -993,3 +993,267 @@
   .mkt-table td { padding: 12px 0; }
   .co-faq-item summary { padding: 16px 26px 15px 0; }
 }
+
+/* ============================================================
+   /business 试点：editorial-report（印刷年报方向）
+   ------------------------------------------------------------
+   方向由 design-taste-frontend 的 draw.mjs 发出：42% 竖轴 + 无缝隙色块拼版
+   + 整幅色块页 + 报表式对比表。这一页刻意不跟随全站的霜白纸底与赤陶：
+   那组配色正好是 house rules 点名的 assistant palette。
+
+   三处偏离，理由：
+   1) 标题字体不引 CJK webfont（中文包体几 MB、境内加载不稳），
+      拉丁走 Literata，中文回落系统衬线。
+   2) 底色用中性灰白 #f7f7f7，不用方向里更暖的底色。
+   3) 拼版里放的是真实数字（5 个项目、95 天、24/62、1 个人），不画假仪表盘。
+   ============================================================ */
+.co-edit {
+  --e-ground: #f7f7f7;
+  --e-ink: #0d2a1c;
+  --e-muted: #5c6a62;
+  --e-accent: #f6e016;
+  --e-field: #e8e9e4;
+  --e-serif: "Literata Variable", "Literata", "Songti SC", "Source Han Serif SC",
+             "Noto Serif CJK SC", "SimSun", serif;
+  --e-sans: var(--font-sans);
+  --e-pad: clamp(20px, 4vw, 40px);
+  background: var(--e-ground);
+  color: var(--e-ink);
+  padding-bottom: 0;
+}
+.co-page:has(.co-edit) { background: var(--e-ground); }
+.co-page:has(.co-edit) .navbar { background: var(--e-ground); border-bottom: 0; }
+
+/* ---------- 报头 ---------- */
+.e-mast {
+  display: grid; grid-template-columns: 42fr 58fr; column-gap: var(--e-pad);
+  padding: 24px var(--e-pad) clamp(48px, 7vw, 96px);
+}
+.e-mosaic {
+  grid-column: 1 / -1;
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px;
+  margin-bottom: clamp(32px, 5vw, 64px);
+}
+.e-tile {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
+  min-height: clamp(160px, 26svh, 260px); padding: 18px 20px;
+}
+.e-tile:nth-child(1) { grid-column: span 2; }
+.e-tile:nth-child(2) { grid-column: span 1; }
+.e-tile:nth-child(3) { grid-column: span 2; }
+.e-tile:nth-child(4) { grid-column: span 1; }
+.e-tile--ink { background: var(--e-ink); color: #f4f4f0; }
+.e-tile--field { background: var(--e-field); color: var(--e-ink); }
+.e-tile--accent { background: var(--e-accent); color: var(--e-ink); }
+.e-fig {
+  font-family: var(--e-serif); font-weight: 500;
+  font-size: clamp(2.25rem, 5.4vw, 4.75rem); line-height: 0.95; letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.e-cap { font-size: 0.875rem; line-height: 1.45; max-width: 17ch; }
+
+.e-title {
+  grid-column: 2; margin: 0;
+  font-family: var(--e-serif); font-weight: 500;
+  font-size: clamp(2.5rem, 7.4vw, 6.5rem); line-height: 1.02; letter-spacing: -0.03em;
+}
+.e-stand {
+  grid-column: 2; margin: 24px 0 0; max-width: 32ch;
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.3125rem); line-height: 1.6;
+}
+
+/* ---------- 长页：标题挂在轴上，正文挂在右边 ---------- */
+.e-sec {
+  display: grid; grid-template-columns: 42fr 58fr; column-gap: var(--e-pad);
+  padding: clamp(56px, 8vw, 104px) var(--e-pad);
+}
+.e-sec-h {
+  grid-column: 1; margin: 0; text-align: right;
+  font-family: var(--e-serif); font-weight: 500;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem); line-height: 1.15; letter-spacing: -0.02em;
+}
+.e-sec-body { grid-column: 2; min-width: 0; }
+
+/* ---------- 报表式对比（表格允许有线） ---------- */
+.e-table { width: 100%; border-collapse: collapse; font-size: clamp(1rem, 1.1vw, 1.125rem); }
+.e-table th, .e-table td { text-align: left; vertical-align: top; padding: 18px 16px 18px 0; }
+.e-table thead th {
+  font-family: var(--e-serif); font-weight: 500;
+  font-size: clamp(1.375rem, 2.4vw, 2.125rem); line-height: 1.1; letter-spacing: -0.02em;
+}
+.e-table thead th:first-child { width: 22%; }
+.e-price { display: block; margin-top: 6px; font-family: var(--e-sans); font-size: 0.9375rem; color: var(--e-muted); }
+.e-table tbody td:first-child { color: var(--e-muted); width: 22%; }
+.e-table tbody tr:nth-child(odd) { background: color-mix(in srgb, var(--e-field) 55%, transparent); }
+.e-table .is-primary { background: var(--e-accent); padding-inline: 16px; }
+.e-sr {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.e-linkline { margin: 28px 0 0; }
+.e-link {
+  font-size: 1.0625rem; color: var(--e-ink);
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px;
+}
+
+/* ---------- 整幅色块页 ---------- */
+.e-band { background: var(--e-ink); color: #f4f4f0; }
+.e-band-in {
+  display: grid; grid-template-columns: 42fr 58fr; column-gap: var(--e-pad);
+  padding: clamp(72px, 11vw, 140px) var(--e-pad);
+}
+.e-band-h {
+  grid-column: 1; margin: 0; text-align: right;
+  font-family: var(--e-serif); font-weight: 500;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem); line-height: 1.15;
+}
+.e-band-q {
+  grid-column: 2; margin: 0; max-width: 30ch;
+  font-family: var(--e-serif); font-size: clamp(1.375rem, 2.5vw, 2rem); line-height: 1.35;
+}
+
+/* ---------- 流程：不编号，靠位置和字号分层 ---------- */
+.e-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 28px; }
+.e-step h3 {
+  margin: 0 0 8px; font-family: var(--e-serif); font-weight: 500;
+  font-size: 1.375rem; line-height: 1.2;
+}
+.e-step p { margin: 0; font-size: 1rem; line-height: 1.6; color: var(--e-muted); }
+
+/* ---------- 收尾：一整幅强调色 ---------- */
+.e-cta { background: var(--e-accent); color: var(--e-ink); }
+.e-cta-in { padding: clamp(72px, 10vw, 128px) var(--e-pad); max-width: 30ch; margin-left: 42%; }
+.e-cta-h {
+  margin: 0; font-family: var(--e-serif); font-weight: 500;
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem); line-height: 1.25; letter-spacing: -0.02em;
+}
+.e-cta-p { margin: 20px 0 0; font-size: 1rem; line-height: 1.6; max-width: 34ch; }
+.e-cta-go {
+  color: inherit; text-decoration: underline;
+  text-decoration-thickness: 4px; text-underline-offset: 6px;
+}
+
+/* ---------- 窄屏：竖轴收成一列，拼版改两列 ---------- */
+@media (max-width: 860px) {
+  .e-mast, .e-sec, .e-band-in { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
+  .e-sec-h, .e-band-h, .e-title, .e-stand { grid-column: 1; text-align: left; }
+  .e-sec-body, .e-band-q { grid-column: 1; }
+  .e-mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .e-tile:nth-child(n) { grid-column: span 1; min-height: 150px; }
+  .e-tile:nth-child(1) { grid-column: span 2; }
+  .e-steps { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .e-cta-in { margin-left: 0; max-width: none; }
+  .e-table { font-size: 0.9375rem; }
+  .e-table thead th { font-size: 1.25rem; }
+  .e-table thead th:first-child, .e-table tbody td:first-child { display: none; }
+}
+
+/* ---------- 入场：只有位移和淡入，尊重 reduced-motion ---------- */
+@keyframes e-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.e-mosaic .e-tile, .e-title, .e-stand { animation: e-rise 0.7s cubic-bezier(.16, 1, .3, 1) both; }
+.e-mosaic .e-tile:nth-child(2) { animation-delay: .06s; }
+.e-mosaic .e-tile:nth-child(3) { animation-delay: .12s; }
+.e-mosaic .e-tile:nth-child(4) { animation-delay: .18s; }
+.e-title { animation-delay: .22s; }
+.e-stand { animation-delay: .3s; }
+@media (prefers-reduced-motion: reduce) {
+  .e-mosaic .e-tile, .e-title, .e-stand { animation: none; }
+}
+
+/* ---------- /business 试点：按 inspect.mjs 的第一轮 FAIL 修 ---------- */
+
+/* 气团（radial-gradient）在报表页上属于装饰，去掉 */
+.co-page:has(.co-edit) .page-wash { display: none; }
+
+/* 页脚在这个页面改成同一套排版：不用等宽字，列标题回到句子式、字号不低于 13px */
+.co-page:has(.co-edit) .co-foot { border-top: 0; background: #f0f0ec; }
+.co-page:has(.co-edit) .co-foot-k {
+  font-family: var(--e-sans); font-size: 0.8125rem; letter-spacing: 0;
+}
+.co-page:has(.co-edit) .co-foot-copy { font-size: 0.8125rem; }
+
+/* 报头：标题先出现，拼版在标题下面通铺；正文不小于 18px */
+.e-mast { grid-template-columns: 42fr 58fr; padding-top: clamp(32px, 5vw, 64px); }
+.e-title { grid-column: 1 / -1; }
+.e-stand { grid-column: 2; margin-top: 20px; font-size: clamp(1.125rem, 1.02rem + 0.35vw, 1.375rem); }
+.e-mosaic { margin: 44px 0 0; }
+
+/* 色块页：正文列里放一句判断 + 一块真实的系统近况（界面片段，标了 data-ui） */
+.e-band-body { grid-column: 2; min-width: 0; }
+.e-band-q { max-width: 30ch; }
+.e-ui {
+  margin: 36px 0 0; padding: 0; max-width: 34rem;
+  border: 1px solid rgba(244, 244, 240, 0.22); border-radius: 8px;
+  background: rgba(244, 244, 240, 0.06);
+}
+.e-ui-head {
+  margin: 0; padding: 14px 18px; font-size: 0.875rem;
+  color: #cfd6cf; border-bottom: 1px solid rgba(244, 244, 240, 0.16);
+}
+.e-ui div { display: flex; gap: 18px; padding: 11px 18px; border-bottom: 1px solid rgba(244, 244, 240, 0.1); }
+.e-ui div:last-child { border-bottom: 0; }
+.e-ui dt { flex: none; width: 6em; margin: 0; font-size: 0.875rem; color: #a9b4ad; }
+.e-ui dd { margin: 0; font-size: 0.9375rem; line-height: 1.5; color: #f4f4f0; font-variant-numeric: tabular-nums; }
+
+/* 收尾：整幅强调色，版心与上面同一套栅格，左右边距相等 */
+.e-cta-in {
+  display: grid; grid-template-columns: 42fr 58fr; column-gap: var(--e-pad);
+  margin: 0; max-width: none; padding: clamp(64px, 9vw, 112px) var(--e-pad);
+}
+.e-cta-h { grid-column: 2; }
+.e-cta-p { grid-column: 2; max-width: 34ch; }
+
+/* 每节都有入场，不只是首屏 */
+@supports (animation-timeline: view()) {
+  .e-sec, .e-band, .e-cta { animation: coRise linear both; animation-timeline: view(); animation-range: entry 4% entry 30%; }
+}
+
+@media (max-width: 860px) {
+  .e-band-body, .e-cta-h, .e-cta-p { grid-column: 1; }
+  .e-cta-in { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* 界面片段（data-ui）：两块在浅底、两块在墨底，各自一套字色 */
+.e-ui--light {
+  margin: 32px 0 0; max-width: 34rem;
+  border: 1px solid color-mix(in srgb, var(--e-ink) 16%, transparent);
+  border-radius: 8px; background: #fff;
+}
+.e-ui--light .e-ui-head {
+  color: var(--e-muted); border-bottom: 1px solid color-mix(in srgb, var(--e-ink) 12%, transparent);
+}
+.e-ui--light div { border-bottom: 1px solid color-mix(in srgb, var(--e-ink) 8%, transparent); }
+.e-ui--light dt { color: var(--e-muted); }
+.e-ui--light dd { color: var(--e-ink); }
+.e-band-body .e-ui + .e-ui { margin-top: 14px; }
+
+/* 窄屏：拼版里的说明跟在数字后面同一行，避免小字压在下一个标题上 */
+@media (max-width: 860px) {
+  .e-tile { flex-direction: row; align-items: baseline; justify-content: flex-start; gap: 10px; min-height: 0; padding: 14px 16px; }
+  .e-tile:nth-child(1) { grid-column: span 2; }
+  .e-cap { max-width: none; }
+  .e-fig { font-size: 2rem; }
+}
+
+/* 对比度与边距：两处不达 4.5:1 的文字调深；页面左右边距与导航对齐 */
+.e-price { color: #46544c; }
+.co-page:has(.co-edit) .co-foot-copy { color: #4f5c55; }
+.e-table th:last-child, .e-table td:last-child { padding-right: 0; }
+.e-sec, .e-mast, .e-band-in, .e-cta-in { padding-inline: clamp(20px, 4vw, 56px); }
+
+/* 每节内部也给入场：表格行与步骤依次落位 */
+@keyframes e-fade { from { opacity: 0; } to { opacity: 1; } }
+@supports (animation-timeline: view()) {
+  .e-table tbody tr, .e-step { animation: e-fade linear both; animation-timeline: view(); animation-range: entry 6% entry 26%; }
+}
+
+/* 片段改成 div 包 dl（dl 里不能直接放 p），并让内容吃到右边界 */
+.e-ui { max-width: none; }
+.e-ui dl { margin: 0; }
+.e-ui dd { max-width: 44ch; }
+.e-band-q { max-width: 34ch; }
+.e-note {
+  margin: 24px 0 0; max-width: 46ch;
+  font-size: 0.9375rem; line-height: 1.6; color: #a9b4ad;
+}
+.e-note-link { color: #f4f4f0; text-decoration-color: rgba(244,244,240,.5); text-underline-offset: 4px; }
