@@ -34,10 +34,15 @@ export const ROUTE_META = {
     description: '按项目或按月合作，签合同、可开票、按阶段验收。邮箱 1903784785@qq.com，微信 Woodwhite-0827。',
     canonical: `${SITE.company}/contact`,
   },
-  '/startup': {
+  '/business': {
+    title: '业务 — 木白 woodwhite',
+    description: '两条业务线：定制交付（AI 应用与系统，3 万起，按范围结算）与初创版官网（699 起，按档固定交期）。范围、计价与售后分开写清，不混着报。',
+    canonical: `${SITE.company}/business`,
+  },
+  '/business/startup': {
     title: '初创版官网 — 木白 woodwhite',
     description: '给刚注册的公司的第一版官网：把你在做什么讲清楚，范围与交期固定，域名、托管与代码都在客户名下。三档，5–10 个工作日交付。',
-    canonical: `${SITE.company}/startup`,
+    canonical: `${SITE.company}/business/startup`,
   },
   '/blog': {
     title: '木白 woodwhite · 博客',

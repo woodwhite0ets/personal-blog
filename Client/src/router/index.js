@@ -69,9 +69,19 @@ const routes = [
     component: () => import('../components/Company/CompanyStack.vue'),
   },
   {
-    path: '/startup',
+    path: '/business',
+    name: 'CompanyBusiness',
+    component: () => import('../components/Company/CompanyBusiness.vue'),
+  },
+  {
+    path: '/business/startup',
     name: 'CompanyStartup',
     component: () => import('../components/Company/CompanyStartup.vue'),
+  },
+  {
+    // 上线第一版把初创版放在 /startup，链接已经发出去，保留跳转
+    path: '/startup',
+    redirect: '/business/startup',
   },
   {
     path: '/contact',

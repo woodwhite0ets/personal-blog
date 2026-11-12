@@ -770,3 +770,135 @@
 @media (max-width: 620px) {
   .co-spec th { width: 72px; padding-right: 12px; }
 }
+
+/* ============================================================
+   业务总览（/business）的条目列表
+   目录式排版：一条业务线一块，靠发丝线与留白分段，不做卡片堆。
+   ============================================================ */
+.co-biz { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--co-line-strong); }
+.co-biz-item { padding: 28px 0 26px; border-bottom: 1px solid var(--co-line); }
+.co-biz-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.co-biz-name {
+  margin: 0; font-size: 1.25rem; font-weight: 640; letter-spacing: -0.02em;
+  color: var(--text-bright); text-wrap: balance;
+}
+.co-biz-tag {
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .09em;
+  color: var(--text-faint);
+}
+.co-biz-lead {
+  margin: 10px 0 0; max-width: 40em; font-size: 0.9375rem; line-height: 1.8;
+  color: var(--text-secondary); text-wrap: pretty;
+}
+.co-biz-meta { display: flex; flex-wrap: wrap; gap: 10px 40px; margin: 16px 0 0; }
+.co-biz-meta dt {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .09em;
+  color: var(--text-faint); margin-bottom: 2px;
+}
+.co-biz-meta dd { margin: 0; font-size: 0.875rem; color: var(--text); }
+.co-biz-go { display: inline-block; margin-top: 18px; }
+@media (max-width: 620px) {
+  .co-biz-item { padding: 22px 0 20px; }
+  .co-biz-meta { gap: 10px 24px; }
+}
+
+/* ============================================================
+   质感精修（2026-11-12）：公司域全站一次统一
+   原则：更少的颜色、更细的线、更准的对齐、更小的圆角、没有阴影也没有上浮。
+   AI 味重的三件套（渐变装饰 / 每张卡同一个软阴影 / hover 上浮）在这里全部关掉——
+   留白的节奏和字重对比才是这一层要的东西。
+   ============================================================ */
+.co-page {
+  --co-r-card: 10px;      /* 卡片圆角 12 → 10 */
+  --co-r-inner: 6px;      /* 卡内衬 12 → 6（双层描边不再像药丸） */
+  /* 线一律从墨色混合，不用写死灰：暗色主题自动跟着走 */
+  --co-line: color-mix(in srgb, var(--text) 9%, transparent);
+  --co-line-strong: color-mix(in srgb, var(--text) 16%, transparent);
+}
+
+/* 锚点定位不被导航盖住（页脚与 FAQ 里有大量 #scope / #pricing 链接） */
+.co-page section[id] { scroll-margin-top: 84px; }
+
+/* 标题层：统一字距；副标题行宽收到 40em 以内，一行别超过 80 个字符 */
+.co-title, .co-page-title { letter-spacing: -0.038em; }
+.co-lead, .co-sec-lead, .co-biz-lead { max-width: 40em; }
+.co-lead { line-height: 1.68; }
+
+/* 数字一律等宽：滚动计数与表格里的数字不再左右跳 */
+.co-metric-v, .co-std-v, .mkt-price, .co-proof-period { font-variant-numeric: tabular-nums; }
+
+/* mono 眉标统一字距，且不用彩色（红只留给可点的东西） */
+.co-std-k, .co-aside-head, .co-biz-tag, .co-foot-k { letter-spacing: .09em; }
+.co-sideline-title { color: var(--text-faint); letter-spacing: .09em; }
+
+/* 卡片：去掉上浮与阴影，只让边框变深——高频 hover 的位移是廉价感的主要来源 */
+.co-svc { border-radius: var(--co-r-card); }
+.co-svc-in { border-radius: var(--co-r-inner); }
+.co-svc:hover { border-color: var(--co-line-strong); translate: none; box-shadow: none; }
+.co-svc-cta { background: color-mix(in srgb, var(--text) 2%, transparent); }
+
+/* 表格：外框与行线收到同一档，hover 只给极淡底色 */
+.mkt-table { border-radius: var(--co-r-card); border-color: var(--co-line); }
+.mkt-table th { color: var(--text-faint); letter-spacing: .09em; border-bottom-color: var(--co-line-strong); }
+.mkt-table td { border-bottom-color: var(--co-line); line-height: 1.6; }
+.mkt-table tbody tr:hover { background: color-mix(in srgb, var(--text) 2.5%, transparent); }
+
+/* 色带：比原来更淡一档，层次靠线而不是靠色差 */
+.co-sec--band::before {
+  background: color-mix(in srgb, var(--band-warm) 62%, var(--bg));
+  border-block-color: var(--co-line);
+}
+
+/* 对照两列：圆角跟着收敛，hover 不再换底色 */
+.mkt-compare > div { border-radius: var(--co-r-card); }
+.mkt-compare > div:hover { border-color: var(--co-line-strong); }
+
+/* 首屏徽标：更小更疏，圆点收细 */
+.co-badge { font-size: 0.6875rem; letter-spacing: .04em; }
+.co-badge-dot { width: 4px; height: 4px; }
+
+/* 指标带：数字字距收紧，分隔线更淡 */
+.co-metric { border-color: var(--co-line); }
+.co-metric-v { letter-spacing: -0.03em; }
+
+/* CTA 深色带：圆角略放大，标题更紧 */
+.co-cta { border-radius: 14px; }
+.co-cta-title { letter-spacing: -0.035em; text-wrap: balance; }
+
+/* 页脚：只留 hover 时的颜色变化，不做常驻下划线 */
+.co-foot { border-top-color: var(--co-line); }
+.co-foot-col a { text-decoration: none; }
+
+/* 顶栏（仅公司域）：当前页下划线只有 2px */
+.co-page .nav-links a.router-link-active::after { height: 2px; }
+
+/* 键盘可达：统一焦点环，全站不留裸 outline:none */
+.co-page :where(a, button, summary, input, textarea):focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px;
+}
+
+/* 颜色纪律（2026-11-12）：红只表示「可以点」。
+   眉标、序号、表格首列这些不可点的东西一律回落到墨/灰，
+   免得整页到处都是强调色——那是最容易显廉价的一处。 */
+.co-foot-k,
+.co-std-k,
+.co-aside-head,
+.co-biz-tag,
+.mkt-steps > li > span,
+.co-std-k { color: var(--text-faint); }
+
+.co-foot-k { font-size: 0.6875rem; letter-spacing: .1em; }
+.co-std-k { font-size: 0.6875rem; letter-spacing: .1em; }
+.mkt-steps > li > span {
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: .1em;
+}
+.mkt-table td:first-child { color: var(--text-bright); }
+.mkt-table td:first-child { font-weight: 620; }
+
+/* 首屏：标题行宽放到 15em，让「把 AI 接进你的业务，」占一整行；
+   指标数字回落到墨色——四个大数字都上红，等于把强调色摊平了。 */
+
+.co-metric-v { color: var(--text-bright); }
+.co-metric-k { color: var(--text-faint); letter-spacing: .04em; }
+.co-aside-k { color: var(--text-faint); }
+.co-aside-v { font-variant-numeric: tabular-nums; }

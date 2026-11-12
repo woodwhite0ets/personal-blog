@@ -81,7 +81,7 @@ const companyLinks = [
   { to: '/', label: '首页' },
   { to: '/work', label: '案例' },
   { to: '/stack', label: '能力' },
-  { to: '/startup', label: '初创版' },
+  { to: '/business', label: '业务' },
   { to: '/contact', label: '联系' },
   { to: '/blog', label: '博客' },
 ]

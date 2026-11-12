@@ -181,7 +181,7 @@
             <p class="co-sideline-lead">给刚注册、刚出产品的团队：一版把「你在做什么」讲清楚的官网。范围与交期固定，域名、托管和代码都在客户名下——上面三档做的是能长期运行的系统，两者分开计价。</p>
             <p class="co-sideline-fine">按页数与产品数量分档；在校创办的公司另有价目。</p>
           </div>
-          <router-link class="co-sideline-go" to="/startup">看初创版官网</router-link>
+          <router-link class="co-sideline-go" to="/business/startup">看初创版官网</router-link>
         </aside>
       </section>
 
@@ -207,7 +207,7 @@
           </details>
           <details class="co-faq-item">
             <summary>初创版官网和上面的定制项目是一回事吗？</summary>
-            <p>不是。初创版做的是门面，范围与交期固定，域名与代码归你；上面的定制项目按范围算，从 3 万起，做的是能长期运行的系统。两边计价分开，<router-link to="/startup" class="co-faq-link">初创版的档位写在这里</router-link>。</p>
+            <p>不是。初创版做的是门面，范围与交期固定，域名与代码归你；上面的定制项目按范围算，从 3 万起，做的是能长期运行的系统。两边计价分开，<router-link to="/business/startup" class="co-faq-link">初创版的档位写在这里</router-link>。</p>
           </details>
           <details class="co-faq-item">
             <summary>什么情况我不接？</summary>

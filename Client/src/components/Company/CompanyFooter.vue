@@ -11,11 +11,10 @@
       </div>
       <nav class="co-foot-col" aria-label="服务">
         <p class="co-foot-k">服务</p>
-        <router-link :to="{ path: '/', hash: '#scope' }">能接的活</router-link>
-        <router-link :to="{ path: '/', hash: '#standard' }">交付标准</router-link>
+        <router-link to="/business">业务总览</router-link>
+        <router-link :to="{ path: '/', hash: '#scope' }">定制交付</router-link>
+        <router-link to="/business/startup">初创版官网</router-link>
         <router-link :to="{ path: '/', hash: '#pricing' }">合作方式</router-link>
-        <router-link to="/startup">初创版官网</router-link>
-        <router-link :to="{ path: '/', hash: '#faq' }">常见问题</router-link>
       </nav>
       <nav class="co-foot-col" aria-label="站点">
         <p class="co-foot-k">站点</p>
