@@ -1,11 +1,11 @@
 <template>
   <h2 class="co-h2">
+    <span v-if="index" class="co-h2-ghost-wrap" aria-hidden="true"><span class="co-h2-ghost">{{ index }}</span></span>
     <span v-if="index" class="co-h2-idx" aria-hidden="true">{{ index }}</span>
     <span class="co-h2-t">{{ title }}</span>
     <span v-if="latin" class="co-h2-lat" aria-hidden="true">{{ latin }}</span>
     <span class="co-h2-rule" aria-hidden="true"></span>
     <span v-if="index" class="co-h2-ruler" aria-hidden="true"></span>
-    <span v-if="index" class="co-h2-ghost" aria-hidden="true">{{ index }}</span>
   </h2>
 </template>
 
