@@ -7,14 +7,14 @@
     </header>
 
     <ul class="status-metrics">
-      <li v-for="m in systemStatus.metrics" :key="m.key" class="status-row">
+      <li v-for="(m, i) in systemStatus.metrics" :key="m.key" class="status-row" :style="{ '--i': i }">
         <span class="status-k">{{ m.key }}</span>
         <span class="status-v">
           <b>{{ m.value }}</b><i>{{ m.unit }}</i>
         </span>
         <span class="status-note">{{ m.note }}</span>
         <span v-if="m.bar" class="status-bar" aria-hidden="true">
-          <span class="status-bar-fill" :style="{ transform: `scaleX(${m.bar})` }"></span>
+          <span class="status-bar-fill" :style="{ '--v': m.bar }"></span>
         </span>
       </li>
     </ul>

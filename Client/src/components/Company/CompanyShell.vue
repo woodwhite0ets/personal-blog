@@ -3,6 +3,13 @@
     <div class="page-wash" aria-hidden="true"></div>
 
     <SiteNav variant="company" />
+    <div class="co-ticker" aria-hidden="true">
+      <div class="co-ticker-track">
+        <span v-for="n in 2" :key="n" class="co-ticker-run">
+          厦门翔安 · 可开票 · 一天内回信 · 自建推理 7×24 · 知识库检索 / 模型接入 / 本地推理 · 项目按阶段验收 · 交付即可运行
+        </span>
+      </div>
+    </div>
     <slot />
     <CompanyFooter />
   </div>

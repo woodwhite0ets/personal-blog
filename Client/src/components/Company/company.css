@@ -62,6 +62,7 @@
   --shadow-card: none;
 
   --co-navh: 60px;
+  --co-tickerh: 30px;
   --co-wrap: 1200px;
   --co-pad: 32px;
 
@@ -322,12 +323,44 @@
 .co-link-arrow:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 3px; }
 
 /* ============================================================
+   HUD 走马灯：顶栏下面一条系统状态带，等宽小字缓慢滚动。
+   只是氛围，不承载信息 —— 因此 aria-hidden，且 reduced-motion 下静止。
+   ============================================================ */
+.co-ticker {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  height: var(--co-tickerh);
+  overflow: clip;
+  background: var(--t-bg);
+  border-bottom: 1px solid var(--t-line);
+  /* 两端渐隐，避免字被硬切断 */
+  mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+.co-ticker-track { display: flex; width: max-content; animation: coTicker 68s linear infinite; }
+.co-ticker-run {
+  padding-right: 56px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--t-muted);
+}
+@keyframes coTicker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ============================================================
    首屏
    ============================================================ */
 .co-hero-band {
   position: relative;
-  margin-top: calc(-1 * var(--co-navh));
-  padding-top: var(--co-navh);
+  margin-top: calc(-1 * (var(--co-navh) + var(--co-tickerh)));
+  padding-top: calc(var(--co-navh) + var(--co-tickerh));
   border-bottom: 0;
   background-color: var(--t-bg);
   background-image:
@@ -392,6 +425,44 @@
 .co-hero-main { grid-column: 1; padding: 64px 0 56px; }
 .co-hero-main .co-title { margin-bottom: 24px; }
 .co-hero-main .co-lead { max-width: 32em; }
+
+/* 开机序列：HUD 线 → 标题擦出 → 副文 → 按钮 → 面板逐行 + 读数条生长 → 案例格。
+   只在首屏跑一次；keyframes 在这里是安全的（一次性，不需要被打断/回退）。 */
+@keyframes coBootDevelop {
+  from { opacity: 0; transform: translateY(18px); filter: blur(7px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes coBootUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes coBarGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(var(--v, 1)); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .co-hero-band .co-title { animation: coBootDevelop 760ms var(--ease-out) 90ms both; }
+  .co-hero-band .co-lead { animation: coBootUp 560ms var(--ease-out) 420ms both; }
+  .co-hero-band .co-actions { animation: coBootUp 560ms var(--ease-out) 520ms both; }
+  .co-hero-band .status-panel { animation: coBootUp 600ms var(--ease-out) 300ms both; }
+  .co-hero-band .status-row {
+    animation: coBootUp 460ms var(--ease-out) both;
+    animation-delay: calc(480ms + var(--i, 0) * 110ms);
+  }
+  .co-hero-band .status-bar-fill {
+    transform: scaleX(var(--v, 1));
+    animation: coBarGrow 780ms var(--ease-out) both;
+    animation-delay: calc(900ms + var(--i, 0) * 110ms);
+  }
+  .co-hero-band .co-board-tile {
+    animation: coBootUp 480ms var(--ease-out) both;
+    animation-delay: calc(820ms + var(--n, 0) * 90ms);
+  }
+  .co-hero-band .co-board-tile:nth-child(1) { --n: 0; }
+  .co-hero-band .co-board-tile:nth-child(2) { --n: 1; }
+  .co-hero-band .co-board-tile:nth-child(3) { --n: 2; }
+  .co-hero-band .co-board-tile:nth-child(4) { --n: 3; }
+}
 
 /* ============================================================
    状态面板（HeroStatus）：仪器读数
@@ -511,6 +582,7 @@
 }
 .co-board-tile {
   position: relative;
+  overflow: clip;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -557,6 +629,14 @@
 }
 .co-board-more .co-board-name { color: #f3f4f4; font-weight: 620; }
 .co-board-more .co-board-period { color: rgba(243, 244, 244, 0.72); }
+
+/* hover 推近：缩略图在格子里 scale，边框不动（transform-only） */
+@media (hover: hover) and (pointer: fine) {
+  .co-board-tile .case-fig,
+  .co-lib-card .case-fig { transition: transform 320ms var(--ease-out), border-color var(--dur-hover) var(--ease-out); }
+  .co-board-tile:hover .case-fig { transform: scale(1.035); }
+  .co-lib-card:hover .case-fig { transform: scale(1.02); }
+}
 
 /* ============================================================
    卡片与矩阵：共用边框，不留缝
@@ -1656,6 +1736,14 @@
    出场：只做一次性淡入上移，不做滚动视差
    ============================================================ */
 .co-reveal { opacity: 0; transform: translateY(12px); }
+/* 标题、报头、标准格这类非交互块用横向擦出，像把图纸扫进视野；
+   卡片继续用位移+微缩（clip-path 会裁掉焦点环，带链接的块不用） */
+.co-h2.co-reveal,
+.co-mast-item.co-reveal,
+.co-std.co-reveal { opacity: 0; transform: none; clip-path: inset(0 100% 0 0); }
+.co-svc.co-reveal,
+.co-lib-card.co-reveal,
+.co-board-tile.co-reveal { transform: translateY(14px) scale(0.985); }
 /* 同一网格里的块按 45ms 交错入场（30–80ms 是标准区间），
    只在入场那一次生效，不影响后续 hover */
 .co-cards > *:nth-child(2),
@@ -1680,7 +1768,9 @@
 .co-reveal.is-in {
   opacity: 1;
   transform: none;
-  transition: opacity 480ms var(--ease-out), transform 480ms var(--ease-out);
+  clip-path: inset(0 0 0 0);
+  transition: opacity 300ms var(--ease-out), transform 560ms var(--ease-out),
+    clip-path 620ms var(--ease-out);
 }
 /* ?motion=on 时无视系统的「减少动态效果」，用来验证动效本身 */
 @media (prefers-reduced-motion: reduce) {
@@ -1707,6 +1797,14 @@
 
 .co-reveal.is-in { opacity: 1; transform: none; transition: none; }
   .co-page.force-motion .co-reveal { opacity: 0; transform: translateY(12px); }
+/* 标题、报头、标准格这类非交互块用横向擦出，像把图纸扫进视野；
+   卡片继续用位移+微缩（clip-path 会裁掉焦点环，带链接的块不用） */
+.co-h2.co-reveal,
+.co-mast-item.co-reveal,
+.co-std.co-reveal { opacity: 0; transform: none; clip-path: inset(0 100% 0 0); }
+.co-svc.co-reveal,
+.co-lib-card.co-reveal,
+.co-board-tile.co-reveal { transform: translateY(14px) scale(0.985); }
   .co-page.force-motion /* 同一网格里的块按 45ms 交错入场（30–80ms 是标准区间），
    只在入场那一次生效，不影响后续 hover */
 .co-cards > *:nth-child(2),
