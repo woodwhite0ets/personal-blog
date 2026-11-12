@@ -1876,3 +1876,301 @@
   .co-page--home .co-board-more-v { font-size: 1.75rem; }
   .co-page--home .co-hero-board { margin-top: 18px; }
 }
+
+/* ============================================================
+   业务页：统一容器语言（看到截图后改）
+   问题：同一页上三种容器同时在用 —— 页头一张白卡、对比表一张白卡、
+   四条业务线却是裸行、流程又是四张卡。看着像三套模板拼起来。
+   改法：整页去掉「白卡」，只用留白 + 细线分层，唯一的重色块留给收尾。
+   ============================================================ */
+.co-page--business .co-mast::before {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--co-line-strong);
+  border-radius: 0;
+}
+.co-page--business .co-mast { padding: 34px 0 26px; }
+
+.co-page--business .mkt-table {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--co-line-strong);
+  padding: 0;
+  border-radius: 0;
+}
+.co-page--business .mkt-table th {
+  padding: 14px 16px 12px 0;
+  border-bottom: 1px solid var(--co-line-strong);
+}
+.co-page--business .mkt-table td { padding: 14px 16px 14px 0; }
+.co-page--business .mkt-table .is-primary { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.co-page--business .mkt-table tbody tr:nth-child(odd) { background: transparent; }
+
+/* 业务线条目：字号提上来，动作链接跟在同一行末尾 */
+.co-page--business .co-svc-in { padding: 22px 0 20px; }
+.co-page--business .co-svc-in h3 { font-size: 1.25rem; }
+.co-page--business .co-svc-in > p { font-size: 0.9375rem; color: var(--text-secondary); }
+.co-page--business .co-biz-meta { margin-top: 12px; gap: 6px 32px; }
+.co-page--business .co-biz-meta dt { font-size: 0.75rem; color: var(--text-faint); }
+.co-page--business .co-biz-meta dd { font-size: 0.9375rem; color: var(--text-bright); }
+.co-page--business .co-svc-link { margin-top: 14px; font-size: 0.9375rem; }
+
+/* 共用三条：去掉竖线，只用间距 */
+.co-page--business .co-standards { border-top: 1px solid var(--co-line-strong); }
+.co-page--business .co-std { border-right: 0; padding: 20px 28px 4px 0; }
+.co-page--business .co-std-k { font-size: 0.75rem; color: var(--text-faint); }
+.co-page--business .co-std-v { font-size: 1.375rem; }
+.co-page--business .co-std p { font-size: 0.9375rem; }
+
+/* 流程四步：不再套卡，改成四列，用顶部一条线分隔 */
+.co-page--business .mkt-steps { gap: 0 28px; }
+.co-page--business .mkt-steps li {
+  border: 0; background: transparent;
+  border-top: 2px solid var(--text-bright);
+  padding: 16px 0 0;
+}
+.co-page--business .mkt-steps li > span { font-size: 0.75rem; }
+.co-page--business .mkt-steps li h3 { font-size: 1.125rem; margin: 4px 0 8px; }
+.co-page--business .mkt-steps li p { font-size: 0.9375rem; color: var(--text-secondary); }
+
+/* ============================================================
+   色带改成「纯粹的底色变化」（看到截图后）
+   原来每条色带都画一圈描边 + 面板色，整页于是到处是白卡，
+   像模板堆叠。改成无边框的纯色带：只靠底色深浅分段。
+   ============================================================ */
+.co-page .co-sec--band::before {
+  background: color-mix(in srgb, var(--band-warm) 55%, var(--bg));
+  border: 0;
+  border-radius: 0;
+}
+.co-page .co-mast::before {
+  background: color-mix(in srgb, var(--band-warm) 55%, var(--bg));
+  border: 0;
+  border-radius: 0;
+}
+.co-page .mkt-table { border-width: 0; }
+.co-page .mkt-table th { border-bottom: 1px solid var(--co-line-strong); }
+.co-page .mkt-table td { border-bottom: 1px solid var(--co-line); }
+
+/* 流程四步：2px 黑线太重，回到 1px */
+.co-page .mkt-steps li { border-top-width: 1px; border-top-color: var(--co-line-strong); }
+
+/* 页头收紧：不要一屏的空白 */
+.co-page .co-mast { padding: 30px 0 26px; }
+.co-page .co-mast-meta { margin: 20px 0 0; padding-top: 14px; }
+
+/* ============================================================
+   页头改成两栏（看到截图后）：标题与说明在左，事实在右竖排。
+   原来三个事实横排在最下方，标题上方空一大块，右侧整列空着。
+   ============================================================ */
+.co-page .co-mast {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  column-gap: 48px;
+  align-items: start;
+  padding: 34px 0 30px;
+}
+.co-page .co-mast .co-page-title { grid-column: 1; margin-bottom: 14px; }
+.co-page .co-mast .co-lead { grid-column: 1; max-width: 34em; }
+.co-page .co-mast-meta {
+  grid-column: 2; grid-row: 1 / span 2;
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: 0; margin: 0; padding: 0;
+}
+.co-page .co-mast-item {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 9px 0; border-left: 0; border-bottom: 1px solid var(--co-line);
+}
+.co-page .co-mast-item:first-child { border-top: 1px solid var(--co-line); }
+.co-page .co-mast-item dt { font-size: 0.75rem; color: var(--text-faint); }
+.co-page .co-mast-item dd { font-size: 0.875rem; color: var(--text-bright); }
+@media (max-width: 900px) {
+  .co-page .co-mast { grid-template-columns: minmax(0, 1fr); }
+  .co-page .co-mast-meta { grid-column: 1; grid-row: auto; margin-top: 18px; }
+}
+
+/* 业务行：动作链接不再孤零零飘在右边，跟在该行的元数据后面 */
+.co-page--business .co-svc-in {
+  grid-template-columns: minmax(0, 12em) minmax(0, 1fr);
+}
+.co-page--business .co-biz-meta { margin-top: 10px; }
+.co-page--business .co-svc-link { margin-top: 10px; justify-self: start; }
+
+/* 收尾面板：联系块沉到底部，别浮在黑色中间 */
+.co-page .co-cta-in { align-items: end; }
+.co-page .co-cta-contact { align-self: end; }
+
+/* ============================================================
+   栅格与留白修正（看到 1440 全页截图后）
+   问题：页头右侧事实表悬空、业务行标题被挤成两行、动作链接飘到行尾、
+        CTA 面板中间一大块黑、页脚首列过宽。
+   ============================================================ */
+
+/* 1. 页头：标题与 lead 紧贴，事实表与标题顶对齐 */
+.co-page .co-mast { padding: 26px 0 26px; column-gap: 40px; }
+.co-page .co-mast .co-page-title { margin-bottom: 10px; }
+.co-page .co-mast-meta { align-self: start; margin-top: 4px; }
+
+/* 2. 业务行：标题列放宽到 16em，链接并回 meta 行 */
+.co-page--business .co-svc-in {
+  grid-template-columns: minmax(0, 16em) minmax(0, 1fr);
+  column-gap: 32px;
+  row-gap: 4px;
+}
+.co-page--business .co-svc-in h3 { font-size: 1.1875rem; line-height: 1.35; }
+.co-page--business .co-biz-meta { grid-column: 2; margin-top: 6px; }
+.co-page--business .co-svc-link {
+  grid-column: 2; grid-row: 3; justify-self: start; margin-top: 8px;
+}
+
+/* 3. CTA：联系块贴右边界，标题限宽，减少中间空洞 */
+.co-page .co-cta-in {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: 48px;
+}
+.co-page .co-cta-copy { max-width: 26em; }
+.co-page .co-cta-contact { text-align: right; justify-self: end; }
+.co-page .co-cta-mail a { font-size: 1.125rem; }
+
+/* 4. 页脚：四列等宽，首列不再吃掉一半 */
+.co-page .co-foot-cols {
+  grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(0, 1fr));
+  column-gap: 32px;
+}
+
+/* 5. 流程步骤序号降到灰，别与标题争 */
+.co-page .mkt-steps li > span { color: var(--text-faint); font-size: 0.75rem; }
+.co-page .mkt-steps li h3 { margin: 6px 0 8px; }
+
+/* 6. 共用三条：正文行宽放宽，标签缩小字距 */
+.co-page .co-std { padding-right: 36px; }
+.co-page .co-std-k { letter-spacing: 0.06em; font-size: 0.75rem; }
+.co-page .co-std p { max-width: 30em; }
+
+/* ============================================================
+   排版修复（第二轮看截图）
+   1) 中文被拆词：「附验收方 / 式」——加 keep-all 让词组不被切断
+   2) 业务行的动作链接并入元数据行，不再独占一行飘在右下
+   3) 页头再收紧：标题到 lead、lead 到分隔线的空白
+   4) 共用三条的正文行宽放宽，减少碎行
+   ============================================================ */
+
+/* 1) 中文断行：不在词中间断（英文仍按单词断） */
+.co-page .co-std p,
+.co-page .co-svc p,
+.co-page .co-svc-fit,
+.co-page .co-lead,
+.co-page .co-sec-lead,
+.co-page .mkt-table td,
+.co-page .co-lib-sub,
+.co-page .co-biz-meta dd,
+.co-page .mkt-steps li p {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  line-break: strict;
+}
+
+/* 2) 业务行：meta 与动作放在同一行，动作靠右但同基线 */
+.co-page--business .co-svc-in { row-gap: 6px; }
+.co-page--business .co-biz-meta {
+  grid-column: 1 / -1;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 36px;
+  margin-top: 12px; padding-top: 10px;
+  border-top: 1px solid var(--co-line);
+}
+.co-page--business .co-svc-link {
+  grid-column: 1 / -1; grid-row: auto;
+  margin-top: 0; margin-left: auto;
+  font-size: 0.875rem;
+}
+
+/* 3) 页头收紧 */
+.co-page .co-mast { padding: 22px 0 22px; }
+.co-page .co-mast .co-page-title { margin-bottom: 8px; }
+.co-page .co-mast + .co-sec { margin-top: 40px; }
+
+/* 4) 共用三条：正文行宽放宽 */
+.co-page .co-std { padding-right: 28px; }
+.co-page .co-std p { max-width: none; font-size: 0.9375rem; }
+
+/* 业务行最终版：meta 在左、动作在右同一行；去掉多余横线 */
+.co-page--business .co-svc-in {
+  grid-template-columns: minmax(0, 16em) minmax(0, 1fr);
+  align-items: start;
+}
+.co-page--business .co-biz-meta {
+  grid-column: 1 / 2;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 24px;
+  margin-top: 12px;
+  padding-top: 0;
+  border-top: 0;
+}
+.co-page--business .co-biz-meta > div { display: flex; flex-direction: column; gap: 2px; }
+.co-page--business .co-biz-meta dt { font-size: 0.6875rem; letter-spacing: 0.08em; }
+.co-page--business .co-biz-meta dd { font-size: 0.875rem; }
+.co-page--business .co-svc-link {
+  grid-column: 2 / 3;
+  grid-row: 3;
+  justify-self: end;
+  align-self: end;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* 页头最终版：单列，标题紧接 lead，事实横排成一行、跨满宽度。
+   之前两栏把事实表推到右侧，和标题之间空出一大块，像悬空的表单。 */
+.co-page .co-mast {
+  display: block;
+  padding: 22px 0 18px;
+}
+.co-page .co-mast .co-page-title { margin-bottom: 8px; }
+.co-page .co-mast .co-lead { max-width: 40em; font-size: 1rem; }
+.co-page .co-mast-meta {
+  display: flex; flex-wrap: wrap; gap: 0 48px;
+  margin: 18px 0 0; padding-top: 12px;
+  border-top: 1px solid var(--co-line);
+}
+.co-page .co-mast-item {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 0; border: 0;
+}
+.co-page .co-mast-item dt { font-size: 0.75rem; color: var(--text-faint); }
+.co-page .co-mast-item dd { font-size: 0.875rem; color: var(--text-bright); }
+.co-page .co-mast + .co-sec { margin-top: 36px; }
+
+/* 业务行：改成「标题+说明一行，元数据整行横排，动作贴标题右侧」 */
+.co-page--business .co-svc-in {
+  display: grid;
+  grid-template-columns: minmax(0, 15em) minmax(0, 1fr) auto;
+  grid-template-areas: "title lead action" "meta meta meta";
+  column-gap: 28px; row-gap: 14px;
+  align-items: start;
+  padding: 24px 0 22px;
+}
+.co-page--business .co-svc-in h3 { grid-area: title; margin: 0; font-size: 1.1875rem; }
+.co-page--business .co-svc-in > p { grid-area: lead; margin: 0; }
+.co-page--business .co-svc-link {
+  grid-area: action; align-self: start; justify-self: end;
+  margin: 2px 0 0; font-size: 0.875rem; white-space: nowrap;
+}
+.co-page--business .co-biz-meta {
+  grid-area: meta;
+  display: flex; flex-wrap: wrap; gap: 8px 44px;
+  margin: 0; padding-top: 0; border-top: 0;
+}
+.co-page--business .co-biz-meta > div {
+  display: flex; align-items: baseline; gap: 8px;
+}
+.co-page--business .co-biz-meta dt { font-size: 0.6875rem; letter-spacing: 0.08em; }
+.co-page--business .co-biz-meta dd { font-size: 0.875rem; color: var(--text-bright); }
+@media (max-width: 900px) {
+  .co-page--business .co-svc-in {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "title" "lead" "meta" "action";
+  }
+  .co-page--business .co-svc-link { justify-self: start; }
+}
