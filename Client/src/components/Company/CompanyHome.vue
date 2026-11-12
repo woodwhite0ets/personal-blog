@@ -24,7 +24,7 @@
         <!-- 作品即门面：五张真实案例图的拼版，不放大字 -->
         <div class="co-hero-board">
           <router-link
-            v-for="c in proofCases"
+            v-for="c in projects"
             :key="c.slug"
             :to="`/work/${c.slug}`"
             class="co-board-tile"
@@ -47,13 +47,7 @@
     </section>
 
     <div class="co-main co-page--home">
-      <!-- 指标带 -->
-      <section class="co-metrics" aria-label="关键数字" ref="metricsRef">
-        <div class="co-metric" v-for="(m, i) in metrics" :key="m.label">
-          <span class="co-metric-v">{{ shown[i] }}{{ m.suffix }}</span>
-          <span class="co-metric-k">{{ m.label }}</span>
-        </div>
-      </section>
+
 
       <!-- 01 能接的活 -->
       <section id="scope" class="co-sec">
@@ -95,7 +89,7 @@
       </section>
 
       <!-- 02 交付标准 -->
-      <section id="standard" class="co-sec co-sec--band">
+      <section id="standard" class="co-sec co-sec--band lab-dark">
         <CompanySecHead title="三项交付标准" index="02" latin="STANDARD" />
         <p class="co-sec-lead">每个项目都按这三条验收，写进合同。</p>
         <div class="co-standards">
@@ -147,6 +141,15 @@
                 <span class="co-lib-name">{{ p.name }}</span>
                 <span class="co-lib-sub">{{ p.subtitle }}</span>
                 <span class="co-lib-result">{{ p.result }}</span>
+              </span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/work" class="co-lib-card co-lib-card--more">
+              <span class="co-lib-body">
+                <span class="co-lib-top"><span class="co-lib-kind">索引</span></span>
+                <span class="co-lib-name">全部案例</span>
+                <span class="co-lib-sub">{{ caseCount }} 个项目，按类型筛，每条写了问题与结果。</span>
               </span>
             </router-link>
           </li>

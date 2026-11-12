@@ -54,11 +54,14 @@
 .co-h2-t { white-space: nowrap; }
 .co-h2-rule { flex: 1; height: 1px; background: var(--border); transform-origin: left; }
 @supports (animation-timeline: view()) {
+@media (prefers-reduced-motion: no-preference) {
   .co-h2-rule {
     animation: coRuleDraw linear both;
     animation-timeline: view();
     animation-range: entry 12% entry 48%;
   }
+
+}
 }
 @keyframes coRuleDraw {
   from { transform: translateY(-6px) scaleX(0); }
@@ -157,8 +160,11 @@
 .fig-dot-key { fill: var(--accent); }
 .fig-t { font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; fill: var(--text-faint); }
 @supports (animation-timeline: view()) {
+@media (prefers-reduced-motion: no-preference) {
   .fig-line { animation: figDraw linear both; animation-timeline: view(); animation-range: entry 24% entry 62%; }
   .fig-dot, .fig-dot-key { animation: figNode linear both; animation-timeline: view(); }
+
+}
 }
 @keyframes figDraw { from { stroke-dashoffset: 272; } to { stroke-dashoffset: 0; } }
 @keyframes figNode { from { opacity: 0; } to { opacity: 1; } }
@@ -322,11 +328,14 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 @supports (animation-timeline: view()) {
+@media (prefers-reduced-motion: no-preference) {
   .co-sec, .co-metrics, .co-cta, .co-foot {
     animation: coRise linear both;
     animation-timeline: view();
     animation-range: entry 4% entry 30%;
   }
+
+}
 }
 
 /* 悬停：只动合成器属性 */
@@ -1040,15 +1049,7 @@
 .co-metrics { padding: 0; }
 .co-metric { border-right: 1px solid var(--co-line); border-bottom: 0; padding: 26px 26px 24px; }
 
-/* 卡角上的 L 形标记：技术图纸的定位角，只在卡片类元素上出现 */
 .co-svc, .co-spec, .co-cases, .co-form, .co-grid > .co-card { position: relative; }
-.co-svc::before, .co-spec::before, .co-cases::before,
-.co-form::before, .co-grid > .co-card::before {
-  content: ""; position: absolute; top: -1px; left: -1px;
-  width: 10px; height: 10px;
-  border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
-  pointer-events: none;
-}
 
 /* 等宽小标签：鹰角那套技术字距，只用于说明性文字，不用于正文 */
 .co-std-k, .co-aside-k, .co-aside-head, .co-foot-k, .co-field-k,
@@ -1183,16 +1184,6 @@
 .co-page { outline: 1px solid var(--co-line); outline-offset: -10px; }
 
 /* 角标记改挂在两个可用的伪元素上：开场带上左角 + 交替带右下角，各两个 L */
-.co-mast::after {
-  content: ""; position: absolute; left: 8px; top: 8px; width: 14px; height: 14px;
-  border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
-  pointer-events: none;
-}
-.co-sec--band::after {
-  content: ""; position: absolute; right: 8px; bottom: 8px; width: 14px; height: 14px;
-  border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent);
-  pointer-events: none;
-}
 
 
 /* ============================================================
@@ -1206,13 +1197,9 @@
 .co-h2 { position: relative; }
 .co-h2-idx {
   position: relative; z-index: 1;
-  display: inline-block; padding: 3px 8px 2px;
-  color: #fff; border-right: 0;
-  transform: skewX(-12deg);
-}
-.co-h2-idx::before {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background: var(--accent);
+  display: inline-block;
+  font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.14em;
+  color: var(--accent);
 }
 .co-h2-idx { letter-spacing: 0.06em; }
 
@@ -1451,6 +1438,7 @@
 
 /* 三、卡片与行：进入视口时依次落位（入场用 view() 时间线，逐个子元素错开） */
 @supports (animation-timeline: view()) {
+@media (prefers-reduced-motion: no-preference) {
   .co-svc, .co-biz-item, .co-case, .co-std, .co-proof-row, .co-gauge-cell,
   .co-meter li, .co-step, .co-card, .mkt-steps li, .co-faq-item {
     animation: coFadeUp linear both;
@@ -1462,6 +1450,8 @@
   .co-svc:nth-child(4) { animation-range: entry 8% entry 28%; }
   .co-svc:nth-child(5) { animation-range: entry 10% entry 30%; }
   .co-svc:nth-child(6) { animation-range: entry 12% entry 32%; }
+
+}
 }
 
 /* 四、按钮：hover 时一道细光扫过（切角按钮的“扫描”感） */
@@ -1765,3 +1755,124 @@
 .co-page .co-lib-period,
 .co-page .co-mast-item dd,
 .co-page .co-lab-meta dd { font-family: var(--font-mono); }
+
+/* 首屏：状态卡与标题顶部对齐，别在左侧下方留一大块空洞 */
+.co-page--home .co-hero-stats { align-self: start; margin-top: 6px; }
+
+/* ============================================================
+   视觉修复（2026-11-12，第一次真正看到页面后改的）
+   看出来的问题：编号当装饰、正文对比度太低、卡片里缩略图太小、
+   案例库 5 条留一格空、整页没有一个深色锚点，全部小节长得一样。
+   ============================================================ */
+
+/* b) 章节编号是元数据，不是行动：改灰、略大、加字距（红色只留给可点的东西） */
+.co-page .co-h2-idx {
+  font-size: 0.875rem; letter-spacing: 0.16em;
+  color: var(--text-faint);
+  padding-right: 10px;
+  border-right: 1px solid var(--co-line-strong);
+}
+
+/* c) 卡片正文对比度：原来用了 faint（近白），读不清 */
+.co-page .co-svc p,
+.co-page .co-svc-fit,
+.co-page .co-svc-meta,
+.co-page .co-std p { color: var(--text-secondary); }
+.co-page .co-svc-fit,
+.co-page .co-svc-meta { border-top-color: var(--co-line); }
+
+/* d) 案例拼版里的缩略图放大、留白减少 */
+.co-page .co-board-tile { padding: 12px 12px 10px; min-height: 158px; }
+.co-page .co-board-tile :is(figure, svg, img) { transform: scale(1.06); transform-origin: center top; }
+
+/* f) 一个深色锚点：三项交付标准改成墨底反白，打破整页浅色单调 */
+.co-page .co-sec--band.lab-dark {
+  background: var(--text-bright);
+  color: #f4f2ee;
+  padding-block: 56px;
+  margin-inline: 0;
+  clip-path: none;
+}
+.co-page .co-sec--band.lab-dark::before { background: var(--text-bright); border-color: transparent; }
+.co-page .co-sec--band.lab-dark .co-h2-t,
+.co-page .co-sec--band.lab-dark .co-std-v { color: #ffffff; }
+.co-page .co-sec--band.lab-dark .co-h2-idx,
+.co-page .co-sec--band.lab-dark .co-h2-lat,
+.co-page .co-sec--band.lab-dark .co-sec-lead { color: rgba(255, 255, 255, 0.62); }
+.co-page .co-sec--band.lab-dark .co-h2-rule { background: rgba(255, 255, 255, 0.28); }
+.co-page .co-sec--band.lab-dark .co-h2-ruler {
+  background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.4) 0 1px, transparent 1px 7px);
+}
+.co-page .co-sec--band.lab-dark .co-std { border-right-color: rgba(255, 255, 255, 0.18); }
+.co-page .co-sec--band.lab-dark .co-std p { color: rgba(255, 255, 255, 0.72); }
+.co-page .co-sec--band.lab-dark .co-std-k { color: var(--role-action); }
+
+/* e) 案例库最后那张「全部案例」卡：虚线框 + 不放大缩略图 */
+.co-page .co-lib-card--more {
+  justify-content: center;
+  border-style: dashed;
+  background: transparent;
+}
+.co-page .co-lib-card--more .co-lib-name { font-size: 1.0625rem; }
+
+/* ============================================================
+   排版尺度修正（2026-11-12，看到页面之后）
+   问题：正文 12–13px、元数据 10–11px，在 1440 宽下整体偏小偏淡，
+   卡片里像「草稿」。这一层把正文提到 15–16px，元数据不低于 12px，
+   并把 faint 灰换成 secondary 灰。
+   ============================================================ */
+
+/* 正文与引导句 */
+.co-page .co-lead { font-size: 1.0625rem; line-height: 1.7; color: var(--text-secondary); }
+.co-page .co-sec-lead { font-size: 1rem; color: var(--text-secondary); }
+
+/* 卡片：标题更大、正文 15px、元数据 12px 起 */
+.co-page .co-svc-in { padding: 26px 26px 24px; gap: 10px; }
+.co-page .co-svc h3 { font-size: 1.0625rem; margin: 0; }
+.co-page .co-svc p { font-size: 0.9375rem; line-height: 1.7; }
+.co-page .co-svc-fit,
+.co-page .co-svc-meta { font-size: 0.8125rem; line-height: 1.6; }
+.co-page .co-svc-meta { color: var(--text-faint); }
+
+/* 三项标准：标签 12px、标题 1.5rem、正文 15px */
+.co-page .co-std-k { font-size: 0.75rem; }
+.co-page .co-std-v { font-size: 1.5rem; }
+.co-page .co-std p { font-size: 0.9375rem; line-height: 1.7; }
+
+/* 案例卡：名称 17px、副标题 14px、结果 13px */
+.co-page .co-lib-name { font-size: 1.0625rem; }
+.co-page .co-lib-sub { font-size: 0.875rem; color: var(--text-secondary); }
+.co-page .co-lib-result { font-size: 0.8125rem; color: var(--text-secondary); }
+.co-page .co-lib-kind { font-size: 0.6875rem; }
+.co-page .co-lib-period { font-size: 0.6875rem; }
+
+/* 流程四步 */
+.co-page .mkt-steps li h3 { font-size: 1.125rem; }
+.co-page .mkt-steps li p { font-size: 0.9375rem; color: var(--text-secondary); }
+.co-page .mkt-steps li > span { font-size: 0.75rem; color: var(--role-action); }
+
+/* 对照两栏 */
+.co-page .mkt-compare li { font-size: 0.9375rem; line-height: 1.7; }
+.co-page .mkt-compare h3 { font-size: 0.875rem; }
+
+/* 元数据统一到 12px，别再出现 10px */
+.co-page .co-h2-lat,
+.co-page .co-mast-item dt,
+.co-page .co-gauge-cell dt,
+.co-page .co-meter-k { font-size: 0.75rem; letter-spacing: 0.12em; }
+
+/* 段落间距略收，卡片内距略放，节奏更均匀 */
+.co-page .co-sec { margin-top: 76px; }
+.co-page .co-sec--band { padding-block: 48px; margin-top: 64px; }
+
+/* 刻度尺是装饰，去掉（和标题右侧的细线重复） */
+.co-page .co-h2-ruler { display: none; }
+
+/* 手机端两处修：首屏顶部空白过多、「全部案例」格空得发慌 */
+@media (max-width: 900px) {
+  .co-page--home .co-hero-in { padding-top: calc(var(--co-navh) + 8px); }
+  .co-page--home .co-badge { margin-bottom: 12px; }
+  .co-page--home .co-board-more { min-height: 0; padding: 14px 12px; }
+  .co-page--home .co-board-more-v { font-size: 1.75rem; }
+  .co-page--home .co-hero-board { margin-top: 18px; }
+}
