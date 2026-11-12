@@ -17,7 +17,7 @@
         </div>
       </section>
 
-      <section class="co-sec">
+      <section class="co-sec co-sec--band">
         <CompanySecHead title="在跑的东西" />
         <table class="co-spec">
           <tbody>

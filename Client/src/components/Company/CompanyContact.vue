@@ -20,7 +20,7 @@
         <p class="co-note">签合同、可开票，按阶段交付并留验收标准。首次沟通不收费；需求没想清楚也可以先聊。</p>
       </section>
 
-      <section class="co-sec">
+      <section class="co-sec co-sec--band">
         <CompanySecHead title="留个需求" />
         <form class="co-form" novalidate @submit.prevent="submit">
           <div class="co-form-row">

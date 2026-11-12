@@ -993,3 +993,80 @@
   .mkt-table td { padding: 12px 0; }
   .co-faq-item summary { padding: 16px 26px 15px 0; }
 }
+
+/* ============================================================
+   子页与首页同一套语言（2026-11-12 晚）
+   首页好看在三件事：一条暖色带开场、段落之间交替色带、内容都放在纸卡里。
+   子页此前三样都没有，所以看着像另一个站。这一层只补这三样，不动结构。
+   ============================================================ */
+
+/* 一、每个子页的开头都是那条色带：标题、引导句、三四个事实都落在带子上 */
+.co-mast {
+  position: relative; isolation: isolate;
+  padding: 56px 0 44px; border-bottom: 0;
+}
+.co-mast::before {
+  content: ""; position: absolute; z-index: -1; inset: 0;
+  left: 50%; width: 100vw; transform: translateX(-50%);
+  background: color-mix(in srgb, var(--band-warm) 78%, var(--bg));
+  border-bottom: 1px solid var(--co-line);
+}
+.co-mast .co-page-title { margin-bottom: 16px; }
+.co-mast-meta {
+  margin: 28px 0 0; padding-top: 22px;
+  border-top: 1px solid var(--co-line);
+}
+.co-mast-item { border-left-color: var(--co-line); }
+.co-mast + .co-sec { margin-top: 56px; }
+
+/* 二、内容一律放进纸卡：表格与卡片都改成同一张纸，边框同档、圆角同档 */
+.co-spec {
+  display: table; width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--co-line); border-radius: var(--co-r-card);
+  padding: 6px 20px;
+  border-collapse: separate; border-spacing: 0;
+}
+.co-spec th { border-bottom-color: var(--co-line); }
+.co-spec td { border-bottom-color: var(--co-line); }
+.co-spec tr:last-child th, .co-spec tr:last-child td { border-bottom: none; }
+
+/* 联系页两栏：与首页的服务卡同一张纸，去掉中间那条竖线 */
+.co-grid > .co-card,
+.co-grid > .co-card + .co-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--co-line);
+  border-left: 1px solid var(--co-line);
+  border-radius: var(--co-r-card);
+  padding: 24px 26px 22px;
+}
+.co-grid { gap: 14px; }
+
+/* 三、表单也放进纸卡，输入框改成纸面内嵌而不是浮起来的白块 */
+.co-form {
+  background: var(--bg-elevated);
+  border: 1px solid var(--co-line); border-radius: var(--co-r-card);
+  padding: 26px 26px 24px; max-width: 40em;
+}
+.co-field input, .co-field textarea {
+  background: color-mix(in srgb, var(--text) 2%, var(--bg-elevated));
+  border-color: var(--co-line);
+  border-radius: 8px;
+}
+.co-field input:hover, .co-field textarea:hover { border-color: var(--co-line-strong); }
+
+/* 案例列表：整张纸包住目录，编号与结果保持一行 */
+.co-cases {
+  background: var(--bg-elevated);
+  border: 1px solid var(--co-line); border-radius: var(--co-r-card);
+  padding: 6px 22px;
+}
+.co-case-link { border-radius: 6px; }
+
+@media (max-width: 900px) {
+  .co-mast { padding: 40px 0 32px; }
+  .co-mast::before { border-bottom: 1px solid var(--co-line); }
+  .co-spec { padding: 4px 14px; }
+  .co-form { padding: 20px 18px; }
+  .co-cases { padding: 4px 16px; }
+}
