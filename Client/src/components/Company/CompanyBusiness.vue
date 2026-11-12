@@ -1,6 +1,6 @@
 <template>
   <CompanyShell>
-    <div class="co-main">
+    <div class="co-main co-page--business">
       <CompanyMasthead
         title="业务"
         lead="现在接两条线。定制交付按范围算，做完能长期跑；初创版官网按档定价，五到十个工作日上线。两边分开报价。"

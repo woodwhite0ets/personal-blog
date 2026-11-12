@@ -1,6 +1,6 @@
 <template>
   <CompanyShell>
-    <div class="co-main">
+    <div class="co-main co-page--stack">
       <CompanyMasthead
         title="能力与基础设施"
         lead="不外包算力，也不把数据交出去：所有东西跑在自己的一台机器上。"

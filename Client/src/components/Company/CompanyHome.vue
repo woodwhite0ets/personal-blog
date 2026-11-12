@@ -46,7 +46,7 @@
       </div>
     </section>
 
-    <div class="co-main">
+    <div class="co-main co-page--home">
       <!-- 指标带 -->
       <section class="co-metrics" aria-label="关键数字" ref="metricsRef">
         <div class="co-metric" v-for="(m, i) in metrics" :key="m.label">

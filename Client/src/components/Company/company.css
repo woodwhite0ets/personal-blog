@@ -1385,14 +1385,6 @@
 .co-h2-idx { letter-spacing: 0.06em; }
 
 /* 二、标题背后的幽灵数字 */
-.co-h2-ghost {
-  position: absolute; left: -6px; top: 50%; transform: translateY(-54%);
-  font-family: var(--font-mono); font-weight: 700;
-  font-size: clamp(56px, 8vw, 120px); line-height: 1;
-  color: var(--text-bright); opacity: 0.055;
-  pointer-events: none; user-select: none; letter-spacing: -0.04em;
-}
-@media (max-width: 900px) { .co-h2-ghost { display: none; } }
 
 /* 三、状态标签：方角 + 左侧色条 */
 .co-case-status {
@@ -1496,26 +1488,6 @@ body:has(.co-page)::after {
 }
 
 /* 5 + 8. 右侧竖排标签与滚动进度轨 */
-.co-rail {
-  position: fixed; right: 14px; top: 50%; z-index: 130;
-  transform: translateY(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
-  pointer-events: none;
-}
-.co-rail-label {
-  writing-mode: vertical-rl; text-orientation: mixed;
-  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.28em;
-  text-transform: uppercase; color: var(--text-faint);
-}
-.co-rail-track {
-  position: relative; width: 2px; height: 96px;
-  background: rgba(20, 22, 24, 0.14);
-}
-.co-rail-track i {
-  position: absolute; inset: 0; transform-origin: top center; transform: scaleY(0);
-  background: var(--accent);
-}
-@media (max-width: 1100px) { .co-rail { display: none; } }
 
 /* 6. 切角按钮：右上与左下各切一刀 */
 .co-btn, .co-btn-solid, .btn-write {
@@ -1536,23 +1508,7 @@ body:has(.co-page)::after {
 }
 
 /* 页面外框：真实 fixed 节点（伪元素在 body 上不生效，改用壳内一层） */
-.co-frame {
-  position: fixed; inset: 10px; z-index: 130; pointer-events: none;
-  border: 1px solid rgba(20, 22, 24, 0.16);
-  --t: #0d0e0f;
-  /* 四角准星往里退 5px：贴着外框画会和边框线重合，看不见 */
-  background:
-    linear-gradient(var(--t), var(--t)) 5px 5px / 20px 2px no-repeat,
-    linear-gradient(var(--t), var(--t)) 5px 5px / 2px 20px no-repeat,
-    linear-gradient(var(--t), var(--t)) calc(100% - 5px) 5px / 20px 2px no-repeat,
-    linear-gradient(var(--t), var(--t)) calc(100% - 5px) 5px / 2px 20px no-repeat,
-    linear-gradient(var(--t), var(--t)) 5px calc(100% - 5px) / 20px 2px no-repeat,
-    linear-gradient(var(--t), var(--t)) 5px calc(100% - 5px) / 2px 20px no-repeat,
-    linear-gradient(var(--t), var(--t)) calc(100% - 5px) calc(100% - 5px) / 20px 2px no-repeat,
-    linear-gradient(var(--t), var(--t)) calc(100% - 5px) calc(100% - 5px) / 2px 20px no-repeat;
-}
 body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
-@media (max-width: 900px) { .co-rail { display: none; } }
 
 /* ============================================================
    首屏改版 + 顶栏透明（2026-11-12 晚，第八轮）
@@ -1699,7 +1655,6 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 /* 一、章节头：编号斜切块擦入，刻度尺从右往左拉开，幽灵数字淡入 */
 .co-h2-idx { animation: coWipeIn .5s cubic-bezier(.16, 1, .3, 1) both; }
 .co-h2-ruler { transform-origin: right center; animation: coLineGrow .6s cubic-bezier(.16, 1, .3, 1) both .12s; }
-.co-h2-ghost { animation: coFadeUp .8s cubic-bezier(.16, 1, .3, 1) both; }
 
 /* 二、首屏网格缓慢漂移：像一块活着的面板，不是贴图 */
 .co-hero-band { animation: coGridDrift 24s linear infinite; }
@@ -1769,12 +1724,8 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 
 /* 九、四角准星：缓慢呼吸，提示这是一层界面 */
 /* 外框不再整体呼吸：opacity 动画会把 1px 的角标一起做没 */
-.co-frame { animation: none; }
 
 /* 十、右侧进度轨：填充条带一点流动光 */
-.co-rail-track i {
-  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 55%, transparent);
-}
 
 /* 十一、首屏状态四连的数字：加载时依次亮起（不用计数脚本） */
 .co-hero-stats dd span { animation: coFadeUp .5s cubic-bezier(.16, 1, .3, 1) both; }
@@ -1784,7 +1735,6 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 
 /* 十二、全部动效在 reduced-motion 下停掉 */
 @media (prefers-reduced-motion: reduce) {
-  .co-h2-idx, .co-h2-ruler, .co-h2-ghost, .co-hero-band, .co-frame,
   .co-hero-stats dd span, .co-cta, .co-meter-bar i,
   .co-svc, .co-biz-item, .co-case, .co-std, .co-proof-row, .co-gauge-cell,
   .co-meter li, .co-step, .co-card, .mkt-steps li, .co-faq-item {
@@ -1870,3 +1820,109 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 .co-lib-more:hover { border-bottom-color: var(--accent); }
 /* 首页的案例网格比案例库页更松一点，和上下段落同节奏 */
 #proof .co-lib { margin-top: 4px; }
+
+/* ============================================================
+   颜色角色（2026-11-12，审计 P0-②）
+   每个颜色只承担一个语义，装饰性使用一律不写。
+   对应终末地颜色角色表的本地映射：
+     行动 / 选中 / 进度   → --role-action
+     量值与图表（有多少） → --role-data
+     警示 / 未开 / 超支   → --role-warn
+     完成 / 通过          → --role-done
+   ============================================================ */
+.co-page {
+  --role-action: #c8202a;
+  --role-action-hover: #a5151f;
+  --role-data: #3f81b5;
+  --role-warn: #e46f24;
+  --role-done: #2e8b57;
+}
+
+/* 行动：可点的东西 */
+.co-page .co-btn-solid,
+.co-page .btn-write { background: var(--role-action); border-color: var(--role-action); }
+.co-page .co-btn-solid:hover,
+.co-page .btn-write:hover { background: var(--role-action-hover); border-color: var(--role-action-hover); }
+.co-page a:hover,
+.co-page .co-note-link,
+.co-page .co-svc-link,
+.co-page .co-lib-more { color: var(--role-action); }
+
+/* 量值：数据条、进度、比率（表「有多少」，不表「能否点击」） */
+.co-page .co-meter-bar i { background-color: var(--role-data); }
+.co-page .co-gauge-v { color: var(--role-data); }
+
+/* 警示：未开、异常、超支 */
+.co-page .is-warn { color: var(--role-warn); }
+
+/* 完成：已交付、通过 */
+.co-page .co-case-status,
+.co-page .co-proof-result { color: var(--role-done); border-left-color: var(--role-done); }
+
+/* 章节编号不再斜切：斜切留给「机械/权限」类元素（外链、下载） */
+.co-page .co-h2-idx { transform: none; background: none; color: var(--role-action); padding: 0 4px; }
+
+/* ============================================================
+   六页结构差异化（2026-11-12，审计 P0-③）
+   每页一个主家族，不再共用「版头 + 卡片 + 收尾」同一副骨架：
+     首页       官网 KV + 作品拼版（保留）
+     /work      资源库（已做：分类计数 + 可调列网格）
+     /stack     数据简报：密集表格，无卡片
+     /business  目录：两列对照
+     /startup   价目页：表格为主
+     /contact   表单页：单列到底
+   ============================================================ */
+
+/* —— /stack：数据简报 —— */
+.co-page--stack .co-gauge {
+  border: 0; background: transparent; border-top: 1px solid var(--co-line-strong);
+}
+.co-page--stack .co-gauge-cell {
+  display: grid; grid-template-columns: 6.5em minmax(0, 8em) minmax(0, 1fr);
+  align-items: baseline; gap: 10px;
+  padding: 10px 0; border-right: 0; border-bottom: 1px solid var(--co-line);
+}
+.co-page--stack .co-gauge-cell::after { content: none; }
+.co-page--stack .co-gauge-cell dt { font-size: 0.625rem; letter-spacing: .16em; }
+.co-page--stack .co-gauge-v { font-size: 1.0625rem; }
+.co-page--stack .co-gauge-u { font-size: 0.625rem; }
+.co-page--stack .co-gauge-cell p { margin: 0; text-align: left; font-size: 0.8125rem; grid-column: 3; }
+
+.co-page--stack .co-meter { border: 0; background: transparent; border-top: 1px solid var(--co-line-strong); margin-top: 22px; }
+.co-page--stack .co-meter li {
+  padding: 9px 0; border-bottom: 1px solid var(--co-line);
+  grid-template-columns: minmax(0, 11em) minmax(0, 1fr) auto;
+}
+.co-page--stack .co-meter-bar { height: 6px; }
+.co-page--stack .co-spec { border: 0; background: transparent; border-top: 1px solid var(--co-line-strong); }
+.co-page--stack .co-spec th, .co-page--stack .co-spec td { padding: 11px 16px 11px 0; }
+
+/* —— /business：目录（两列对照，不做九宫格） —— */
+.co-page--business .co-cards { display: block; }
+.co-page--business .co-svc { border: 0; background: transparent; border-top: 1px solid var(--co-line-strong); padding: 0; }
+.co-page--business .co-svc-in {
+  padding: 20px 0; display: grid;
+  grid-template-columns: minmax(0, 14em) minmax(0, 1fr);
+  gap: 6px 24px; align-items: start;
+}
+.co-page--business .co-svc-in h3 { grid-column: 1; margin: 0; }
+.co-page--business .co-svc-in > p { grid-column: 2; margin: 0; }
+.co-page--business .co-biz-meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 6px 0 0; }
+.co-page--business .co-svc-link { grid-column: 1 / -1; margin-top: 4px; }
+
+/* —— /startup：价目页（表格为主，解释文字降为行，不删内容） —— */
+.co-page--startup .co-cards--3 { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.co-page--startup .co-svc { border: 0; background: transparent; border-top: 1px solid var(--co-line); }
+.co-page--startup .co-svc:first-child { border-top: 1px solid var(--co-line-strong); }
+.co-page--startup .co-svc-in { padding: 14px 0; display: grid; grid-template-columns: minmax(0, 13em) minmax(0, 1fr); gap: 4px 20px; }
+.co-page--startup .co-svc-in h3 { grid-column: 1; margin: 0; font-size: 0.9375rem; }
+.co-page--startup .co-svc-in > p { grid-column: 2; margin: 0; }
+.co-page--startup .co-svc-fit { grid-column: 2; margin: 0; padding: 0; border: 0; }
+.co-page--startup .co-standards { gap: 0; border-top: 0; }
+.co-page--startup .co-std { border-right: 0; padding: 12px 0; border-bottom: 1px solid var(--co-line); }
+.co-page--startup .co-faq { max-width: 46em; }
+
+/* —— /contact：单列到底 —— */
+.co-page--contact .co-grid-2 { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.co-page--contact .co-form { max-width: none; }
+.co-page--contact .co-form-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }

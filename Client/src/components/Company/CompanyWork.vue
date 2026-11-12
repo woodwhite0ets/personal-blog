@@ -1,6 +1,6 @@
 <template>
   <CompanyShell>
-    <div class="co-main">
+    <div class="co-main co-page--work">
       <CompanyMasthead
         title="案例库"
         :lead="`${cases.length} 个项目在生产环境运行，按类型筛。每个都写了问题、做法与结果。`"

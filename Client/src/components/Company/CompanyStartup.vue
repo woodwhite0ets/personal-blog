@@ -1,6 +1,6 @@
 <template>
   <CompanyShell>
-    <div class="co-main">
+    <div class="co-main co-page--startup">
       <CompanyMasthead
         title="初创版官网"
         lead="公司注册好了，产品也有了，缺一个能发出去的地址。这一档把「你在做什么」写在一页上，五个工作日上线，域名和代码都登记在你公司名下。"

@@ -1,6 +1,6 @@
 <template>
   <CompanyShell>
-    <div class="co-main">
+    <div class="co-main co-page--contact">
       <CompanyMasthead
         title="联系"
         lead="说清背景、目标和时间预期，一般一天内回。"
