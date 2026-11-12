@@ -54,14 +54,39 @@ function onScroll() {
   })
 }
 
+let io = null
+let counted = false
+
+function revealInit() {
+  const sel = '.co-svc, .co-std, .co-case, .co-biz-item, .co-gauge-cell, .co-meter li, .co-step, .co-card, .mkt-steps li, .co-faq-item, .co-proof-row, .co-board-tile, .co-metric, .co-h2'
+  const items = Array.from(document.querySelectorAll(sel))
+  if (!items.length) return
+  items.forEach((el) => el.classList.add('co-reveal'))
+
+  if (typeof IntersectionObserver === 'undefined') {
+    items.forEach((el) => el.classList.add('is-in'))
+    return
+  }
+  io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return
+      e.target.classList.add('is-in')
+      io.unobserve(e.target)
+    })
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
+  items.forEach((el) => io.observe(el))
+}
+
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('resize', onScroll, { passive: true })
   onScroll()
+  revealInit()
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
   window.removeEventListener('resize', onScroll)
   if (raf) cancelAnimationFrame(raf)
+  if (io) io.disconnect()
 })
 </script>
