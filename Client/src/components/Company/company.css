@@ -1430,3 +1430,126 @@
   .co-meter li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 6px; }
   .co-meter-bar { grid-column: 1 / -1; order: 3; }
 }
+
+/* ============================================================
+   鹰角式结构件 · 第三批（8 项）
+   1 页面四角准星（挂 body，绕开 .co-page 的 overflow 裁剪）
+   2 首屏斜切标题条
+   3 堆叠错位面板（叠放的文件感）
+   4 首屏极淡网格底纹
+   5 右侧竖排标签
+   6 切角按钮
+   7 案例图蓝图化
+   8 右侧滚动进度轨
+   ============================================================ */
+
+/* 1. 页面外框与四角准星：画在 body 上，不受 .co-page 裁剪影响 */
+body:has(.co-page)::before,
+body:has(.co-page)::after {
+  content: ""; position: fixed; z-index: 95; pointer-events: none;
+}
+body:has(.co-page)::before {
+  inset: 10px; border: 1px solid rgba(20, 22, 24, 0.14);
+}
+body:has(.co-page)::after {
+  inset: 6px; --t: var(--co-ink-strong, #0d0e0f);
+  background:
+    linear-gradient(var(--t), var(--t)) left top / 18px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) left top / 1px 18px no-repeat,
+    linear-gradient(var(--t), var(--t)) right top / 18px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) right top / 1px 18px no-repeat,
+    linear-gradient(var(--t), var(--t)) left bottom / 18px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) left bottom / 1px 18px no-repeat,
+    linear-gradient(var(--t), var(--t)) right bottom / 18px 1px no-repeat,
+    linear-gradient(var(--t), var(--t)) right bottom / 1px 18px no-repeat;
+}
+.co-page { outline: 0; }
+
+/* 2. 首屏标题：红色那半句改成斜切色块上的白字 */
+.co-title-key {
+  display: inline-block; position: relative; z-index: 0;
+  padding: 2px 12px 4px 10px; color: #ffffff;
+  transform: skewX(-8deg);
+}
+.co-title-key::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--accent);
+}
+
+/* 3. 堆叠错位面板：目录与表单后面错开 5px 再叠一张 */
+.co-cases, .co-form { position: relative; }
+.co-cases::after, .co-form::after {
+  content: ""; position: absolute; z-index: -1;
+  inset: 5px -5px -5px 5px;
+  border: 1px solid var(--co-line);
+  background: transparent;
+  pointer-events: none;
+}
+.co-main { isolation: isolate; }
+
+/* 4. 首屏网格底纹：24px 方格，极淡 */
+.co-hero-band {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(20,22,24,.05) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(20,22,24,.05) 0 1px, transparent 1px 24px);
+  background-position: 0 0;
+}
+
+/* 5 + 8. 右侧竖排标签与滚动进度轨 */
+.co-rail {
+  position: fixed; right: 14px; top: 50%; z-index: 130;
+  transform: translateY(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  pointer-events: none;
+}
+.co-rail-label {
+  writing-mode: vertical-rl; text-orientation: mixed;
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--text-faint);
+}
+.co-rail-track {
+  position: relative; width: 2px; height: 96px;
+  background: rgba(20, 22, 24, 0.14);
+}
+.co-rail-track i {
+  position: absolute; inset: 0; transform-origin: top center; transform: scaleY(0);
+  background: var(--accent);
+}
+@media (max-width: 1100px) { .co-rail { display: none; } }
+
+/* 6. 切角按钮：右上与左下各切一刀 */
+.co-btn, .co-btn-solid, .btn-write {
+  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
+}
+
+/* 7. 案例图蓝图化：去色 + 单色叠加 + 细网格 */
+.co-case-link :is(img, svg, .co-case-fig) {
+  filter: grayscale(1) contrast(1.08);
+}
+.co-case-link > *:first-child { position: relative; }
+.co-case-link > *:first-child::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(20,22,24,.12) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(90deg, rgba(20,22,24,.12) 0 1px, transparent 1px 8px);
+  mix-blend-mode: multiply; opacity: .55;
+}
+
+/* 页面外框：真实 fixed 节点（伪元素在 body 上不生效，改用壳内一层） */
+.co-frame {
+  position: fixed; inset: 10px; z-index: 130; pointer-events: none;
+  border: 1px solid rgba(20, 22, 24, 0.16);
+  --t: #0d0e0f;
+  /* 四角准星往里退 5px：贴着外框画会和边框线重合，看不见 */
+  background:
+    linear-gradient(var(--t), var(--t)) 5px 5px / 20px 2px no-repeat,
+    linear-gradient(var(--t), var(--t)) 5px 5px / 2px 20px no-repeat,
+    linear-gradient(var(--t), var(--t)) calc(100% - 5px) 5px / 20px 2px no-repeat,
+    linear-gradient(var(--t), var(--t)) calc(100% - 5px) 5px / 2px 20px no-repeat,
+    linear-gradient(var(--t), var(--t)) 5px calc(100% - 5px) / 20px 2px no-repeat,
+    linear-gradient(var(--t), var(--t)) 5px calc(100% - 5px) / 2px 20px no-repeat,
+    linear-gradient(var(--t), var(--t)) calc(100% - 5px) calc(100% - 5px) / 20px 2px no-repeat,
+    linear-gradient(var(--t), var(--t)) calc(100% - 5px) calc(100% - 5px) / 2px 20px no-repeat;
+}
+body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
+@media (max-width: 900px) { .co-rail { display: none; } }
