@@ -955,3 +955,41 @@
 .co-faq-item,
 .co-std { border-color: var(--co-line); }
 .co-badge { border-color: var(--co-line-strong); }
+
+/* ------------------------------------------------------------------
+   线与文字的间距（2026-11-12 晚）
+   一条 hairline 贴着文字，看起来像表格线而不是版面分隔；
+   这里把「线 → 文字」统一留出 13–18px，且每个位置改同一个量级，
+   免得出现有的地方松、有的地方紧。
+   ------------------------------------------------------------------ */
+
+/* 章节头的细线：原来按 baseline 对齐，等于压在字脚上；改成与标题垂直居中 */
+.co-h2-rule { align-self: center; }
+
+/* 行间线 */
+.co-aside-list li { padding: 15px 0; }
+.co-proof-row { padding: 17px 0; }
+
+/* 折叠问答：标题到线、答案到线都留出来 */
+.co-faq-item summary { padding: 18px 26px 17px 0; }
+.co-faq-item p { margin: 0 0 18px; }
+
+/* 表格：单元格上下各多 3px，表头与第一行之间多 3px */
+.mkt-table th { padding-bottom: 13px; }
+.mkt-table td { padding: 16px 16px 16px 0; }
+
+/* 卡片内的分隔线（「适合」那句上方的线） */
+.co-svc p.co-svc-fit { padding-top: 13px; }
+
+/* 对照两列的小标题：线与标题、标题与条目都拉开 */
+.mkt-compare h3 { margin: 0 0 18px; padding-bottom: 14px; }
+
+/* 三项标准：标签、数值、正文之间再松一点 */
+.co-std { gap: 8px; }
+.co-std p { margin: 6px 0 0; }
+
+@media (max-width: 620px) {
+  .co-aside-list li { padding: 13px 0; }
+  .mkt-table td { padding: 12px 0; }
+  .co-faq-item summary { padding: 16px 26px 15px 0; }
+}
