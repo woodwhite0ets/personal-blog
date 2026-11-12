@@ -902,3 +902,56 @@
 .co-metric-k { color: var(--text-faint); letter-spacing: .04em; }
 .co-aside-k { color: var(--text-faint); }
 .co-aside-v { font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------------
+   卡片收成「一条线」（2026-11-12 晚）
+   之前每张卡是双层画框：外层 4px 内衬 + 1px 边框 + 3% 底色，里面再套一张白卡；
+   步骤卡和对照卡还各带一层偏红的描边，hover 时再上浮 2px。
+   常驻的这几层框叠在一起，就是「一直有阴影和边框」的来源。
+   现在一张卡只有一条 hairline，颜色只有两档：静止 9%、悬停 16%。
+   ------------------------------------------------------------------ */
+.co-svc {
+  padding: 0;
+  border: 1px solid var(--co-line);
+  border-radius: var(--co-r-card);
+  background: var(--bg-elevated);
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+.co-svc-in {
+  padding: 26px 26px 24px;
+  border-radius: calc(var(--co-r-card) - 1px);
+  background: transparent;
+}
+.co-svc:hover { border-color: var(--co-line-strong); translate: none; box-shadow: none; }
+.co-svc-cta { background: color-mix(in srgb, var(--text) 2%, var(--bg-elevated)); }
+
+/* 四步卡：去掉上浮，边框与前一条同档 */
+.mkt-steps li {
+  border-color: var(--co-line);
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+.mkt-steps li:hover { translate: none; border-color: var(--co-line-strong); }
+
+/* 对照两列：把偏红的描边收成中性，底色只差 2% */
+.mkt-compare > div { border-color: var(--co-line); background: var(--bg-elevated); }
+.mkt-compare > div:first-child {
+  border-color: var(--co-line);
+  background: color-mix(in srgb, var(--text) 2%, var(--bg-elevated));
+}
+.mkt-compare > div:hover { border-color: var(--co-line-strong); }
+
+/* 表格行悬停回到中性底色（之前是 4% 红底） */
+.mkt-table tbody tr:hover { background: color-mix(in srgb, var(--text) 2.5%, transparent); }
+
+/* 结构线统一到同一个档位：静止 9%（--co-line）、结构 16%（--co-line-strong）。
+   之前这些分区线走的是全局 --border-strong（偏亮偏冷的灰），
+   和纸底并列时像一圈淡淡的「边框」；换成墨色混合后与卡片线同一族。 */
+.co-aside-list,
+.co-proof-list,
+.co-standards,
+.co-faq,
+.co-infra-facts { border-top-color: var(--co-line-strong); }
+.co-aside-list li,
+.co-faq-item,
+.co-std { border-color: var(--co-line); }
+.co-badge { border-color: var(--co-line-strong); }
