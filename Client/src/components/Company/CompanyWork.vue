@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <ul class="co-lib" :class="`co-lib--${cols}`">
+      <ul ref="libEl" class="co-lib" :class="`co-lib--${cols}`">
         <li v-for="p in shown" :key="p.slug">
           <router-link :to="`/work/${p.slug}`" class="co-lib-card">
             <span class="co-lib-thumb"><CaseFigure :slug="p.slug" size="md" /></span>
@@ -67,11 +67,15 @@
 // 案例库：按素材库的方式组织——分类带计数、排序、列数可调，一屏能看完。
 // 数据只在 projects.js 里，这里不复制任何项目文案。
 import { ref, computed } from 'vue'
+import { useAutoAnimate } from '@formkit/auto-animate/vue'
 import CompanyShell from './CompanyShell.vue'
 import CompanyMasthead from './CompanyMasthead.vue'
 import CompanyCta from './CompanyCta.vue'
 import CaseFigure from './CaseFigure.vue'
 import { projects } from '../../data/projects.js'
+
+// 筛选、排序、列数切换都会重排列表：交给 auto-animate 补间
+const [libEl] = useAutoAnimate({ duration: 200, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' })
 
 const cases = projects
 const filter = ref('全部')

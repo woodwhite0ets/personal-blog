@@ -131,7 +131,7 @@
           </div>
           <router-link class="co-lib-more" to="/work">全部案例 →</router-link>
         </div>
-        <ul class="co-lib co-lib--3">
+        <ul ref="libEl" class="co-lib co-lib--3">
           <li v-for="p in homeShown" :key="p.slug">
             <router-link :to="`/work/${p.slug}`" class="co-lib-card">
               <span class="co-lib-thumb"><CaseFigure :slug="p.slug" size="md" /></span>
@@ -257,6 +257,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useAutoAnimate } from '@formkit/auto-animate/vue'
 import CompanyShell from './CompanyShell.vue'
 import CompanySecHead from './CompanySecHead.vue'
 import CompanyCta from './CompanyCta.vue'
@@ -277,4 +278,8 @@ const homeShown = computed(() =>
   projects.filter((p) => homeFilter.value === '全部' || p.kind === homeFilter.value)
 )
 const caseCount = projects.length
+
+// 分类筛选会让卡片增删重排：交给 auto-animate 补间，避免列表整体瞬移
+// v0.10 的 API 是 useAutoAnimate(options) → [元素 ref, 开关]，不能把 ref 当第一个参数传
+const [libEl] = useAutoAnimate({ duration: 200, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' })
 </script>

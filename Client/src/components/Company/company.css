@@ -164,6 +164,7 @@
   color: var(--t-faint);
 }
 .co-note a { color: var(--t-ink); text-decoration: none; border-bottom: 1px solid var(--t-line-2); }
+.co-note a { transition: border-color var(--dur-hover) var(--ease-out); }
 .co-note a:hover { border-bottom-color: var(--t-signal); }
 
 /* 等宽小注记：全站元数据共用这一档 */
@@ -281,10 +282,10 @@
   border-radius: 0;
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%);
   transition: color var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out),
-    border-color var(--dur-hover) var(--ease-out);
+    border-color var(--dur-hover) var(--ease-out), scale 120ms var(--ease-out);
 }
 .co-btn:hover { border-color: var(--t-ink); background: rgba(12, 14, 16, 0.04); }
-.co-btn:active { translate: 0 1px; }
+.co-btn:active { scale: 0.985; }
 .co-btn:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 3px; }
 .co-btn-solid {
   background: var(--t-signal);
@@ -315,7 +316,9 @@
 }
 .co-link-arrow::after { content: "→"; color: var(--t-signal-ink); transition: translate var(--dur-hover) var(--ease-out); }
 .co-link-arrow:hover { color: var(--t-signal-ink); }
-.co-link-arrow:hover::after { translate: 4px 0; }
+@media (hover: hover) and (pointer: fine) {
+  .co-link-arrow:hover::after { translate: 4px 0; }
+}
 .co-link-arrow:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 3px; }
 
 /* ============================================================
@@ -521,6 +524,7 @@
 }
 .co-board-tile:hover { background: var(--t-panel-2); }
 .co-board-tile:hover .case-fig { border-color: var(--t-ink); }
+.co-board-name { transition: color var(--dur-hover) var(--ease-out); }
 .co-board-tile:hover .co-board-name { color: var(--t-ink); }
 .co-board-tile:focus-visible { outline: 2px solid var(--t-signal); outline-offset: -3px; }
 .co-board-tile .case-fig { width: 100%; }
@@ -630,7 +634,8 @@
   border-bottom: 1px solid var(--t-signal);
 }
 .co-svc-link::after { content: " →"; }
-.co-svc-link:hover { color: var(--t-signal-ink); }
+.co-svc-link { transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out); }
+.co-svc-link:hover { color: var(--t-signal-ink); border-bottom-color: var(--t-signal-ink); }
 .co-svc-cta .co-svc-in { background-color: var(--t-bg-deep); background-image: var(--t-hatch); }
 
 /* 业务线卡片里的 dl */
@@ -767,6 +772,10 @@
 .co-lib-chip:hover { color: var(--t-ink); border-color: var(--t-line-2); }
 .co-lib-chip.is-on { background: var(--t-ink); border-color: var(--t-ink); color: var(--t-bg); }
 .co-lib-chip:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 2px; }
+.co-lib-chip:active,
+.co-lib-toggle:active,
+.co-lib-col:active,
+.co-copy:active { scale: 0.97; }
 .co-lib-n {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -797,6 +806,8 @@
   border: 1px solid var(--t-line);
   border-radius: 0;
   cursor: pointer;
+  transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out),
+    background-color var(--dur-hover) var(--ease-out);
 }
 .co-lib-toggle:hover,
 .co-lib-col:hover { color: var(--t-ink); border-color: var(--t-line-2); }
@@ -996,6 +1007,7 @@
   white-space: nowrap;
   width: 1%;
 }
+.mkt-table tbody td { transition: background-color var(--dur-hover) var(--ease-out); }
 .mkt-table tbody tr:hover td { background: rgba(12, 14, 16, 0.025); }
 .mkt-table td:first-child { color: var(--t-ink); font-weight: 560; }
 .mkt-price {
@@ -1026,6 +1038,17 @@
   transition: background-color var(--dur-hover) var(--ease-out);
 }
 .co-faq-item[open] { background: var(--t-panel); box-shadow: inset 3px 0 0 var(--t-signal); }
+/* 展开/收起的高度补间：只在支持 interpolate-size 的浏览器上生效，
+   不支持时退回原生瞬时展开（键盘操作不受影响） */
+@supports (interpolate-size: allow-keywords) {
+  .co-faq-item { interpolate-size: allow-keywords; }
+  .co-faq-item::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition: block-size 180ms var(--ease-out), content-visibility 180ms allow-discrete;
+  }
+  .co-faq-item[open]::details-content { block-size: auto; }
+}
 .co-faq-item summary {
   display: flex;
   align-items: center;
@@ -1065,7 +1088,8 @@
   color: var(--t-muted);
 }
 .co-faq-link { color: var(--t-ink); text-decoration: none; border-bottom: 1px solid var(--t-signal); }
-.co-faq-link:hover { color: var(--t-signal-ink); }
+.co-faq-link { transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out); }
+.co-faq-link:hover { color: var(--t-signal-ink); border-bottom-color: var(--t-signal-ink); }
 
 /* ============================================================
    结尾面板（CTA）与副线（初创版官网）
@@ -1123,6 +1147,7 @@
 .co-cta-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0 0 10px; }
 .co-cta-mail { font-size: 0.8125rem; }
 .co-cta-mail {
+  transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
   font-family: var(--font-mono);
   letter-spacing: -0.01em;
   color: var(--t-ink-2);
@@ -1300,6 +1325,7 @@
   color: var(--t-ink);
   text-decoration: none;
 }
+.co-next-link { transition: color var(--dur-hover) var(--ease-out); }
 .co-next-link:hover { color: var(--t-signal-ink); }
 
 /* ============================================================
@@ -1485,6 +1511,7 @@
   border: 1px solid var(--t-line-2);
   border-radius: 0;
   cursor: pointer;
+  transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
 }
 .co-copy:hover { color: var(--t-ink); border-color: var(--t-ink); }
 .co-copy:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 2px; }
@@ -1555,7 +1582,9 @@
   transition: transform var(--dur-hover) var(--ease-out);
 }
 .co-foot-col a:hover { color: var(--t-ink); }
-.co-foot-col a:hover::after { transform: scaleX(1); }
+@media (hover: hover) and (pointer: fine) {
+  .co-foot-col a:hover::after { transform: scaleX(1); }
+}
 .co-foot-col a:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 2px; }
 
 /* ============================================================
@@ -1627,6 +1656,27 @@
    出场：只做一次性淡入上移，不做滚动视差
    ============================================================ */
 .co-reveal { opacity: 0; transform: translateY(12px); }
+/* 同一网格里的块按 45ms 交错入场（30–80ms 是标准区间），
+   只在入场那一次生效，不影响后续 hover */
+.co-cards > *:nth-child(2),
+.co-lib > li:nth-child(2),
+.mkt-steps > li:nth-child(2),
+.co-standards > *:nth-child(2),
+.co-gauge > *:nth-child(2) { transition-delay: 45ms; }
+.co-cards > *:nth-child(3),
+.co-lib > li:nth-child(3),
+.mkt-steps > li:nth-child(3),
+.co-standards > *:nth-child(3),
+.co-gauge > *:nth-child(3) { transition-delay: 90ms; }
+.co-cards > *:nth-child(4),
+.co-lib > li:nth-child(4),
+.mkt-steps > li:nth-child(4),
+.co-gauge > *:nth-child(4) { transition-delay: 135ms; }
+.co-cards > *:nth-child(5),
+.co-lib > li:nth-child(5) { transition-delay: 180ms; }
+.co-cards > *:nth-child(6),
+.co-lib > li:nth-child(6) { transition-delay: 225ms; }
+
 .co-reveal.is-in {
   opacity: 1;
   transform: none;
@@ -1634,9 +1684,51 @@
 }
 /* ?motion=on 时无视系统的「减少动态效果」，用来验证动效本身 */
 @media (prefers-reduced-motion: reduce) {
-  .co-reveal, .co-reveal.is-in { opacity: 1; transform: none; transition: none; }
+  .co-reveal, /* 同一网格里的块按 45ms 交错入场（30–80ms 是标准区间），
+   只在入场那一次生效，不影响后续 hover */
+.co-cards > *:nth-child(2),
+.co-lib > li:nth-child(2),
+.mkt-steps > li:nth-child(2),
+.co-standards > *:nth-child(2),
+.co-gauge > *:nth-child(2) { transition-delay: 45ms; }
+.co-cards > *:nth-child(3),
+.co-lib > li:nth-child(3),
+.mkt-steps > li:nth-child(3),
+.co-standards > *:nth-child(3),
+.co-gauge > *:nth-child(3) { transition-delay: 90ms; }
+.co-cards > *:nth-child(4),
+.co-lib > li:nth-child(4),
+.mkt-steps > li:nth-child(4),
+.co-gauge > *:nth-child(4) { transition-delay: 135ms; }
+.co-cards > *:nth-child(5),
+.co-lib > li:nth-child(5) { transition-delay: 180ms; }
+.co-cards > *:nth-child(6),
+.co-lib > li:nth-child(6) { transition-delay: 225ms; }
+
+.co-reveal.is-in { opacity: 1; transform: none; transition: none; }
   .co-page.force-motion .co-reveal { opacity: 0; transform: translateY(12px); }
-  .co-page.force-motion .co-reveal.is-in {
+  .co-page.force-motion /* 同一网格里的块按 45ms 交错入场（30–80ms 是标准区间），
+   只在入场那一次生效，不影响后续 hover */
+.co-cards > *:nth-child(2),
+.co-lib > li:nth-child(2),
+.mkt-steps > li:nth-child(2),
+.co-standards > *:nth-child(2),
+.co-gauge > *:nth-child(2) { transition-delay: 45ms; }
+.co-cards > *:nth-child(3),
+.co-lib > li:nth-child(3),
+.mkt-steps > li:nth-child(3),
+.co-standards > *:nth-child(3),
+.co-gauge > *:nth-child(3) { transition-delay: 90ms; }
+.co-cards > *:nth-child(4),
+.co-lib > li:nth-child(4),
+.mkt-steps > li:nth-child(4),
+.co-gauge > *:nth-child(4) { transition-delay: 135ms; }
+.co-cards > *:nth-child(5),
+.co-lib > li:nth-child(5) { transition-delay: 180ms; }
+.co-cards > *:nth-child(6),
+.co-lib > li:nth-child(6) { transition-delay: 225ms; }
+
+.co-reveal.is-in {
     opacity: 1;
     transform: none;
     transition: opacity 480ms var(--ease-out), transform 480ms var(--ease-out);
