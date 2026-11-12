@@ -5,7 +5,7 @@
       <HeroBackdrop session-key="company-hero-art" :art-count="5" />
       <div class="hero-in co-hero-in">
         <div class="co-hero-main">
-          <p class="co-badge"><span class="co-badge-dot" aria-hidden="true"></span>浙江乐清 · 可开票 · 一天内回信</p>
+          <p class="co-badge"><span class="co-badge-dot" aria-hidden="true"></span>厦门翔安 · 可开票 · 一天内回信</p>
           <h1 class="co-title">把 AI 接进你的业务，<br /><span class="co-title-key">交付到稳定运行</span></h1>
           <p class="co-lead">从需求、数据、模型到部署与巡检，全程一人负责。签合同、按阶段验收、可开票。</p>
           <div class="co-actions">

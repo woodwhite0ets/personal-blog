@@ -28,7 +28,7 @@
         <p class="co-foot-k">联系</p>
         <a href="mailto:1903784785@qq.com">1903784785@qq.com</a>
         <a href="https://github.com/woodwhite0ets" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <span>浙江 · 乐清</span>
+        <span>厦门 · 翔安</span>
         <span>可开票</span>
       </nav>
     </div>
