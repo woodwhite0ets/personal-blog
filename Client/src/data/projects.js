@@ -6,6 +6,7 @@
 export const projects = [
   {
     slug: 'charging-map',
+    kind: '数据平台',
     result: '区域筛选从切一次卡两秒降到毫秒级；10 万+ 条数据在线',
     name: '乐清市充电桩分布图',
     subtitle: '从单体 SQLite 到 Docker + PostGIS 的检定监管系统',
@@ -34,6 +35,7 @@ export const projects = [
   },
   {
     slug: 'workstation',
+    kind: '基础设施',
     result: '7×24 连续运行，95 天未重启',
     name: '个人 AI 工作站',
     subtitle: '一台旧服务器上的模型、检索与工具链',
@@ -59,6 +61,7 @@ export const projects = [
   },
   {
     slug: 'ai-daily',
+    kind: '自动化',
     result: '每天 12 条，中文介绍由本地模型生成，无需外部 API',
     name: 'AI 项目榜',
     subtitle: '每天自己更新的 GitHub AI 榜单',
@@ -84,6 +87,7 @@ export const projects = [
   },
   {
     slug: 'notes',
+    kind: '知识库',
     result: '52 条结论，带状态与日期，可按主题与时间线检索',
     name: '笔记（知识库）',
     subtitle: '让 AI 用得顺手的结论库，顺便公开成页面',
@@ -109,6 +113,7 @@ export const projects = [
   },
   {
     slug: 'blog',
+    kind: '网站',
     result: '560 条工具库、每日榜单与文章自动更新',
     name: 'woodwhite@blog',
     subtitle: '这个站点本身：博客 + 论坛 + 后台',

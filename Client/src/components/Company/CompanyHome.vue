@@ -117,22 +117,41 @@
         </div>
       </section>
 
-      <!-- 案例证据 -->
+      <!-- 案例证据：按素材库的方式组织——分类带计数，一屏看完 -->
       <section id="proof" class="co-sec">
         <CompanySecHead title="做过的几个" index="03" latin="PROOF" />
-        <ul class="co-proof-list">
-          <li v-for="c in proofCases" :key="c.slug">
-            <router-link :to="`/work/${c.slug}`" class="co-proof-row">
-              <CaseFigure :slug="c.slug" size="sm" />
-              <span class="co-proof-name">{{ c.name }}</span>
-              <span class="co-proof-sub">{{ c.subtitle }}</span>
-              <span class="co-proof-result">{{ c.result }}</span>
-              <span class="co-proof-period">{{ c.period }}</span>
-              <span class="co-proof-arrow" aria-hidden="true">→</span>
+        <div class="co-lib-bar">
+          <div class="co-lib-chips">
+            <button
+              v-for="c in homeChips"
+              :key="c.kind"
+              class="co-lib-chip"
+              :class="{ 'is-on': homeFilter === c.kind }"
+              :aria-pressed="homeFilter === c.kind"
+              @click="homeFilter = c.kind"
+            >
+              {{ c.kind }}<span class="co-lib-n">{{ c.n }}</span>
+            </button>
+          </div>
+          <router-link class="co-lib-more" to="/work">全部案例 →</router-link>
+        </div>
+        <ul class="co-lib co-lib--3">
+          <li v-for="p in homeShown" :key="p.slug">
+            <router-link :to="`/work/${p.slug}`" class="co-lib-card">
+              <span class="co-lib-thumb"><CaseFigure :slug="p.slug" size="md" /></span>
+              <span class="co-lib-body">
+                <span class="co-lib-top">
+                  <span class="co-lib-kind">{{ p.kind }}</span>
+                  <span class="co-lib-period">{{ p.period }}</span>
+                </span>
+                <span class="co-lib-name">{{ p.name }}</span>
+                <span class="co-lib-sub">{{ p.subtitle }}</span>
+                <span class="co-lib-result">{{ p.result }}</span>
+              </span>
             </router-link>
           </li>
         </ul>
-        <p class="co-note">{{ caseCount }} 个项目在生产环境运行，每个都写了问题、做法和结果。<router-link to="/work" class="co-note-link">全部案例</router-link></p>
+        <p class="co-note">{{ caseCount }} 个项目在生产环境运行，每个都写了问题、做法和结果。</p>
       </section>
 
       <!-- 03 为什么这样交付 -->
@@ -225,7 +244,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import HeroBackdrop from '../common/HeroBackdrop.vue'
 import CompanyShell from './CompanyShell.vue'
 import CompanySecHead from './CompanySecHead.vue'
@@ -236,6 +255,15 @@ import { projects } from '../../data/projects.js'
 
 // 首页只放三条证据，其余去 /work；数量一律从数据源算，别在文案里写死
 const proofCases = projects.slice(0, 3)
+const homeFilter = ref('全部')
+const homeChips = computed(() => {
+  const map = new Map()
+  projects.forEach((p) => map.set(p.kind || '其他', (map.get(p.kind || '其他') || 0) + 1))
+  return [{ kind: '全部', n: projects.length }, ...[...map].map(([kind, n]) => ({ kind, n }))]
+})
+const homeShown = computed(() =>
+  projects.filter((p) => homeFilter.value === '全部' || p.kind === homeFilter.value)
+)
 const caseCount = projects.length
 
 // ====== 指标带：进入视口时从 0 滚到目标值 ======
