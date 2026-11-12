@@ -1880,3 +1880,16 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
 .co-page.force-motion .co-hero-band::before { animation: coScan 7s cubic-bezier(.4, 0, .6, 1) infinite !important; }
 .co-page.force-motion .co-h2-idx { animation: coWipeIn .5s cubic-bezier(.16,1,.3,1) both !important; }
 .co-page.force-motion .co-h2-ruler { animation: coLineGrow .6s cubic-bezier(.16,1,.3,1) both .12s !important; }
+
+/* 幽灵数字改成「行内页码」：
+   之前是 absolute + clamp(56px, 8vw, 120px)，字号远大于标题行高，
+   直接压到下一段正文上。现在它回到流内，站在章节行最右端当页码，
+   尺寸只比标题大一点，透明度也降下来。 */
+.co-h2-ghost {
+  position: static; transform: none; margin-left: 10px;
+  font-family: var(--font-mono); font-weight: 600;
+  font-size: clamp(0.875rem, 1.1vw, 1rem); line-height: 1;
+  letter-spacing: 0.08em; color: var(--text-faint); opacity: .75;
+  align-self: center; pointer-events: none; user-select: none;
+}
+@media (max-width: 900px) { .co-h2-ghost { display: none; } }
