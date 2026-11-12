@@ -7,7 +7,7 @@
         <div class="co-hero-main">
           <p class="co-badge"><span class="co-badge-dot" aria-hidden="true"></span>厦门翔安 · 可开票 · 一天内回信</p>
           <h1 class="co-title">把 AI 接进你的业务，<br /><span class="co-title-key">交付到稳定运行</span></h1>
-          <p class="co-lead">从需求、数据、模型到部署与巡检，全程一人负责。签合同、按阶段验收、可开票。</p>
+          <p class="co-lead">从需求到上线后的巡检，都由同一个人负责。签合同，按阶段验收，可以开票。</p>
           <div class="co-actions">
             <router-link class="co-btn co-btn-solid" to="/work">看 {{ caseCount }} 个案例</router-link>
             <a class="co-btn" href="mailto:1903784785@qq.com">项目咨询</a>
@@ -63,14 +63,14 @@
         <div class="co-cards">
           <article class="co-svc"><div class="co-svc-in paper-field">
             <h3>知识库与检索</h3>
-            <p>内部文档问答、客服 FAQ、资料检索。</p>
-            <p class="co-svc-fit">适合：文档已经有几百页以上、客服答复需要给出处，现在靠人翻或靠一个通用大模型硬猜。</p>
+            <p>内部文档问答和客服答疑，答案带出处。</p>
+            <p class="co-svc-fit">适合：文档有几百页以上，客服答一个问题的依据要能说出来。</p>
             <p class="co-svc-meta">交付 · 检索服务 + 评测集 + 部署</p>
           </div></article>
           <article class="co-svc"><div class="co-svc-in paper-field">
             <h3>模型接入</h3>
-            <p>业务系统里加对话、抽取、分类。</p>
-            <p class="co-svc-fit">适合：系统已经在跑，想加 AI 能力但不想重做架构；预算按量浮动、需要能随时切模型。</p>
+            <p>在现有系统里加对话和抽取。</p>
+            <p class="co-svc-fit">适合：系统已经在跑，不想重做架构；调用量会涨，模型要能换。</p>
             <p class="co-svc-meta">交付 · 接口层 + 提示与工具 + 灰度</p>
           </div></article>
           <article class="co-svc"><div class="co-svc-in paper-field">
@@ -80,12 +80,12 @@
           </div></article>
           <article class="co-svc"><div class="co-svc-in paper-field">
             <h3>自动化流程</h3>
-            <p>采集清洗、定时同步、健康巡检。</p>
+            <p>抓取清洗、定时同步和巡检。</p>
             <p class="co-svc-meta">交付 · 任务编排 + 告警 + 运行记录</p>
           </div></article>
           <article class="co-svc"><div class="co-svc-in paper-field">
             <h3>全栈业务系统</h3>
-            <p>带账号权限、后台、报表的站点。</p>
+            <p>带账号、后台和报表的站点。</p>
             <p class="co-svc-meta">交付 · 前端 + 接口 + 数据库 + 后台</p>
           </div></article>
           <article class="co-svc co-svc-cta"><div class="co-svc-in paper-field">
@@ -99,22 +99,22 @@
       <!-- 02 交付标准 -->
       <section id="standard" class="co-sec co-sec--band">
         <CompanySecHead title="三项交付标准" />
-        <p class="co-sec-lead">每个项目都按这三条验收，写进合同，不是口头承诺。</p>
+        <p class="co-sec-lead">每个项目都按这三条验收，写进合同。</p>
         <div class="co-standards">
           <div class="co-std">
             <span class="co-std-k">可运行 · RUNNABLE</span>
             <span class="co-std-v">有地址</span>
-            <p>每次交付都是一个能打开的地址，不是一段演示视频。</p>
+            <p>每次交付都给一个能打开的地址。</p>
           </div>
           <div class="co-std">
             <span class="co-std-k">可验收 · ACCEPTABLE</span>
             <span class="co-std-v">有产物</span>
-            <p>每阶段有产物清单与验收标准，也写清这次不做什么。</p>
+            <p>每阶段有产物和验收标准，也写清这次不做什么。</p>
           </div>
           <div class="co-std">
             <span class="co-std-k">可接手 · HANDOVER</span>
             <span class="co-std-v">有手册</span>
-            <p>代码、部署脚本、监控与运行手册一起交，能自己维护。</p>
+            <p>代码、部署脚本和运行手册一起交，能自己维护。</p>
           </div>
         </div>
       </section>
@@ -134,7 +134,7 @@
             </router-link>
           </li>
         </ul>
-        <p class="co-note">共 {{ caseCount }} 个项目在生产环境运行，每个都写清问题、做法与结果。<router-link to="/work" class="co-note-link">全部案例</router-link></p>
+        <p class="co-note">共 {{ caseCount }} 个项目在生产环境运行。每个都写了问题、做法和结果。<router-link to="/work" class="co-note-link">全部案例</router-link></p>
       </section>
 
       <!-- 03 为什么这样交付 -->
@@ -150,10 +150,10 @@
       <section id="process" class="co-sec">
         <CompanySecHead title="怎么开始" />
         <ol class="mkt-steps">
-          <li class="paper-field"><span>第 1 步</span><h3>聊一次</h3><p>背景、目标、时间点。不收费，需求不清晰也可以先聊。</p></li>
+          <li class="paper-field"><span>第 1 步</span><h3>聊一次</h3><p>说说背景和你想解决的事。不收费，想不清楚也可以先聊。</p></li>
           <li class="paper-field"><span>第 2 步</span><h3>给方案与报价</h3><p>拆成阶段，每段有产物和验收标准，写清不做什么。</p></li>
           <li class="paper-field"><span>第 3 步</span><h3>按阶段做</h3><p>每阶段可运行、可验收，改完当天可发。</p></li>
-          <li class="paper-field"><span>第 4 步</span><h3>交付与接手</h3><p>代码、部署、监控、运行手册，能自己维护。</p></li>
+          <li class="paper-field"><span>第 4 步</span><h3>交付与接手</h3><p>代码、部署和运行手册一起交，能自己维护。</p></li>
         </ol>
       </section>
 
@@ -178,7 +178,7 @@
         <aside id="startup-hint" class="co-sideline" aria-labelledby="sideline-title">
           <div class="co-sideline-copy">
             <h3 id="sideline-title" class="co-sideline-title">初创版官网</h3>
-            <p class="co-sideline-lead">给刚注册、刚出产品的团队：一版把「你在做什么」讲清楚的官网。范围与交期固定，域名、托管和代码都在客户名下——上面三档做的是能长期运行的系统，两者分开计价。</p>
+            <p class="co-sideline-lead">公司刚注册、产品刚出来，先要一个能发出去的地址。这一档固定范围和交期，域名和代码都登记在客户名下。</p>
             <p class="co-sideline-fine">按页数与产品数量分档；在校创办的公司另有价目。</p>
           </div>
           <router-link class="co-sideline-go" to="/business/startup">看初创版官网</router-link>
@@ -199,7 +199,7 @@
           </details>
           <details class="co-faq-item">
             <summary>交付后我自己能维护吗？</summary>
-            <p>能。代码、部署脚本、监控配置和运行手册一起移交，交付后两周内答疑；之后按次或按月都行。验收方式见 <router-link to="/#standard" class="co-faq-link">三项交付标准</router-link>。</p>
+            <p>能。代码、部署脚本和运行手册一起移交，交付后两周内答疑；之后按次或按月都行。验收方式见 <router-link to="/#standard" class="co-faq-link">三项交付标准</router-link>。</p>
           </details>
           <details class="co-faq-item">
             <summary>多快能开始？</summary>
@@ -207,7 +207,7 @@
           </details>
           <details class="co-faq-item">
             <summary>初创版官网和上面的定制项目是一回事吗？</summary>
-            <p>不是。初创版做的是门面，范围与交期固定，域名与代码归你；上面的定制项目按范围算，从 3 万起，做的是能长期运行的系统。两边计价分开，<router-link to="/business/startup" class="co-faq-link">初创版的档位写在这里</router-link>。</p>
+            <p>定制项目按范围算，从 3 万起，做长期跑的系统。初创版做门面，范围和交期固定。两边分开报价，<router-link to="/business/startup" class="co-faq-link">初创版的档位写在这里</router-link>。</p>
           </details>
           <details class="co-faq-item">
             <summary>什么情况我不接？</summary>
