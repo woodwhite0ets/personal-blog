@@ -55,3 +55,8 @@ Client/dist/
 
 # 本地 serena 工具缓存
 .serena/
+
+# 设计/验收过程文件（截图与报告，不进仓库）
+.oil-ui/
+.taste-skill/
+Client/.taste-skill/

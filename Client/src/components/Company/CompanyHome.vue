@@ -1,26 +1,34 @@
 <template>
   <CompanyShell>
-    <!-- 首屏：与博客同一套「印在纸上的画」背景 + 左文 + 右交付清单 -->
-    <section class="hero-band co-hero-band">
-      <HeroBackdrop session-key="company-hero-art" :art-count="5" />
-      <div class="hero-in co-hero-in">
+    <!-- 首屏：HUD 行 + 左文案 + 右读数面板 + 案例拼版 -->
+    <section class="co-hero-band">
+      <div class="co-hero-in">
+        <div class="co-hud">
+          <span class="co-hud-l">
+            <span class="co-badge-dot" aria-hidden="true"></span>厦门翔安 · 可开票 · 一天内回信
+          </span>
+          <span class="co-hud-r">
+            <b>木白 / WDW</b>
+            <i>AI SYSTEMS · 自建推理 · 接单中</i>
+          </span>
+        </div>
+
         <div class="co-hero-main">
-          <p class="co-badge"><span class="co-badge-dot" aria-hidden="true"></span>厦门翔安 · 可开票 · 一天内回信</p>
           <h1 class="co-title">给已经在跑的业务加 AI 能力</h1>
           <p class="co-lead">知识库检索、模型接入、本地推理与带后台的业务系统。从需求做到上线后的巡检，签合同，按阶段验收。</p>
           <div class="co-actions">
             <a class="co-btn co-btn-solid" href="mailto:1903784785@qq.com">询价</a>
-            <router-link class="co-btn" to="/work">看案例</router-link>
+            <router-link class="co-link-arrow" to="/#pricing">看价格与交期</router-link>
+            <router-link class="co-link-arrow" to="/work">看案例</router-link>
           </div>
         </div>
 
         <HeroStatus />
 
-
-        <!-- 作品即门面：五张真实案例图的拼版，不放大字 -->
+        <!-- 作品即门面：三条证据 + 索引格，一行四格；其余案例都在 /work -->
         <div class="co-hero-board">
           <router-link
-            v-for="c in projects"
+            v-for="c in proofCases"
             :key="c.slug"
             :to="`/work/${c.slug}`"
             class="co-board-tile"
@@ -32,26 +40,17 @@
             </span>
           </router-link>
           <router-link to="/work" class="co-board-tile co-board-more">
-            <span class="co-board-more-v">{{ caseCount }}</span>
+            <span class="co-board-more-v">{{ caseCount }}<i>个项目</i></span>
             <span class="co-board-meta">
               <span class="co-board-name">全部案例</span>
-              <span class="co-board-period">每个都写了结果</span>
+              <span class="co-board-period">按类型筛选</span>
             </span>
           </router-link>
         </div>
-        <ol class="co-quote" aria-label="合作方式与起步价">
-          <li><span class="co-quote-k">01 诊断</span><span class="co-quote-v">1,200 起</span><span class="co-quote-n">两三天给结论</span></li>
-          <li><span class="co-quote-k">02 定制</span><span class="co-quote-v">3 万起</span><span class="co-quote-n">按阶段验收</span></li>
-          <li><span class="co-quote-k">03 官网</span><span class="co-quote-v">699 起</span><span class="co-quote-n">5–10 个工作日</span></li>
-          <li><span class="co-quote-k">交期</span><span class="co-quote-v">5–10 天</span><span class="co-quote-n">材料齐起算</span></li>
-          <li class="co-quote--cta"><a href="mailto:1903784785@qq.com">发需求单 →</a></li>
-        </ol>
       </div>
     </section>
 
     <div class="co-main co-page--home">
-
-
       <!-- 01 能接的活 -->
       <section id="scope" class="co-sec">
         <CompanySecHead title="能接的活" index="01" latin="SCOPE" />
@@ -91,7 +90,7 @@
         </div>
       </section>
 
-      <!-- 02 交付标准 -->
+      <!-- 02 三项交付标准 -->
       <section id="standard" class="co-sec co-sec--band lab-dark">
         <CompanySecHead title="三项交付标准" index="02" latin="STANDARD" />
         <p class="co-sec-lead">每个项目都按这三条验收，写进合同。</p>
@@ -114,7 +113,7 @@
         </div>
       </section>
 
-      <!-- 案例证据：按素材库的方式组织——分类带计数，一屏看完 -->
+      <!-- 03 做过的几个 -->
       <section id="proof" class="co-sec">
         <CompanySecHead title="做过的几个" index="03" latin="PROOF" />
         <div class="co-lib-bar">
@@ -160,7 +159,7 @@
         <p class="co-note">{{ caseCount }} 个项目在生产环境运行，每个都写了问题、做法和结果。</p>
       </section>
 
-      <!-- 03 为什么这样交付 -->
+      <!-- 04 为什么这样交付 -->
       <section class="co-sec co-sec--band">
         <CompanySecHead title="为什么这样交付" index="04" latin="WHY" />
         <div class="mkt-compare">
@@ -169,7 +168,7 @@
         </div>
       </section>
 
-      <!-- 04 怎么开始 -->
+      <!-- 05 怎么开始 -->
       <section id="process" class="co-sec">
         <CompanySecHead title="怎么开始" index="05" latin="PROCESS" />
         <ol class="mkt-steps">
@@ -180,9 +179,10 @@
         </ol>
       </section>
 
-      <!-- 05 合作方式 -->
+      <!-- 06 合作方式 -->
       <section id="pricing" class="co-sec co-sec--band">
         <CompanySecHead title="合作方式" index="06" latin="TERMS" />
+
         <table class="mkt-table">
           <thead><tr><th>方式</th><th>适合</th><th>怎么算</th><th>起步</th></tr></thead>
           <tbody>
@@ -196,6 +196,11 @@
         </table>
         <p class="co-note">{{ pricingNote }}</p>
 
+        <div class="co-actions">
+          <a class="co-btn co-btn-solid" href="mailto:1903784785@qq.com">发需求单</a>
+          <router-link class="co-link-arrow" to="/contact">先聊一次</router-link>
+        </div>
+
         <!-- 初创版官网：与上面的定制线分开计价，所以不并进表格，也不进 pricing.js。
              首页只做指向（不放价目），细节与档位在 /startup；微信转发直接给 /#startup-hint -->
         <aside id="startup-hint" class="co-sideline" aria-labelledby="sideline-title">
@@ -208,7 +213,7 @@
         </aside>
       </section>
 
-      <!-- 06 常见问题 -->
+      <!-- 07 常见问题 -->
       <section id="faq" class="co-sec">
         <CompanySecHead title="常见问题" index="07" latin="FAQ" />
         <div class="co-faq">
@@ -239,6 +244,7 @@
         </div>
       </section>
 
+
       <!-- CTA -->
       <CompanyCta
         title="说说你在做什么，我给方案和报价"
@@ -250,8 +256,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import HeroBackdrop from '../common/HeroBackdrop.vue'
+import { ref, computed } from 'vue'
 import CompanyShell from './CompanyShell.vue'
 import CompanySecHead from './CompanySecHead.vue'
 import CompanyCta from './CompanyCta.vue'
@@ -272,54 +277,4 @@ const homeShown = computed(() =>
   projects.filter((p) => homeFilter.value === '全部' || p.kind === homeFilter.value)
 )
 const caseCount = projects.length
-
-// ====== 指标带：进入视口时从 0 滚到目标值 ======
-const metrics = [
-  { value: caseCount, suffix: '', label: '已交付项目' },
-  { value: 10, suffix: ' 万+', label: '生产环境数据条数' },
-  { value: 7, suffix: '×24', label: '自建工作站在线' },
-  { value: 1, suffix: ' 天', label: '首次回信' },
-]
-const shown = ref(metrics.map(() => 0))
-const metricsRef = ref(null)
-let io = null
-let raf = 0
-let settleTimer = 0
-
-const settle = () => { shown.value = metrics.map((m) => m.value) }
-
-function runCountUp(duration = 1100) {
-  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (calm) { settle(); return }
-  const t0 = performance.now()
-  const tick = (now) => {
-    // rAF 的时间戳可能略早于调度时取的 performance.now()，p 必须夹在 [0,1]，否则会算出负数
-    const p = Math.min(1, Math.max(0, (now - t0) / duration))
-    const eased = 1 - Math.pow(1 - p, 3) // easeOutCubic
-    shown.value = metrics.map((m) => Math.round(m.value * eased))
-    if (p < 1) raf = requestAnimationFrame(tick)
-  }
-  raf = requestAnimationFrame(tick)
-  // 兜底：rAF 被节流（后台标签页 / 省电模式）时，动画可能停在 0，到点直接落定终值
-  settleTimer = window.setTimeout(settle, duration + 260)
-}
-
-onMounted(() => {
-  if (typeof IntersectionObserver === 'undefined') { runCountUp(); return }
-  io = new IntersectionObserver((entries) => {
-    if (entries.some((e) => e.isIntersecting)) {
-      runCountUp()
-      io.disconnect()
-      io = null
-    }
-  }, { threshold: 0.4 })
-  if (metricsRef.value) io.observe(metricsRef.value)
-  else runCountUp()
-})
-
-onUnmounted(() => {
-  if (io) io.disconnect()
-  if (raf) cancelAnimationFrame(raf)
-  if (settleTimer) clearTimeout(settleTimer)
-})
 </script>

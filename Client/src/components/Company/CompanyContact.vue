@@ -26,16 +26,16 @@
           <div class="co-form-row">
             <label class="co-field">
               <span class="co-field-k">称呼</span>
-              <input v-model="form.name" type="text" name="name" autocomplete="name" maxlength="40" placeholder="怎么称呼你……" required />
+              <input v-model="form.name" type="text" name="name" autocomplete="name" maxlength="40" placeholder="怎么称呼你……" required :aria-invalid="invalid || undefined" aria-describedby="co-form-status" />
             </label>
             <label class="co-field">
               <span class="co-field-k">联系方式</span>
-              <input v-model="form.contact" type="text" name="contact" autocomplete="email" maxlength="80" placeholder="邮箱或微信号……" required />
+              <input v-model="form.contact" type="text" name="contact" autocomplete="email" maxlength="80" placeholder="邮箱或微信号……" required :aria-invalid="invalid || undefined" aria-describedby="co-form-status" />
             </label>
           </div>
           <label class="co-field">
             <span class="co-field-k">需求</span>
-            <textarea v-model="form.message" name="message" rows="4" maxlength="2000" placeholder="想做什么、现在卡在哪、希望什么时候上线……" required></textarea>
+            <textarea v-model="form.message" name="message" rows="4" maxlength="2000" placeholder="想做什么、现在卡在哪、希望什么时候上线……" required :aria-invalid="invalid || undefined" aria-describedby="co-form-status"></textarea>
           </label>
           <!-- 蜜罐：正常用户看不到 -->
           <input v-model="form.website" class="co-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
@@ -45,7 +45,7 @@
             </button>
             <span class="co-form-hint">一般一天内回信；不想填表也可以直接发邮件。</span>
           </div>
-          <p class="co-form-status" role="status" aria-live="polite">{{ statusText }}</p>
+          <p id="co-form-status" class="co-form-status" role="status" aria-live="polite">{{ statusText }}</p>
         </form>
       </section>
 
@@ -95,6 +95,9 @@ import CompanyCta from './CompanyCta.vue'
 const form = ref({ name: '', contact: '', message: '', website: '' })
 const state = ref('idle')
 const formError = ref('')
+
+// 出错时把三个字段标成 invalid，读屏会念出状态行的原因（aria-describedby 指过去）
+const invalid = computed(() => state.value === 'error')
 
 const statusText = computed(() => {
   if (state.value === 'sending') return ''

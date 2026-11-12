@@ -11,51 +11,8 @@
         ]"
       />
 
-      <section class="co-sec">
-        <CompanySecHead title="这一版解决什么" index="01" latin="WHAT IT SOLVES" />
-        <div class="co-cards co-cards--3">
-          <article class="co-svc"><div class="co-svc-in paper-field">
-            <h3>一句话就能看懂</h3>
-            <p>做什么，给谁做，怎么联系。</p>
-            <p class="co-svc-fit">别人第一次搜你公司名字，落在这页上。</p>
-          </div></article>
-          <article class="co-svc"><div class="co-svc-in paper-field">
-            <h3>产品有地方放</h3>
-            <p>每个产品一张截图加一句话，能点进链接。</p>
-            <p class="co-svc-fit">以后上新的产品也放得下。</p>
-          </div></article>
-          <article class="co-svc"><div class="co-svc-in paper-field">
-            <h3>地址是你自己的</h3>
-            <p>域名和托管账户登记在你公司名下。</p>
-            <p class="co-svc-fit">以后自己维护，或者换人接手，都不用经过我们。</p>
-          </div></article>
-        </div>
-      </section>
-
-      <section class="co-sec co-sec--band">
-        <CompanySecHead title="一次交付包含什么" index="02" latin="DELIVERABLES" />
-        <p class="co-sec-lead">写进服务确认单，按同一份清单验收。</p>
-        <div class="co-standards">
-          <div class="co-std">
-            <span class="co-std-k">可用 · LIVE</span>
-            <span class="co-std-v">一个地址</span>
-            <p>站跑在你自己域名上，手机和电脑都过一遍。转发到微信有预览卡和图标。</p>
-          </div>
-          <div class="co-std">
-            <span class="co-std-k">可改 · EDITABLE</span>
-            <span class="co-std-v">内容与代码</span>
-            <p>完整档连源码一起交。单页档只交站，改字换图找我们。</p>
-          </div>
-          <div class="co-std">
-            <span class="co-std-k">有售后 · AFTERCARE</span>
-            <span class="co-std-v">30 天</span>
-            <p>30 天内站挂了或者要改字换图，免费修。之后按次，或者买一年八次。</p>
-          </div>
-        </div>
-      </section>
-
       <section id="tiers" class="co-sec">
-        <CompanySecHead title="三档" index="03" latin="TIERS" />
+        <CompanySecHead title="三档" index="01" latin="TIERS" />
         <table class="mkt-table">
           <thead><tr><th>档</th><th>适合</th><th>包含</th><th>起步</th></tr></thead>
           <tbody>
@@ -80,6 +37,49 @@
           </tbody>
         </table>
         <p class="co-note">在校创办的公司另有价目，写信说一下。域名和服务器的钱你自己出，不在报价里。文案和拍图不含。</p>
+      </section>
+
+      <section class="co-sec co-sec--band">
+        <CompanySecHead title="这一版解决什么" index="02" latin="WHAT IT SOLVES" />
+        <div class="co-cards co-cards--3">
+          <article class="co-svc"><div class="co-svc-in paper-field">
+            <h3>一句话就能看懂</h3>
+            <p>做什么，给谁做，怎么联系。</p>
+            <p class="co-svc-fit">别人第一次搜你公司名字，落在这页上。</p>
+          </div></article>
+          <article class="co-svc"><div class="co-svc-in paper-field">
+            <h3>产品有地方放</h3>
+            <p>每个产品一张截图加一句话，能点进链接。</p>
+            <p class="co-svc-fit">以后上新的产品也放得下。</p>
+          </div></article>
+          <article class="co-svc"><div class="co-svc-in paper-field">
+            <h3>地址是你自己的</h3>
+            <p>域名和托管账户登记在你公司名下。</p>
+            <p class="co-svc-fit">以后自己维护，或者换人接手，都不用经过我们。</p>
+          </div></article>
+        </div>
+      </section>
+
+      <section class="co-sec">
+        <CompanySecHead title="一次交付包含什么" index="03" latin="DELIVERABLES" />
+        <p class="co-sec-lead">写进服务确认单，按同一份清单验收。</p>
+        <div class="co-standards">
+          <div class="co-std">
+            <span class="co-std-k">可用 · LIVE</span>
+            <span class="co-std-v">一个地址</span>
+            <p>站跑在你自己域名上，手机和电脑都过一遍。转发到微信有预览卡和图标。</p>
+          </div>
+          <div class="co-std">
+            <span class="co-std-k">可改 · EDITABLE</span>
+            <span class="co-std-v">内容与代码</span>
+            <p>完整档连源码一起交。单页档只交站，改字换图找我们。</p>
+          </div>
+          <div class="co-std">
+            <span class="co-std-k">有售后 · AFTERCARE</span>
+            <span class="co-std-v">30 天</span>
+            <p>30 天内站挂了或者要改字换图，免费修。之后按次，或者买一年八次。</p>
+          </div>
+        </div>
       </section>
 
       <section class="co-sec co-sec--band">

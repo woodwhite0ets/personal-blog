@@ -1,6 +1,7 @@
 <template>
   <div class="co-page" :class="{ 'is-scrolled': scrolled, 'force-motion': forceMotion }">
     <div class="page-wash" aria-hidden="true"></div>
+
     <SiteNav variant="company" />
     <slot />
     <CompanyFooter />
@@ -8,12 +9,10 @@
 </template>
 
 <script setup>
-// 公司站外壳：纸底色 + 气团 + 顶栏 + 页脚 + 右侧进度轨。
-// 样式从 company.css 引入 → 只随公司路由加载，博客页面不再携带这一层。
+// 公司站外壳：图纸底 + 顶栏 + 页脚。
+// 样式只有一套（company.css）→ 只随公司路由加载，博客页面不再携带这一层。
 import { ref, onMounted, onUnmounted } from 'vue'
 import './company.css'
-import './direction-paper.css'
-import './direction-v2.css'
 import SiteNav from '../common/SiteNav.vue'
 import CompanyFooter from './CompanyFooter.vue'
 
@@ -30,10 +29,10 @@ function onScroll() {
 }
 
 let io = null
-let counted = false
 
+// 出场动画只挂在这些块上；删掉模板里的块时记得同步这一行，否则观察器在空跑
 function revealInit() {
-  const sel = '.co-svc, .co-std, .co-case, .co-biz-item, .co-gauge-cell, .co-meter li, .co-step, .co-card, .mkt-steps li, .co-faq-item, .co-proof-row, .co-board-tile, .co-metric, .co-h2'
+  const sel = '.co-svc, .co-std, .co-gauge-cell, .co-meter li, .co-card, .mkt-steps li, .co-faq-item, .co-proof li, .co-board-tile, .co-h2, .co-lib-card, .co-mast-item, .co-cta'
   const items = Array.from(document.querySelectorAll(sel))
   if (!items.length) return
   items.forEach((el) => el.classList.add('co-reveal'))
@@ -52,7 +51,30 @@ function revealInit() {
   items.forEach((el) => io.observe(el))
 }
 
+// 移动端浏览器工具栏颜色跟着站点底色走；博客页面各自还原
+const THEME_COLOR = '#ebedee'
+let prevThemeColor = null
+function setThemeColor() {
+  const el = document.head.querySelector('meta[name="theme-color"]')
+  prevThemeColor = el ? el.getAttribute('content') : null
+  if (!el) {
+    const meta = document.createElement('meta')
+    meta.setAttribute('name', 'theme-color')
+    meta.setAttribute('content', THEME_COLOR)
+    document.head.appendChild(meta)
+    return
+  }
+  el.setAttribute('content', THEME_COLOR)
+}
+function restoreThemeColor() {
+  const el = document.head.querySelector('meta[name="theme-color"]')
+  if (!el) return
+  if (prevThemeColor == null) el.remove()
+  else el.setAttribute('content', prevThemeColor)
+}
+
 onMounted(() => {
+  setThemeColor()
   // ?motion=on 可强制开启动效，用于系统级「减少动态效果」打开时的验证与演示
   try {
     const q = new URLSearchParams(window.location.search)
@@ -71,6 +93,7 @@ onMounted(() => {
   revealInit()
 })
 onUnmounted(() => {
+  restoreThemeColor()
   window.removeEventListener('scroll', onScroll)
   window.removeEventListener('resize', onScroll)
   if (raf) cancelAnimationFrame(raf)

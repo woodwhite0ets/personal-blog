@@ -12,7 +12,7 @@
       />
 
       <!-- 素材库形态的工具栏：分类带计数、排序、列数 -->
-      <div class="co-lib-bar" role="toolbar" aria-label="案例筛选">
+      <div class="co-lib-bar" role="group" aria-label="案例筛选">
         <div class="co-lib-chips">
           <button
             v-for="c in chips"
@@ -26,8 +26,8 @@
           </button>
         </div>
         <div class="co-lib-tools">
-          <button class="co-lib-toggle" :class="{ 'is-on': sort === 'recent' }" @click="sort = 'recent'">最近优先</button>
-          <button class="co-lib-toggle" :class="{ 'is-on': sort === 'name' }" @click="sort = 'name'">按名称</button>
+          <button class="co-lib-toggle" :class="{ 'is-on': sort === 'recent' }" :aria-pressed="sort === 'recent'" @click="sort = 'recent'">最近优先</button>
+          <button class="co-lib-toggle" :class="{ 'is-on': sort === 'name' }" :aria-pressed="sort === 'name'" @click="sort = 'name'">按名称</button>
           <span class="co-lib-sep" aria-hidden="true"></span>
           <button class="co-lib-col" :aria-pressed="cols === 3" @click="cols = 3">3 列</button>
           <button class="co-lib-col" :aria-pressed="cols === 4" @click="cols = 4">4 列</button>
