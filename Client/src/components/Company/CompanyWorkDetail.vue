@@ -14,8 +14,11 @@
           <div class="co-proj-main">
             <p class="co-proj-lead">{{ project.summary }}</p>
 
-            <section v-for="s in project.sections" :key="s.title" class="co-proj-sec">
-              <h2 class="co-proj-h">{{ s.title }}</h2>
+            <section v-for="(s, i) in project.sections" :key="s.title" class="co-proj-sec">
+              <h2 class="co-proj-h">
+                <span class="co-proj-idx" aria-hidden="true">{{ String(i + 1).padStart(2, '0') }}</span>
+                {{ s.title }}
+              </h2>
               <p class="co-proj-p">{{ s.body }}</p>
             </section>
 

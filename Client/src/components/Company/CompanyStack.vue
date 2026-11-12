@@ -62,6 +62,11 @@
           <li><span class="co-proof-k">成本</span><span class="co-proof-v">固定硬件成本，没有按次计费的推理账单。</span></li>
         </ul>
       </section>
+      <CompanyCta
+        title="数据要留在自己机器上的，可以聊"
+        note="这套基础设施是自建的，能按你的合规要求把数据关在内网。"
+        hint="说清数据规模和使用场景，我给方案。"
+      />
     </div>
   </CompanyShell>
 </template>
@@ -70,4 +75,5 @@
 import CompanyShell from './CompanyShell.vue'
 import CompanyMasthead from './CompanyMasthead.vue'
 import CompanySecHead from './CompanySecHead.vue'
+import CompanyCta from './CompanyCta.vue'
 </script>

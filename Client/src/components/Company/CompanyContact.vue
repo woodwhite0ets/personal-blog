@@ -50,7 +50,7 @@
       </section>
 
       <section class="co-sec">
-        <CompanySecHead title="联系方式" />
+        <CompanySecHead title="联系方式" index="03" latin="CONTACT" />
         <p class="co-lead">邮件里写清背景、目标和时间预期就行；微信适合先把需求聊粗。</p>
         <dl class="co-contact-list">
           <div class="co-contact-line">
@@ -75,6 +75,11 @@
         </dl>
         <p class="co-copy-status" role="status" aria-live="polite">{{ copyStatus }}</p>
       </section>
+      <CompanyCta
+        title="还没想清楚也可以先聊"
+        note="首次沟通不收费，聊完再决定要不要做。"
+        hint="邮件或微信都行，一天内回。"
+      />
     </div>
   </CompanyShell>
 </template>
@@ -84,6 +89,7 @@ import CompanyShell from './CompanyShell.vue'
 import CompanyMasthead from './CompanyMasthead.vue'
 import CompanySecHead from './CompanySecHead.vue'
 import { ref, computed, onBeforeUnmount } from 'vue'
+import CompanyCta from './CompanyCta.vue'
 
 // 联系表单：POST /api/contact，只发信不落库；蜜罐字段挡机器人
 const form = ref({ name: '', contact: '', message: '', website: '' })

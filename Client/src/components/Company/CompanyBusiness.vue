@@ -77,19 +77,11 @@
         </ol>
       </section>
 
-      <section class="co-cta paper-field">
-        <div class="co-cta-in">
-          <div class="co-cta-copy">
-            <h2 class="co-cta-title">说说你在做什么，我来判断走哪条线</h2>
-            <p class="co-note">写清背景和想解决的事就够，一般一天内回信。</p>
-          </div>
-          <div class="co-cta-contact">
-            <p class="co-cta-k">写邮件</p>
-            <p class="co-cta-mail"><a href="mailto:1903784785@qq.com">1903784785@qq.com</a></p>
-            <p class="co-cta-hint">也可以加微信 18157706302。</p>
-          </div>
-        </div>
-      </section>
+      <CompanyCta
+        title="说说你在做什么，我来判断走哪条线"
+        note="写清背景和想解决的事就够。"
+        hint="一天内回信，也可以加微信 18157706302。"
+      />
     </div>
   </CompanyShell>
 </template>
@@ -100,6 +92,7 @@
 import CompanyShell from './CompanyShell.vue'
 import CompanyMasthead from './CompanyMasthead.vue'
 import CompanySecHead from './CompanySecHead.vue'
+import CompanyCta from './CompanyCta.vue'
 
 const lines = [
   {

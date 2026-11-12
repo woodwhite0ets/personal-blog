@@ -1660,3 +1660,10 @@ body:has(.co-page)::before, body:has(.co-page)::after { content: none; }
   .co-board-tile:nth-child(3n) { border-right: 1px solid var(--co-line); }
   .co-board-tile:nth-child(2n) { border-right: 0; }
 }
+
+/* 案例详情页的章节也带编号：与全站同一套「编号 + 标题」的读法 */
+.co-proj-idx {
+  display: inline-block; margin-right: 10px; padding: 1px 6px;
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.12em;
+  color: #fff; background: var(--accent); transform: skewX(-12deg);
+}

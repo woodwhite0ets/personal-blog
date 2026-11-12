@@ -57,7 +57,7 @@
 
       <!-- 01 能接的活 -->
       <section id="scope" class="co-sec">
-        <CompanySecHead title="能接的活" />
+        <CompanySecHead title="能接的活" index="01" latin="SCOPE" />
         <div class="co-cards">
           <article class="co-svc"><div class="co-svc-in paper-field">
             <h3>知识库与检索</h3>
@@ -96,7 +96,7 @@
 
       <!-- 02 交付标准 -->
       <section id="standard" class="co-sec co-sec--band">
-        <CompanySecHead title="三项交付标准" />
+        <CompanySecHead title="三项交付标准" index="02" latin="STANDARD" />
         <p class="co-sec-lead">每个项目都按这三条验收，写进合同。</p>
         <div class="co-standards">
           <div class="co-std">
@@ -119,7 +119,7 @@
 
       <!-- 案例证据 -->
       <section id="proof" class="co-sec">
-        <CompanySecHead title="做过的几个" />
+        <CompanySecHead title="做过的几个" index="03" latin="PROOF" />
         <ul class="co-proof-list">
           <li v-for="c in proofCases" :key="c.slug">
             <router-link :to="`/work/${c.slug}`" class="co-proof-row">
@@ -137,7 +137,7 @@
 
       <!-- 03 为什么这样交付 -->
       <section class="co-sec co-sec--band">
-        <CompanySecHead title="为什么这样交付" />
+        <CompanySecHead title="为什么这样交付" index="04" latin="WHY" />
         <div class="mkt-compare">
           <div class="paper-field"><h3>常见做法</h3><ul><li>先买一堆 SaaS，接口对不上再改</li><li>模型按次计费，用量一涨成本失控</li><li>数据交给第三方 API</li><li>交付一个演示，上线还要再找人</li></ul></div>
           <div class="paper-field"><h3>我的做法</h3><ul><li>先跑通最短那条链路，再往上加</li><li>自建推理，硬件成本固定，没有按次账单</li><li>数据留在客户自己的机器上</li><li>监控配置和运行手册随项目一起交</li></ul></div>
@@ -146,7 +146,7 @@
 
       <!-- 04 怎么开始 -->
       <section id="process" class="co-sec">
-        <CompanySecHead title="怎么开始" />
+        <CompanySecHead title="怎么开始" index="05" latin="PROCESS" />
         <ol class="mkt-steps">
           <li class="paper-field"><span>第 1 步</span><h3>聊一次</h3><p>说说背景和你想解决的事。不收费，想不清楚也可以先聊。</p></li>
           <li class="paper-field"><span>第 2 步</span><h3>给方案与报价</h3><p>拆成阶段，每段有产物和验收标准，写清不做什么。</p></li>
@@ -157,7 +157,7 @@
 
       <!-- 05 合作方式 -->
       <section id="pricing" class="co-sec co-sec--band">
-        <CompanySecHead title="合作方式" />
+        <CompanySecHead title="合作方式" index="06" latin="TERMS" />
         <table class="mkt-table">
           <thead><tr><th>方式</th><th>适合</th><th>怎么算</th><th>起步</th></tr></thead>
           <tbody>
@@ -185,7 +185,7 @@
 
       <!-- 06 常见问题 -->
       <section id="faq" class="co-sec">
-        <CompanySecHead title="常见问题" />
+        <CompanySecHead title="常见问题" index="07" latin="FAQ" />
         <div class="co-faq">
           <details class="co-faq-item" open>
             <summary>报价怎么算？</summary>
@@ -215,20 +215,11 @@
       </section>
 
       <!-- CTA -->
-      <section class="co-cta paper-field">
-        <div class="co-cta-in">
-          <div class="co-cta-copy">
-            <h2 class="co-cta-title">说说你在做什么，我给方案和报价</h2>
-            <p class="co-note">签合同，可开票，按阶段验收。数据可以留在你自己的机器上。</p>
-          </div>
-          <!-- 联系方式直接摆出来，不做成按钮 -->
-          <div class="co-cta-contact">
-            <p class="co-cta-k">写邮件</p>
-            <p class="co-cta-mail"><a href="mailto:1903784785@qq.com">1903784785@qq.com</a></p>
-            <p class="co-cta-hint">写清背景、目标和时间预期就行，一般一天内回。</p>
-          </div>
-        </div>
-      </section>
+      <CompanyCta
+        title="说说你在做什么，我给方案和报价"
+        note="签合同，可开票，按阶段验收。数据可以留在你自己的机器上。"
+        hint="写清背景、目标和时间预期就行，一般一天内回。"
+      />
     </div>
   </CompanyShell>
 </template>
@@ -238,6 +229,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import HeroBackdrop from '../common/HeroBackdrop.vue'
 import CompanyShell from './CompanyShell.vue'
 import CompanySecHead from './CompanySecHead.vue'
+import CompanyCta from './CompanyCta.vue'
 import CaseFigure from './CaseFigure.vue'
 import { pricing, pricingNote } from '../../data/pricing.js'
 import { projects } from '../../data/projects.js'

@@ -151,19 +151,11 @@
         </div>
       </section>
 
-      <section class="co-cta paper-field">
-        <div class="co-cta-in">
-          <div class="co-cta-copy">
-            <h2 class="co-cta-title">要开始，一封信就够</h2>
-            <p class="co-note">写清公司叫什么、一句话介绍、三到六个产品。有域名就说，没有我给建议。</p>
-          </div>
-          <div class="co-cta-contact">
-            <p class="co-cta-k">写邮件</p>
-            <p class="co-cta-mail"><a href="mailto:1903784785@qq.com?subject=%E5%88%9D%E5%88%9B%E7%89%88%E5%AE%98%E7%BD%91">1903784785@qq.com</a></p>
-            <p class="co-cta-hint">一般一天内回信。</p>
-          </div>
-        </div>
-      </section>
+      <CompanyCta
+        title="要开始，一封信就够"
+        note="写清公司叫什么、一句话介绍、三到六个产品。有域名就说，没有我给建议。"
+        hint="一般一天内回信。"
+      />
     </div>
   </CompanyShell>
 </template>
@@ -172,4 +164,5 @@
 import CompanyShell from './CompanyShell.vue'
 import CompanyMasthead from './CompanyMasthead.vue'
 import CompanySecHead from './CompanySecHead.vue'
+import CompanyCta from './CompanyCta.vue'
 </script>

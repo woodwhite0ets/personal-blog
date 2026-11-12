@@ -12,6 +12,7 @@
       />
 
       <section class="co-sec">
+        <CompanySecHead title="在生产环境跑的" index="01" latin="IN PRODUCTION" />
         <ul class="co-cases">
           <li v-for="p in cases" :key="p.slug" class="co-case">
             <router-link :to="`/work/${p.slug}`" class="co-case-link">
@@ -31,6 +32,11 @@
         </ul>
         <p class="co-note">想看某个项目的完整过程，点进项目页；技术细节写在博客里。</p>
       </section>
+      <CompanyCta
+        title="你的问题在不在这些案例里"
+        note="说清现在卡在哪，我先判断值不值得做，不收费。"
+        hint="写清背景和目标就行，一般一天内回。"
+      />
     </div>
   </CompanyShell>
 </template>
@@ -40,6 +46,7 @@ import CompanyShell from './CompanyShell.vue'
 import CaseFigure from './CaseFigure.vue'
 import CompanyMasthead from './CompanyMasthead.vue'
 import { projects } from '../../data/projects.js'
+import CompanyCta from './CompanyCta.vue'
 
 const cases = projects
 </script>
