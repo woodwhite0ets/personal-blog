@@ -1362,3 +1362,71 @@
   pointer-events: none;
 }
 
+
+/* ============================================================
+   鹰角式结构件 · 第二批（2026-11-12 晚）
+   1) 章节编号做成斜切色块，标题背后压一枚幽灵大号数字
+   2) 案例列表的状态做成方角标签（左侧 3px 色条）
+   3) /stack 的运行负载用斜纹比例条，而不是一句「6 个在跑」
+   ============================================================ */
+
+/* 一、斜切编号块 */
+.co-h2 { position: relative; }
+.co-h2-idx {
+  position: relative; z-index: 1;
+  display: inline-block; padding: 3px 8px 2px;
+  color: #fff; border-right: 0;
+  transform: skewX(-12deg);
+}
+.co-h2-idx::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--accent);
+}
+.co-h2-idx { letter-spacing: 0.06em; }
+
+/* 二、标题背后的幽灵数字 */
+.co-h2-ghost {
+  position: absolute; left: -6px; top: 50%; transform: translateY(-54%);
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: clamp(56px, 8vw, 120px); line-height: 1;
+  color: var(--text-bright); opacity: 0.055;
+  pointer-events: none; user-select: none; letter-spacing: -0.04em;
+}
+@media (max-width: 900px) { .co-h2-ghost { display: none; } }
+
+/* 三、状态标签：方角 + 左侧色条 */
+.co-case-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 8px 2px 7px; border: 1px solid var(--co-line-strong);
+  border-left: 3px solid var(--accent);
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-secondary);
+  background: color-mix(in srgb, var(--text-bright) 3%, transparent);
+}
+
+/* 四、斜纹比例条 */
+.co-meter { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 0; border: 1px solid var(--co-line); background: var(--bg-elevated); }
+.co-meter li {
+  display: grid; grid-template-columns: minmax(0, 12em) minmax(0, 1fr) auto;
+  align-items: center; gap: 18px; padding: 12px 16px;
+  border-bottom: 1px solid var(--co-line);
+}
+.co-meter li:last-child { border-bottom: 0; }
+.co-meter-k {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-faint);
+}
+.co-meter-bar { position: relative; height: 10px; background: color-mix(in srgb, var(--text-bright) 6%, transparent); }
+.co-meter-bar i {
+  position: absolute; inset: 0 auto 0 0; width: var(--v, 0);
+  background-color: color-mix(in srgb, var(--accent) 78%, transparent);
+  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.35) 0 1px, transparent 1px 6px);
+}
+.co-meter-v {
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em;
+  color: var(--text-bright); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .co-meter li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 6px; }
+  .co-meter-bar { grid-column: 1 / -1; order: 3; }
+}

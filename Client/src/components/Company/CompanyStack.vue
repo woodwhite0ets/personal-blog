@@ -15,6 +15,28 @@
             <div class="co-gauge-cell"><dt>存储</dt><dd><span class="co-gauge-v">1.8</span><span class="co-gauge-u">T</span></dd><p>NVMe 系统盘 + 数据盘</p></div>
             <div class="co-gauge-cell"><dt>入站端口</dt><dd><span class="co-gauge-v">0</span><span class="co-gauge-u">—</span></dd><p>对外只走出站隧道</p></div>
           </dl>
+          <ul class="co-meter" aria-label="运行中的负载">
+            <li>
+              <span class="co-meter-k">systemd 定时任务</span>
+              <span class="co-meter-bar" style="--v: 100%"><i></i></span>
+              <span class="co-meter-v">6 / 6 在跑</span>
+            </li>
+            <li>
+              <span class="co-meter-k">对外服务单元</span>
+              <span class="co-meter-bar" style="--v: 100%"><i></i></span>
+              <span class="co-meter-v">14 / 14 active</span>
+            </li>
+            <li>
+              <span class="co-meter-k">入站端口开放</span>
+              <span class="co-meter-bar" style="--v: 4%"><i></i></span>
+              <span class="co-meter-v">0 个</span>
+            </li>
+            <li>
+              <span class="co-meter-k">连续运行</span>
+              <span class="co-meter-bar" style="--v: 96%"><i></i></span>
+              <span class="co-meter-v">95 天</span>
+            </li>
+          </ul>
         </div>
       </section>
 
