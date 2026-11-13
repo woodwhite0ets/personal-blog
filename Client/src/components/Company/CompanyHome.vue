@@ -225,7 +225,7 @@
             <div class="co-sideline-copy">
               <h3 id="sideline-title" class="co-sideline-title">初创版官网</h3>
               <p class="co-sideline-lead">公司刚注册、产品刚出来，先要一个能发出去的地址。这一档固定范围和交期，域名和代码都登记在客户名下。</p>
-              <p class="co-sideline-fine">按页数与产品数量分档；在校创办的公司另有价目。</p>
+              <p class="co-sideline-fine">按页面数量分档；在校创办的公司按在校价。</p>
             </div>
             <router-link class="co-sideline-go" to="/business/startup">看初创版官网</router-link>
           </aside>

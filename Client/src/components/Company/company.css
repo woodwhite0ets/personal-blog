@@ -3209,3 +3209,27 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
   letter-spacing: 0.04em;
   color: var(--t-ink-2);
 }
+
+/* 在校价：跟在正常价下面一行，小一号、用信号色，不喧宾夺主 */
+.co-price-student {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--t-signal-ink);
+}
+
+/* 业务总览卡片里的在校价：跟价格同一格，小一号跟在下面 */
+.co-biz-student {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--t-signal-ink);
+}
+
+/* 业务总览两张卡并排时，「在校价」那一行会把右侧卡的行拉高、两卡错位；
+   给值留出固定高度，两卡的 适合/起步/周期/交付 就对齐了 */
+.co-page--business .co-biz-meta dd { min-height: 2.7em; }

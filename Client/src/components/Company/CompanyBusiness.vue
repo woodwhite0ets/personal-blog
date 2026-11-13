@@ -19,7 +19,7 @@
               <p>{{ b.lead }}</p>
               <dl class="co-biz-meta">
                 <div><dt>适合</dt><dd>{{ b.fit }}</dd></div>
-                <div><dt>起步</dt><dd>{{ b.from }}</dd></div>
+                <div><dt>起步</dt><dd>{{ b.from }}<span v-if="b.student" class="co-biz-student">{{ b.student }}</span></dd></div>
                 <div><dt>周期</dt><dd>{{ b.period }}</dd></div>
                 <div><dt>交付</dt><dd>{{ b.deliver }}</dd></div>
               </dl>
@@ -111,6 +111,7 @@ const lines = [
     fit: '缺地址，不改品牌视觉',
     from: '599 元起',
     period: '5–10 个工作日',
+    student: '在校 499 元起',
     deliver: '站点本身，完整档含源码',
     to: '/business/startup',
     cta: '看档位与流程',

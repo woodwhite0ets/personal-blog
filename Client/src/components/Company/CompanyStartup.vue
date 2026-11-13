@@ -22,7 +22,11 @@
               <td data-th="适合">{{ t.fit }}</td>
               <td data-th="包含">{{ t.includes }}<span class="mkt-price-sub">{{ t.source }}</span></td>
               <td data-th="改动">{{ t.revisions }}</td>
-              <td class="mkt-price" data-th="起步">{{ t.from }}<span class="mkt-price-sub">{{ t.lead }}</span></td>
+              <td class="mkt-price" data-th="起步">
+                {{ t.from }}
+                <span class="co-price-student">在校 {{ t.student }}</span>
+                <span class="mkt-price-sub">{{ t.lead }}</span>
+              </td>
             </tr>
             <tr>
               <td>加项</td>
@@ -45,7 +49,7 @@
           </tbody>
         </table>
         <p class="co-note">{{ startupNotes.notIncluded }}</p>
-        <p class="co-note">{{ startupNotes.hiddenStudent }}</p>
+        <p class="co-note">{{ startupNotes.studentNote }}</p>
 
         <!-- 代金券：只在这一档业务里送 -->
         <aside class="co-perk" aria-labelledby="perk-t">
@@ -203,6 +207,10 @@
             <p>{{ startupNotes.acceptance }}改稿轮次写在档位里：单页一轮，完整两轮，超出按 200 元一轮。</p>
           </details>
           <details class="co-faq-item">
+            <summary>在校生怎么算？</summary>
+            <p>{{ startupNotes.studentNote }}</p>
+          </details>
+          <details class="co-faq-item">
             <summary>公司还在注册中，能先做吗？</summary>
             <p>能先做。定稿前要拿到公司名和经营范围，页面上的名称和地址要跟执照一致，没取得的资质不要写。</p>
           </details>
@@ -215,7 +223,7 @@
 
       <CompanyCta
         title="要开始，一封信就够"
-        note="写清公司叫什么、一句话介绍、三到六个产品。有域名就说，没有我给建议。在校创办的公司另有价目，信里说明一下。"
+        note="写清公司叫什么、一句话介绍、三到六个产品。有域名就说，没有我给建议。在校创办的按在校价，信里说明一下身份。"
         hint="一般一天内回信。"
       />
     </div>

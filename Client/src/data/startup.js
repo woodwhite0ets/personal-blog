@@ -4,8 +4,8 @@
  * 商业方案在 /data/work/mubai/business/website-service-plan-2026-11-11.md，
  * 这里的数字必须和那份一致；改价改这里，别在页面上写死。
  *
- * 对外只挂「单页 599 起 / 完整 1,299 起」两档；在校创办的公司另有价目（暗线），
- * 页面上只说「另有价目」，不出现数字。
+ * 对外两档：单页 599 起 / 完整 1,299 起；在校价 499 / 1,099 公开列在价格格里。
+ * 不做暗线价（2026-11-13 博士定）：所有价位都写在页面上，不做只给一部分人的隐藏档。
  */
 
 export const startupTiers = [
@@ -16,6 +16,7 @@ export const startupTiers = [
     revisions: '1 轮',
     source: '不含源码',
     from: '599 起',
+    student: '499 起',
     lead: '5 个工作日',
   },
   {
@@ -25,6 +26,7 @@ export const startupTiers = [
     revisions: '2 轮',
     source: '含源码',
     from: '1,299 起',
+    student: '1,099 起',
     lead: '10 个工作日',
   },
 ]
@@ -74,6 +76,6 @@ export const startupDiscounts = [
 export const startupNotes = {
   notIncluded: '域名费、服务器费、备案代办、文案撰写、产品图拍摄、接 CMS/支付/公众号/CRM、SEO 代运营，都不在报价里。',
   acceptance: '预览发出后 3 个工作日无异议，视为通过。',
-  hiddenStudent: '在校创办的公司另有价目，写信时说明一下在校身份即可。',
+  studentNote: '在校创办的：单页 499 起、完整 1,099 起。要学生证或学信网截图，一家公司用一次；营业执照是他们本人或在校期间注册的。',
   beat: '每周三、周五各集中发布一批；日常沟通集中在晚上一个时段，不随时交。',
 }
