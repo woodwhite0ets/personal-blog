@@ -397,7 +397,7 @@ watchEffect(() => {
    旁边 800px 空着，页头却横贯整页，看起来像没排完。 */
 .ct-main--detail { max-width: 1060px; }
 /* 详情页背景图案再淡一档：这页是「读配方」，图纸只做纸纹 */
-.ct-page:has(.ct-main--detail) .page-wash::after { opacity: 0.042; }
+.ct-page:has(.ct-main--detail) .page-wash::after { opacity: 0.075; }
 .ct-cols { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 56px; align-items: start; }
 .ct-cols .ct-sec { margin-top: 34px; }
 @media (max-width: 900px) {

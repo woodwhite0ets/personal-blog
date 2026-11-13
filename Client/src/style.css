@@ -2661,7 +2661,7 @@ button:not(:disabled):active, .nav-drawer-auth:active {
   inset: 0 0 auto 0;
   /* 只在页头那一段露出来：图案是「抬头时的纹理」，
      不能一路铺到正文列表里（那样字全泡在图纸上，读起来很脏） */
-  height: min(64vh, 580px);
+  height: min(82vh, 760px);
   z-index: 0;
   pointer-events: none;
   background-image: var(--page-art, none);
@@ -2677,24 +2677,24 @@ button:not(:disabled):active, .nav-drawer-auth:active {
 /* 一页一张：按内容类型分，别每页都一样 */
 .home-page        { --page-art: url("/bg/art/machine.webp"); }
 /* 首屏是品牌字标，图案再退一档，别跟它抢 */
-.home-page .page-wash::after { --page-art-op: 0.055; background-size: 128%; height: min(78vh, 760px); }
-.forum-page       { --page-art: url("/bg/art/terrain.webp"); --page-art-op: 0.085; }
-.archive-page     { --page-art: url("/bg/art/terrain.webp"); --page-art-op: 0.085; }
-.tags-page        { --page-art: url("/bg/art/exploded.webp"); --page-art-op: 0.042; }
-.notes-page       { --page-art: url("/bg/art/patent.webp"); --page-art-op: 0.05; }
-.now-page         { --page-art: url("/bg/art/patent.webp"); --page-art-op: 0.05; }
-.pl-page          { --page-art: url("/bg/art/exploded.webp"); --page-art-op: 0.045; }
-.tl-page          { --page-art: url("/bg/art/machine.webp"); --page-art-op: 0.05; }
-.td-page          { --page-art: url("/bg/art/machine.webp"); --page-art-op: 0.05; }
-.ad-page          { --page-art: url("/bg/art/exploded.webp"); --page-art-op: 0.042; }
-.ct-page          { --page-art: url("/bg/art/terrain.webp"); --page-art-op: 0.075; }
-.about-page       { --page-art: url("/bg/art/constellation.webp"); --page-art-op: 0.06; }
+.home-page .page-wash::after { --page-art-op: 0.1; background-size: 128%; height: min(92vh, 880px); }
+.forum-page       { --page-art: url("/bg/art/terrain.webp"); --page-art-op: 0.125; }
+.archive-page     { --page-art: url("/bg/art/terrain.webp"); --page-art-op: 0.125; }
+.tags-page        { --page-art: url("/bg/art/exploded.webp"); --page-art-op: 0.07; }
+.notes-page       { --page-art: url("/bg/art/patent.webp"); --page-art-op: 0.085; }
+.now-page         { --page-art: url("/bg/art/patent.webp"); --page-art-op: 0.085; }
+.pl-page          { --page-art: url("/bg/art/exploded.webp"); --page-art-op: 0.075; }
+.tl-page          { --page-art: url("/bg/art/machine.webp"); --page-art-op: 0.08; }
+.td-page          { --page-art: url("/bg/art/machine.webp"); --page-art-op: 0.08; }
+.ad-page          { --page-art: url("/bg/art/exploded.webp"); --page-art-op: 0.075; }
+.ct-page          { --page-art: url("/bg/art/terrain.webp"); --page-art-op: 0.115; }
+.about-page       { --page-art: url("/bg/art/constellation.webp"); --page-art-op: 0.09; }
 /* 展示型页面图案稍重，列表/阅读页保持「隐约」（默认 5%） */
 
-.post-detail-page { --page-art: url("/bg/art/constellation.webp"); --page-art-op: 0.04; }
+.post-detail-page { --page-art: url("/bg/art/constellation.webp"); --page-art-op: 0.07; }
 /* 阅读页要看得久，图案再退一档，正文后面只留隐约的线 */
 .post-detail-page .page-wash::after { opacity: 0.04; }
-.series-page      { --page-art: url("/bg/art/terrain.webp"); --page-art-op: 0.08; }
+.series-page      { --page-art: url("/bg/art/terrain.webp"); --page-art-op: 0.115; }
 
 /* ============================================================
    博客的动效（2026-11-13）
