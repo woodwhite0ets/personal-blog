@@ -1,6 +1,7 @@
 <template>
-  <div class="co-page" :class="{ 'is-scrolled': scrolled, 'force-motion': forceMotion }">
+  <div ref="pageRef" class="co-page" :class="{ 'is-scrolled': scrolled }">
     <div class="page-wash" aria-hidden="true"></div>
+    <div class="co-rail" aria-hidden="true"><span class="co-rail-fill"></span></div>
 
     <SiteNav variant="company" />
     <div class="co-ticker" aria-hidden="true">
@@ -23,8 +24,8 @@ import './company.css'
 import SiteNav from '../common/SiteNav.vue'
 import CompanyFooter from './CompanyFooter.vue'
 
+const pageRef = ref(null)
 const scrolled = ref(false)
-const forceMotion = ref(false)
 let raf = 0
 
 function onScroll() {
@@ -42,12 +43,21 @@ function revealInit() {
   const sel = '.co-svc, .co-std, .co-gauge-cell, .co-meter li, .co-card, .mkt-steps li, .co-faq-item, .co-proof li, .co-board-tile, .co-h2, .co-lib-card, .co-mast-item, .co-cta'
   const items = Array.from(document.querySelectorAll(sel))
   if (!items.length) return
+
+  // 先接管再隐藏：隐藏初始态的样式挂在 .co-anim 下，JS 没跑到就永远不会藏内容
+  pageRef.value?.classList.add('co-anim')
   items.forEach((el) => el.classList.add('co-reveal'))
 
   if (typeof IntersectionObserver === 'undefined') {
     items.forEach((el) => el.classList.add('is-in'))
     return
   }
+  // 兜底：首屏本就该看到的块直接放出来，不等观察器（观察器漏事件时也不会整段空白）
+  const vh = window.innerHeight
+  items.forEach((el) => {
+    const r = el.getBoundingClientRect()
+    if (r.top < vh * 0.92 && r.bottom > 0) el.classList.add('is-in')
+  })
   io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (!e.isIntersecting) return
@@ -83,21 +93,23 @@ function restoreThemeColor() {
 onMounted(() => {
   setThemeColor()
   // ?motion=on 可强制开启动效，用于系统级「减少动态效果」打开时的验证与演示
+  // ?motion=off 是逃生开关：不加 .co-anim、不挂观察器，所有内容直接可见
+  let motionOff = false
   try {
     const q = new URLSearchParams(window.location.search)
-    if (q.get('motion') === 'on') {
-      forceMotion.value = true
-      localStorage.setItem('co-motion', 'on')
-    } else if (q.get('motion') === 'off') {
+    if (q.get('motion') === 'off') {
+      motionOff = true
+      localStorage.setItem('co-motion', 'off')
+    } else if (q.get('motion') === 'on') {
       localStorage.removeItem('co-motion')
-    } else if (localStorage.getItem('co-motion') === 'on') {
-      forceMotion.value = true
+    } else if (localStorage.getItem('co-motion') === 'off') {
+      motionOff = true
     }
   } catch (e) { /* 隐私模式下 localStorage 不可用，忽略 */ }
   window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('resize', onScroll, { passive: true })
   onScroll()
-  revealInit()
+  if (!motionOff) revealInit()
 })
 onUnmounted(() => {
   restoreThemeColor()
