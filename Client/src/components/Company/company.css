@@ -2530,13 +2530,13 @@ html.is-deck .dk-bg--tail {
 }
 .co-page-art .dk-art { position: absolute; inset: 0; opacity: 0.1; }
 /* 一屏一张，按屏名对应 */
-.dk-art--machine { background-image: url("/bg/art/machine.webp"); background-position: center 60%; }
-.dk-art--orbit { background-image: url("/bg/art/orbit.webp"); }
-.dk-art--terrain { background-image: url("/bg/art/terrain.webp"); background-position: center 6%; background-size: 148%; }
-.dk-art--exploded { background-image: url("/bg/art/exploded.webp"); }
-.dk-art--ledger { background-image: url("/bg/art/ledger.webp"); }
-.dk-art--patent { background-image: url("/bg/art/patent.webp"); }
-.dk-art--constellation { background-image: url("/bg/art/constellation.webp"); }
+.dk-art--machine { --art: url("/bg/art/machine.webp"); background-position: center 60%; }
+.dk-art--orbit { --art: url("/bg/art/orbit.webp"); }
+.dk-art--terrain { --art: url("/bg/art/terrain.webp"); background-position: center 6%; background-size: 148%; }
+.dk-art--exploded { --art: url("/bg/art/exploded.webp"); }
+.dk-art--ledger { --art: url("/bg/art/ledger.webp"); }
+.dk-art--patent { --art: url("/bg/art/patent.webp"); }
+.dk-art--constellation { --art: url("/bg/art/constellation.webp"); }
 
 /* 换屏时图案和这一屏一起淡入 */
 @media (prefers-reduced-motion: no-preference) {
@@ -2661,3 +2661,347 @@ html.is-deck .navbar { background-color: transparent; }
   .co-hud { flex-direction: column; align-items: flex-start; gap: 6px; }
   .co-hud-r i { display: none; }
 }
+
+/* ============================================================
+   动效（2026-11-13 第三轮）
+   ------------------------------------------------------------
+   原则：只动 transform / opacity / clip-path / background-position，
+   全部在 prefers-reduced-motion: no-preference 下才生效；
+   一屏一页的节奏里，动效只做三件事——屏间交接、屏内依次到位、悬浮反馈。
+   ============================================================ */
+.co-page {
+  /* 落定用「卡扣」：末段有一点过冲，收得住；进出场用「流淌」 */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+@supports (transition-timing-function: linear(0, 1)) {
+  .co-page {
+    --ease-spring: linear(0, 0.008 0.9%, 0.034 1.9%, 0.135 3.9%, 0.4 7.4%, 0.68 11.4%, 0.906 15.5%, 1.048 19.4%, 1.087 22.3%, 1.05 28.9%, 1.008 36.2%, 0.996 43.1%, 1 52%, 1);
+    --ease-snap: linear(0, 0.021 1.4%, 0.079 2.9%, 0.27 6.4%, 0.57 10.4%, 0.85 14.6%, 1.03 19.1%, 1.06 22.4%, 1.02 29.6%, 1.001 36.5%, 1 48%, 1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ---------- 屏头：编号块从左侧压入，标题从遮罩里升起 ---------- */
+  html.is-deck .dk-screen .co-h2-idx {
+    opacity: 0;
+    transform: translateY(-100%) translateX(-14px) skewX(-8deg);
+  }
+  html.is-deck .dk-screen.is-live .co-h2-idx {
+    opacity: 1;
+    transform: translateY(-100%) skewX(0deg);
+    transition:
+      opacity 320ms var(--ease-out) 40ms,
+      transform 560ms var(--ease-snap) 40ms;
+  }
+  html.is-deck .dk-screen .co-h2-t {
+    clip-path: inset(-24% 0 -24% 100%);
+  }
+  html.is-deck .dk-screen.is-live .co-h2-t {
+    clip-path: inset(-24% 0 -24% 0);
+    transition: clip-path 780ms var(--ease-out) 120ms;
+  }
+  html.is-deck .dk-screen .co-h2-lat {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  html.is-deck .dk-screen.is-live .co-h2-lat {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 380ms var(--ease-out) 300ms,
+      transform 520ms var(--ease-out) 300ms;
+  }
+
+  /* ---------- 卡片：一张接一张落定（每屏最多六张，间隔 65ms） ---------- */
+  html.is-deck .dk-screen .co-cards > .co-svc,
+  html.is-deck .dk-screen .co-lib > li,
+  html.is-deck .dk-screen .co-plate-case,
+  html.is-deck .dk-screen .co-plate-all {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  html.is-deck .dk-screen.is-live .co-cards > .co-svc,
+  html.is-deck .dk-screen.is-live .co-lib > li,
+  html.is-deck .dk-screen.is-live .co-plate-case,
+  html.is-deck .dk-screen.is-live .co-plate-all {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 460ms var(--ease-out) calc(70ms + var(--ci, 0) * 46ms),
+      transform 640ms var(--ease-spring) calc(70ms + var(--ci, 0) * 46ms);
+  }
+  html.is-deck .dk-screen .co-cards > :nth-child(1),
+  html.is-deck .dk-screen .co-lib > :nth-child(1),
+  html.is-deck .dk-screen .co-plate-strip > :nth-child(1) { --ci: 0; }
+  html.is-deck .dk-screen .co-cards > :nth-child(2),
+  html.is-deck .dk-screen .co-lib > :nth-child(2),
+  html.is-deck .dk-screen .co-plate-strip > :nth-child(2) { --ci: 1; }
+  html.is-deck .dk-screen .co-cards > :nth-child(3),
+  html.is-deck .dk-screen .co-lib > :nth-child(3),
+  html.is-deck .dk-screen .co-plate-strip > :nth-child(3) { --ci: 2; }
+  html.is-deck .dk-screen .co-cards > :nth-child(4),
+  html.is-deck .dk-screen .co-lib > :nth-child(4),
+  html.is-deck .dk-screen .co-plate-strip > :nth-child(4) { --ci: 3; }
+  html.is-deck .dk-screen .co-cards > :nth-child(5) { --ci: 4; }
+  html.is-deck .dk-screen .co-cards > :nth-child(6) { --ci: 5; }
+
+  /* ---------- 铭牌：读数逐行落位，单位与注记晚一拍 ---------- */
+  html.is-deck .dk-screen .co-plate-read > div {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  html.is-deck .dk-screen.is-live .co-plate-read > div {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 400ms var(--ease-out) calc(140ms + var(--i, 0) * 56ms),
+      transform 560ms var(--ease-spring) calc(140ms + var(--i, 0) * 56ms);
+  }
+  html.is-deck .dk-screen .co-plate-read > :nth-child(1) { --i: 0; }
+  html.is-deck .dk-screen .co-plate-read > :nth-child(2) { --i: 1; }
+  html.is-deck .dk-screen .co-plate-read > :nth-child(3) { --i: 2; }
+  html.is-deck .dk-screen .co-plate-read > :nth-child(4) { --i: 3; }
+
+  /* ---------- 背景图案：跟着屏的进出缓慢错位，比内容慢半拍 ---------- */
+  html.is-deck .dk-bg .dk-art {
+    transform: scale(1.06);
+  }
+  html.is-deck .dk-screen.is-live .dk-bg .dk-art {
+    transform: scale(1.02);
+    transition: transform 1600ms var(--ease-out);
+  }
+  @supports (animation-timeline: view()) {
+    /* 整屏滑过视口时，图案上下浮动 6%，像纸后面还有一层 */
+    html.is-deck .dk-screen .dk-bg .dk-art {
+      animation: coArtDrift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+    @keyframes coArtDrift {
+      from { background-position-y: center; transform: scale(1.08) translateY(-3%); }
+      to   { transform: scale(1.08) translateY(3%); }
+    }
+  }
+}
+
+/* ---------- 悬浮反馈：卡片扫过一道淡光，指针离开就收 ---------- */
+.co-svc-in,
+.co-lib-card {
+  background-image: linear-gradient(112deg, transparent 38%, rgba(11, 143, 132, 0.07) 50%, transparent 62%);
+  background-size: 280% 100%;
+  background-position: 165% 0;
+  background-repeat: no-repeat;
+  transition:
+    background-color var(--dur-hover) var(--ease-out),
+    background-position 900ms var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out),
+    translate var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
+}
+.co-svc-in:hover,
+.co-lib-card:hover { background-position: -65% 0; }
+
+/* 按钮：同样的扫光，但快一倍，按下去还能感觉到底 */
+.co-btn,
+.co-sideline-go {
+  background-image: linear-gradient(112deg, transparent 40%, rgba(255, 255, 255, 0.42) 50%, transparent 60%);
+  background-size: 260% 100%;
+  background-position: 170% 0;
+  background-repeat: no-repeat;
+  transition:
+    background-color var(--dur-hover) var(--ease-out),
+    background-position 620ms var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    scale 120ms var(--ease-out);
+}
+.co-btn:hover,
+.co-sideline-go:hover { background-position: -70% 0; }
+.co-btn-solid:hover { background-position: -70% 0; }
+
+/* FAQ：展开时「+」的框跟着转，行底色从左扫过来 */
+.co-faq-item summary::before { transition: transform 260ms var(--ease-snap), background-color 200ms var(--ease-out), border-color 200ms var(--ease-out); }
+.co-faq-item summary:hover::before { transform: rotate(90deg); }
+.co-faq-item[open] summary::before { transform: rotate(0deg); }
+.co-faq-item summary {
+  transition: background-color 220ms var(--ease-out), color 220ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .co-faq-item summary:hover { background: rgba(11, 143, 132, 0.05); }
+}
+
+/* 索引栏：当前页那根短线长成一小段实心块，翻页时滑过去 */
+html.is-deck .co-deck-index a::before {
+  transition: transform 300ms var(--ease-snap), height 300ms var(--ease-snap), background-color 300ms var(--ease-out);
+}
+html.is-deck .co-deck-index a.is-on::before {
+  transform: scaleX(1.15);
+  height: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .co-svc-in:hover, .co-lib-card:hover,
+  .co-btn:hover, .co-sideline-go:hover { background-position: 165% 0; }
+  .co-faq-item summary:hover::before { transform: none; }
+}
+
+/* ---------- 第三轮补：字距收拢、条目滑动、内容层视差 ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 铭牌抬头与 HUD 行：字距从略松收到正常，像仪表自检后对齐 */
+  html.is-deck .dk-screen .co-plate-k,
+  html.is-deck .dk-screen .co-hud {
+    opacity: 0;
+    letter-spacing: 0.42em;
+  }
+  html.is-deck .dk-screen.is-live .co-plate-k,
+  html.is-deck .dk-screen.is-live .co-hud {
+    opacity: 1;
+    letter-spacing: 0.24em;
+    transition:
+      opacity 520ms var(--ease-out) 60ms,
+      letter-spacing 900ms var(--ease-out) 60ms;
+  }
+  html.is-deck .dk-screen.is-live .co-hud { letter-spacing: 0.1em; }
+
+  /* 铭牌名：从下方托起 8px，别做缩放（大字缩放会糊） */
+  html.is-deck .dk-screen .co-plate-name {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  html.is-deck .dk-screen.is-live .co-plate-name {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 420ms var(--ease-out) 160ms,
+      transform 700ms var(--ease-spring) 160ms;
+  }
+}
+
+/* 交付物条目：悬浮时整行往右让一步，标题下面的细线跟着长出来 */
+.co-plate-actions { --x: 0; }
+.co-plate-case b,
+.co-plate-all span { position: relative; }
+.co-plate-case b::after,
+.co-plate-all span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: var(--t-signal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms var(--ease-out);
+}
+.co-plate-case:hover b::after,
+.co-plate-all:hover span::after { transform: scaleX(1); }
+.co-plate-case:hover,
+.co-plate-all:hover { padding-left: 18px; }
+.co-plate-case,
+.co-plate-all { transition: padding-left 260ms var(--ease-out), background-color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out), translate var(--dur-hover) var(--ease-out); }
+
+/* 筛选芯片：底与边一起过渡，选中那一块不再硬切 */
+.co-lib-chip,
+.co-lib-more {
+  transition:
+    background-color 220ms var(--ease-out),
+    border-color 220ms var(--ease-out),
+    color 220ms var(--ease-out),
+    translate 220ms var(--ease-out);
+}
+.co-lib-chip:active { translate: 0 1px; }
+.co-lib-more:hover,
+.co-lib-more:focus-visible { translate: 3px 0; }
+
+/* 「下一步」面板：翻到 FAQ 那屏时从右侧让进来，左侧信号条先长出来 */
+@media (prefers-reduced-motion: no-preference) {
+  html.is-deck .dk-screen .co-ask-next {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  html.is-deck .dk-screen.is-live .co-ask-next {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 480ms var(--ease-out) 240ms,
+      transform 760ms var(--ease-spring) 240ms;
+  }
+  html.is-deck .dk-screen .co-ask-next::before {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  html.is-deck .dk-screen.is-live .co-ask-next::before {
+    transform: scaleY(1);
+    transition: transform 620ms var(--ease-out) 380ms;
+  }
+}
+
+/* ---------- 内容层视差：整屏滑过时内容比图案多走一点，翻页更有纵深 ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.is-deck .dk-screen .dk-in {
+      animation: coContentDrift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+      will-change: transform;
+    }
+    @keyframes coContentDrift {
+      from { transform: translateY(34px); }
+      to   { transform: translateY(-34px); }
+    }
+  }
+}
+
+/* ---------- 对比度收口：把图案压到「隐约」，别跟标题抢 ---------- */
+.dk-bg .dk-art { opacity: 0.1; }
+.dk-art--orbit { opacity: 0.082; }
+.dk-art--patent { opacity: 0.09; }
+
+/* 每屏顶部一层很薄的底雾：顶栏与屏头压在图案上也读得清，
+   往下 240px 就散掉，图案回到正文之间的缝里 */
+.dk-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: min(34vh, 300px);
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(231, 239, 233, 0.92) 0%,
+    rgba(231, 239, 233, 0.55) 42%,
+    transparent 100%
+  );
+}
+
+/* 索引栏读得清一档（它贴在视口边缘，对比本来就吃亏） */
+html.is-deck .co-deck-index a { color: var(--t-muted); opacity: 0.85; }
+html.is-deck .co-deck-index a.is-on { color: var(--t-ink); opacity: 1; }
+
+/* 卡片悬浮时，编号从灰紫换成信号青，跟边框一起亮 —— 一处小呼应 */
+@media (prefers-reduced-motion: no-preference) {
+  .co-lib-card::before,
+  .co-svc h3 { transition: color 320ms var(--ease-out); }
+  .co-lib-card:hover::before { color: var(--t-signal-ink); }
+}
+.co-lib-card::before { transition: color 320ms var(--ease-out); }
+
+/* SiteNav 的 scoped 样式带 [data-v] 属性，特异性压得住 .co-page .navbar；
+   这里叠一层同名类把顶栏那条线彻底去掉（用户要求「连顶栏的线都没有」） */
+.co-page .navbar.navbar,
+html.is-deck .navbar.navbar {
+  border-bottom: 0;
+  box-shadow: none;
+}
+.co-page.is-scrolled .navbar.navbar { border-bottom: 0; }
+
+/* ---------- 背景图案改成「上膛才取图」 ----------
+   七张图如果都写死在 DOM 里，首屏会一口气把 800KB 全下完；这里只声明 URL，
+   真正取图要等这一屏进入视口上下各 1.2 屏的范围（CompanyDeck 打 is-armed）。
+   长页的 .co-page-art 不受影响（它只有一张，本来就在首屏）。 */
+.dk-bg .dk-art { background-image: none; }
+html.is-deck .dk-screen.is-armed .dk-bg .dk-art,
+html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }

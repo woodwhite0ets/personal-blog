@@ -7,6 +7,10 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/brand/icon-blue-180.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/brand/icon-blue-512.png" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/jetbrains-mono-400.woff2" crossorigin />
+    <!-- 公司站首屏的底图与第一张图案：这两张决定首屏多久「有东西」。
+         其余六张图案由 CompanyDeck 在进入视口前后 1.2 屏才取，不抢首屏带宽。 -->
+    <link rel="preload" as="image" href="/bg/mill-grey.webp" />
+    <link rel="preload" as="image" href="/bg/art/machine.webp" />
     <!-- 字体预加载只保留实际用到的这一款：站点等宽字体（自托管）。
          Geist 走 @fontsource 的 unicode-range 分片，浏览器只取 latin，不需要手动 preload。
          曾被删掉的 EB Garamond / Caveat 的 preload 仍留在这里，线上每次访问都 404，已清理。 -->

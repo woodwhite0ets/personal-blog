@@ -50,7 +50,10 @@ const tailEl = ref(null)
 const atTail = ref(false)
 
 let io = null
+let artIo = null
 let mq = null
+// 屏 → 离场计时器（重播用）
+const liveTimers = new Map()
 let mqHandler = null
 let rmq = null
 let rmqHandler = null
@@ -80,6 +83,27 @@ function sync() {
   if (!on) screens.value.forEach(({ el }) => el.classList.add('is-live'))
 }
 
+/* 图案上膛：进入视口上下各 1.2 屏范围才真正取图，首屏不必等七张图 */
+function observeArt() {
+  if (artIo) artIo.disconnect()
+  const nodes = screens.value.map((s) => s.el)
+  if (tailEl.value) nodes.push(tailEl.value)
+  if (typeof IntersectionObserver === 'undefined') {
+    nodes.forEach((el) => el.classList.add('is-armed'))
+    return
+  }
+  artIo = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) e.target.classList.add('is-armed')
+    })
+  }, { rootMargin: '60% 0px 60% 0px' })
+  nodes.forEach((el) => {
+    // 第一屏（含首屏）立刻上膛，别等观察器
+    if (el === screens.value[0]?.el) el.classList.add('is-armed')
+    artIo.observe(el)
+  })
+}
+
 function observe() {
   if (io) io.disconnect()
   if (typeof IntersectionObserver === 'undefined') {
@@ -94,16 +118,29 @@ function observe() {
         if (i < 0) return
         // 屏过半即算到达；同时放出这一屏的出场
         if (e.isIntersecting) {
+          // 回来时重新演一遍：先取消离场计时，再补上 is-live
+          clearTimeout(liveTimers.get(e.target))
+          liveTimers.delete(e.target)
           e.target.classList.add('is-live')
           // 到达的屏直接放出来：观察器的阈值偶尔会漏（快速拖动滚动条、屏高刚等于视口）
           if (e.intersectionRatio >= 0.5) {
             active.value = i
             e.target.classList.add('is-live')
           }
+        } else {
+          // 完全离开视口 280ms 后再摘：留出回滚/连滚的余量，摘的时候屏已在画面外，
+          // 不会看到「内容突然消失」；下次翻回来 is-live 重新加上，动效重播。
+          clearTimeout(liveTimers.get(e.target))
+          liveTimers.set(e.target, setTimeout(() => {
+            e.target.classList.remove('is-live')
+            liveTimers.delete(e.target)
+          }, 280))
         }
       })
     },
-    { threshold: [0.25, 0.5, 0.75] }
+    // 阈值压低到 12%：一屏滑进来就放出这屏的出场，等吸附停稳时内容已经到位，
+    // 不会出现「翻过去先空一下」的空窗
+    { threshold: [0.12, 0.5] }
   )
   screens.value.forEach(({ el }) => io.observe(el))
 }
@@ -198,6 +235,7 @@ onMounted(() => {
   rmq.addEventListener?.('change', rmqHandler)
   sync()
   observe()
+  observeArt()
   window.addEventListener('keydown', onKey)
   window.addEventListener('resize', onResize, { passive: true })
   window.addEventListener('wheel', onWheel, { passive: false })
@@ -212,5 +250,8 @@ onUnmounted(() => {
   if (rmq && rmqHandler) rmq.removeEventListener?.('change', rmqHandler)
   clearTimeout(lockTimer)
   if (io) io.disconnect()
+  if (artIo) artIo.disconnect()
+  liveTimers.forEach((t) => clearTimeout(t))
+  liveTimers.clear()
 })
 </script>
