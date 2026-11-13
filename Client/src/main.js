@@ -3,6 +3,7 @@ import '@fontsource-variable/geist'
 // 2026-11 企业站改版：全站无衬线。西文只留 Geist，中文交给系统字体（PingFang / 微软雅黑 /
 // Noto Sans CJK），不再为标题下载 CJK 衬线（原本一次要 300KB+ 才显示得出）。
 import './style.css'
+import './styles/brand.css'
 import App from './App.vue'
 import router from './router/index.js'
 import { initEnhance } from './utils/enhance.js'
