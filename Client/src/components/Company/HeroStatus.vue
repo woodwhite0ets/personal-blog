@@ -40,7 +40,7 @@ let timer = 0
 
 const settle = () => { shown.value = [...targets] }
 
-function runCountUp(duration = 900, delay = 560) {
+function runCountUp(duration = 700, delay = 380) {
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (calm) { settle(); return }
   timer = window.setTimeout(() => {

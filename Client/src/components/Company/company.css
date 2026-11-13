@@ -380,7 +380,7 @@
 }
 .co-ticker::before { left: 0; background: linear-gradient(to right, var(--t-bg) 12%, transparent 100%); }
 .co-ticker::after { right: 0; background: linear-gradient(to left, var(--t-bg) 12%, transparent 100%); }
-.co-ticker-track { display: flex; width: max-content; animation: coTicker 68s linear infinite; }
+.co-ticker-track { display: flex; width: max-content; animation: coTicker 56s linear infinite; }
 .co-ticker-run {
   padding-right: 56px;
   font-family: var(--font-mono);
@@ -482,22 +482,22 @@
   to   { transform: scaleX(var(--v, 1)); }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .co-hero-band .co-title { animation: coBootDevelop 760ms var(--ease-out) 90ms both; }
-  .co-hero-band .co-lead { animation: coBootUp 560ms var(--ease-out) 420ms both; }
-  .co-hero-band .co-actions { animation: coBootUp 560ms var(--ease-out) 520ms both; }
-  .co-hero-band .status-panel { animation: coBootUp 600ms var(--ease-out) 300ms both; }
+  .co-hero-band .co-title { animation: coBootDevelop 600ms var(--ease-out) 70ms both; }
+  .co-hero-band .co-lead { animation: coBootUp 440ms var(--ease-out) 300ms both; }
+  .co-hero-band .co-actions { animation: coBootUp 440ms var(--ease-out) 380ms both; }
+  .co-hero-band .status-panel { animation: coBootUp 480ms var(--ease-out) 220ms both; }
   .co-hero-band .status-row {
-    animation: coBootUp 460ms var(--ease-out) both;
-    animation-delay: calc(480ms + var(--i, 0) * 110ms);
+    animation: coBootUp 380ms var(--ease-out) both;
+    animation-delay: calc(360ms + var(--i, 0) * 85ms);
   }
   .co-hero-band .status-bar-fill {
     transform: scaleX(var(--v, 1));
-    animation: coBarGrow 780ms var(--ease-out) both;
-    animation-delay: calc(900ms + var(--i, 0) * 110ms);
+    animation: coBarGrow 560ms var(--ease-out) both;
+    animation-delay: calc(600ms + var(--i, 0) * 85ms);
   }
   .co-hero-band .co-board-tile {
-    animation: coBootUp 480ms var(--ease-out) both;
-    animation-delay: calc(820ms + var(--n, 0) * 90ms);
+    animation: coBootUp 400ms var(--ease-out) both;
+    animation-delay: calc(560ms + var(--n, 0) * 70ms);
   }
   .co-hero-band .co-board-tile:nth-child(1) { --n: 0; }
   .co-hero-band .co-board-tile:nth-child(2) { --n: 1; }
@@ -1813,7 +1813,7 @@
 .co-page.co-anim .co-h2.is-in .co-h2-idx {
   opacity: 1;
   transform: translateY(-100%);
-  transition: opacity 260ms var(--ease-out), transform 420ms var(--ease-out);
+  transition: opacity 200ms var(--ease-out), transform 340ms var(--ease-out);
 }
 .co-page.co-anim .co-svc.co-reveal,
 .co-page.co-anim .co-lib-card.co-reveal,
@@ -1824,27 +1824,27 @@
 .co-lib > li:nth-child(2),
 .mkt-steps > li:nth-child(2),
 .co-standards > *:nth-child(2),
-.co-gauge > *:nth-child(2) { transition-delay: 45ms; }
+.co-gauge > *:nth-child(2) { transition-delay: 35ms; }
 .co-cards > *:nth-child(3),
 .co-lib > li:nth-child(3),
 .mkt-steps > li:nth-child(3),
 .co-standards > *:nth-child(3),
-.co-gauge > *:nth-child(3) { transition-delay: 90ms; }
+.co-gauge > *:nth-child(3) { transition-delay: 70ms; }
 .co-cards > *:nth-child(4),
 .co-lib > li:nth-child(4),
 .mkt-steps > li:nth-child(4),
-.co-gauge > *:nth-child(4) { transition-delay: 135ms; }
+.co-gauge > *:nth-child(4) { transition-delay: 105ms; }
 .co-cards > *:nth-child(5),
-.co-lib > li:nth-child(5) { transition-delay: 180ms; }
+.co-lib > li:nth-child(5) { transition-delay: 140ms; }
 .co-cards > *:nth-child(6),
-.co-lib > li:nth-child(6) { transition-delay: 225ms; }
+.co-lib > li:nth-child(6) { transition-delay: 175ms; }
 
 .co-page.co-anim .co-reveal.is-in {
   opacity: 1;
   transform: none;
   clip-path: inset(0 0 0 0);
-  transition: opacity 300ms var(--ease-out), transform 560ms var(--ease-out),
-    clip-path 620ms var(--ease-out);
+  transition: opacity 240ms var(--ease-out), transform 440ms var(--ease-out),
+    clip-path 460ms var(--ease-out);
 }
 
 /* 减少动态效果：位移与擦出全取消，只保留透明度；交错延迟也归零 */
