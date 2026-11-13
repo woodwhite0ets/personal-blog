@@ -167,9 +167,9 @@ button {
 }
 
 /* 页面根容器过渡 */
-.router-fade-enter-active { transition: opacity var(--dur-page) var(--ease-out), transform var(--dur-page) var(--ease-out); }
-.router-fade-leave-active { transition: opacity var(--dur-press) var(--ease-out); }
-.router-fade-enter-from { opacity: 0; transform: translateY(4px); }
+.router-fade-enter-active { transition: opacity 300ms var(--ease-out), transform 320ms var(--ease-out); }
+.router-fade-leave-active { transition: opacity 160ms var(--ease-out); }
+.router-fade-enter-from { opacity: 0; transform: translateY(10px); }
 .router-fade-leave-to { opacity: 0; }
 
 /* 滚动条宽度微调 */
@@ -2660,28 +2660,81 @@ button:not(:disabled):active, .nav-drawer-auth:active {
   pointer-events: none;
   background-image: var(--page-art, none);
   background-repeat: no-repeat;
-  background-position: center 34%;
-  background-size: cover;
+  background-position: center 38%;
+  background-size: 135%;
   mix-blend-mode: multiply;
-  opacity: 0.05;
+  opacity: 0.1;
   -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 46%, transparent 90%);
   mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 46%, transparent 90%);
 }
 
 /* 一页一张：按内容类型分，别每页都一样 */
-.home-page        { --page-art: url("/bg/art/orbit.webp"); }
+.home-page        { --page-art: url("/bg/art/machine.webp"); }
 /* 首屏是品牌字标，图案再退一档，别跟它抢 */
-.home-page .page-wash::after { opacity: 0.035; }
+.home-page .page-wash::after { opacity: 0.09; background-size: 150%; }
 .forum-page       { --page-art: url("/bg/art/terrain.webp"); }
 .archive-page     { --page-art: url("/bg/art/terrain.webp"); }
 .tags-page        { --page-art: url("/bg/art/exploded.webp"); }
 .notes-page       { --page-art: url("/bg/art/patent.webp"); }
 .now-page         { --page-art: url("/bg/art/patent.webp"); }
-.pl-page          { --page-art: url("/bg/art/orbit.webp"); }
+.pl-page          { --page-art: url("/bg/art/exploded.webp"); }
 .tl-page          { --page-art: url("/bg/art/machine.webp"); }
 .td-page          { --page-art: url("/bg/art/machine.webp"); }
 .ad-page          { --page-art: url("/bg/art/exploded.webp"); }
 .ct-page          { --page-art: url("/bg/art/ledger.webp"); }
 .about-page       { --page-art: url("/bg/art/constellation.webp"); }
 .post-detail-page { --page-art: url("/bg/art/constellation.webp"); }
+/* 阅读页要看得久，图案再退一档，正文后面只留隐约的线 */
+.post-detail-page .page-wash::after { opacity: 0.055; }
 .series-page      { --page-art: url("/bg/art/terrain.webp"); }
+
+/* ============================================================
+   博客的动效（2026-11-13）
+   ------------------------------------------------------------
+   博客是内容站，动效分三档，按页面结构给：
+   ① 入口（首页）：允许最强的一层，品牌字标与章节尺；
+   ② 列表：内容自己会错落入场（.v-reveal 已经带 70ms 阶梯），
+      悬浮只给「标题变色 + 左侧一道线」，不做抬起（那是公司站卡片的语言）；
+   ③ 文章：正文一个字都不动，只做进度条（已有）、目录高亮（下面补）；
+   翻页统一走 .router-fade：抬 10px 淡入，退出只用 160ms。
+   ============================================================ */
+
+/* 章节头那条横线：进入视口时从左拉开，像真的画上去 */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hm-h::after {
+      transform: scaleX(0);
+      transform-origin: left center;
+      animation: hmRuleDraw linear both;
+      animation-timeline: view();
+      animation-range: entry 6% entry 46%;
+    }
+    @keyframes hmRuleDraw {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+  }
+}
+
+/* 文章列表行：悬浮时标题转信号青，左边一道线从无到有；不加位移，列表不跳 */
+.post-card {
+  position: relative;
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+.post-card::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 30px;
+  bottom: 30px;
+  width: 2px;
+  background: var(--accent);
+  opacity: 0;
+  transform: scaleY(0.4);
+  transform-origin: center;
+  transition: opacity 220ms var(--ease-out), transform 320ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .post-card:hover::before { opacity: 1; transform: scaleY(1); }
+  .post-card:hover { border-bottom-color: var(--border-strong); }
+}
