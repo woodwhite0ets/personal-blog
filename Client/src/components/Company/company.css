@@ -110,7 +110,7 @@
   inset: 0;
   /* 长页没有卡片遮，底图会显得脏：整体再压一层，首页因为有大量白卡看不出来 */
   background-image:
-    linear-gradient(to bottom, rgba(231, 239, 233, 0.52), rgba(231, 239, 233, 0.3) 42%, rgba(223, 232, 225, 0.46));
+    linear-gradient(to bottom, rgba(231, 239, 233, 0.9), rgba(231, 239, 233, 0.82) 42%, rgba(223, 232, 225, 0.88));
 }
 
 .co-main {
@@ -3012,3 +3012,79 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
    给它一个上限，右侧读数值仍然贴右 —— 一眼能比，又不至于变成一条条色带 */
 .co-meter-bar { height: 3px; max-width: 620px; }
 .co-meter-bar i { background: var(--t-signal); }
+
+/* ============================================================
+   案例库（/work）：缩略图换成编号，排版放松
+   ------------------------------------------------------------
+   CaseFigure 那几张 SVG 是「示意图」，放在 1320 宽的卡里像占位块，
+   跟页面背后的真图纸并置更显假。改成档案条目：编号 + 类型 + 标题 + 结果，
+   和首页 deck 里那三张卡同一套语言。
+   ============================================================ */
+.co-page--work .co-lib-thumb { display: none; }
+.co-page--work .co-lib { counter-reset: libcase; margin-top: 28px; }
+.co-page--work .co-lib-card { counter-increment: libcase; padding-top: 24px; }
+.co-page--work .co-lib-card::before {
+  content: "0" counter(libcase);
+  display: block;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--t-indigo-tint);
+  font-variant-numeric: tabular-nums;
+}
+/* 元信息表 → 筛选栏 → 卡片区之间留出呼吸，别挤成一坨 */
+.co-page--work .co-mast-meta { margin-top: 32px; }
+.co-page--work .co-lib-bar { margin-top: 26px; }
+.co-page--work .co-lib-card { gap: 10px; }
+
+/* 「看价格与交期 →」这类箭头链接：下划线原来画在 44px 盒子的底边，
+   离文字有十几个像素，看着像第二条线。改成贴着文字画。 */
+.co-link-arrow {
+  position: relative;
+  border-bottom: 0;
+  padding-bottom: 0;
+  height: 44px;
+}
+.co-link-arrow::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 14px;
+  bottom: 11px;
+  height: 1px;
+  background: var(--t-signal);
+  transition: background-color var(--dur-hover) var(--ease-out);
+}
+.co-link-arrow:hover::before { background: var(--t-signal-ink); }
+
+/* 案例库卡片：编号原来比标题还大，读起来主次颠倒。
+   编号退回「目录号」（小、等宽、灰），标题提上来；名字/结果两级拉开。 */
+.co-page--work .co-lib-card::before {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--t-faint);
+  margin-bottom: 6px;
+}
+.co-page--work .co-lib-name { font-size: 1.1875rem; font-weight: 640; letter-spacing: -0.012em; }
+.co-page--work .co-lib-sub { font-size: 0.875rem; color: var(--t-muted); }
+.co-page--work .co-lib-result { padding-top: 10px; }
+.co-page--work .co-lib-card { padding: 22px 22px 24px; gap: 8px; }
+
+/* 报头下面那张元信息表原来是四边封口的格子，页面上唯一一处「表格框」；
+   改成上一条线 + 等宽标签，和其它地方的语言一致 */
+.co-page .co-mast-meta { border: 0; border-top: 1px solid var(--t-line-2); }
+.co-page .co-mast-meta > div { border: 0; border-right: 1px solid var(--t-line); }
+.co-page .co-mast-meta > div:last-child { border-right: 0; }
+
+/* 报头元信息：去掉格子底与竖线，只留上一条线和间距，和页面上其它地方一致 */
+.co-page .co-mast-item {
+  background: transparent;
+  border-right: 0;
+  border-bottom: 0;
+  padding: 10px 0 12px;
+  margin-right: 40px;
+}

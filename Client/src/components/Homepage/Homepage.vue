@@ -471,17 +471,11 @@ onUnmounted(() => { if (clockTimer) clearInterval(clockTimer) })
 .hero {
   position: relative; z-index: 1;
   border-bottom: 1px solid var(--border);
-  background:
-    radial-gradient(ellipse at 20% 0%, var(--aurora-1) 0%, transparent 45%),
-    radial-gradient(ellipse at 80% 0%, var(--aurora-2) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 0%, var(--aurora-3) 0%, transparent 60%);
-  background-size: 200% 200%, 200% 200%, 200% 200%;
-  animation: heroDrift 12s ease-in-out infinite;
+  /* 原来这里铺三团「极光」并 12 秒无限漂移：底图换成实拍 + 图纸之后，
+     那三团彩色反而成了脏色，去掉，交给 .page-wash 与页面图案。 */
+  background: transparent;
 }
-@keyframes heroDrift {
-  0%, 100% { background-position: 0% 0%, 100% 0%, 50% 0%; }
-  50%      { background-position: 40% 0%, 60% 20%, 50% 10%; }
-}
+
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
