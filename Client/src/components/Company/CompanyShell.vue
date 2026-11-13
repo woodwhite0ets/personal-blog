@@ -4,13 +4,8 @@
     <div class="co-rail" aria-hidden="true"><span class="co-rail-fill"></span></div>
 
     <SiteNav variant="company" />
-    <div class="co-ticker" aria-hidden="true">
-      <div class="co-ticker-track">
-        <span v-for="n in 2" :key="n" class="co-ticker-run">
-          厦门翔安 · 可开票 · 一天内回信 · 自建推理 7×24 · 知识库检索 / 模型接入 / 本地推理 · 项目按阶段验收 · 交付即可运行
-        </span>
-      </div>
-    </div>
+    <!-- 2026-11-13 移除顶部跑马灯：与 HUD 行、状态面板徽标三处重复同一句话，
+         且两端渐隐会把首尾字切掉。信息已在 HUD 行与状态面板里。 -->
     <slot />
     <CompanyFooter />
   </div>

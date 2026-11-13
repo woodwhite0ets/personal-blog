@@ -47,11 +47,13 @@
      金箔   #d8b36a  + #1a1408 + #4a3410
      淡玫瑰 #e8c7cc  + #2f1119 + #7a2b3c
      象牙   #efe6d4  + #1a1408 + #7d5c22 */
-  --t-block: #d8b36a;
-  --t-block-ink: #1a1408;
-  --t-block-label: #4a3410;
-  --t-block-line: rgba(26, 20, 8, 0.28);
-  --t-block-grid: rgba(26, 20, 8, 0.06); /* 与博客 --accent 同一个值：两站的暖色只有一个 */
+  /* 整站唯一的重色块：墨。之前是金箔，在冷绿底上像一块芥末酱；
+     换成墨后与全站同一家族，青绿只用来点「可点/在线」 */
+  --t-block: #0c0e10;
+  --t-block-ink: #f1eee7;
+  --t-block-label: #8fbfb7;
+  --t-block-line: rgba(241, 238, 231, 0.22);
+  --t-block-grid: rgba(241, 238, 231, 0.045);
   --t-grid: rgba(12, 14, 16, 0.065);
   --t-hatch: repeating-linear-gradient(135deg, rgba(12, 14, 16, 0.055) 0 1px, transparent 1px 7px);
 
@@ -141,8 +143,10 @@
      两个频道的大标题看起来像同一个人的手笔 */
   font-size: clamp(2.8rem, 6vw, 4.6rem);
   font-weight: 650;
-  line-height: 0.94;
-  letter-spacing: -0.048em;
+  /* 中文大标题不能照搬拉丁的负字距与 0.94 行高：行间会打架、字会粘成一块 */
+  line-height: 1.14;
+  letter-spacing: 0;
+  word-spacing: 0;
   color: var(--t-ink);
   text-wrap: balance;
 }
@@ -473,7 +477,7 @@
   color: var(--t-faint);
 }
 .co-hud-l { display: inline-flex; align-items: center; gap: 9px; color: var(--t-ink-2); }
-.co-hud-r { display: inline-flex; align-items: center; gap: 16px; }
+.co-hud-r { display: inline-flex; align-items: center; gap: 10px; }
 .co-hud-r b { font-weight: 500; color: var(--t-ink); letter-spacing: 0.14em; }
 .co-hud-r i { font-style: normal; color: var(--t-faint); }
 .co-badge-dot {
@@ -613,6 +617,7 @@
   inset: 0;
   background: var(--t-signal);
   transform-origin: left;
+  transform: scaleX(var(--v, 1));
 }
 .status-foot {
   display: flex;
@@ -852,19 +857,20 @@
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
-  height: 4px;
+  height: 3px;
+  opacity: 0.55;
   background: repeating-linear-gradient(135deg, var(--t-block-ink) 0 10px, transparent 10px 20px);
 }
 .co-sec.lab-dark .co-h2 { color: var(--t-block-ink); border-top-color: var(--t-block-line); }
-.co-sec.lab-dark .co-h2::after { background-image: repeating-linear-gradient(to right, rgba(26, 20, 8, 0.34) 0 1px, transparent 1px 10px); }
+.co-sec.lab-dark .co-h2::after { background-image: repeating-linear-gradient(to right, rgba(241, 238, 231, 0.3) 0 1px, transparent 1px 10px); }
 .co-sec.lab-dark .co-h2-lat { color: var(--t-block-label); }
 .co-sec.lab-dark .co-h2-rule { background: var(--t-block-line); }
 .co-sec.lab-dark .co-h2-ruler {
   background-image:
-    repeating-linear-gradient(to right, rgba(26, 20, 8, 0.42) 0 1px, transparent 1px 8px),
-    repeating-linear-gradient(to right, rgba(26, 20, 8, 0.3) 0 1px, transparent 1px 40px);
+    repeating-linear-gradient(to right, rgba(241, 238, 231, 0.4) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(to right, rgba(241, 238, 231, 0.28) 0 1px, transparent 1px 40px);
 }
-.co-sec.lab-dark .co-sec-lead { color: rgba(26, 20, 8, 0.82); }
+.co-sec.lab-dark .co-sec-lead { color: rgba(241, 238, 231, 0.76); }
 .co-sec.lab-dark .co-h2-idx { background: var(--t-block-ink); color: var(--t-block); }
 
 .co-standards {
@@ -908,7 +914,7 @@
 }
 .co-sec.lab-dark .co-std-k { color: var(--t-block-label); }
 .co-sec.lab-dark .co-std-v { color: var(--t-block-ink); }
-.co-sec.lab-dark .co-std p { color: rgba(26, 20, 8, 0.84); }
+.co-sec.lab-dark .co-std p { color: rgba(241, 238, 231, 0.74); }
 
 /* ============================================================
    案例库（co-lib）
@@ -1989,6 +1995,7 @@
   .co-actions { margin-top: 20px; }
   .co-hero-band { border-bottom: 1px solid var(--t-line-2); }
   .co-hero-board { order: 2; }
+  .co-show { order: 2; }  /* 新实样块要跟旧拼版一样排在标题之后 */
   .status-panel { order: 3; grid-column: 1; margin: 24px 0 0; }
   .co-hud-r i { display: none; }
   .co-sec { margin-top: 64px; }
@@ -2055,4 +2062,481 @@
   .co-spec, .co-spec tbody, .co-spec tr, .co-spec th, .co-spec td { display: block; width: 100%; }
   .co-spec th { padding: 12px 0 2px; border-bottom: 0; }
   .co-spec td { padding: 0 0 12px; }
+}
+
+/* ============================================================
+   交付物实样（hero proof）
+   ------------------------------------------------------------
+   替换原来的四格缩略图拼版：那四张 SVG 是示意图，说明不了任何事。
+   这里直接放交付物本身——乐清充电桩平台的界面切片，用站点自己的
+   令牌重绘（不引入图片，图标不借外部库），旁边配一条五行案例索引。
+   2026-11-13
+   ============================================================ */
+.co-show {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.68fr) minmax(0, 1fr);
+  margin-top: 8px;
+  border-top: 1px solid var(--t-line-2);
+  border-left: 1px solid var(--t-line-2);
+  background: var(--t-panel);
+}
+.co-show-shot {
+  margin: 0;
+  min-width: 0;
+  padding: 14px 16px 16px;
+  border-right: 1px solid var(--t-line-2);
+  border-bottom: 1px solid var(--t-line-2);
+  background: linear-gradient(180deg, var(--t-panel), var(--t-bg));
+}
+.co-show-cap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 9px;
+}
+.co-show-cap-l { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.co-show-cap-l b { font-size: 0.8125rem; font-weight: 620; color: var(--t-ink); letter-spacing: -0.01em; }
+.co-show-cap-l i {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--t-faint);
+}
+.co-show-link {
+  font-size: 11.5px;
+  color: var(--t-signal-ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+.co-show-link:hover { border-bottom-color: currentColor; }
+
+/* 界面切片 —— 只用站点令牌，没有图片 */
+.co-mock {
+  border: 1px solid var(--t-line-2);
+  background: #fbfcfb;
+  overflow: hidden;
+}
+.co-mock-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--t-line);
+  background: #f4f6f4;
+}
+.co-mock-title { font-size: 11.5px; font-weight: 620; color: var(--t-ink); margin-right: 3px; }
+.co-chip {
+  font-size: 10.5px;
+  line-height: 1.6;
+  padding: 0 7px;
+  border: 1px solid var(--t-line-2);
+  color: var(--t-muted);
+  background: #fff;
+  white-space: nowrap;
+}
+.co-chip.is-on { background: var(--t-ink); border-color: var(--t-ink); color: #f3f4f4; }
+.co-chip.is-ghost { background: transparent; color: var(--t-faint); }
+.co-mock-search {
+  margin-left: auto;
+  font-size: 10.5px;
+  color: var(--t-faint);
+  border: 1px solid var(--t-line);
+  background: #fff;
+  padding: 0 8px;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+.co-mock-body { display: grid; grid-template-columns: minmax(0, 1.34fr) minmax(0, 1fr); }
+
+/* 地图 */
+.co-mock-map {
+  position: relative;
+  min-height: 258px;
+  color: var(--t-ink);
+  background:
+    radial-gradient(120% 90% at 20% 0%, rgba(11, 143, 132, 0.05), transparent 60%),
+    #f2f5f2;
+  border-right: 1px solid var(--t-line);
+  overflow: hidden;
+}
+.co-mock-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.co-mock-map text { font-family: var(--font-mono); }
+.co-show .co-pin {
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #93a4aa;
+  box-shadow: 0 0 0 1.5px #fff;
+  transform: translate(-50%, -50%);
+}
+.co-show .co-pin.is-ok,
+.co-show .co-pin.is-pass { background: var(--t-signal); }
+.co-show .co-pin.is-hot {
+  /* 选中态只加环、放大，不改颜色：红色是「不合格」的语义，不能被选中借用 */
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(12, 14, 16, 0.22);
+  z-index: 3;
+}
+.co-map-tag {
+  position: absolute;
+  left: 9px;
+  bottom: 9px;
+  padding: 1px 6px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  color: var(--t-muted);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--t-line);
+}
+.co-map-legend {
+  position: absolute;
+  right: 9px;
+  bottom: 9px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 6px;
+  font-size: 9.5px;
+  color: var(--t-muted);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--t-line);
+}
+.co-map-legend i { display: inline-block; width: 6px; height: 6px; background: #93a4aa; }
+.co-map-legend i.is-ok { background: var(--t-signal); }
+.co-map-legend i.is-fail { background: var(--t-danger); }
+.co-pin-card {
+  position: absolute;
+  width: 168px;
+  padding: 8px 9px 7px;
+  background: #fff;
+  border: 1px solid var(--t-line-2);
+  box-shadow: 0 6px 16px -10px rgba(12, 14, 16, 0.32);
+  font-size: 10px;
+}
+.co-pin-card h5 {
+  margin: 0 0 5px;
+  font-size: 11px;
+  font-weight: 620;
+  line-height: 1.35;
+  color: var(--t-ink);
+}
+.co-pin-card h5 span {
+  display: block;
+  margin-top: 1px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--t-faint);
+}
+.co-pin-card dl { margin: 0; display: grid; gap: 2px; }
+.co-pin-card dl div { display: flex; justify-content: space-between; gap: 8px; }
+.co-pin-card dt { color: var(--t-faint); font-size: 9.5px; white-space: nowrap; }
+.co-pin-card dd { margin: 0; color: var(--t-ink-2); font-family: var(--font-mono); font-size: 10px; white-space: nowrap; }
+.co-pin-st {
+  display: inline-block;
+  margin-top: 5px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  color: var(--t-signal-ink);
+  border: 1px solid rgba(11, 143, 132, 0.4);
+  padding: 0 5px;
+}
+
+/* 记录列表 */
+.co-mock-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #fff;
+  max-height: 296px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--t-line-2) transparent;
+}
+.co-mock-list::-webkit-scrollbar { width: 6px; }
+.co-mock-list::-webkit-scrollbar-thumb { background: var(--t-line-2); }
+.co-mock-list-h {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 9px;
+  border-bottom: 1px solid var(--t-line);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--t-faint);
+  background: #f4f6f4;
+}
+.co-mock-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: baseline;
+  padding: 7px 9px;
+  border-bottom: 1px solid rgba(12, 14, 16, 0.07);
+}
+.co-mock-id { font-family: var(--font-mono); font-size: 9.5px; color: var(--t-faint); }
+.co-mock-nm {
+  min-width: 0;
+  font-size: 11px;
+  color: var(--t-ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.co-mock-nm i {
+  display: block;
+  font-style: normal;
+  font-size: 9.5px;
+  color: var(--t-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.co-tagx {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  padding: 0 4px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.co-tagx.is-pass { color: var(--t-signal-ink); border-color: rgba(11, 143, 132, 0.38); }
+.co-tagx.is-wait { color: #8a5a00; border-color: rgba(138, 90, 0, 0.32); }
+.co-tagx.is-fail { color: var(--t-danger); border-color: rgba(184, 69, 47, 0.36); }
+.co-mock-more {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 9px;
+  border-top: 1px solid var(--t-line);
+  background: #f4f6f4;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--t-faint);
+}
+.co-mock-foot {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 6px 10px;
+  border-top: 1px solid var(--t-line);
+  background: #f4f6f4;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--t-faint);
+}
+.co-mock-foot b { color: var(--t-signal-ink); font-weight: 500; }
+.co-mock-note { margin-left: auto; color: var(--t-faint); opacity: 0.85; }
+
+/* 案例索引 */
+.co-show-idx {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--t-line-2);
+  background: rgba(247, 248, 248, 0.45);
+}
+.co-show-idx li { border-bottom: 1px solid var(--t-line); display: flex; flex: 1 1 auto; }
+.co-show-idx li:last-child { border-bottom: 0; }
+.co-idx-row {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  padding: 8px 12px;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color var(--dur-hover) var(--ease-out);
+}
+.co-idx-row:hover { background: var(--t-panel-2); }
+.co-idx-row:focus-visible { outline: 2px solid var(--t-signal); outline-offset: -3px; }
+.co-idx-n {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--t-faint);
+  padding-top: 2px;
+}
+.co-idx-main { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.co-idx-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.42;
+  color: var(--t-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.co-idx-res {
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--t-muted);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.co-idx-st {
+  min-width: 54px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--t-signal-ink);
+  background: rgba(11, 143, 132, 0.09);
+  padding: 1px 6px;
+  margin-top: 0;
+  white-space: nowrap;
+}
+.co-idx-all .co-idx-name { color: var(--t-ink); }
+.co-idx-all .co-idx-st {
+  color: var(--t-ink);
+  background: transparent;
+  padding: 0;
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+/* 窄屏 */
+@media (max-width: 960px) {
+  .co-show { grid-template-columns: 1fr; }
+  .co-show-shot { border-right: 0; }
+  .co-mock-body { grid-template-columns: 1fr; }
+  .co-mock-map { min-height: 210px; border-right: 0; border-bottom: 1px solid var(--t-line); }
+  .co-pin-card { left: auto; right: 8px; top: 8px; width: 150px; }
+  .co-mock-list { max-height: 250px; overflow: hidden; }
+}
+@media (max-width: 560px) {
+  .co-pin-card { display: none; }
+  .co-mock-map { min-height: 160px; }
+  .co-show-cap { gap: 4px; }
+  .co-show-link { font-size: 11px; }
+}
+
+/* ============================================================
+   实样块 · 可交互态
+   ------------------------------------------------------------
+   这些元素看着像控件，就必须真的是控件：乡镇筛选、搜索、点行、
+   点地图上的桩、导出 CSV 全部可用。原来是一张死图，点哪儿都没反应，
+   比没有更糟。2026-11-13
+   ============================================================ */
+.co-show .co-chip {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  font-size: 10.5px;
+  line-height: 1.7;
+  padding: 0 7px;
+  border: 1px solid var(--t-line-2);
+  background: #fff;
+  color: var(--t-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 120ms, color 120ms, border-color 120ms;
+}
+.co-show .co-chip:hover { border-color: var(--t-ink); color: var(--t-ink); }
+.co-show .co-chip:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 1px; }
+.co-show .co-chip.is-ghost { cursor: default; color: var(--t-faint); background: transparent; }
+.co-show .co-chip.is-ghost:hover { border-color: var(--t-line-2); color: var(--t-faint); }
+
+.co-show .co-mock-search {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  border: 1px solid var(--t-line);
+  background: #fff;
+}
+.co-show .co-mock-search-k { width: 11px; height: 11px; flex: none; color: var(--t-faint); }
+.co-show .co-mock-search input {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  color: var(--t-ink-2);
+  width: 108px;
+  padding: 2px 0;
+}
+.co-show .co-mock-search input::placeholder { color: var(--t-faint); }
+.co-show .co-mock-search:focus-within { border-color: var(--t-ink); }
+.co-show .co-mock-search input::-webkit-search-cancel-button { cursor: pointer; }
+
+.co-show .co-pin {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  transition: transform 120ms var(--ease-out), opacity 160ms;
+}
+.co-show .co-pin:hover { transform: translate(-50%, -50%) scale(1.45); }
+.co-show .co-pin:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 2px; }
+.co-show .co-pin.is-fail { background: var(--t-danger); }
+.co-show .co-pin.is-wait { background: #c08a2e; }
+.co-show .co-pin.is-dim { opacity: 0.26; }
+.co-show .co-pin.is-dim:hover { opacity: 0.6; }
+
+.co-show .co-sel {
+  position: absolute;
+  border: 1px dashed rgba(12, 14, 16, 0.45);
+  background: rgba(12, 14, 16, 0.035);
+  pointer-events: none;
+  transition: left 160ms var(--ease-out), top 160ms var(--ease-out),
+    width 160ms var(--ease-out), height 160ms var(--ease-out);
+}
+
+.co-show .co-mock-row {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  border-bottom: 1px solid rgba(12, 14, 16, 0.07);
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 120ms;
+}
+.co-show .co-mock-row:hover { background: #f5f8f6; }
+.co-show .co-mock-row:focus-visible { outline: 2px solid var(--t-signal); outline-offset: -2px; }
+.co-show .co-mock-row.is-on { background: rgba(11, 143, 132, 0.07); }
+.co-show .co-mock-row.is-on .co-mock-nm { color: var(--t-ink); font-weight: 600; }
+
+.co-show .co-mock-empty {
+  margin: 0;
+  padding: 16px 10px;
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--t-faint);
+}
+
+.co-show .co-mock-readonly {
+  font-size: 9.5px;
+  letter-spacing: 0.02em;
+  color: var(--t-faint);
+}
+
+/* 卡片里的状态章：三种状态三色 */
+.co-pin-st.is-pass { color: var(--t-signal-ink); border-color: rgba(11, 143, 132, 0.4); }
+.co-pin-st.is-wait { color: #8a5a00; border-color: rgba(138, 90, 0, 0.34); }
+.co-pin-st.is-fail { color: var(--t-danger); border-color: rgba(184, 69, 47, 0.38); }
+
+/* 窄屏：搜索框独占一行，不要挤在芯片堆里 */
+@media (max-width: 560px) {
+  .co-show .co-mock-search { width: 100%; margin-left: 0; }
+  .co-show .co-mock-search input { width: 100%; }
 }

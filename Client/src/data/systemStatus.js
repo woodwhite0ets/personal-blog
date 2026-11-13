@@ -7,14 +7,14 @@
 export const systemStatus = {
   measuredAt: '2026-11-12',
   metrics: [
-    { key: '文章', value: 18, unit: '篇', note: '8 月起，最近 10-23' },
     { key: '连续运行', value: 95, unit: '天', note: '未重启', bar: 0.82 },
     { key: '定时巡检', value: 6, unit: '项', note: '每天执行' },
     { key: '入站端口', value: 0, unit: '个', note: '只走出站隧道' },
+    { key: '本批可接', value: 2, unit: '个', note: '排满即停' },
   ],
   lights: [
-    { label: '站点', state: 'on' },
-    { label: '机器', state: 'on' },
-    { label: '备份', state: 'on' },
+    { label: '接单中', state: 'on' },
+    { label: '可开票', state: 'on' },
+    { label: '数据不出内网', state: 'on' },
   ],
 }

@@ -2,7 +2,11 @@
   <header class="navbar">
     <div class="navbar-inner">
       <router-link to="/" class="brand" title="回到木白 · 公司主页" aria-label="木白，公司主页">
-        <img class="brand-mark" src="/brand/opc-mark-color.svg" alt="" width="955" height="672" aria-hidden="true" />
+        <img
+          class="brand-mark"
+          :src="isCompany ? '/brand/opc-mark-teal.svg' : '/brand/opc-mark-color.svg'"
+          alt="" width="955" height="672" aria-hidden="true"
+        />
         <span class="brand-text">{{ isCompany ? 'woodwhite' : 'woodwhite@blog' }}</span>
       </router-link>
       <router-link v-if="!isCompany" to="/" class="brand-back">← 木白</router-link>

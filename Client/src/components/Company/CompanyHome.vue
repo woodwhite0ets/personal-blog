@@ -1,6 +1,6 @@
 <template>
   <CompanyShell>
-    <!-- 首屏：HUD 行 + 左文案 + 右读数面板 + 案例拼版 -->
+    <!-- 首屏：HUD 行 + 左文案 + 右读数面板 + 交付物实样 -->
     <section class="co-hero-band">
       <div class="co-hero-in">
         <div class="co-hud">
@@ -14,7 +14,7 @@
         </div>
 
         <div class="co-hero-main">
-          <h1 class="co-title">给已经在跑的业务加 AI 能力</h1>
+          <h1 class="co-title">给已经在跑的业务<br>加 AI 能力</h1>
           <p class="co-lead">知识库检索、模型接入、本地推理与带后台的业务系统。从需求做到上线后的巡检，签合同，按阶段验收。</p>
           <div class="co-actions">
             <router-link class="co-btn co-btn-solid" to="/contact#brief">询价</router-link>
@@ -25,28 +25,8 @@
 
         <HeroStatus />
 
-        <!-- 作品即门面：三条证据 + 索引格，一行四格；其余案例都在 /work -->
-        <div class="co-hero-board">
-          <router-link
-            v-for="c in proofCases"
-            :key="c.slug"
-            :to="`/work/${c.slug}`"
-            class="co-board-tile"
-          >
-            <CaseFigure :slug="c.slug" size="md" />
-            <span class="co-board-meta">
-              <span class="co-board-name">{{ c.name }}</span>
-              <span class="co-board-period">{{ c.period }}</span>
-            </span>
-          </router-link>
-          <router-link to="/work" class="co-board-tile co-board-more">
-            <span class="co-board-more-v">{{ caseCount }}<i>个项目</i></span>
-            <span class="co-board-meta">
-              <span class="co-board-name">全部案例</span>
-              <span class="co-board-period">按类型筛选</span>
-            </span>
-          </router-link>
-        </div>
+        <!-- 作品即门面：把交付物本身摊开当证据，配一条案例索引 -->
+        <CompanyProof :cases="projects" :count="caseCount" />
       </div>
     </section>
 
@@ -261,13 +241,13 @@ import { useAutoAnimate } from '@formkit/auto-animate/vue'
 import CompanyShell from './CompanyShell.vue'
 import CompanySecHead from './CompanySecHead.vue'
 import CompanyCta from './CompanyCta.vue'
+import CompanyProof from './CompanyProof.vue'
 import CaseFigure from './CaseFigure.vue'
 import HeroStatus from './HeroStatus.vue'
 import { pricing, pricingNote } from '../../data/pricing.js'
 import { projects } from '../../data/projects.js'
 
-// 首页只放三条证据，其余去 /work；数量一律从数据源算，别在文案里写死
-const proofCases = projects.slice(0, 3)
+// 数量一律从数据源算，别在文案里写死
 const homeFilter = ref('全部')
 const homeChips = computed(() => {
   const map = new Map()
