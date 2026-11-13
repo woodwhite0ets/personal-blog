@@ -35,7 +35,7 @@ let io = null
 
 // 出场动画只挂在这些块上；删掉模板里的块时记得同步这一行，否则观察器在空跑
 function revealInit() {
-  const sel = '.co-svc, .co-std, .co-gauge-cell, .co-meter li, .co-card, .mkt-steps li, .co-faq-item, .co-proof li, .co-board-tile, .co-h2, .co-lib-card, .co-mast-item, .co-cta, .case-fig--lg'
+  const sel = '.co-svc, .co-std, .co-gauge-cell, .co-meter li, .co-card, .mkt-steps li, .co-faq-item, .co-proof li, .co-h2, .co-lib-card, .co-mast-item, .co-cta, .case-fig--lg'
   const items = Array.from(document.querySelectorAll(sel))
   if (!items.length) return
 

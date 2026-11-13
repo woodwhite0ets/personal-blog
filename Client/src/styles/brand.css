@@ -106,31 +106,6 @@ body::before {
 
 /* 选中与焦点：整站同一套 */
 ::selection { background: var(--accent-a25); color: var(--text-bright); }
-
-/* ---------- 品牌小件：全站复用的两个记号 ---------- */
-/* 角标：块的左上/右下各一段 L 形 1px，图纸的签字 */
-.brand-ticks { position: relative; }
-.brand-ticks::before,
-.brand-ticks::after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border: 1px solid var(--text-bright);
-  opacity: 0.45;
-}
-.brand-ticks::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
-.brand-ticks::after { right: -1px; bottom: -1px; border-left: 0; border-top: 0; }
-
-/* 数据标签：等宽、全大写、字号固定，别处不许再造一种 */
-.brand-kicker {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
 /* ---------- 药丸收方：整站不再有 999px 的胶囊 ----------
    只保留真正的圆（头像点、状态点），其它一律 3px */
 .hero-btn,
