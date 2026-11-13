@@ -10,10 +10,10 @@
         <div class="co-infra">
           <p class="co-infra-lead">自己的机器，自己的链路：一台旧服务器上自托管模型、检索、CI 与知识库，7×24 在跑。不需要向第三方买算力，也不把数据交出去。</p>
           <dl class="co-gauge">
-            <div class="co-gauge-cell"><dt>核</dt><dd><span class="co-gauge-v">24</span><span class="co-gauge-u">Xeon</span></dd><p>本地推理三实例</p></div>
-            <div class="co-gauge-cell"><dt>内存</dt><dd><span class="co-gauge-v">62</span><span class="co-gauge-u">G</span></dd><p>三实例并发不换页</p></div>
-            <div class="co-gauge-cell"><dt>存储</dt><dd><span class="co-gauge-v">1.8</span><span class="co-gauge-u">T</span></dd><p>NVMe 系统盘 + 数据盘</p></div>
-            <div class="co-gauge-cell"><dt>入站端口</dt><dd><span class="co-gauge-v">0</span><span class="co-gauge-u">—</span></dd><p>对外只走出站隧道</p></div>
+            <div class="co-gauge-cell"><dt>核</dt><dd><span class="co-gauge-v">{{ gauges[0] }}</span><span class="co-gauge-u">Xeon</span></dd><p>本地推理三实例</p></div>
+            <div class="co-gauge-cell"><dt>内存</dt><dd><span class="co-gauge-v">{{ gauges[1] }}</span><span class="co-gauge-u">G</span></dd><p>三实例并发不换页</p></div>
+            <div class="co-gauge-cell"><dt>存储</dt><dd><span class="co-gauge-v">{{ gauges[2] }}</span><span class="co-gauge-u">T</span></dd><p>NVMe 系统盘 + 数据盘</p></div>
+            <div class="co-gauge-cell"><dt>入站端口</dt><dd><span class="co-gauge-v">{{ gauges[3] }}</span><span class="co-gauge-u">—</span></dd><p>对外只走出站隧道</p></div>
           </dl>
           <ul class="co-meter" aria-label="运行中的负载">
             <li>
@@ -72,8 +72,12 @@
 </template>
 
 <script setup>
+import { useCountUp } from '../../composables/useCountUp.js'
 import CompanyShell from './CompanyShell.vue'
 import CompanyMasthead from './CompanyMasthead.vue'
 import CompanySecHead from './CompanySecHead.vue'
 import CompanyCta from './CompanyCta.vue'
+
+// 四格读数和首屏状态面板同一套自检（24 核 / 62G / 1.8T / 0 个入站端口）
+const gauges = useCountUp([24, 62, '1.8', 0], { duration: 700, delay: 120 })
 </script>

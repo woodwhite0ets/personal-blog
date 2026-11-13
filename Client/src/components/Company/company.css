@@ -252,6 +252,10 @@
 .co-h2-rule { flex: 1; height: 1px; background: var(--t-line); }
 .co-h2-ruler {
   flex: none;
+  /* 由 .co-h2.is-in 拉开：0 → 满，像仪表指针归位 */
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 620ms var(--ease-out) 80ms;
   width: 96px;
   height: 9px;
   background-image:
@@ -671,10 +675,16 @@
 .co-board-more .co-board-name { color: #f3f4f4; font-weight: 620; }
 .co-board-more .co-board-period { color: rgba(243, 244, 244, 0.72); }
 
-/* hover 推近：缩略图在格子里 scale，边框不动（transform-only） */
+/* 缩略图：默认降饱和，hover 复原 + 轻微推近（不动布局） */
+.co-board-tile .case-fig,
+.co-lib-card .case-fig {
+  filter: grayscale(0.6);
+  transition: filter 320ms var(--ease-out), transform 320ms var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out);
+}
 @media (hover: hover) and (pointer: fine) {
-  .co-board-tile .case-fig,
-  .co-lib-card .case-fig { transition: transform 320ms var(--ease-out), border-color var(--dur-hover) var(--ease-out); }
+  .co-board-tile:hover .case-fig,
+  .co-lib-card:hover .case-fig { filter: grayscale(0); }
   .co-board-tile::after,
   .co-lib-card::after {
     content: "";
@@ -1529,7 +1539,22 @@
 }
 .co-meter-k { font-size: 0.8125rem; color: var(--t-ink-2); }
 .co-meter-bar { position: relative; height: 4px; background: rgba(12, 14, 16, 0.1); }
-.co-meter-bar i { position: absolute; inset: 0; width: var(--v, 0%); background: var(--t-signal); }
+.co-meter-bar i {
+  position: absolute;
+  inset: 0;
+  background: var(--t-signal);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 700ms var(--ease-out);
+}
+/* 负载条跟着所在行的出场状态生长，四条依次慢 80ms */
+.co-meter li.is-in .co-meter-bar i { transform: scaleX(var(--v, 1)); }
+.co-meter li:nth-child(2).is-in .co-meter-bar i { transition-delay: 80ms; }
+.co-meter li:nth-child(3).is-in .co-meter-bar i { transition-delay: 160ms; }
+.co-meter li:nth-child(4).is-in .co-meter-bar i { transition-delay: 240ms; }
+
+/* 章节头出现后，刻度尺才拉开 */
+.co-h2.is-in .co-h2-ruler { transform: scaleX(1); }
 .co-meter-v {
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -1584,7 +1609,14 @@
 .co-form { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
 .co-form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .co-field { display: flex; flex-direction: column; gap: 6px; }
-.co-field-k { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--t-faint); }
+.co-field-k {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--t-faint);
+  transition: color var(--dur-hover) var(--ease-out);
+}
+.co-field:focus-within .co-field-k { color: var(--t-signal-ink); }
 .co-field input,
 .co-field textarea {
   width: 100%;
@@ -1605,7 +1637,8 @@
 .co-field textarea:focus {
   outline: none;
   border-color: var(--t-ink);
-  box-shadow: inset 3px 0 0 var(--t-signal);
+  /* 左侧刻度 + 一圈极淡的信号色，聚焦时同时亮起 */
+  box-shadow: inset 3px 0 0 var(--t-signal), 0 0 0 3px rgba(11, 143, 132, 0.1);
 }
 .co-form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 .co-form-hint { font-size: 0.8125rem; color: var(--t-faint); }
@@ -1869,11 +1902,41 @@
   .co-faq-item summary::before { transition: none; }
   .co-ticker-track { animation: none; }
   .co-page.co-anim .co-h2.co-reveal .co-h2-idx { opacity: 1; transform: translateY(-100%); transition: none; }
+  .co-h2-ruler { transform: scaleX(1); transition: none; }
+  .co-meter-bar i { transform: scaleX(var(--v, 1)); transition: none; }
   .co-board-tile::after,
   .co-lib-card::after { display: none; }
   .co-rail { display: none; }
   .co-board-tile .case-fig,
-  .co-lib-card .case-fig { transition: none; }
+  .co-lib-card .case-fig { transition: none; filter: none; }
+}
+
+/* ============================================================
+   页间转场（View Transitions API，仅公司站内部）
+   ------------------------------------------------------------
+   旧页上移淡出、新页从扫描线下方「打印」上来；顶栏单独命名并保持不动，
+   否则 sticky 的导航会跟着整页一起位移，看起来像页面在晃。
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (view-transition-name: root) {
+    ::view-transition-group(root) {
+      animation-duration: 300ms;
+      animation-timing-function: var(--ease-out);
+    }
+    ::view-transition-old(root) {
+      animation: coPageOut 240ms var(--ease-out) both;
+    }
+    ::view-transition-new(root) {
+      animation: coPageIn 320ms var(--ease-out) both;
+    }
+  }
+}
+@keyframes coPageOut {
+  to { opacity: 0; translate: 0 -10px; }
+}
+@keyframes coPageIn {
+  from { opacity: 0; translate: 0 16px; clip-path: inset(0 0 100% 0); }
+  to   { opacity: 1; translate: 0 0; clip-path: inset(0 0 0 0); }
 }
 
 /* ============================================================

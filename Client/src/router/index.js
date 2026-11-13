@@ -30,7 +30,6 @@ const BLOG_PATHS = [
 ]
 const isBlogPath = (p) => BLOG_PATHS.some((x) => p === x || p.startsWith(x + '/'))
 
-
 const routes = [
   {
     path: '/',
@@ -244,7 +243,6 @@ const routes = [
 // 本次文档的初始导航只处理一次（刷新/直开）
 let initialNav = true
 
-
 // 带 #锚点：目标节点可能随懒加载路由晚一帧才挂上，先找不到就短暂轮询再滚。
 // 落点用「布局位置」而不是 getBoundingClientRect：公司站章节挂了滚动驱动动画
 // （animation-timeline: view()），视口外的章节带 translateY(28px)，按 rect 算会多滚 28px。
@@ -278,6 +276,20 @@ function scrollToHash(hash) {
   })
 }
 
+// ---------- 公司站页间转场（View Transitions API）----------
+// 只在「公司站 → 公司站」之间启用：博客页面用的是另一套布局与滚动逻辑，
+// 混在一起容易出现快照错位，所以公司站与博客互跳一律走原生硬切。
+const COMPANY_ROUTE_RE = /^\/($|work(\/|$)|stack$|business(\/|$)|contact$)/
+function isCompanyPath(path) {
+  return COMPANY_ROUTE_RE.test(path)
+}
+function canViewTransition(to, from) {
+  if (typeof document === 'undefined' || typeof document.startViewTransition !== 'function') return false
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
+  return isCompanyPath(to.path) && isCompanyPath(from.path)
+}
+
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -300,6 +312,33 @@ const router = createRouter({
     return { top: 0 };
   },
 });
+
+let vtActive = false
+router.beforeResolve((to, from) => {
+  // 同一时刻只允许一个转场：连续点击会把上一个转场 abort 掉，
+  // 浏览器会记一条 AbortError，观感上也会跳一下。
+  if (vtActive || !canViewTransition(to, from)) return true
+  return new Promise((resolve) => {
+    vtActive = true
+    const release = () => { vtActive = false }
+    let vt
+    try {
+      // 把「导航 + 一次渲染」包进回调里，浏览器才知道何时抓新旧快照
+      vt = document.startViewTransition(() => {
+        // 同步放行导航；Vue 的 DOM 更新在微任务里完成，仍在本帧快照窗口内
+        resolve()
+        return new Promise((r) => queueMicrotask(() => queueMicrotask(r)))
+      })
+    } catch (e) {
+      release()
+      resolve()
+      return
+    }
+    vt.finished.then(release, release)
+    // 兜底：转场卡住时不要永久锁死导航
+    window.setTimeout(release, 1200)
+  })
+})
 
 // 站内跳转后同步 title/canonical
 router.afterEach((to) => {
