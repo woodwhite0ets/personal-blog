@@ -36,7 +36,7 @@ export const ROUTE_META = {
   },
   '/business': {
     title: '业务 — 木白 woodwhite',
-    description: '两条业务线：定制交付（AI 应用与系统，3 万元起，按范围拆阶段结算）与初创版官网（699 元起，按档定价、5–10 个工作日上线）。两边分开报价。',
+    description: '两条业务线：定制交付（AI 应用与系统，3 万元起，按范围拆阶段结算）与初创版官网（599 元起，按档定价、5–10 个工作日上线）。两边分开报价。',
     canonical: `${SITE.company}/business`,
   },
   '/business/startup': {
