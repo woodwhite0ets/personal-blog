@@ -17,16 +17,18 @@
 
 .co-page {
   /* ---------- 令牌 ---------- */
-  --t-bg: #ebedee;
-  --t-bg-deep: #e2e5e6;
-  --t-panel: #f7f8f8;
+  /* 2026-11-13：底色由冷灰 #ebedee 提到中性近白，和博客的纸白同一温度带；
+     网格与细线保留，靠线而不是靠灰底来分层 */
+  --t-bg: #f3f4f4;
+  --t-bg-deep: #eceeee;
+  --t-panel: #fdfdfd;
   --t-panel-2: #ffffff;
   --t-ink: #0c0e10;
   --t-ink-2: #262b2f;
   --t-muted: #474e54;
   --t-faint: #5c636a;
-  --t-line: rgba(12, 14, 16, 0.14);
-  --t-line-2: rgba(12, 14, 16, 0.32);
+  --t-line: rgba(12, 14, 16, 0.2);
+  --t-line-2: rgba(12, 14, 16, 0.42);
   --t-signal: #0b8f84;
   --t-signal-deep: #077a72;
   --t-signal-hover: #0f9f93;
@@ -39,8 +41,8 @@
   --t-indigo-on-dark: #9fb4f7;
   --t-indigo-tint: rgba(38, 72, 155, 0.45);
   --t-on-dark: #f3f4f4;
-  --t-danger: #c62431;
-  --t-grid: rgba(12, 14, 16, 0.045);
+  --t-danger: #b8452f; /* 与博客 --accent 同一个值：两站的暖色只有一个 */
+  --t-grid: rgba(12, 14, 16, 0.05);
   --t-hatch: repeating-linear-gradient(135deg, rgba(12, 14, 16, 0.055) 0 1px, transparent 1px 7px);
 
   /* 覆盖全站 token，让博客组件落在公司页里也不跑色 */
@@ -55,15 +57,17 @@
   --accent: var(--t-signal-ink);
   --accent-hover: var(--t-ink);
   --band-warm: transparent;
-  --navbar-bg: rgba(235, 237, 238, 0.97);
+  --navbar-bg: rgba(243, 244, 244, 0.97);
   --tag-bg: transparent;
   --tag-fg: var(--t-muted);
   --tag-bd: var(--t-line-2);
   --shadow-card: none;
 
-  --co-navh: 60px;
+  --co-navh: 56px;
   --co-tickerh: 30px;
-  --co-wrap: 1200px;
+  /* 与博客（1060 / 56）同一节奏带：切站时栅格不会突然变宽变高 */
+  --co-wrap: 1120px;
+  --co-r: 3px;
   --co-pad: 32px;
 
   position: relative;
@@ -123,10 +127,12 @@
   margin: 0 0 22px;
   max-width: 16ch;
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 5.4vw, 4.15rem);
-  font-weight: 640;
-  line-height: 0.98;
-  letter-spacing: -0.045em;
+  /* 与博客 hero-name（650 / 0.92 / -0.048em）同一节奏，只是小一档：
+     两个频道的大标题看起来像同一个人的手笔 */
+  font-size: clamp(2.8rem, 6vw, 4.6rem);
+  font-weight: 650;
+  line-height: 0.94;
+  letter-spacing: -0.048em;
   color: var(--t-ink);
   text-wrap: balance;
 }
@@ -144,8 +150,8 @@
 .co-lead {
   margin: 0;
   max-width: 36em;
-  font-size: 1.0625rem;
-  line-height: 1.75;
+  font-size: 1.125rem;
+  line-height: 1.72;
   color: var(--t-muted);
   text-wrap: pretty;
 }
@@ -388,7 +394,7 @@
 .co-ticker-run {
   padding-right: 56px;
   font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -726,6 +732,7 @@
   gap: 10px;
   width: 100%;
   padding: 18px 18px 16px;
+  border-radius: var(--co-r);
   border-right: 1px solid var(--t-line-2);
   border-bottom: 1px solid var(--t-line-2);
   background: var(--t-panel);
@@ -803,6 +810,7 @@
 .co-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .co-card {
   padding: 22px;
+  border-radius: var(--co-r);
   min-width: 0;
   border-right: 1px solid var(--t-line-2);
   border-bottom: 1px solid var(--t-line-2);
@@ -856,6 +864,7 @@
   flex-direction: column;
   gap: 8px;
   padding: 20px;
+  border-radius: var(--co-r);
   background: var(--t-panel);
   border-right: 1px solid var(--t-line-2);
   border-bottom: 1px solid var(--t-line-2);
@@ -912,7 +921,7 @@
   color: var(--t-muted);
   background: transparent;
   border: 1px solid var(--t-line);
-  border-radius: 0;
+  border-radius: var(--co-r);
   cursor: pointer;
   transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out),
     background-color var(--dur-hover) var(--ease-out);
@@ -952,7 +961,7 @@
   color: var(--t-muted);
   background: transparent;
   border: 1px solid var(--t-line);
-  border-radius: 0;
+  border-radius: var(--co-r);
   cursor: pointer;
   transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out),
     background-color var(--dur-hover) var(--ease-out);
@@ -986,6 +995,7 @@
   gap: 10px;
   width: 100%;
   padding: 12px;
+  border-radius: var(--co-r);
   border-right: 1px solid var(--t-line-2);
   border-bottom: 1px solid var(--t-line-2);
   background: var(--t-panel);
@@ -1627,7 +1637,7 @@
   color: var(--t-ink);
   background: var(--t-panel-2);
   border: 1px solid var(--t-line-2);
-  border-radius: 0;
+  border-radius: var(--co-r);
   transition: border-color var(--dur-hover) var(--ease-out), box-shadow var(--dur-hover) var(--ease-out);
 }
 .co-field textarea { resize: vertical; min-height: 96px; }
@@ -1682,7 +1692,7 @@
   color: var(--t-muted);
   background: transparent;
   border: 1px solid var(--t-line-2);
-  border-radius: 0;
+  border-radius: var(--co-r);
   cursor: pointer;
   transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
 }
@@ -1783,7 +1793,7 @@
 .co-page .nav-links { gap: 24px; }
 .co-page .nav-links a {
   position: relative;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   letter-spacing: 0.01em;
   color: var(--t-muted);
   text-decoration: none;
