@@ -1735,7 +1735,7 @@ body { line-break: strict; text-autospace: normal; }
   .nav-toggle, .btn-search { width: 44px; height: 44px; }
   .navbar-inner .btn-write,
   .navbar-inner .btn-login { height: 44px; }
-  .co-aside-more, .co-svc-link, .co-next-link, .co-note-link, .co-faq-link {
+  .co-aside-more, .co-svc-link, .co-next-link, .co-note-link {
     min-height: 44px; display: inline-flex; align-items: center;
   }
 }
@@ -2652,14 +2652,16 @@ button:not(:disabled):active, .nav-drawer-auth:active {
 /* ④ 文字链的可点高度：以下都是「更多 →」这类独立链接，原来只有 19–25px。
    组件里的 scoped 样式带 [data-v-*] 属性，特异性高于普通全局选择器，
    这里用 !important 只是为了保证可点高度不被覆盖，不影响其它声明。 */
-.co-aside-more, .co-svc-link, .co-note-link, .co-faq-link,
+/* 注意：.co-faq-link 是句内链接（FAQ 答案里的「合作方式」），
+   放进这批 display:flex 会撑满整行，把句号顶到下一行，所以不在这里。 */
+.co-aside-more, .co-svc-link, .co-note-link,
 .hr-more, .ai-snip-more, .pop-more, .tl-snip-more,
 .project-name, .contact-val, .ct-dist-row, .ai-snip-name, .ct-filter {
   display: flex; align-items: center; min-height: 36px !important;
 }
 .co-aside-more, .hr-more, .ai-snip-more, .pop-more, .tl-snip-more { display: inline-flex; }
 @media (max-width: 900px) {
-  .co-aside-more, .co-svc-link, .co-note-link, .co-faq-link,
+  .co-aside-more, .co-svc-link, .co-note-link,
   .hr-more, .ai-snip-more, .pop-more, .tl-snip-more,
   .project-name, .contact-val, .ct-dist-row, .ai-snip-name, .ct-filter { min-height: 44px !important; }
 }

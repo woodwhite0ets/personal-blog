@@ -1,6 +1,10 @@
 <template>
   <div ref="pageRef" class="co-page" :class="{ 'is-scrolled': scrolled }">
     <div class="page-wash" aria-hidden="true"></div>
+    <!-- 子页的淡灰图案：按路由选一张（首页不用这个，它每屏各有自己的） -->
+    <div v-if="artName" class="co-page-art" aria-hidden="true">
+      <div class="dk-art" :class="`dk-art--${artName}`"></div>
+    </div>
     <div class="co-rail" aria-hidden="true"><span class="co-rail-fill"></span></div>
 
     <SiteNav variant="company" />
@@ -14,10 +18,26 @@
 <script setup>
 // 公司站外壳：图纸底 + 顶栏 + 页脚。
 // 样式只有一套（company.css）→ 只随公司路由加载，博客页面不再携带这一层。
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import './company.css'
 import SiteNav from '../common/SiteNav.vue'
 import CompanyFooter from './CompanyFooter.vue'
+
+// 每页配一张图案（与首页同一批素材）：工作/能力/业务/联系各一张
+const ART_BY_PATH = {
+  '/work': 'terrain',
+  '/stack': 'exploded',
+  '/business': 'orbit',
+  '/business/startup': 'machine',
+  '/startup': 'machine',
+  '/contact': 'patent',
+}
+const route = useRoute()
+const artName = computed(() => {
+  if (route.path.startsWith('/work/')) return 'machine'
+  return ART_BY_PATH[route.path] || ''
+})
 
 const pageRef = ref(null)
 const scrolled = ref(false)
@@ -35,6 +55,9 @@ let io = null
 
 // 出场动画只挂在这些块上；删掉模板里的块时记得同步这一行，否则观察器在空跑
 function revealInit() {
+  // 首页是一屏一段的活页（CompanyDeck），出场由每屏的 is-live 统一管：
+  // 两套观察器作用在同一批元素上会互相抢 opacity/transform。
+  if (document.querySelector('.co-deck')) return
   const sel = '.co-svc, .co-std, .co-gauge-cell, .co-meter li, .co-card, .mkt-steps li, .co-faq-item, .co-proof li, .co-h2, .co-lib-card, .co-mast-item, .co-cta, .case-fig--lg'
   const items = Array.from(document.querySelectorAll(sel))
   if (!items.length) return

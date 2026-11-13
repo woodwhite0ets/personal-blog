@@ -69,7 +69,7 @@
   --accent: var(--t-signal-ink);
   --accent-hover: var(--t-ink);
   --band-warm: transparent;
-  --navbar-bg: rgba(231, 239, 233, 0.72);
+  --navbar-bg: transparent;
   --tag-bg: transparent;
   --tag-fg: var(--t-muted);
   --tag-bd: var(--t-line-2);
@@ -77,7 +77,7 @@
 
   --co-navh: 56px; 
   /* 与博客（1060 / 56）同一节奏带：切站时栅格不会突然变宽变高 */
-  --co-wrap: 1120px;
+  --co-wrap: 1320px;
   --co-r: 3px;
   --co-pad: 32px;
 
@@ -89,20 +89,28 @@
   font-family: var(--font-sans);
 }
 
-/* 全页细网格：40px 一格，200px 一重。极低对比，只做「这是一张图纸」的底噪 */
+/* 全页底图：一张很淡的拉丝金属／水泥质感大图（不滚动，压在内容后面）。
+   2026-11-13 换掉原来的 40px 网格：网格太像「模板感的技术站」，
+   一张低对比的实拍质感更接近实体铭牌，也不和面板的 1px 线抢结构。 */
 .co-page .page-wash {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  background-image: url("/bg/mill-grey.webp");
+  background-size: cover;
+  background-position: center 42%;
+  background-repeat: no-repeat;
+  background-color: var(--t-bg);
+}
+/* 顶部压一层极淡的底、底部压一点暗：白色面板与顶栏在任何位置都读得清 */
+.co-page .page-wash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* 长页没有卡片遮，底图会显得脏：整体再压一层，首页因为有大量白卡看不出来 */
   background-image:
-    linear-gradient(to right, var(--t-grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--t-grid) 1px, transparent 1px),
-    linear-gradient(to right, rgba(12, 14, 16, 0.085) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(12, 14, 16, 0.085) 1px, transparent 1px);
-  background-size: 40px 40px, 40px 40px, 200px 200px, 200px 200px;
-  background-position: -1px -1px;
-  mask-image: radial-gradient(120% 90% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.55) 60%, transparent 100%);
+    linear-gradient(to bottom, rgba(231, 239, 233, 0.52), rgba(231, 239, 233, 0.3) 42%, rgba(223, 232, 225, 0.46));
 }
 
 .co-main {
@@ -110,11 +118,11 @@
   z-index: 1;
   max-width: var(--co-wrap);
   margin: 0 auto;
-  padding: 48px var(--co-pad) 96px;
+  padding: 56px var(--co-pad) 112px;
 }
 
 /* 分节：线分层，底色块只给「另一类内容」 */
-.co-sec { position: relative; margin-top: 92px; }
+.co-sec { position: relative; margin-top: 112px; }
 .co-sec:first-child { margin-top: 4px; }
 /* 锚点跳转（首页 #pricing / #startup-hint、页脚与 FAQ 的跨页链）留出粘性顶栏高度 */
 .co-page [id] { scroll-margin-top: calc(var(--co-navh) + 18px); }
@@ -131,23 +139,6 @@
   background-color: var(--t-bg-deep);
   background-image: var(--t-hatch);
   border-block: 1px solid var(--t-line-2);
-}
-
-/* ---------- 排版 ---------- */
-.co-title {
-  margin: 0 0 22px;
-  max-width: 16ch;
-  font-family: var(--font-display);
-  /* 与博客 hero-name（650 / 0.92 / -0.048em）同一节奏，只是小一档：
-     两个频道的大标题看起来像同一个人的手笔 */
-  font-size: clamp(2.8rem, 6vw, 4.6rem);
-  font-weight: 650;
-  /* 中文大标题不能照搬拉丁的负字距与 0.94 行高：行间会打架、字会粘成一块 */
-  line-height: 1.14;
-  letter-spacing: 0;
-  word-spacing: 0;
-  color: var(--t-ink);
-  text-wrap: balance;
 }
 .co-page-title {
   margin: 0 0 18px;
@@ -312,7 +303,8 @@
 .co-btn:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 3px; }
 .co-btn-solid {
   background: var(--t-signal);
-  border-color: var(--t-signal);
+  /* 边框跟底色同色时，切角会在下沿露出一条亮线；直接设透明更干净 */
+  border-color: transparent;
   color: var(--t-ink);
   font-weight: 620;
 }
@@ -373,47 +365,6 @@
   }
 }
 
-/* ============================================================
-   首屏
-   ============================================================ */
-.co-hero-band {
-  position: relative;
-  margin-top: calc(-1 * var(--co-navh));
-  padding-top: var(--co-navh);
-  border-bottom: 0;
-  background-color: var(--t-bg);
-  /* 首屏不再铺青色光晕：它会在首屏顶边和顶栏之间切出一道色阶，
-     而且和冷绿底子打架。差异化交给网格与白色读数卡。 */
-  background-image:
-    linear-gradient(to right, rgba(12, 14, 16, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(12, 14, 16, 0.06) 1px, transparent 1px);
-  background-size: 48px 48px, 48px 48px, 100% 100%;
-  overflow: clip;
-}
-/* 右上的信号楔形：一块琥珀，几何切角，像面板上的警示标 */
-.co-hero-band::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: min(38vw, 420px);
-  height: 6px;
-  background: var(--t-signal);
-  clip-path: polygon(24px 0, 100% 0, 100% 100%, 0 100%);
-}
-
-.co-hero-in {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 372px;
-  column-gap: 56px;
-  align-items: end;
-  max-width: var(--co-wrap);
-  margin: 0 auto;
-  padding: 28px var(--co-pad) 0;
-}
-
 /* 顶部 HUD 行：左状态、右机读信息，下面一条线 */
 .co-hud {
   grid-column: 1 / -1;
@@ -442,10 +393,6 @@
   box-shadow: 0 0 0 3px rgba(11, 143, 132, 0.16);
 }
 
-.co-hero-main { grid-column: 1; padding: 64px 0 56px; }
-.co-hero-main .co-title { margin-bottom: 24px; }
-.co-hero-main .co-lead { max-width: 32em; }
-
 /* 开机序列：HUD 线 → 标题擦出 → 副文 → 按钮 → 面板逐行 + 读数条生长 → 案例格。
    只在首屏跑一次；keyframes 在这里是安全的（一次性，不需要被打断/回退）。 */
 @keyframes coBootDevelop {
@@ -460,126 +407,13 @@
   from { transform: scaleX(0); }
   to   { transform: scaleX(var(--v, 1)); }
 }
-@media (prefers-reduced-motion: no-preference) {
-  .co-hero-band .co-title { animation: coBootDevelop 600ms var(--ease-out) 70ms both; }
-  .co-hero-band .co-lead { animation: coBootUp 440ms var(--ease-out) 300ms both; }
-  .co-hero-band .co-actions { animation: coBootUp 440ms var(--ease-out) 380ms both; }
-  .co-hero-band .status-panel { animation: coBootUp 480ms var(--ease-out) 220ms both; }
-  .co-hero-band .status-row {
-    animation: coBootUp 380ms var(--ease-out) both;
-    animation-delay: calc(360ms + var(--i, 0) * 85ms);
-  }
-  .co-hero-band .status-bar-fill {
-    transform: scaleX(var(--v, 1));
-    animation: coBarGrow 560ms var(--ease-out) both;
-    animation-delay: calc(600ms + var(--i, 0) * 85ms);
-  }
-}
 
-/* ============================================================
-   状态面板（HeroStatus）：仪器读数
-   ============================================================ */
-.status-panel {
-  position: relative;
-  grid-column: 2;
-  align-self: end;
-  margin-bottom: 56px;
-  padding: 0 0 12px;
-  background: var(--t-panel-2);
-  border: 1px solid var(--t-line-2);
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-/* 左上 / 右下角标 */
-.status-panel::before,
-.status-panel::after {
-  content: "";
-  position: absolute;
-  width: 11px;
-  height: 11px;
-  pointer-events: none;
-}
-.status-panel::before { top: -1px; left: -1px; border-top: 1px solid var(--t-ink); border-left: 1px solid var(--t-ink); }
-.status-panel::after { right: -1px; bottom: -1px; border-right: 1px solid var(--t-ink); border-bottom: 1px solid var(--t-ink); }
-
-.status-head {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  background: var(--t-ink);
-  color: var(--t-bg);
-}
 .status-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--t-signal);
 }
-.status-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-.status-date { font-size: 11px; letter-spacing: 0.08em; color: rgba(235, 237, 238, 0.62); }
-
-.status-metrics { list-style: none; margin: 0; padding: 0; }
-.status-row {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: baseline;
-  gap: 2px 10px;
-  padding: 11px 14px;
-  border-bottom: 1px solid var(--t-line);
-}
-.status-row:last-child { border-bottom: 0; }
-.status-k {
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--t-muted);
-}
-.status-v { display: inline-flex; align-items: baseline; gap: 3px; }
-.status-v b {
-  font-size: 1.375rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--t-ink);
-}
-.status-v i { font-size: 11px; font-style: normal; color: var(--t-faint); letter-spacing: 0.06em; }
-.status-note { grid-column: 1 / -1; font-size: 11px; letter-spacing: 0.02em; color: var(--t-faint); }
-.status-bar {
-  grid-column: 1 / -1;
-  position: relative;
-  height: 2px;
-  margin-top: 7px;
-  background: rgba(12, 14, 16, 0.1);
-}
-.status-bar-fill {
-  position: absolute;
-  inset: 0;
-  background: var(--t-signal);
-  transform-origin: left;
-  transform: scaleX(var(--v, 1));
-}
-.status-foot {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 14px;
-  padding: 10px 14px;
-  border-top: 1px solid var(--t-line);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--t-muted);
-}
-.status-light { display: inline-flex; align-items: center; gap: 5px; }
-.status-light-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--t-faint); }
-.status-light-dot.is-ok { background: var(--t-ok); }
-.status-light-dot.is-warn { background: var(--t-signal-deep); }
-.status-light-dot.is-down { background: var(--t-danger); }
 
 /* 缩略图：默认降饱和，hover 复原 + 轻微推近（不动布局） */
 .co-lib-card .case-fig {
@@ -624,9 +458,9 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  padding: 18px 18px 16px;
+  padding: 24px 24px 22px;
   border-radius: var(--co-r);
   border-right: 1px solid var(--t-line-2);
   border-bottom: 1px solid var(--t-line-2);
@@ -714,44 +548,6 @@
 .co-card h3 { margin: 0 0 8px; font-size: 1rem; font-weight: 620; color: var(--t-ink); }
 .co-card p { margin: 0; font-size: 0.875rem; line-height: 1.7; color: var(--t-muted); }
 
-/* ============================================================
-   交付标准（.lab-dark）：整站唯一的反相块
-   ============================================================ */
-.co-sec.lab-dark {
-  position: relative;
-  /* 与 .co-sec--band 的 100vw 通栏对齐：左右顶到视口边，内边距再把内容拉回栅格 */
-  margin-inline: calc(50% - 50vw);
-  padding: 40px calc(50vw - 50%) 44px;
-  /* 整站唯一的重色块：金箔。冷绿底子上唯一的暖色金属面，
-     面积小、当铜牌用，别处不再重复 */
-  background-color: var(--t-block);
-  background-image:
-    linear-gradient(to right, var(--t-block-grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--t-block-grid) 1px, transparent 1px);
-  background-size: 40px 40px;
-  color: rgba(235, 237, 238, 0.78);
-}
-/* 顶部斜纹：金箔上用墨色，不再用青绿 */
-.co-sec.lab-dark::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  opacity: 0.55;
-  background: repeating-linear-gradient(135deg, var(--t-block-ink) 0 10px, transparent 10px 20px);
-}
-.co-sec.lab-dark .co-h2 { color: var(--t-block-ink); border-top-color: var(--t-block-line); }
-.co-sec.lab-dark .co-h2::after { background-image: repeating-linear-gradient(to right, rgba(241, 238, 231, 0.3) 0 1px, transparent 1px 10px); }
-.co-sec.lab-dark .co-h2-lat { color: var(--t-block-label); }
-.co-sec.lab-dark .co-h2-rule { background: var(--t-block-line); }
-.co-sec.lab-dark .co-h2-ruler {
-  background-image:
-    repeating-linear-gradient(to right, rgba(241, 238, 231, 0.4) 0 1px, transparent 1px 8px),
-    repeating-linear-gradient(to right, rgba(241, 238, 231, 0.28) 0 1px, transparent 1px 40px);
-}
-.co-sec.lab-dark .co-sec-lead { color: rgba(241, 238, 231, 0.76); }
-.co-sec.lab-dark .co-h2-idx { background: var(--t-block-ink); color: var(--t-block); }
-
 .co-standards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -784,16 +580,6 @@
   font-variant-numeric: tabular-nums;
 }
 .co-std p { margin: 0; font-size: 0.8125rem; line-height: 1.7; color: var(--t-muted); }
-
-/* 反相块里的同一组格子：只换颜色，不重写结构 */
-.co-sec.lab-dark .co-standards { border-color: var(--t-block-line); }
-.co-sec.lab-dark .co-std {
-  background: transparent;
-  border-color: var(--t-block-line);
-}
-.co-sec.lab-dark .co-std-k { color: var(--t-block-label); }
-.co-sec.lab-dark .co-std-v { color: var(--t-block-ink); }
-.co-sec.lab-dark .co-std p { color: rgba(241, 238, 231, 0.74); }
 
 /* ============================================================
    案例库（co-lib）
@@ -936,9 +722,6 @@
   color: var(--t-ink-2);
 }
 .co-lib-result::before { content: "▸ "; color: var(--t-signal-deep); }
-.co-lib-card--more { background: var(--t-bg-deep); box-shadow: inset 3px 0 0 var(--t-signal); justify-content: center; }
-.co-lib-card--more .co-lib-name { font-size: 1.25rem; }
-.co-lib-card--more .co-lib-kind { color: var(--t-signal-ink); }
 
 /* ============================================================
    对照 / 步骤 / 表格
@@ -1515,7 +1298,7 @@
 /* ============================================================
    联系页
    ============================================================ */
-.co-form { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
+.co-form { display: flex; flex-direction: column; gap: 16px; max-width: 100%; }
 .co-form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .co-field { display: flex; flex-direction: column; gap: 6px; }
 .co-field-k {
@@ -1673,12 +1456,13 @@
    顶栏（公司站变体）：同一套导航，换成图纸风
    ============================================================ */
 .co-page .navbar {
-  background: var(--navbar-bg);
-  border-bottom: 1px solid var(--t-line);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* 全透明：连下面那条线也去掉，顶栏只靠 backdrop-filter 把身后的内容糊化 */
+  background: transparent;
+  border-bottom: 0;
+  backdrop-filter: blur(14px) saturate(1.02);
+  -webkit-backdrop-filter: blur(14px) saturate(1.02);
 }
-.co-page.is-scrolled .navbar { border-bottom-color: var(--t-line-2); background: var(--t-bg); }
+.co-page.is-scrolled .navbar { border-bottom-color: transparent; background: transparent; }
 .co-page .navbar-inner { max-width: var(--co-wrap); height: var(--co-navh); padding: 0 var(--co-pad); gap: 32px; }
 .co-page .brand-mark { height: 20px; opacity: 0.9; }
 .co-page .brand-text {
@@ -1847,9 +1631,6 @@
    响应式
    ============================================================ */
 @media (max-width: 1080px) {
-  .co-hero-in { grid-template-columns: minmax(0, 1fr) 320px; column-gap: 36px; }
-  .co-hero-main { padding: 48px 0 40px; }
-  .status-panel { margin-bottom: 40px; }
   .co-proj-body { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .co-proj-aside { position: static; }
   .co-gauge { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1861,18 +1642,10 @@
 @media (max-width: 860px) {
   .co-page { --co-pad: 20px; --co-navh: 56px; }
   .co-page .nav-links { gap: 18px; }
-  .co-hero-in { grid-template-columns: minmax(0, 1fr); row-gap: 0; padding-top: 14px; }
-  .co-hero-main { order: 1; padding: 22px 0 20px; }
-  .co-hero-main .co-title { margin-bottom: 14px; }
-  .co-hero-main .co-lead { font-size: 1rem; line-height: 1.65; }
   .co-actions { margin-top: 20px; }
-  .co-hero-band { border-bottom: 1px solid var(--t-line-2); }
-  .co-show { order: 2; }  /* 新实样块要跟旧拼版一样排在标题之后 */
-  .status-panel { order: 3; grid-column: 1; margin: 24px 0 0; }
   .co-hud-r i { display: none; }
   .co-sec { margin-top: 64px; }
   .co-sec--band { padding-block: 40px; margin-top: 52px; }
-  .co-sec.lab-dark { padding: 32px calc(50vw - 50%) 36px; }
   .co-standards { grid-template-columns: minmax(0, 1fr); }
   .mkt-compare { grid-template-columns: minmax(0, 1fr); }
   .mkt-steps { grid-template-columns: minmax(0, 1fr); }
@@ -1899,7 +1672,6 @@
 }
 
 @media (max-width: 620px) {
-  .co-title { font-size: clamp(2.1rem, 9vw, 2.8rem); }
   .co-page-title { font-size: clamp(1.9rem, 8vw, 2.4rem); }
   .co-cards, .co-cards--3 { grid-template-columns: minmax(0, 1fr); }
   .co-lib--3, .co-lib--4 { grid-template-columns: minmax(0, 1fr); }
@@ -1934,463 +1706,958 @@
   .co-spec td { padding: 0 0 12px; }
 }
 
+/* 窄屏 */
+
+/* 窄屏：搜索框独占一行，不要挤在芯片堆里 */
+
 /* ============================================================
-   交付物实样（hero proof）
+   一屏一段的活页（首页 DECK）
    ------------------------------------------------------------
-   替换原来的四格缩略图拼版：那四张 SVG 是示意图，说明不了任何事。
-   这里直接放交付物本身——乐清充电桩平台的界面切片，用站点自己的
-   令牌重绘（不引入图片，图标不借外部库），旁边配一条五行案例索引。
-   2026-11-13
+   首页不再是一条长页，是一本活页手册：一屏一页，滚轮/触控板/方向键翻页。
+   吸附交给原生 scroll-snap（不接管 wheel 事件），JS 只算当前页和跳转，
+   所以手势、触摸、拖动滚动条都是浏览器原生的手感。
+   宽 ≥940 且高 ≥620 才启用（html.is-deck）；窄屏、矮屏、减少动态效果时
+   退回普通长页，屏幕上每段仍是满屏高度，只是不吸附。
    ============================================================ */
-.co-show {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: minmax(0, 1.68fr) minmax(0, 1fr);
-  margin-top: 8px;
-  border-top: 1px solid var(--t-line-2);
-  border-left: 1px solid var(--t-line-2);
-  background: var(--t-panel);
-}
-.co-show-shot {
-  margin: 0;
-  min-width: 0;
-  padding: 14px 16px 16px;
-  border-right: 1px solid var(--t-line-2);
-  border-bottom: 1px solid var(--t-line-2);
-  background: linear-gradient(180deg, var(--t-panel), var(--t-bg));
-}
-.co-show-cap {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 9px;
-}
-.co-show-cap-l { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.co-show-cap-l b { font-size: 0.8125rem; font-weight: 620; color: var(--t-ink); letter-spacing: -0.01em; }
-.co-show-cap-l i {
-  font-style: normal;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.06em;
-  color: var(--t-faint);
-}
-.co-show-link {
-  font-size: 11.5px;
-  color: var(--t-signal-ink);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color var(--dur-hover) var(--ease-out);
-}
-.co-show-link:hover { border-bottom-color: currentColor; }
 
-/* 界面切片 —— 只用站点令牌，没有图片 */
-.co-mock {
-  border: 1px solid var(--t-line-2);
-  background: #fbfcfb;
-  overflow: hidden;
-}
-.co-mock-bar {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-wrap: wrap;
-  padding: 7px 10px;
-  border-bottom: 1px solid var(--t-line);
-  background: #f4f6f4;
-}
-.co-mock-title { font-size: 11.5px; font-weight: 620; color: var(--t-ink); margin-right: 3px; }
-.co-chip {
-  font-size: 10.5px;
-  line-height: 1.6;
-  padding: 0 7px;
-  border: 1px solid var(--t-line-2);
-  color: var(--t-muted);
-  background: #fff;
-  white-space: nowrap;
-}
-.co-chip.is-on { background: var(--t-ink); border-color: var(--t-ink); color: #f3f4f4; }
-.co-chip.is-ghost { background: transparent; color: var(--t-faint); }
-.co-mock-search {
-  margin-left: auto;
-  font-size: 10.5px;
-  color: var(--t-faint);
-  border: 1px solid var(--t-line);
-  background: #fff;
-  padding: 0 8px;
-  line-height: 1.7;
-  white-space: nowrap;
-}
-.co-mock-body { display: grid; grid-template-columns: minmax(0, 1.34fr) minmax(0, 1fr); }
+html.is-deck { scroll-snap-type: y mandatory; }
+html.is-deck body { overscroll-behavior-y: none; }
 
-/* 地图 */
-.co-mock-map {
+.dk-screen {
   position: relative;
-  min-height: 258px;
-  color: var(--t-ink);
-  background:
-    radial-gradient(120% 90% at 20% 0%, rgba(11, 143, 132, 0.05), transparent 60%),
-    #f2f5f2;
-  border-right: 1px solid var(--t-line);
-  overflow: hidden;
-}
-.co-mock-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.co-mock-map text { font-family: var(--font-mono); }
-.co-show .co-pin {
-  position: absolute;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: #93a4aa;
-  box-shadow: 0 0 0 1.5px #fff;
-  transform: translate(-50%, -50%);
-}
-.co-show .co-pin.is-ok,
-.co-show .co-pin.is-pass { background: var(--t-signal); }
-.co-show .co-pin.is-hot {
-  /* 选中态只加环、放大，不改颜色：红色是「不合格」的语义，不能被选中借用 */
-  width: 13px; height: 13px;
-  border-radius: 50%;
-  box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(12, 14, 16, 0.22);
-  z-index: 3;
-}
-.co-map-tag {
-  position: absolute;
-  left: 9px;
-  bottom: 9px;
-  padding: 1px 6px;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.04em;
-  color: var(--t-muted);
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid var(--t-line);
-}
-.co-pin-card {
-  position: absolute;
-  width: 168px;
-  padding: 8px 9px 7px;
-  background: #fff;
-  border: 1px solid var(--t-line-2);
-  box-shadow: 0 6px 16px -10px rgba(12, 14, 16, 0.32);
-  font-size: 10px;
-}
-.co-pin-card h5 {
-  margin: 0 0 5px;
-  font-size: 11px;
-  font-weight: 620;
-  line-height: 1.35;
-  color: var(--t-ink);
-}
-.co-pin-card h5 span {
-  display: block;
-  margin-top: 1px;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  color: var(--t-faint);
-}
-.co-pin-card dl { margin: 0; display: grid; gap: 2px; }
-.co-pin-card dl div { display: flex; justify-content: space-between; gap: 8px; }
-.co-pin-card dt { color: var(--t-faint); font-size: 9.5px; white-space: nowrap; }
-.co-pin-card dd { margin: 0; color: var(--t-ink-2); font-family: var(--font-mono); font-size: 10px; white-space: nowrap; }
-.co-pin-st {
-  display: inline-block;
-  margin-top: 5px;
-  font-family: var(--font-mono);
-  font-size: 8.5px;
-  letter-spacing: 0.1em;
-  color: var(--t-signal-ink);
-  border: 1px solid rgba(11, 143, 132, 0.4);
-  padding: 0 5px;
-}
-
-/* 记录列表 */
-.co-mock-list {
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  background: #fff;
-  max-height: 296px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--t-line-2) transparent;
+  justify-content: safe center;
+  min-height: 100svh;
+  padding-top: calc(var(--co-navh) + 14px);
+  padding-bottom: 20px;
+  scroll-snap-align: start;
 }
-.co-mock-list::-webkit-scrollbar { width: 6px; }
-.co-mock-list::-webkit-scrollbar-thumb { background: var(--t-line-2); }
-.co-mock-list-h {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 9px;
-  border-bottom: 1px solid var(--t-line);
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.1em;
-  color: var(--t-faint);
-  background: #f4f6f4;
-}
-.co-mock-row {
+html.is-deck .dk-screen { scroll-snap-stop: always; }
+/* 屏自己已经有 nav 高度的 padding，锚点跳转（FAQ 里的 /#pricing）不要再加一层偏移 */
+html.is-deck .dk-screen { scroll-margin-top: 0; }
+/* 页脚：活页翻到底后再翻一次，它自己占满一屏（最后一页只放版权与索引链接） */
+html.is-deck .co-foot {
+  min-height: 100svh;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 8px;
-  align-items: baseline;
-  padding: 7px 9px;
-  border-bottom: 1px solid rgba(12, 14, 16, 0.07);
+  grid-template-rows: 1fr auto;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding-bottom: 34px;
+  border-top: 1px solid var(--t-line-2);
 }
-.co-mock-id { font-family: var(--font-mono); font-size: 9.5px; color: var(--t-faint); }
-.co-mock-nm {
-  min-width: 0;
-  font-size: 11px;
-  color: var(--t-ink-2);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.co-mock-nm i {
+.co-foot-end { display: none; }
+html.is-deck .co-foot-end {
   display: block;
-  font-style: normal;
-  font-size: 9.5px;
-  color: var(--t-faint);
-  overflow: hidden;
-  text-overflow: ellipsis;
+  align-self: center;
+  max-width: var(--co-wrap);
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 var(--co-pad);
 }
-.co-tagx {
+.co-foot-end-k {
+  margin: 0 0 18px;
   font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.06em;
-  padding: 0 4px;
-  border: 1px solid;
-  white-space: nowrap;
-}
-.co-tagx.is-pass { color: var(--t-signal-ink); border-color: rgba(11, 143, 132, 0.38); }
-.co-tagx.is-wait { color: #8a5a00; border-color: rgba(138, 90, 0, 0.32); }
-.co-tagx.is-fail { color: var(--t-danger); border-color: rgba(184, 69, 47, 0.36); }
-.co-mock-more {
-  margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 9px;
-  border-top: 1px solid var(--t-line);
-  background: #f4f6f4;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
   color: var(--t-faint);
 }
-.co-mock-foot {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 6px 10px;
-  border-top: 1px solid var(--t-line);
-  background: #f4f6f4;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  color: var(--t-faint);
+.co-foot-end-t {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  font-weight: 650;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--t-ink);
 }
-.co-mock-foot b { color: var(--t-signal-ink); font-weight: 500; }
-.co-mock-note { margin-left: auto; color: var(--t-faint); opacity: 0.85; }
-
-/* 案例索引 */
-.co-show-idx {
+.co-foot-end-note {
   margin: 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--t-line-2);
+  max-width: 30em;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--t-muted);
+}
+.dk-screen + .dk-screen { border-top: 1px solid var(--t-line); }
+
+/* 活页屏比长页宽一档：一屏一页时内容要铺开，不要挤在 1120 的窄栏里 */
+.dk-in {
+  width: 100%;
+  max-width: min(1330px, 100%);
+  margin: 0 auto;
+  padding: 0 clamp(28px, 3.2vw, 48px);
+}
+/* 屏内不再用长页的分节间距 */
+.dk-screen .co-sec { margin-top: 0; }
+.dk-screen .co-sec--band { margin-top: 0; }
+.dk-screen .co-main { padding: 0; }
+
+/* ---------- 出场：每翻到一屏，屏内直接子块依次到位 ----------
+   is-live 由 CompanyDeck 在进入视口时加、离开时摘（纯展示页允许回看重播）。
+   默认（没有 is-deck / 减少动态效果）不加任何隐藏态，内容永远可见。 */
+@media (prefers-reduced-motion: no-preference) {
+  html.is-deck .dk-screen .dk-in > * { opacity: 0; transform: translateY(14px); }
+  html.is-deck .dk-screen.is-live .dk-in > * {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 400ms var(--ease-out) calc(var(--dk-i, 0) * 70ms),
+      transform 520ms var(--ease-out) calc(var(--dk-i, 0) * 70ms);
+  }
+}
+.dk-screen .dk-in > :nth-child(1) { --dk-i: 0; }
+.dk-screen .dk-in > :nth-child(2) { --dk-i: 1; }
+.dk-screen .dk-in > :nth-child(3) { --dk-i: 2; }
+.dk-screen .dk-in > :nth-child(4) { --dk-i: 3; }
+.dk-screen .dk-in > :nth-child(5) { --dk-i: 4; }
+.dk-screen .dk-in > :nth-child(6) { --dk-i: 5; }
+
+/* 屏头那条刻度线：翻到时从中间往两端拉开，像刻上去 */
+@media (prefers-reduced-motion: no-preference) {
+  html.is-deck .dk-screen .co-h2-ruler { transform: scaleX(0); transform-origin: left; }
+  html.is-deck .dk-screen.is-live .co-h2-ruler {
+    transform: scaleX(1);
+    transition: transform 620ms var(--ease-out) 140ms;
+  }
+}
+
+/* ============================================================
+   右侧活页索引
+   ============================================================ */
+.co-deck-index {
+  position: fixed;
+  top: 50%;
+  right: 22px;
+  z-index: 60;
+  display: none;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 10px;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+}
+html.is-deck .co-deck-index { display: flex; }
+.co-deck-index.is-tail { opacity: 0; pointer-events: none; }
+.co-deck-index { transition: opacity 240ms var(--ease-out); }
+/* 活页模式：右侧竖进度条和「回到顶部」都多余（索引栏已经能跳任何一屏） */
+html.is-deck .co-rail { display: none; }
+html.is-deck .back-to-top { display: none; }
+
+.co-deck-rail {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 108px;
+  background: var(--t-line-2);
+}
+.co-deck-rail-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--t-signal);
+  transform-origin: top;
+  transform: scaleY(calc((var(--i, 0) + 1) / var(--n, 1)));
+  transition: transform 420ms var(--ease-out);
+}
+
+.co-deck-index ol { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.co-deck-index a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0 3px 6px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--t-faint);
+  text-decoration: none;
+  opacity: 0.55;
+  transition: opacity 220ms var(--ease-out), color 220ms var(--ease-out);
+}
+.co-deck-index a:hover { opacity: 1; color: var(--t-ink); }
+.co-deck-index a.is-on { opacity: 1; color: var(--t-ink); }
+/* 当前页前面的实心短杠，滑到新位置 */
+.co-deck-index a::before {
+  content: "";
+  width: 10px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0.7);
+  transition: transform 260ms var(--ease-out), background-color 260ms var(--ease-out);
+}
+.co-deck-index a.is-on::before { transform: scaleX(1.15); height: 2px; background: var(--t-signal); }
+.co-deck-t { white-space: nowrap; }
+.co-deck-n { font-variant-numeric: tabular-nums; }
+
+/* 底部滚动提示：一个向下走的小刻度 */
+.co-deck-hint {
+  position: fixed;
+  right: 24px;
+  bottom: 18px;
+  z-index: 60;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--t-faint);
+}
+html.is-deck .co-deck-hint { display: flex; }
+.co-deck-hint i {
+  display: block;
+  width: 1px;
+  height: 18px;
+  background: var(--t-signal);
+  transform-origin: top;
+  animation: coDeckHint 1600ms var(--ease-out) infinite;
+}
+.co-deck-hint.is-off { opacity: 0.35; }
+.co-deck-hint.is-gone { opacity: 0; }
+.co-deck-hint.is-off i { animation: none; }
+@keyframes coDeckHint {
+  0%   { transform: scaleY(0); opacity: 0; }
+  40%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+/* ============================================================
+   屏 0 · 铭牌
+   ------------------------------------------------------------
+   首页没有口号大字：一进来就是这台「机器」的铭牌 ——
+   左侧是身份与字段，右侧是读数与检验章，下面是验收刻印和三个交付物。
+   ============================================================ */
+.co-plate .co-hud { margin-bottom: 22px; }
+/* 一屏一段之后，卡片要撑住一整屏：两行等高，不再一行高一行矮 */
+.dk-screen .co-cards { grid-auto-rows: 1fr; }
+.dk-screen .co-svc-in { height: 100%; }
+.dk-screen .co-lib--3 { align-items: stretch; }
+.dk-screen .co-lib-thumb {
+  background: var(--t-bg-deep);
+  border: 1px solid var(--t-line);
+  overflow: hidden;
+}
+/* 长页里缩略图是固定 168px 的小图（case-fig--md）；一屏一张卡时让它撑满卡宽 */
+.dk-screen .co-lib-thumb .case-fig {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+.dk-screen .co-lib-card { padding: 18px; gap: 14px; }
+.dk-screen .co-lib-card { height: 100%; }
+
+.co-plate-panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  grid-template-areas:
+    "head led"
+    "fields led"
+    "std std"
+    "strip strip"
+    "actions actions";
+  background: var(--t-panel-2);
+  border: 1px solid var(--t-line-2);
+  padding: 34px 40px 30px;
+  column-gap: 44px;
+}
+/* 左上 / 右下角标（全站结构约定） */
+.co-plate-panel::before,
+.co-plate-panel::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+  border: 1px solid var(--t-ink);
+}
+.co-plate-panel::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.co-plate-panel::after { right: -1px; bottom: -1px; border-left: 0; border-top: 0; }
+
+.co-plate-head { grid-area: head; }
+.co-plate-k {
+  margin: 0 0 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--t-faint);
+}
+.co-plate-name {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.5vw, 2.3rem);
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--t-ink);
+}
+.co-plate-sub {
+  margin: 0;
+  max-width: 34em;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--t-muted);
+}
+
+/* 右列：状态灯 + 读数 + 检验章 */
+.co-plate-led {
+  grid-area: led;
+  position: relative;
+  padding-left: 26px;
+  border-left: 1px solid var(--t-line-2);
+}
+.co-plate-lights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 0 0 16px;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid var(--t-line-2);
-  background: rgba(247, 248, 248, 0.45);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--t-ink-2);
 }
-.co-show-idx li { border-bottom: 1px solid var(--t-line); display: flex; flex: 1 1 auto; }
-.co-show-idx li:last-child { border-bottom: 0; }
-.co-idx-row {
-  flex: 1;
+.co-plate-lights li { display: inline-flex; align-items: center; gap: 6px; }
+.co-plate-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--t-faint);
+}
+.co-plate-dot.is-on {
+  background: var(--t-ok);
+  box-shadow: 0 0 0 3px rgba(11, 143, 132, 0.14);
+  animation: coPlatePulse 3200ms var(--ease-out) infinite;
+}
+@keyframes coPlatePulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(11, 143, 132, 0.14); }
+  50%      { box-shadow: 0 0 0 5px rgba(11, 143, 132, 0.06); }
+}
+
+.co-plate-read { margin: 0; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.co-plate-read > div {
   display: grid;
-  grid-template-columns: 26px minmax(0, 1fr) auto;
-  gap: 9px;
-  align-items: center;
-  padding: 8px 12px;
-  color: inherit;
-  text-decoration: none;
-  transition: background-color var(--dur-hover) var(--ease-out);
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 4px 10px;
+  padding: 7px 0;
+  border-top: 1px solid var(--t-line);
 }
-.co-idx-row:hover { background: var(--t-panel-2); }
-.co-idx-row:focus-visible { outline: 2px solid var(--t-signal); outline-offset: -3px; }
-.co-idx-n {
+.co-plate-read > div:last-child { border-bottom: 1px solid var(--t-line); }
+.co-plate-read dt {
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--t-faint);
+}
+.co-plate-read dd { margin: 0; display: flex; align-items: baseline; gap: 4px; }
+.co-plate-read b { font-size: 1.25rem; font-weight: 500; color: var(--t-ink); }
+.co-plate-read i { font-style: normal; font-size: 10px; color: var(--t-faint); }
+.co-plate-read span {
+  grid-column: 1 / -1;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--t-faint);
+}
+
+.co-plate-fields { grid-area: fields; margin: 18px 0 0; }
+.co-plate-fields > div {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 14px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-top: 1px solid var(--t-line);
+}
+.co-plate-fields dt {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--t-faint);
+}
+.co-plate-fields dd {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--t-ink-2);
+}
+
+/* 三条验收刻印：全站唯一重色块，嵌在铭牌下沿 */
+.co-plate-std {
+  grid-area: std;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  background: var(--t-block);
+  background-image: linear-gradient(var(--t-block-grid) 1px, transparent 1px);
+  background-size: 100% 12px;
+  color: var(--t-block-ink);
+}
+.co-plate-std li {
+  display: grid;
+  gap: 3px;
+  padding: 17px 18px 18px;
+}
+.co-plate-std li + li { border-left: 1px solid var(--t-block-line); }
+.co-plate-std-k {
   font-family: var(--font-mono);
   font-size: 9.5px;
-  letter-spacing: 0.06em;
-  color: var(--t-faint);
-  padding-top: 2px;
+  letter-spacing: 0.16em;
+  color: var(--t-block-label);
 }
-.co-idx-main { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-.co-idx-name {
-  font-size: 12.5px;
-  font-weight: 600;
-  line-height: 1.42;
-  color: var(--t-ink);
+.co-plate-std-v { font-size: 1.0625rem; font-weight: 620; color: var(--t-block-ink); }
+.co-plate-std-n { font-size: 11.5px; line-height: 1.5; color: rgba(241, 238, 231, 0.72); }
+
+/* 交付物缩略带：三个真实项目 + 索引 */
+.co-plate-strip {
+  grid-area: strip;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 0.78fr);
+  gap: 1px;
+  margin-top: 16px;
+  background: var(--t-line);
+  border: 1px solid var(--t-line);
+}
+.co-plate-case,
+.co-plate-all {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 13px;
+  background: var(--t-panel-2);
+  text-decoration: none;
+  color: inherit;
+  transition: background-color var(--dur-hover) var(--ease-out);
+}
+.co-plate-case:hover,
+.co-plate-all:hover { background: var(--t-bg-deep); }
+.co-plate-case-fig {
+  flex: none;
+  display: block;
+  border: 0;
+  width: 92px;
+  height: 60px;
+  color: var(--t-ink-2);
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
-.co-idx-res {
+.co-plate-case-fig .case-fig { width: 100%; height: 100%; }
+.co-plate-case-fig svg { stroke-width: 1.3; }
+.co-plate-case-fig { color: var(--t-ink-2); background: var(--t-panel); }
+.co-plate-case-t { display: grid; gap: 2px; min-width: 0; }
+.co-plate-case-t b { font-size: 0.8125rem; font-weight: 550; color: var(--t-ink); }
+.co-plate-case-t i {
+  font-style: normal;
   font-size: 10.5px;
   line-height: 1.4;
-  color: var(--t-muted);
-  overflow: hidden;
+  color: var(--t-faint);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-.co-idx-st {
-  min-width: 54px;
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  color: var(--t-signal-ink);
-  background: rgba(11, 143, 132, 0.09);
-  padding: 1px 6px;
-  margin-top: 0;
-  white-space: nowrap;
-}
-.co-idx-all .co-idx-name { color: var(--t-ink); }
-.co-idx-all .co-idx-st {
-  color: var(--t-ink);
-  background: transparent;
-  padding: 0;
-  font-size: 13px;
-  letter-spacing: 0;
-}
+.co-plate-all { flex-direction: column; align-items: flex-start; justify-content: center; gap: 3px; }
+.co-plate-all span { font-size: 0.8125rem; font-weight: 550; color: var(--t-ink); }
+.co-plate-all span::after { content: " →"; color: var(--t-signal-ink); }
+.co-plate-all i { font-style: normal; font-size: 10.5px; color: var(--t-faint); }
 
-/* 窄屏 */
-@media (max-width: 960px) {
-  .co-show { grid-template-columns: 1fr; }
-  .co-show-shot { border-right: 0; }
-  .co-mock-body { grid-template-columns: 1fr; }
-  .co-mock-map { min-height: 210px; border-right: 0; border-bottom: 1px solid var(--t-line); }
-  .co-pin-card { left: auto; right: 8px; top: 8px; width: 150px; }
-  .co-mock-list { max-height: 250px; overflow: hidden; }
-}
-@media (max-width: 560px) {
-  .co-pin-card { display: none; }
-  .co-mock-map { min-height: 160px; }
-  .co-show-cap { gap: 4px; }
-  .co-show-link { font-size: 11px; }
+.co-plate-actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
 }
 
 /* ============================================================
-   实样块 · 可交互态
-   ------------------------------------------------------------
-   这些元素看着像控件，就必须真的是控件：乡镇筛选、搜索、点行、
-   点地图上的桩、导出 CSV 全部可用。原来是一张死图，点哪儿都没反应，
-   比没有更糟。2026-11-13
+   屏 3 · 怎么交付（四步 + 对照）
    ============================================================ */
-.co-show .co-chip {
-  appearance: none;
-  -webkit-appearance: none;
-  font: inherit;
-  font-size: 10.5px;
-  line-height: 1.7;
-  padding: 0 7px;
+.co-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+/* 四步通栏一行：每步 275px 左右，编号和正文都不挤 */
+.co-flow-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.co-flow-steps > li { padding: 26px 22px 24px; min-height: 200px; }
+/* 步骤卡同时带 .paper-field，它的 ::before 是绝对定位的渐变层；
+   编号规则必须把这几个属性显式改回静态，否则「01」会被钉在卡片左上角、压着边框 */
+.co-flow-steps > li.paper-field::before {
+  position: static;
+  inset: auto;
+  z-index: auto;
+  background: none;
+  pointer-events: auto;
+  font-size: 1.75rem;
+  line-height: 0.9;
+}
+.co-flow-steps h3 { font-size: 1.0625rem; }
+.co-flow-steps p { font-size: 0.875rem; }
+/* 为什么这么做：两栏对照，通栏 */
+.co-flow-compare { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; }
+.co-flow-compare > .paper-field { padding: 18px 20px 20px; }
+.co-flow-compare h3 { font-size: 0.9375rem; }
+.co-flow-compare li { font-size: 0.875rem; line-height: 1.6; }
+
+/* ============================================================
+   屏 5 · 常见问题 + 下一步
+   ============================================================ */
+.co-ask {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+.co-ask-next { padding: 22px 22px 20px; }
+/* 初创版是副线：按钮用描边，别和主 CTA 的实心青抢 */
+/* 「常见做法」栏原本铺 45° 斜纹，初创版窄条也铺；既然页面背景换成实拍淡灰大图，
+   这两处的底纹一起去掉，只留色阶差（否则全页就剩它们是「布的纹理」） */
+.dk-screen .mkt-compare > .paper-field { background-color: var(--t-panel); }
+.dk-screen .mkt-compare > .paper-field:first-child {
+  background-image: none;
+  background-color: var(--t-bg-deep);
+}
+.dk-screen .co-sideline { background-image: none; background-color: var(--t-panel); }
+.dk-screen .co-sideline-go {
+  background: transparent;
   border: 1px solid var(--t-line-2);
-  background: #fff;
+  color: var(--t-ink);
+}
+.dk-screen .co-sideline-go:hover { background: var(--t-panel); border-color: var(--t-ink); }
+.co-ask-next-t {
+  margin: 8px 0 10px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 640;
+  line-height: 1.3;
+  color: var(--t-ink);
+}
+.co-ask-next-p { margin: 0 0 18px; font-size: 0.875rem; line-height: 1.7; color: var(--t-muted); }
+.co-ask-next-mail {
+  display: block;
+  margin-top: 12px;
+  font-size: 0.8125rem;
   color: var(--t-muted);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 120ms, color 120ms, border-color 120ms;
+  text-decoration: none;
+  border-bottom: 1px solid var(--t-line-2);
+  width: fit-content;
+  transition: border-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out);
 }
-.co-show .co-chip:hover { border-color: var(--t-ink); color: var(--t-ink); }
-.co-show .co-chip:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 1px; }
-.co-show .co-chip.is-ghost { cursor: default; color: var(--t-faint); background: transparent; }
-.co-show .co-chip.is-ghost:hover { border-color: var(--t-line-2); color: var(--t-faint); }
-
-.co-show .co-mock-search {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0 6px;
-  border: 1px solid var(--t-line);
-  background: #fff;
-}
-.co-show .co-mock-search-k { width: 11px; height: 11px; flex: none; color: var(--t-faint); }
-.co-show .co-mock-search input {
-  appearance: none;
-  -webkit-appearance: none;
-  border: 0;
-  outline: none;
-  background: transparent;
-  font-family: var(--font-sans);
+.co-ask-next-mail:hover { color: var(--t-ink); border-bottom-color: var(--t-signal); }
+.co-ask-next-facts {
+  display: grid;
+  gap: 6px;
+  margin: 18px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--t-line);
+  list-style: none;
+  font-family: var(--font-mono);
   font-size: 10.5px;
-  color: var(--t-ink-2);
-  width: 108px;
-  padding: 2px 0;
+  letter-spacing: 0.08em;
+  color: var(--t-faint);
 }
-.co-show .co-mock-search input::placeholder { color: var(--t-faint); }
-.co-show .co-mock-search:focus-within { border-color: var(--t-ink); }
-.co-show .co-mock-search input::-webkit-search-cancel-button { cursor: pointer; }
+.co-ask-next-facts li { display: flex; align-items: center; gap: 8px; }
+.co-ask-next-facts li::before { content: ""; width: 4px; height: 4px; background: var(--t-signal); }
 
-.co-show .co-pin {
-  appearance: none;
-  -webkit-appearance: none;
-  padding: 0;
-  border: 0;
-  cursor: pointer;
-  transition: transform 120ms var(--ease-out), opacity 160ms;
+/* ============================================================
+   窄屏 / 矮屏：关掉吸附与分屏高度，回到能滚的普通版面
+   ============================================================ */
+@media (max-width: 939px), (max-height: 699px) {
+  .dk-screen {
+    min-height: 0;
+    padding-top: calc(var(--co-navh) + 26px);
+    padding-bottom: 44px;
+  }
+  .co-plate-panel {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "led"
+      "fields"
+      "std"
+      "strip"
+      "actions";
+    padding: 20px 18px 18px;
+  }
+  .co-plate-led { padding: 18px 0 0; border-left: 0; border-top: 1px solid var(--t-line-2); margin-top: 16px; }
+  .co-plate-std { grid-template-columns: minmax(0, 1fr); }
+  .co-plate-std li + li { border-left: 0; border-top: 1px solid var(--t-block-line); }
+  .co-plate-strip { grid-template-columns: minmax(0, 1fr); }
+  .co-flow,
+  .co-ask { grid-template-columns: minmax(0, 1fr); }
+  .co-flow-steps { grid-template-columns: minmax(0, 1fr); }
 }
-.co-show .co-pin:hover { transform: translate(-50%, -50%) scale(1.45); }
-.co-show .co-pin:focus-visible { outline: 2px solid var(--t-signal); outline-offset: 2px; }
-.co-show .co-pin.is-fail { background: var(--t-danger); }
-.co-show .co-pin.is-wait { background: #c08a2e; }
-.co-show .co-pin.is-dim { opacity: 0.26; }
-.co-show .co-pin.is-dim:hover { opacity: 0.6; }
-
-.co-show .co-sel {
+/* 矮视口（常见于 768px 高的笔记本）：铭牌按比例收一档，仍要一屏装下 */
+@media (min-width: 940px) and (max-height: 820px) {
+  .dk-screen { padding-top: calc(var(--co-navh) + 8px); padding-bottom: 14px; }
+  .co-plate .co-hud { margin-bottom: 14px; }
+  .co-plate-panel { padding: 22px 26px 20px; }
+  .co-plate-name { font-size: clamp(1.8rem, 2.7vw, 2.3rem); margin-bottom: 8px; }
+  .co-plate-sub { font-size: 0.8125rem; }
+  .co-plate-fields > div { padding: 9px 0; }
+  .co-plate-fields dd { font-size: 0.9375rem; }
+  .co-plate-std { margin-top: 14px; }
+  .co-plate-std li { padding: 13px 16px 14px; }
+  .co-plate-strip { margin-top: 12px; }
+  .co-plate-case-fig { width: 92px; height: 58px; }
+  .co-plate-actions { margin-top: 12px; }
+  .co-flow-steps > li { min-height: 164px; padding: 20px 16px 16px; }
+}
+/* 铭牌上的字段线：翻到首屏时从左往右刻出来（一次性的「刻线」，不是循环装饰） */
+.co-plate-fields > div { position: relative; border-top: 0; }
+.co-plate-fields > div::before {
+  content: "";
   position: absolute;
-  border: 1px dashed rgba(12, 14, 16, 0.45);
-  background: rgba(12, 14, 16, 0.035);
-  pointer-events: none;
-  transition: left 160ms var(--ease-out), top 160ms var(--ease-out),
-    width 160ms var(--ease-out), height 160ms var(--ease-out);
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--t-line);
+  transform-origin: left;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.is-deck .co-plate.is-live .co-plate-fields > div::before,
+  html.is-deck .co-plate.is-live .co-plate-read > div::before {
+    animation: coRuleEtch 560ms var(--ease-out) both;
+  }
+  .co-plate-fields > div:nth-child(1)::before { animation-delay: 260ms; }
+  .co-plate-fields > div:nth-child(2)::before { animation-delay: 340ms; }
+  .co-plate-fields > div:nth-child(3)::before { animation-delay: 420ms; }
+  @keyframes coRuleEtch {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+}
+/* 读数行的分隔线同样处理（原来是一条 border-top） */
+.co-plate-read > div { position: relative; border-top: 0; }
+.co-plate-read > div::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--t-line);
+  transform-origin: left;
+}
+.co-plate-read > div:last-child::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: var(--t-line);
+}
+/* 索引栏要站在内容外侧，视口不够宽时会压到面板上：窄窗口只留编号，再窄就收起 */
+@media (max-width: 1399px) {
+  .co-deck-index { right: 14px; gap: 8px; }
+  .co-deck-t { display: none; }
+  .co-deck-hint { display: none !important; }
+}
+@media (max-width: 1199px) {
+  html.is-deck .co-deck-index { display: none; }
 }
 
-.co-show .co-mock-row {
-  appearance: none;
-  -webkit-appearance: none;
+/* ============================================================
+   卡片：平时不画线，鼠标悬浮时才「亮」起来
+   ------------------------------------------------------------
+   2026-11-13 改：卡片原来靠 1px 边框拼成分格表，整页看起来很硬。
+   现在默认只有一块浅底、没有线；鼠标悬浮时才浮起 3px、描边显形、
+   角标出现。触摸设备（hover: none）不加悬浮态，避免点完粘在那里。
+   ============================================================ */
+.co-cards,
+.co-lib {
   border: 0;
-  border-bottom: 1px solid rgba(12, 14, 16, 0.07);
-  background: transparent;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 120ms;
+  gap: 22px;
 }
-.co-show .co-mock-row:hover { background: #f5f8f6; }
-.co-show .co-mock-row:focus-visible { outline: 2px solid var(--t-signal); outline-offset: -2px; }
-.co-show .co-mock-row.is-on { background: rgba(11, 143, 132, 0.07); }
-.co-show .co-mock-row.is-on .co-mock-nm { color: var(--t-ink); font-weight: 600; }
+.co-lib { grid-auto-rows: 1fr; }
 
-.co-show .co-mock-empty {
+.co-svc-in,
+.co-lib-card,
+.mkt-steps > li {
+  border: 1px solid transparent;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(12, 14, 16, 0.05);
+  transition:
+    background-color var(--dur-hover) var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out),
+    translate var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
+}
+
+/* 步骤卡：原来靠上下左右四条线连成分格，现在每张自己站着 */
+.mkt-steps {
+  border: 0;
+  gap: 22px;
+}
+.mkt-steps > li { border: 1px solid transparent; }
+
+.co-svc-in:hover,
+.co-lib-card:hover,
+.mkt-steps > li:hover {
+  background: var(--t-panel-2);
+  border-color: var(--t-line-2);
+  translate: 0 -4px;
+  box-shadow: 0 12px 28px rgba(12, 14, 16, 0.08);
+}
+/* 悬停时缩略图轻轻推近，卡片「活」一点 */
+.co-lib-card:hover .case-fig { transform: scale(1.03); }
+.co-lib-card .case-fig { transition: transform 420ms var(--ease-out); }
+
+/* 铭牌底部的交付物：三个独立小块，不再用 1px 网格拼成一条 */
+.co-plate-strip {
+  gap: 10px;
+  background: none;
+  border: 0;
+}
+.co-plate-case,
+.co-plate-all {
+  border: 1px solid transparent;
+  background: #fff;
+  transition:
+    background-color var(--dur-hover) var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out),
+    translate var(--dur-hover) var(--ease-out);
+}
+.co-plate-case:hover,
+.co-plate-all:hover {
+  background: var(--t-panel-2);
+  border-color: var(--t-line-2);
+  translate: 0 -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .co-svc-in:hover,
+  .co-lib-card:hover,
+  .mkt-steps > li:hover,
+  .co-plate-case:hover,
+  .co-plate-all:hover { translate: none; box-shadow: none; }
+}
+
+/* ---------- 去线收尾（2026-11-13 第二轮）----------
+   卡片默认不画任何线：缩略图外框、卡片内的结果分隔线、CTA 卡的斜纹、
+   铭牌交付物条的底色全部撤掉，只在悬浮时出现描边与浮起。 */
+.dk-screen .co-lib-thumb { border: 0; }
+.co-lib-result { border-top: 0; padding-top: 2px; }
+.co-svc-cta .co-svc-in { background-image: none; }
+.co-plate-case,
+.co-plate-all { background: transparent; }
+
+/* 「常见做法 / 我的做法」不再拼成一张带外框的表，两块各自站着 */
+.mkt-compare {
+  border: 0;
+  gap: 22px;
+  background: none;
+}
+.mkt-compare > .paper-field { border: 1px solid transparent; }
+.mkt-compare > .paper-field:hover { border-color: var(--t-line-2); }
+
+/* 活页模式下顶部那条滚动进度线和右侧索引栏表达同一件事，去掉一条 */
+html.is-deck .scroll-progress { display: none; }
+/* 屏头原来有实线 + 刻度尺两条，缩到一条刻度尺就够 */
+.dk-screen .co-h2-rule { display: none; }
+
+/* 卡片内部的最后两条线（引用块的左竖线、交付行的上横线）也撤掉：
+   层级只用字重、字号和空隙表达，卡片里不再出现任何 1px 线 */
+.co-svc .co-svc-fit {
+  padding-left: 0;
+  border-left: 0;
+}
+.co-svc .co-svc-meta {
+  padding-top: 0;
+  border-top: 0;
+}
+/* 索引栏的文字比原来清楚一档（原来 0.55 透明度在浅底上几乎读不出） */
+html.is-deck .co-deck-index a { opacity: 0.7; color: var(--t-muted); }
+html.is-deck .co-deck-index a.is-on { color: var(--t-ink); }
+
+/* ============================================================
+   每屏背后的图案（DeckFigure）
+   ------------------------------------------------------------
+   一屏一张白底黑线的版画／工程图。multiply 让纸底彻底消失、只留线条，
+   所以卡片压上去不会脏；图案本身再压到很淡，只在留白里「隐约在那儿」。
+   来源与许可见 public/bg/art/CREDITS.md。
+   ============================================================ */
+.dk-screen,
+.co-foot { isolation: isolate; }
+.dk-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  pointer-events: none;
+}
+.dk-bg--tail { display: none; }
+html.is-deck .dk-bg--tail {
+  display: block;
+  /* 页脚容器是 1320 居中出来的，图案要铺到视口两边，否则左右各留一条 60px 的硬边 */
+  width: 100vw;
+  left: 50%;
+  margin-left: -50vw;
+  right: auto;
+  top: 0;
+  bottom: 0;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+}
+/* 封底没有正文，图案可以再淡一档，别抢「木白 woodwhite」 */
+.dk-art--constellation { opacity: 0.05; }
+
+.dk-art {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  mix-blend-mode: multiply;
+  opacity: 0.12;
+  filter: contrast(0.9) brightness(1.04);
+}
+.dk-bg .dk-art { position: absolute; inset: 0; }
+
+/* 子页的页面级图案：铺在首屏区域，往下渐隐，滚过去就不再跟着 */
+.co-page-art {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 0;
+  height: min(118vh, 1080px);
+  overflow: clip;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.9) 0%, rgba(0,0,0,.72) 34%, rgba(0,0,0,.25) 68%, transparent 92%);
+}
+.co-page-art .dk-art { position: absolute; inset: 0; opacity: 0.1; }
+/* 一屏一张，按屏名对应 */
+.dk-art--machine { background-image: url("/bg/art/machine.webp"); background-position: center 60%; }
+.dk-art--orbit { background-image: url("/bg/art/orbit.webp"); }
+.dk-art--terrain { background-image: url("/bg/art/terrain.webp"); background-position: center 6%; background-size: 148%; }
+.dk-art--exploded { background-image: url("/bg/art/exploded.webp"); }
+.dk-art--ledger { background-image: url("/bg/art/ledger.webp"); }
+.dk-art--patent { background-image: url("/bg/art/patent.webp"); }
+.dk-art--constellation { background-image: url("/bg/art/constellation.webp"); }
+
+/* 换屏时图案和这一屏一起淡入 */
+@media (prefers-reduced-motion: no-preference) {
+  /* 只有「屏」参与淡入；页脚不挂 is-live，直接常显 */
+  html.is-deck .dk-screen .dk-bg { opacity: 0; }
+  html.is-deck .dk-screen.is-live .dk-bg {
+    opacity: 1;
+    transition: opacity 800ms var(--ease-out) 60ms;
+  }
+}
+.dk-in { position: relative; z-index: 1; }
+
+/* 窄屏图案再淡一档，别在薄卡片边缘抢戏 */
+@media (max-width: 939px) {
+  .dk-bg .dk-art { opacity: 0.10; }
+}
+
+/* 索引栏压在图案上时要读得清：给它一层很薄的底 */
+/* 索引栏只留编号：屏幕右侧留给内容，不抢读数区的位置 */
+.co-deck-index .co-deck-t { display: none; }
+html.is-deck .co-deck-index {
+  right: 14px;
+  padding: 8px 2px;
+  background: none;
+  backdrop-filter: none;
+  border: 0;
+}
+html.is-deck .co-deck-index a { padding: 7px 2px; gap: 6px; }
+html.is-deck .co-deck-index ol { gap: 0; }
+/* 读数的单位和备注之间留一点空隙，别粘成「95 天未重启」 */
+.co-plate-read span { margin-left: 4px; }
+/* 活页模式下顶栏始终铺实底，别让背后的图案从缝隙里透出来 */
+html.is-deck .navbar { background-color: transparent; }
+
+/* FAQ 列表与「下一步」卡片要给不透明底：这一屏背景是专利图纸，
+   线稿会从文字后面穿过去（用户要求「图案不要盖住卡片」，正文同理） */
+.dk-screen .co-faq { background: var(--t-panel); }
+.dk-screen .co-ask-next { background: var(--t-panel); }
+
+/* 长页（案例库/能力/业务/联系）也跟着放宽：缩略图撑满卡宽，不再缩成 168px 的小方块 */
+.co-lib-thumb .case-fig.case-fig--md {
+  width: 100%;
+  max-width: none;
   margin: 0;
-  padding: 16px 10px;
-  font-size: 10.5px;
-  line-height: 1.6;
-  color: var(--t-faint);
+}
+.co-main .co-lib-card { padding: 14px; gap: 12px; }
+/* 长页的图案压得更淡、放大一档：它铺在整页顶部，太实会压过正文 */
+.co-page-art .dk-art {
+  opacity: 0.085;
+  background-size: 132%;
 }
 
-.co-show .co-mock-readonly {
-  font-size: 9.5px;
-  letter-spacing: 0.02em;
-  color: var(--t-faint);
+/* 通栏色带整块撤掉：不再有横跨 100vw 的大色块，只留上下两条细线做分区 */
+.co-page .co-sec--band::before {
+  background: none;
+  border-block: 1px solid var(--t-line);
 }
 
-/* 卡片里的状态章：三种状态三色 */
-.co-pin-st.is-pass { color: var(--t-signal-ink); border-color: rgba(11, 143, 132, 0.4); }
-.co-pin-st.is-wait { color: #8a5a00; border-color: rgba(138, 90, 0, 0.34); }
-.co-pin-st.is-fail { color: var(--t-danger); border-color: rgba(184, 69, 47, 0.38); }
+/* 业务页只有两条线：两列铺满，不要三列里空一格 */
+.co-page--business .co-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-/* 窄屏：搜索框独占一行，不要挤在芯片堆里 */
-@media (max-width: 560px) {
-  .co-show .co-mock-search { width: 100%; margin-left: 0; }
-  .co-show .co-mock-search input { width: 100%; }
+/* 三条验收原来是整块墨色（首屏唯一的深色大块）。
+   用户要求不再用横向通栏的大组件：改成「线段 + 大字」的三格，
+   分量还在，但不再是一块压下来的黑。 */
+.co-plate-std {
+  background: none;
+  background-image: none;
+  color: var(--t-ink-2);
+  border-top: 1px solid var(--t-line-2);
+  border-bottom: 1px solid var(--t-line);
+}
+.co-plate-std li + li { border-left: 1px solid var(--t-line); }
+.co-plate-std-k { color: var(--t-faint); }
+.co-plate-std-v { font-size: 1.375rem; color: var(--t-ink); }
+.co-plate-std-n { color: var(--t-muted); }
+
+/* ============================================================
+   案例：去掉那套「网格 + 色条」的示意图
+   ------------------------------------------------------------
+   缩略图原来是抽象的方格示意图，跟页面背后真实的版画／图纸放一起很打架：
+   背景是真的图纸，卡片里是假图形。首页改成「档案条目」——大编号 + 元数据 + 三段文字，
+   /work 列表页保留缩略图（那里靠图扫读）。
+   ============================================================ */
+.dk-screen .co-lib { counter-reset: deckcase; }
+.dk-screen .co-lib-thumb { display: none; }
+.dk-screen .co-lib-card { counter-increment: deckcase; padding-top: 26px; }
+.dk-screen .co-lib-card::before {
+  content: "0" counter(deckcase);
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--t-indigo-tint);
+  font-variant-numeric: tabular-nums;
+}
+/* 铭牌底部那三个小条目也一样：只留编号感，不放假缩略图 */
+.dk-screen .co-plate-case-fig { display: none; }
+.dk-screen .co-plate-case { padding: 10px 12px; }
+.dk-screen .co-plate-case-t b { font-size: 0.875rem; }
+
+/* ============================================================
+   铭牌：不再是一个「框起来的卡片」
+   ------------------------------------------------------------
+   去掉 1px 外框与两个 L 形角标，改成一块很薄的白色面（半透明 + 轻微模糊），
+   背后的图纸能隐约透上来；分隔只靠内部那几条细线。
+   ============================================================ */
+.co-plate-panel {
+  border: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.co-plate-panel::before,
+.co-plate-panel::after { display: none; }
+
+/* 窄屏 HUD 行：左右两组挤在一行会把「木白 / WDW」挤出屏幕，
+   改成上下两行，机读注记在手机上收掉 */
+@media (max-width: 760px) {
+  .co-hud { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .co-hud-r i { display: none; }
 }

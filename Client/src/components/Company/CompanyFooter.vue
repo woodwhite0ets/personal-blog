@@ -1,5 +1,14 @@
 <template>
   <footer class="co-foot">
+    <div class="dk-bg dk-bg--tail" aria-hidden="true"><DeckFigure name="tail" /></div>
+    <!-- 活页模式的封底：首页一屏一页，页脚单独占最后一屏，这里给它一点内容，
+         否则最后一页只剩大片空白（这块在长页里不显示，见 company.css） -->
+    <div class="co-foot-end">
+      <p class="co-foot-end-k">END OF SHEET · 06 / 06</p>
+      <p class="co-foot-end-t">木白 woodwhite</p>
+      <p class="co-foot-end-note">木白（厦门）智能软件科技有限公司 · 厦门市翔安区</p>
+    </div>
+
     <div class="co-foot-cols">
       <div class="co-foot-brand">
         <span class="co-foot-id">
@@ -35,6 +44,8 @@
 </template>
 
 <script setup>
+import DeckFigure from './DeckFigure.vue'
+
 // 公司站页脚：四个页面同一份（原先首页是四列、子页只有两个外链）
 const year = new Date().getFullYear()
 </script>

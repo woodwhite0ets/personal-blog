@@ -257,7 +257,9 @@ function hashPosition(hash) {
     try { ty = new DOMMatrixReadOnly(t).m42 } catch { ty = 0 }
   }
   const layoutTop = el.getBoundingClientRect().top + window.scrollY - ty
-  return { top: Math.max(0, Math.round(layoutTop - HASH_OFFSET)) }
+  // 首页是活页（一屏一段）时，每屏自己已经让出了顶栏高度，再减 84 会把整屏推上去
+  const deck = document.documentElement.classList.contains('is-deck') && el.closest('.dk-screen')
+  return { top: Math.max(0, Math.round(layoutTop - (deck ? 0 : HASH_OFFSET))) }
 }
 
 function scrollToHash(hash) {
