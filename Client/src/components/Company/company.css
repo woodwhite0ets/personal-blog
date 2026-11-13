@@ -3088,3 +3088,113 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
   padding: 10px 0 12px;
   margin-right: 40px;
 }
+
+/* ============================================================
+   初创版官网：加项、代金券、让利与验收
+   ------------------------------------------------------------
+   这一页没有通栏大色块，代金券用「白面 + 左侧一条信号线」标出来，
+   金额三格用细线分开，读起来像条款而不是广告。
+   ============================================================ */
+.co-addon i {
+  font-style: normal;
+  margin-left: 6px;
+  font-size: 11px;
+  color: var(--t-faint);
+}
+
+.co-perk {
+  position: relative;
+  margin: 26px 0 0;
+  padding: 22px 24px 20px 26px;
+  background: var(--t-panel);
+  border-left: 2px solid var(--t-signal);
+}
+.co-perk-k {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--t-signal-ink);
+}
+.co-perk-t {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 640;
+  letter-spacing: -0.012em;
+  color: var(--t-ink);
+}
+.co-perk-p { margin: 0 0 16px; max-width: 42em; font-size: 0.875rem; line-height: 1.7; color: var(--t-muted); }
+.co-perk-amounts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  border-block: 1px solid var(--t-line);
+}
+.co-perk-amounts li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px 12px 0;
+}
+.co-perk-amounts li + li { padding-left: 16px; border-left: 1px solid var(--t-line); }
+.co-perk-amounts span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--t-faint); }
+.co-perk-amounts b { font-family: var(--font-display); font-size: 1.1rem; font-weight: 640; color: var(--t-ink); }
+.co-perk-fine { margin: 0; font-size: 12px; line-height: 1.7; color: var(--t-faint); }
+
+.co-terms {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  margin: 34px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--t-line-2);
+}
+.co-terms h3 {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--t-faint);
+}
+.co-terms ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.co-terms li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 0.875rem; color: var(--t-muted); }
+.co-terms li b { font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 500; color: var(--t-ink); }
+.co-terms li i { flex-basis: 100%; font-style: normal; font-size: 12px; color: var(--t-faint); }
+.co-terms-plain li { display: block; padding-left: 12px; border-left: 1px solid var(--t-line); line-height: 1.65; }
+
+@media (max-width: 760px) {
+  .co-perk-amounts { grid-template-columns: minmax(0, 1fr); }
+  .co-perk-amounts li + li { padding-left: 0; border-left: 0; border-top: 1px solid var(--t-line); }
+  .co-terms { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+}
+
+/* 加项一格原来挤成一行，读起来是一串数字；改成每条一行，说明附在后面 */
+.co-addon { display: block; font-size: 0.8125rem; line-height: 1.6; color: var(--t-muted); }
+.co-addon + .co-addon { margin-top: 3px; }
+.co-addon b { font-weight: 550; color: var(--t-ink-2); margin-right: 6px; }
+.co-addon i::before { content: " · "; color: var(--t-line-2); }
+
+/* 步骤卡同时带 .paper-field，它的 ::before 是绝对定位的渐变层，
+   编号（::before 的 "01"）会被钉在卡片左上角、压着边框。
+   之前只在首页活页里补过，长页（初创版/业务页）同样中招，这里统一改。 */
+.mkt-steps > li.paper-field::before {
+  position: static;
+  inset: auto;
+  z-index: auto;
+  background: none;
+  pointer-events: auto;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--t-indigo-tint);
+  font-variant-numeric: tabular-nums;
+}
