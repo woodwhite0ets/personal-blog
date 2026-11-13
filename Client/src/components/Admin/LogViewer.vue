@@ -261,9 +261,6 @@ onUnmounted(() => {
   padding: 1px 6px; border-radius: 4px; flex-shrink: 0;
   min-width: 48px; text-align: center;
 }
-.badge-info  { color: var(--accent); background: var(--accent-a8); border: 1px solid var(--accent-a20); }
-.badge-warn  { color: var(--warn); background: var(--warn-a8); border: 1px solid var(--warn-a20); }
-.badge-error { color: var(--err); background: var(--err-a8); border: 1px solid var(--err-a20); }
 
 .log-msg {
   color: var(--text-secondary); overflow: hidden;

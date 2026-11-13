@@ -317,13 +317,6 @@ onMounted(() => fetchUsers())
 .th-avatar { width: 32px; }
 .th-actions, .td-actions { text-align: right; }
 
-.avatar-sm {
-  width: 26px; height: 26px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--accent-a8); color: var(--accent);
-  border-radius: 8px; font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
-}
-
 .user-link { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
 .user-link:hover { opacity: 0.8; }
 

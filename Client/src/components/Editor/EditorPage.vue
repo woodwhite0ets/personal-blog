@@ -783,15 +783,6 @@ watch(
   position: relative;
 }
 
-.bg-grid {
-  position: fixed; inset: 0;
-  background-image:
-    linear-gradient(var(--overlay-a15) 1px, transparent 1px),
-    linear-gradient(90deg, var(--overlay-a15) 1px, transparent 1px);
-  background-size: 64px 64px;
-  pointer-events: none; z-index: 0;
-}
-
 /* ====== Toast ====== */
 .toast {
   position: fixed; top: 72px; right: 24px; z-index: 999;

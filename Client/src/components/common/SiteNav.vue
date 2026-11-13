@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar">
+  <header class="navbar navbar--site">
     <div class="navbar-inner">
       <router-link to="/" class="brand" title="回到木白 · 公司主页" aria-label="木白，公司主页">
         <img class="brand-mark" src="/brand/opc-mark-color.svg" alt="" width="955" height="672" aria-hidden="true" />
@@ -144,10 +144,7 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
   height: 64px; display: flex; align-items: center; gap: 40px;
 }
 .brand { display: flex; align-items: baseline; gap: 4px; flex-shrink: 0; text-decoration: none; font-size: 0.875rem; font-weight: 600; }
-.brand-bracket { color: var(--text-muted); }
 .brand-text { font-family: var(--font-display); font-size: 1.1875rem; font-weight: 600; letter-spacing: -0.02em; color: var(--text-bright); white-space: nowrap; }
-.brand-caret { color: var(--accent); font-size: 0.75rem; margin-left: 1px; }
-.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
 .nav-links { display: flex; gap: 32px; flex: 1; }
 .nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 0.9375rem; font-weight: 450; color: var(--text-secondary); transition: color var(--dur-hover) var(--ease-out); position: relative; white-space: nowrap; }
 .nav-links a:hover, .nav-links a.router-link-active { color: var(--text-bright); }
@@ -175,7 +172,6 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 .dropdown-item.admin-link { color: var(--accent); border-bottom: 1px solid var(--border); }
 .dropdown-item.admin-link:hover { background: var(--accent-a6); }
 .dropdown-item.logout:hover { color: var(--err); }
-.dropdown-icon { font-size: 0.8125rem; }
 .nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; background: none; border: 1px solid var(--border-strong); border-radius: 12px; cursor: pointer; padding: 0; }
 .nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 4px; transition: transform 0.2s, opacity 0.2s; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
@@ -184,12 +180,10 @@ watch(() => route.fullPath, () => { navOpen.value = false; showUserMenu.value = 
 @media (max-width: 1000px) {
   .navbar-inner { gap: 18px; }
   .nav-links { gap: 16px; }
-  .brand-path { display: none; }
 }
 
 @media (max-width: 1000px) {
   .navbar-inner { padding: 0 16px; gap: 12px; }
-  .brand-path { display: none; }
   /* 抽屉改成「从右滑入」：display 常驻 + translateX 位移，
      关闭时 visibility:hidden 一并把链接移出 tab 顺序与无障碍树。 */
   .nav-links {

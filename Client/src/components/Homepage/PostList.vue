@@ -104,11 +104,6 @@ defineEmits(['load-more', 'refresh'])
   border-bottom: 1px solid var(--border);
 }
 
-.section-arrow {
-  color: var(--accent);
-  font-weight: 700;
-}
-
 .section-title {
   font-size: 0.8125rem;
   font-weight: 600;
@@ -177,15 +172,6 @@ defineEmits(['load-more', 'refresh'])
   color: var(--accent-hover);
 }
 
-.spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
@@ -222,6 +208,5 @@ defineEmits(['load-more', 'refresh'])
 .section-head { display: flex; align-items: baseline; gap: 12px; margin: 0 0 8px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
 .section-title { font-family: var(--font-hand); font-size: 1.5rem; font-weight: 400; color: var(--text-bright); margin: 0; }
 .section-count { font-size: 0.8125rem; color: var(--text-dim); }
-.section-arrow { display: none; }
 .btn-load-more { border-radius: 4px; }
 </style>

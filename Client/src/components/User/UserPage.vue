@@ -551,98 +551,17 @@ watch(username, () => {
   overflow-x: hidden;
 }
 
-/* 背景 — 复用 Homepage */
-.bg-grid {
-  position: fixed; inset: 0;
-  background-image:
-    linear-gradient(var(--overlay-a15) 1px, transparent 1px),
-    linear-gradient(90deg, var(--overlay-a15) 1px, transparent 1px);
-  background-size: 64px 64px;
-  pointer-events: none; z-index: 0;
-}
-
-.bg-scanline {
-  position: fixed; inset: 0;
-  background: repeating-linear-gradient(
-    0deg, transparent, transparent 2px,
-    var(--scanline) 2px, var(--scanline) 4px
-  );
-  pointer-events: none; z-index: 0;
-  animation: scan 8s linear infinite;
-}
-
 @keyframes scan {
   0% { transform: translateY(0); }
   100% { transform: translateY(4px); }
 }
 
-/* ====== Navbar ====== */
-.navbar {
-  position: sticky; top: 0; z-index: 100;
-  background: var(--navbar-bg);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-}
-
-.navbar-inner {
-  max-width: 1060px; margin: 0 auto; padding: 0 24px;
-  height: 56px; display: flex; align-items: center; gap: 36px;
-}
-
-.brand {
-  display: flex; align-items: baseline; gap: 4px;
-  text-decoration: none; font-size: 0.875rem; font-weight: 600;
-}
-
-.brand-bracket { color: var(--text-muted); }
-.brand-text { color: var(--accent); }
-.brand-path { color: var(--text-dim); margin-left: 8px; font-size: 0.75rem; }
-
-.nav-links { display: flex; gap: 28px; flex: 1; }
-
-.nav-links a {
-  display: flex; align-items: center; gap: 6px;
-  text-decoration: none; font-size: 0.75rem; font-weight: 500;
-  color: var(--text-dim); transition: color 0.2s; letter-spacing: 0.5px;
-}
-
-.nav-num { color: var(--text-faint); font-size: 0.6875rem; font-weight: 700; }
-
 .nav-links a:hover,
 .nav-links a.router-link-active { color: var(--text); }
 .nav-links a.router-link-active .nav-num { color: var(--accent); }
-
-.nav-actions { display: flex; align-items: center; gap: 12px; }
-.nav-toggle { display: none; position: relative; z-index: 120; flex-direction: column; justify-content: center; align-items: center; gap: 4px; width: 34px; height: 34px; background: none; border: 1px solid var(--border-strong); border-radius: 8px; cursor: pointer; padding: 0; }
-.nav-toggle span { display: block; width: 16px; height: 2px; background: var(--text-dim); border-radius: 4px; transition: transform 0.2s, opacity 0.2s; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
-.btn-search {
-  width: 34px; height: 34px;
-  display: flex; align-items: center; justify-content: center;
-  background: none; border: 1px solid var(--border-strong); border-radius: 8px;
-  color: var(--text-dim); cursor: pointer; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
-}
-
-.btn-search:hover { border-color: var(--accent); color: var(--accent); }
-
-.btn-write {
-  display: flex; align-items: center; gap: 6px;
-  padding: 6px 16px;
-  font-family: inherit; font-size: 0.75rem; font-weight: 600;
-  color: var(--on-accent); background: var(--accent); border-radius: 8px;
-  text-decoration: none; transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
-}
-
-.btn-write:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 0 20px var(--accent-a25);
-  transform: translateY(-1px);
-}
-
-.btn-write-icon { font-size: 0.9375rem; font-weight: 700; }
 
 /* ====== Hero ====== */
 .user-notfound {
@@ -704,17 +623,6 @@ watch(username, () => {
   opacity: 1;
 }
 
-.user-avatar-lg {
-  width: 80px; height: 80px;
-  display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, var(--accent-a20) 0%, var(--accent-a5) 100%);
-  border: 2px solid var(--accent-a25);
-  border-radius: 12px;
-  font-size: 2.25rem; font-weight: 800; color: var(--accent);
-  text-transform: uppercase;
-  flex-shrink: 0;
-}
-
 .user-info { display: flex; flex-direction: column; gap: 8px; }
 
 .user-name-line { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
@@ -764,10 +672,6 @@ watch(username, () => {
   background: var(--overlay-a15);
   border-bottom: 1px solid var(--border);
 }
-
-.panel-dot { width: 8px; height: 8px; border-radius: 50%; }
-.dot-cyan   { background: var(--accent); }
-.dot-yellow { background: var(--warn); }
 .dim { opacity: 0.3; }
 
 .panel-title {
@@ -788,7 +692,6 @@ watch(username, () => {
 }
 
 .info-val { color: var(--text-secondary); }
-.terminal-green { color: var(--ok); }
 
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
 
@@ -815,7 +718,6 @@ watch(username, () => {
 }
 
 .footer-line { display: inline-flex; align-items: center; gap: 8px; font-size: 0.6875rem; }
-.footer-prompt { color: var(--accent); }
 .footer-cmd { color: var(--text-muted); }
 
 .btn-change-pwd {
@@ -919,22 +821,15 @@ watch(username, () => {
 .modal-enter-from .pwd-modal { transform: scale(0.95); }
 .modal-leave-to { opacity: 0; }
 
-.dot-green { background: var(--ok); }
-
 /* ====== 响应式 ====== */
 @media (max-width: 800px) {
   .main-layout { grid-template-columns: 1fr; gap: 48px; }
-  .nav-links { display: none; }
-  .nav-toggle { display: flex; }
-  .nav-actions { gap: 8px; }
   .user-name { display: none; }
-  .user-caret { display: none; }
   .nav-links.open { display: flex; position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 300px); flex-direction: column; align-items: stretch; gap: 0; background-color: var(--bg); border-left: 1px solid var(--border); padding: 72px 20px 24px; z-index: 95; box-shadow: -8px 0 24px var(--shadow-soft); }
   .nav-links.open::before { content: ''; position: fixed; inset: 0; background: var(--modal-overlay); z-index: -1; }
   .nav-links.open a { padding: 14px 6px; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
   .user-hero-inner { flex-direction: column; text-align: center; padding: 40px 20px 32px; }
   .user-stats { justify-content: center; }
-  .user-avatar-lg { width: 64px; height: 64px; font-size: 1.75rem; }
   .user-at { font-size: 1.125rem; }
 }
 

@@ -433,24 +433,6 @@ async function handleResend() {
   overflow: hidden;
 }
  
-.bg-grid {
-  position: fixed; inset: 0;
-  background-image:
-    linear-gradient(var(--overlay-a2) 1px, transparent 1px),
-    linear-gradient(90deg, var(--overlay-a2) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-}
- 
-.bg-glow {
-  position: fixed;
-  top: -20%; left: 50%; transform: translateX(-50%);
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, var(--accent-a6) 0%, transparent 70%);
-  pointer-events: none;
-  animation: glowPulse 6s ease-in-out infinite;
-}
- 
 @keyframes glowPulse {
   0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
   50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
@@ -488,23 +470,6 @@ async function handleResend() {
   border-radius: 12px;
   box-shadow: 0 0 60px var(--shadow), 0 0 0 1px var(--overlay-a3) inset;
   overflow: hidden;
-}
- 
-.terminal-bar {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 14px;
-  background: var(--border);
-  border-bottom: 1px solid var(--border-strong);
-}
- 
-.terminal-dot { width: 11px; height: 11px; border-radius: 50%; }
-.dot-red    { background: var(--err); }
-.dot-yellow { background: var(--warn); }
-.dot-green  { background: var(--ok); }
- 
-.terminal-title {
-  flex: 1; text-align: center;
-  font-size: 0.6875rem; color: var(--text-hint); letter-spacing: 1px;
 }
  
 .card-body {
@@ -556,16 +521,7 @@ async function handleResend() {
 /* ====== 头部 ====== */
 .header { margin-bottom: 28px; }
  
-.prompt-line {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 1rem; margin-bottom: 6px;
-}
- 
-.prompt-arrow { color: var(--accent); font-weight: 700; }
-.prompt-cmd { color: var(--text-bright); font-weight: 600; }
- 
 .subtitle { margin: 0; font-size: 0.75rem; color: var(--text-muted); }
-.comment { color: var(--text-muted); font-style: italic; }
  
 /* ====== 表单 ====== */
 .register-form {
@@ -581,8 +537,6 @@ async function handleResend() {
   text-transform: uppercase; letter-spacing: 1.5px;
   display: flex; align-items: center; gap: 6px;
 }
- 
-.label-icon { color: var(--accent); font-weight: 700; }
  
 .field input[type='text'],
 .field input[type='email'],
@@ -652,42 +606,6 @@ async function handleResend() {
   display: flex; align-items: center; gap: 6px;
 }
  
-.err-prefix { font-weight: 700; letter-spacing: 1px; }
- 
-/* 提交按钮 */
-.btn-glow {
-  width: 100%;
-  padding: 13px 0;
-  font-size: 0.875rem;
-  letter-spacing: 1px;
-  gap: 8px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-  position: relative;
-  overflow: hidden;
-  margin-top: 4px;
-}
-
-.btn-glow::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent 0%, var(--overlay-a10) 100%);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.btn-glow:hover:not(:disabled)::before { opacity: 1; }
-
-.btn-glow:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-  box-shadow: 0 0 30px var(--accent-a30), 0 0 60px var(--accent-a10);
-  transform: translateY(-1px);
-}
-
-.btn-glow:active:not(:disabled) { transform: translateY(0) scale(0.99); }
-
-.btn-arrow { font-size: 1rem; }
- 
 .server-error {
   display: flex; align-items: center; gap: 6px;
   font-size: 0.75rem; color: var(--err);
@@ -699,12 +617,6 @@ async function handleResend() {
 /* ====== 验证步骤 ====== */
 .verify-prompt {
   text-align: center; padding: 20px 0 10px;
-}
- 
-.verify-icon {
-  font-size: 3rem; margin-bottom: 20px;
-  filter: grayscale(1);
-  animation: float 3s ease-in-out infinite;
 }
  
 @keyframes float {
@@ -770,21 +682,6 @@ async function handleResend() {
 }
  
 .back-link a:hover { color: var(--accent); }
- 
-.terminal-status {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 14px;
-  background-color: var(--bg-elevated); border-top: 1px solid var(--border-strong);
-  font-size: 0.6875rem; color: var(--text-muted); letter-spacing: 1.5px;
-}
- 
-.status-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--ok);
-  box-shadow: 0 0 6px var(--ok-a40);
-}
- 
-.status-sep { color: var(--border-strong); }
  
 /* ====== 加载 ====== */
 .spinner {

@@ -423,11 +423,6 @@ async function handleGuestLogin() {
   color: var(--accent);
 }
 
-.back-sep {
-  margin: 0 6px;
-  color: var(--text-faint);
-}
-
 .back-link { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
 .forgot-link { color: var(--text-dim) !important; }
 
@@ -454,9 +449,6 @@ async function handleGuestLogin() {
 @media (max-width: 460px) {
   .card-body {
     padding: 28px 20px 22px;
-  }
-  .prompt-line {
-    font-size: 0.9375rem;
   }
 }
 

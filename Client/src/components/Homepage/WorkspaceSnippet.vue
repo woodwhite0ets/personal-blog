@@ -203,11 +203,17 @@ const groups = [
 }
 @media (max-width: 1180px) { .ws-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 680px) { .ws-groups { grid-template-columns: 1fr; } }
-.ws-group { min-width: 0; padding: 16px 16px 18px; border-radius: 4px; }
-.ws-group[data-g="0"] { background: color-mix(in srgb, var(--hue-blue) 5%, transparent); }
-.ws-group[data-g="1"] { background: color-mix(in srgb, var(--hue-brick) 4%, transparent); }
-.ws-group[data-g="2"] { background: color-mix(in srgb, var(--hue-teal) 5%, transparent); }
-.ws-group[data-g="3"] { background: color-mix(in srgb, var(--hue-olive) 5%, transparent); }
+.ws-group {
+  min-width: 0; padding: 18px 18px 20px; border-radius: 3px;
+  /* 四块原来是四种色相的淡底，和公司站「单一信号色」不搭；
+     统一成白面 + 极淡影，识别交给编号与标题 */
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(12, 14, 16, 0.05);
+  transition: box-shadow var(--dur-hover) var(--ease-out), translate var(--dur-hover) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ws-group:hover { translate: 0 -3px; box-shadow: 0 10px 24px rgba(12, 14, 16, 0.07); }
+}
 .ws-group-title {
   display: flex; align-items: baseline; gap: 8px;
   margin: 0 0 10px; padding-bottom: 7px;

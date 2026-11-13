@@ -123,8 +123,6 @@ async function handleReset() {
   position: relative;
   background-color: var(--bg);
 }
-.bg-grid { position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.3; }
-.bg-glow { position: fixed; top: -20%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, var(--accent-a10) 0%, transparent 60%); pointer-events: none; }
 
 .card {
   width: 100%; max-width: 420px;
@@ -134,22 +132,13 @@ async function handleReset() {
   overflow: hidden;
   box-shadow: var(--shadow-deep);
 }
-.terminal-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background-color: var(--bg-deeper); border-bottom: 1px solid var(--border); }
-.terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
-.dot-red { background: var(--dot-red); } .dot-yellow { background: var(--dot-yellow); } .dot-green { background: var(--dot-green); }
-.terminal-title { margin-left: auto; font-size: 0.6875rem; color: var(--text-muted); font-family: var(--font-sans); }
 
 .card-body { padding: 28px; }
 .header { margin-bottom: 24px; }
-.prompt-line { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.prompt-arrow { color: var(--accent); font-weight: 700; }
-.prompt-cmd { color: var(--text-bright); font-weight: 600; }
 .subtitle { margin: 0; }
-.comment { color: var(--text-faint); font-size: 0.75rem; }
 
 .field { margin-bottom: 20px; }
 .field label { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-.label-icon { color: var(--accent); }
 .input-wrap input {
   width: 100%; padding: 12px 14px;
   background-color: var(--bg-deeper); color: var(--text);
@@ -160,7 +149,6 @@ async function handleReset() {
 .input-wrap input:focus { border-color: var(--accent); }
 .input-wrap input.error { border-color: var(--err); }
 .field-error { display: block; margin-top: 6px; font-size: 0.75rem; color: var(--err); }
-.err-prefix { font-weight: 700; }
 
 .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: var(--white); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
