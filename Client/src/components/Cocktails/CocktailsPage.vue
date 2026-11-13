@@ -4,7 +4,7 @@
     <SiteNav />
 
     <!-- 单杯 -->
-    <main v-if="current" class="ct-main">
+    <main v-if="current" class="ct-main ct-main--detail">
       <router-link class="ct-back" to="/cocktails">← 全部配方</router-link>
 
       <header class="ct-head">
@@ -19,6 +19,7 @@
         </dl>
       </header>
 
+      <div class="ct-cols">
       <section class="ct-sec">
         <h2 class="ct-h2">材料</h2>
         <ul class="ct-ingredients">
@@ -35,6 +36,8 @@
           <li v-for="(s, i) in current.steps" :key="i">{{ s }}</li>
         </ol>
       </section>
+
+      </div>
 
       <section v-if="current.notes" class="ct-sec">
         <h2 class="ct-h2">备注</h2>
@@ -320,10 +323,16 @@ watchEffect(() => {
 }
 
 /* 清单 */
-.ct-list { list-style: none; margin: 8px 0 0; padding: 0; }
+.ct-list {
+  /* 1320 宽的单列里，一条配方名在最左、做法杯型在最右，中间隔着 800px 空白，
+     读起来是两段不相干的信息。改成两列，一行 640 左右，名与做法就在同一个视区里。 */
+  list-style: none; margin: 8px 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 44px;
+}
 .ct-item {
   display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px;
-  padding: 16px 12px; margin: 0 -12px; border-bottom: 1px solid var(--border);
+  padding: 15px 10px; margin: 0 -10px; border-bottom: 1px solid var(--border);
   text-decoration: none; transition: background-color var(--dur-hover) var(--ease-out);
 }
 .ct-item:hover { background: var(--surface-2); }
@@ -378,5 +387,20 @@ watchEffect(() => {
   .ct-item-meta { margin-left: 0; width: 100%; gap: 12px; }
   .ct-search { flex-basis: 100%; }
   .ct-dist { grid-template-columns: minmax(0, 1fr); max-width: none; }
+}
+
+@media (max-width: 900px) {
+  .ct-list { grid-template-columns: minmax(0, 1fr); column-gap: 0; }
+}
+
+/* 详情页：材料在左、做法在右。原来两段都缩在 545px 的窄栏里，
+   旁边 800px 空着，页头却横贯整页，看起来像没排完。 */
+.ct-main--detail { max-width: 1060px; }
+/* 详情页背景图案再淡一档：这页是「读配方」，图纸只做纸纹 */
+.ct-page:has(.ct-main--detail) .page-wash::after { opacity: 0.042; }
+.ct-cols { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 56px; align-items: start; }
+.ct-cols .ct-sec { margin-top: 34px; }
+@media (max-width: 900px) {
+  .ct-cols { grid-template-columns: minmax(0, 1fr); gap: 0; }
 }
 </style>

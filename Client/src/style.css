@@ -2475,7 +2475,11 @@ html {
 .about-page   { --page-wash-a: rgba(92,112,142,.05);  --page-wash-b: rgba(92,112,142,.035)}
 .post-detail-page { --page-wash-a: rgba(92,112,142,.05); --page-wash-b: rgba(92,112,142,.035)}
 
-/* 内容压在气团之上 */
+/* 内容压在气团之上。
+   .page-wash 是定位元素（z-index 0），它会把后面那些「静态」的兄弟节点盖住——
+   所以每页的 main 必须自己抬一层。这里用「~ main」兜底，
+   免得以后再添页面时忘了把类名加进下面这串清单（调酒页就是这么丢的整页内容）。 */
+.page-wash ~ main { position: relative; z-index: 1; }
 .tl-main, .ad-main, .tags-main, .archive-main, .notes-main,
 .now-main, .pl-main, .td-main, .forum-main, .ed-hero, .archive-header,
 .tags-header, .notes-head, .now-head, .pl-head, .tl-head, .ad-head,
@@ -2683,7 +2687,7 @@ button:not(:disabled):active, .nav-drawer-auth:active {
 .tl-page          { --page-art: url("/bg/art/machine.webp"); --page-art-op: 0.05; }
 .td-page          { --page-art: url("/bg/art/machine.webp"); --page-art-op: 0.05; }
 .ad-page          { --page-art: url("/bg/art/exploded.webp"); --page-art-op: 0.042; }
-.ct-page          { --page-art: url("/bg/art/ledger.webp"); --page-art-op: 0.07; }
+.ct-page          { --page-art: url("/bg/art/terrain.webp"); --page-art-op: 0.075; }
 .about-page       { --page-art: url("/bg/art/constellation.webp"); --page-art-op: 0.06; }
 /* 展示型页面图案稍重，列表/阅读页保持「隐约」（默认 5%） */
 
