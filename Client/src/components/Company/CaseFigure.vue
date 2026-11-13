@@ -120,5 +120,44 @@ defineProps({
 .case-fig svg { display: block; width: 100%; height: 100%; }
 .case-fig--md { width: 168px; aspect-ratio: 16 / 10; flex: none; }
 .case-fig--lg { width: 100%; max-width: 520px; aspect-ratio: 16 / 10; margin: 32px 0 0; }
+
+/* 案例详情页的大图：像图纸被扫进来，图元再逐个就位。
+   只在 lg（详情页）上做，列表缩略图保持静止，避免一屏几十个动效。
+   由 CompanyShell 的出场观察器驱动（.co-reveal → .is-in），
+   所以图在首屏之下时会等滚到才装配，不会提前演完。 */
+.co-page.co-anim .case-fig--lg.co-reveal {
+  clip-path: inset(0 0 100% 0);
+}
+.co-page.co-anim .case-fig--lg.co-reveal svg > * {
+  opacity: 0;
+  transform: translateY(6px) scale(0.97);
+}
+.co-page.co-anim .case-fig--lg.co-reveal.is-in {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 620ms var(--ease-out);
+}
+.co-page.co-anim .case-fig--lg.co-reveal.is-in svg > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity 380ms var(--ease-out), transform 460ms var(--ease-out);
+}
+.co-page.co-anim .case-fig--lg.is-in svg > *:nth-child(1) { transition-delay: 160ms; }
+.co-page.co-anim .case-fig--lg.is-in svg > *:nth-child(2) { transition-delay: 230ms; }
+.co-page.co-anim .case-fig--lg.is-in svg > *:nth-child(3) { transition-delay: 300ms; }
+.co-page.co-anim .case-fig--lg.is-in svg > *:nth-child(4) { transition-delay: 370ms; }
+.co-page.co-anim .case-fig--lg.is-in svg > *:nth-child(5) { transition-delay: 430ms; }
+.co-page.co-anim .case-fig--lg.is-in svg > *:nth-child(6) { transition-delay: 490ms; }
+.co-page.co-anim .case-fig--lg.is-in svg > *:nth-child(7) { transition-delay: 550ms; }
+.co-page.co-anim .case-fig--lg.is-in svg > *:nth-child(8) { transition-delay: 610ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .co-page.co-anim .case-fig--lg.co-reveal,
+  .co-page.co-anim .case-fig--lg.co-reveal svg > * {
+    clip-path: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
 .case-fig--sm { width: 76px; aspect-ratio: 16 / 10; flex: none; }
 </style>

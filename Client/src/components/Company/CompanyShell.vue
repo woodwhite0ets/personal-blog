@@ -40,7 +40,7 @@ let io = null
 
 // 出场动画只挂在这些块上；删掉模板里的块时记得同步这一行，否则观察器在空跑
 function revealInit() {
-  const sel = '.co-svc, .co-std, .co-gauge-cell, .co-meter li, .co-card, .mkt-steps li, .co-faq-item, .co-proof li, .co-board-tile, .co-h2, .co-lib-card, .co-mast-item, .co-cta'
+  const sel = '.co-svc, .co-std, .co-gauge-cell, .co-meter li, .co-card, .mkt-steps li, .co-faq-item, .co-proof li, .co-board-tile, .co-h2, .co-lib-card, .co-mast-item, .co-cta, .case-fig--lg'
   const items = Array.from(document.querySelectorAll(sel))
   if (!items.length) return
 
@@ -52,12 +52,20 @@ function revealInit() {
     items.forEach((el) => el.classList.add('is-in'))
     return
   }
-  // 兜底：首屏本就该看到的块直接放出来，不等观察器（观察器漏事件时也不会整段空白）
+  // 兜底：首屏本就该看到的块直接放出来，不等观察器（观察器漏事件时也不会整段空白）。
+  // 注意要先把隐藏态提交成一帧再改类名 —— 同一帧里加 .co-reveal 又加 .is-in，
+  // 浏览器根本看不到起始状态，过渡会被整段跳过（表现为「闪一下」而不是动画）。
   const vh = window.innerHeight
-  items.forEach((el) => {
+  const inFold = items.filter((el) => {
     const r = el.getBoundingClientRect()
-    if (r.top < vh * 0.92 && r.bottom > 0) el.classList.add('is-in')
+    return r.top < vh * 0.92 && r.bottom > 0
   })
+  if (inFold.length) {
+    void pageRef.value?.offsetHeight // 强制样式提交
+    requestAnimationFrame(() => {
+      inFold.forEach((el) => el.classList.add('is-in'))
+    })
+  }
   io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (!e.isIntersecting) return
