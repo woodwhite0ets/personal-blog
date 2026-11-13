@@ -3198,3 +3198,14 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
   color: var(--t-indigo-tint);
   font-variant-numeric: tabular-nums;
 }
+
+/* 代金券面额还没定：金额那排先不画，改成一行「面额按档位定」 */
+.co-perk-amounts-note {
+  margin: 0 0 14px;
+  padding: 12px 0;
+  border-block: 1px solid var(--t-line);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: var(--t-ink-2);
+}

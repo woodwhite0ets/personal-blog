@@ -52,11 +52,12 @@
           <p class="co-perk-k">{{ tokenVoucher.label }}</p>
           <h3 id="perk-t" class="co-perk-t">下单就送 AI token 代金券</h3>
           <p class="co-perk-p">{{ tokenVoucher.why }}</p>
-          <ul class="co-perk-amounts">
+          <ul v-if="tokenVoucher.amounts.length" class="co-perk-amounts">
             <li v-for="a in tokenVoucher.amounts" :key="a.tier">
               <span>{{ a.tier }}</span><b>{{ a.value }}</b>
             </li>
           </ul>
+          <p v-else class="co-perk-amounts-note">{{ tokenVoucher.amountsNote }}</p>
           <p class="co-perk-fine">{{ tokenVoucher.usable }}。{{ tokenVoucher.terms }}。</p>
         </aside>
       </section>
@@ -187,7 +188,7 @@
           </details>
           <details class="co-faq-item">
             <summary>token 代金券怎么用？</summary>
-            <p>随单发给你，用于木白提供的模型接口与本地推理，按实际调用的单价扣减，90 天内有效。单页档 ¥100，完整档 ¥300，买运维年费的每年再送 ¥50。不兑现、不找零、不转让。</p>
+            <p>随单发给你，用于木白提供的模型接口与本地推理，按实际调用的单价扣减。面额按档位定，下单时确认；有效期与使用规则以券面为准。不兑现、不找零、不转让。</p>
           </details>
           <details class="co-faq-item">
             <summary>域名和代码归谁？</summary>

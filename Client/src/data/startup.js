@@ -17,7 +17,6 @@ export const startupTiers = [
     source: '不含源码',
     from: '699 起',
     lead: '5 个工作日',
-    voucher: '¥100',
   },
   {
     name: '完整',
@@ -27,7 +26,6 @@ export const startupTiers = [
     source: '含源码',
     from: '1,299 起',
     lead: '10 个工作日',
-    voucher: '¥300',
   },
 ]
 
@@ -50,16 +48,20 @@ export const carePlan = {
   note: '不做月付。交付后 30 天保修期满才推，两者不重叠。',
 }
 
-/** 随单赠送的 token 代金券（2026-11-13 加入）。金额按档位给，写在下面一处，改价只改这里。 */
+/**
+ * 随单赠送的 token 代金券（2026-11-13 加入）。
+ *
+ * 面额**还没定**（2026-11-13 博士：先不给具体金额）。所以 amounts 留空，
+ * 页面上只写「面额按档位定，下单时确认」。等定价确定后，把 amounts 填成
+ *   [{ tier: '单页', value: '¥100' }, { tier: '完整', value: '¥300' }]
+ * 金额那一排就会自动出现，不用改模板。
+ */
 export const tokenVoucher = {
   label: '随单赠送 · AI TOKEN',
-  amounts: [
-    { tier: '单页', value: '¥100' },
-    { tier: '完整', value: '¥300' },
-    { tier: '运维年费', value: '每年再送 ¥50' },
-  ],
+  amounts: [],
+  amountsNote: '面额按档位定，下单时确认',
   usable: '可用于木白提供的模型接口与本地推理服务，按实际调用的单价扣减',
-  terms: '90 天有效，不兑现、不找零、不转让；与页面上的折扣可叠加',
+  terms: '有效期与使用规则以券面为准；不兑现、不找零、不转让，可与页面上的折扣叠加',
   why: '站上线之后总要接 AI 功能，第一笔调用费我们出。',
 }
 
