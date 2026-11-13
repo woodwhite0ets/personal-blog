@@ -2585,6 +2585,8 @@ html.is-deck .navbar { background-color: transparent; }
 .co-main .co-lib-card { padding: 14px; gap: 12px; }
 /* 长页的图案压得更淡、放大一档：它铺在整页顶部，太实会压过正文 */
 .co-page-art .dk-art {
+  /* 长页只有一张图案，且就在首屏，不需要「上膛」那套，直接取图 */
+  background-image: var(--art);
   opacity: 0.085;
   background-size: 132%;
 }
@@ -3005,3 +3007,8 @@ html.is-deck .navbar.navbar {
 .dk-bg .dk-art { background-image: none; }
 html.is-deck .dk-screen.is-armed .dk-bg .dk-art,
 html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
+
+/* 内容栏放宽到 1320 之后，负载条一路拉到整页宽，太抢；
+   给它一个上限，右侧读数值仍然贴右 —— 一眼能比，又不至于变成一条条色带 */
+.co-meter-bar { height: 3px; max-width: 620px; }
+.co-meter-bar i { background: var(--t-signal); }
