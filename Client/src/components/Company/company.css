@@ -42,7 +42,16 @@
   --t-indigo-on-dark: #9fb4f7;
   --t-indigo-tint: rgba(38, 72, 155, 0.45);
   --t-on-dark: #f3f4f4;
-  --t-danger: #b8452f; /* 与博客 --accent 同一个值：两站的暖色只有一个 */
+  --t-danger: #b8452f;
+  /* 唯一重色块（三项交付标准）：金箔 / 淡玫瑰 / 象牙三套，换下面三行即可
+     金箔   #d8b36a  + #1a1408 + #4a3410
+     淡玫瑰 #e8c7cc  + #2f1119 + #7a2b3c
+     象牙   #efe6d4  + #1a1408 + #7d5c22 */
+  --t-block: #d8b36a;
+  --t-block-ink: #1a1408;
+  --t-block-label: #4a3410;
+  --t-block-line: rgba(26, 20, 8, 0.28);
+  --t-block-grid: rgba(26, 20, 8, 0.06); /* 与博客 --accent 同一个值：两站的暖色只有一个 */
   --t-grid: rgba(12, 14, 16, 0.065);
   --t-hatch: repeating-linear-gradient(135deg, rgba(12, 14, 16, 0.055) 0 1px, transparent 1px 7px);
 
@@ -829,33 +838,34 @@
   /* 与 .co-sec--band 的 100vw 通栏对齐：左右顶到视口边，内边距再把内容拉回栅格 */
   margin-inline: calc(50% - 50vw);
   padding: 40px calc(50vw - 50%) 44px;
-  /* 整站唯一的重色块：深酒红。冷绿底子上的这一点暖色，
-     是页面里最重的东西，别处不再重复 */
-  background-color: #4c1d22;
+  /* 整站唯一的重色块：金箔。冷绿底子上唯一的暖色金属面，
+     面积小、当铜牌用，别处不再重复 */
+  background-color: var(--t-block);
   background-image:
-    linear-gradient(to right, rgba(242, 237, 228, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(242, 237, 228, 0.06) 1px, transparent 1px);
+    linear-gradient(to right, var(--t-block-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--t-block-grid) 1px, transparent 1px);
   background-size: 40px 40px;
   color: rgba(235, 237, 238, 0.78);
 }
+/* 顶部斜纹：金箔上用墨色，不再用青绿 */
 .co-sec.lab-dark::after {
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
   height: 4px;
-  background: repeating-linear-gradient(135deg, var(--t-signal) 0 10px, transparent 10px 20px);
+  background: repeating-linear-gradient(135deg, var(--t-block-ink) 0 10px, transparent 10px 20px);
 }
-.co-sec.lab-dark .co-h2 { color: #f2ede4; border-top-color: rgba(242, 237, 228, 0.3); }
-.co-sec.lab-dark .co-h2::after { background-image: repeating-linear-gradient(to right, rgba(242, 237, 228, 0.34) 0 1px, transparent 1px 10px); }
-.co-sec.lab-dark .co-h2-lat { color: #e8c7cc; }
-.co-sec.lab-dark .co-h2-rule { background: rgba(242, 237, 228, 0.26); }
+.co-sec.lab-dark .co-h2 { color: var(--t-block-ink); border-top-color: var(--t-block-line); }
+.co-sec.lab-dark .co-h2::after { background-image: repeating-linear-gradient(to right, rgba(26, 20, 8, 0.34) 0 1px, transparent 1px 10px); }
+.co-sec.lab-dark .co-h2-lat { color: var(--t-block-label); }
+.co-sec.lab-dark .co-h2-rule { background: var(--t-block-line); }
 .co-sec.lab-dark .co-h2-ruler {
   background-image:
-    repeating-linear-gradient(to right, rgba(242, 237, 228, 0.42) 0 1px, transparent 1px 8px),
-    repeating-linear-gradient(to right, rgba(242, 237, 228, 0.3) 0 1px, transparent 1px 40px);
+    repeating-linear-gradient(to right, rgba(26, 20, 8, 0.42) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(to right, rgba(26, 20, 8, 0.3) 0 1px, transparent 1px 40px);
 }
-.co-sec.lab-dark .co-sec-lead { color: rgba(242, 237, 228, 0.8); }
-.co-sec.lab-dark .co-h2-idx { background: #e8c7cc; color: #3a1218; }
+.co-sec.lab-dark .co-sec-lead { color: rgba(26, 20, 8, 0.82); }
+.co-sec.lab-dark .co-h2-idx { background: var(--t-block-ink); color: var(--t-block); }
 
 .co-standards {
   display: grid;
@@ -891,14 +901,14 @@
 .co-std p { margin: 0; font-size: 0.8125rem; line-height: 1.7; color: var(--t-muted); }
 
 /* 反相块里的同一组格子：只换颜色，不重写结构 */
-.co-sec.lab-dark .co-standards { border-color: rgba(242, 237, 228, 0.28); }
+.co-sec.lab-dark .co-standards { border-color: var(--t-block-line); }
 .co-sec.lab-dark .co-std {
   background: transparent;
-  border-color: rgba(242, 237, 228, 0.28);
+  border-color: var(--t-block-line);
 }
-.co-sec.lab-dark .co-std-k { color: #e8c7cc; }
-.co-sec.lab-dark .co-std-v { color: #f2ede4; }
-.co-sec.lab-dark .co-std p { color: rgba(242, 237, 228, 0.82); }
+.co-sec.lab-dark .co-std-k { color: var(--t-block-label); }
+.co-sec.lab-dark .co-std-v { color: var(--t-block-ink); }
+.co-sec.lab-dark .co-std p { color: rgba(26, 20, 8, 0.84); }
 
 /* ============================================================
    案例库（co-lib）
