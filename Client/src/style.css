@@ -2642,3 +2642,46 @@ button:not(:disabled):active, .nav-drawer-auth:active {
   background-repeat: no-repeat;
   background-color: var(--bg);
 }
+
+/* ============================================================
+   子页的淡灰图案（2026-11-13）
+   ------------------------------------------------------------
+   公司站每屏背后有一张白底黑线的版画；博客这边按页面类型各配一张，
+   复用同一批素材（公有领域 / 自有，来源见 Client/public/bg/art/CREDITS.md）。
+   用 multiply 把纸底吃掉、压到 7%，只在页面顶部 120vh 内出现，
+   往下用遮罩散掉，正文压在它上面。
+   ============================================================ */
+.page-wash::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: min(118vh, 1080px);
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--page-art, none);
+  background-repeat: no-repeat;
+  background-position: center 34%;
+  background-size: cover;
+  mix-blend-mode: multiply;
+  opacity: 0.05;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 46%, transparent 90%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 46%, transparent 90%);
+}
+
+/* 一页一张：按内容类型分，别每页都一样 */
+.home-page        { --page-art: url("/bg/art/orbit.webp"); }
+/* 首屏是品牌字标，图案再退一档，别跟它抢 */
+.home-page .page-wash::after { opacity: 0.035; }
+.forum-page       { --page-art: url("/bg/art/terrain.webp"); }
+.archive-page     { --page-art: url("/bg/art/terrain.webp"); }
+.tags-page        { --page-art: url("/bg/art/exploded.webp"); }
+.notes-page       { --page-art: url("/bg/art/patent.webp"); }
+.now-page         { --page-art: url("/bg/art/patent.webp"); }
+.pl-page          { --page-art: url("/bg/art/orbit.webp"); }
+.tl-page          { --page-art: url("/bg/art/machine.webp"); }
+.td-page          { --page-art: url("/bg/art/machine.webp"); }
+.ad-page          { --page-art: url("/bg/art/exploded.webp"); }
+.ct-page          { --page-art: url("/bg/art/ledger.webp"); }
+.about-page       { --page-art: url("/bg/art/constellation.webp"); }
+.post-detail-page { --page-art: url("/bg/art/constellation.webp"); }
+.series-page      { --page-art: url("/bg/art/terrain.webp"); }
