@@ -258,7 +258,7 @@
         <template v-else>
           <p class="ad-note">
             数据来自 OpenRouter /apps 公开榜（快照 {{ harness.date || '—' }}）：共 {{ formatNumber(harness.stats.total) }} 个 harness 在榜，
-            累计 {{ formatNumber(harness.stats.totalRequests) }} 次调用。榜上算的是「谁在通过 OpenRouter 调模型」，不是模型本身。
+            合计 {{ formatCalls(harness.stats.totalRequests) }} 次调用。榜上算的是「谁在通过 OpenRouter 调模型」，不是模型本身。
           </p>
 
           <h2 class="ad-h2">按累计 token 量<em>top {{ harness.top.length }}</em></h2>
@@ -275,7 +275,7 @@
             </li>
           </ul>
 
-          <h2 class="ad-h2">增速最快<em>OpenRouter 近期</em></h2>
+          <h2 class="ad-h2">增速最快<em>只取体量达榜首 1% 的</em></h2>
           <ul class="ad-bars">
             <li v-for="h in harness.trending" :key="'t-' + h.slug" class="ad-bar-row single">
               <a
@@ -374,6 +374,14 @@ function ratio(value, max) {
 
 function formatNumber(n) {
   return Number(n || 0).toLocaleString('en-US')
+}
+
+// 调用次数用中文量级，和 token 的 B/T 区分开
+function formatCalls(n) {
+  const v = Number(n) || 0
+  if (v >= 1e8) return `${(v / 1e8).toFixed(1)} 亿`
+  if (v >= 1e4) return `${(v / 1e4).toFixed(1)} 万`
+  return formatNumber(v)
 }
 
 function formatTokens(n) {
@@ -658,14 +666,14 @@ onMounted(async () => {
 /* 条状分布 */
 .ad-bars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
 .ad-bar-row {
-  display: grid; grid-template-columns: minmax(120px, 1.1fr) 1fr auto; align-items: center; gap: 12px;
+  display: grid; grid-template-columns: minmax(140px, 0.72fr) minmax(120px, 1.7fr) auto; align-items: center; gap: 16px;
   font-size: 0.8125rem;
 }
 .ad-bar-row.single { grid-template-columns: minmax(120px, 1.1fr) auto; }
 .ad-bar-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* 去掉「填充轨道」观感：只留一条细柱，读作条形图而不是进度条 */
-.ad-bar-track { height: 2px; border-radius: 0; background: none; overflow: visible; border-left: 1px solid var(--border-strong); }
-.ad-bar-fill { display: block; height: 100%; background: var(--text-faint); }
+.ad-bar-track { height: 3px; border-radius: 0; background: none; overflow: visible; border-left: 1px solid var(--border-strong); }
+.ad-bar-fill { display: block; height: 100%; background: var(--text-dim); }
 .ad-bar-value { font-size: 0.75rem; color: var(--text-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* harness 榜：名字可点（去官方站点），本站在用的打一个标 */

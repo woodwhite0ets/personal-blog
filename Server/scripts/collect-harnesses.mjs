@@ -74,7 +74,8 @@ const num = (v) => {
 
 const pick = (app) => ({
   app_id: app?.id ?? null,
-  slug: String(app?.slug || '').slice(0, 120),
+  // 身份键：优先官方 slug，没有就用 app_id —— 同一份 payload 里会出现两个都叫 omp 的 app
+  slug: String(app?.slug || (app?.id ? `app-${app.id}` : '')).slice(0, 120),
   title: String(app?.title || '未命名').slice(0, 160),
   url: app?.main_url || app?.origin_url || (app?.slug ? `https://openrouter.ai/apps/${app.slug}` : ''),
 });
@@ -100,24 +101,24 @@ if (popularRaw.length === 0 && trendingRaw.length === 0) {
   process.exit(1);
 }
 
-const growthBySlug = new Map();
+// 增速按 app_id 挂：多数 app 没有 slug，用 slug 兜不住
+const growthByApp = new Map();
 for (const r of trendingRaw) {
-  const slug = r.appAnalytics?.app?.slug;
-  if (slug && Number.isFinite(Number(r.growthPercent))) growthBySlug.set(slug, Number(r.growthPercent));
+  const id = r.appAnalytics?.app?.id ?? r.appAnalytics?.app_id;
+  if (id && Number.isFinite(Number(r.growthPercent))) growthByApp.set(String(id), Number(r.growthPercent));
 }
 
 const all = new Map();
 const push = (rec) => {
   const app = rec.app || {};
-  const slug = String(app.slug || '').slice(0, 120);
-  const key = slug || String(app.id || app.title || '');
+  const key = app.id ? `id:${app.id}` : String(app.slug || app.title || '');
   if (!key) return;
   const row = {
     ...pick(app),
     rank: num(rec.rank),
     tokens: num(rec.total_tokens),
     requests: num(rec.total_requests),
-    growth: growthBySlug.get(slug) ?? null,
+    growth: growthByApp.get(String(app.id ?? '')) ?? null,
   };
   const prev = all.get(key);
   // 同一个 app 会被 related_apps 重复收录，保留 token 数最大的那条

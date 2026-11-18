@@ -524,7 +524,9 @@ router.get('/geek', async (req, res) => {
 // trending 是 OpenRouter 自己的近期增速榜，growthPct 直接来自页面。
 const HARNESS_LIMIT = 12;
 // 本站自己在用的几个 harness：命中就打标，让榜单和作者发生关系
+// 两种匹配都要：有 slug 的按 slug，没有 slug 的（OpenRouter 那边常见）只能按名字
 const MINE = new Set(['pi', 'omp', 'deepseek-harness', 'codex', 'claude-code']);
+const MINE_TITLES = new Set(['pi', 'omp', 'deepseek harness', 'codex', 'claude code']);
 
 router.get('/harnesses', async (req, res) => {
   try {
@@ -550,19 +552,22 @@ router.get('/harnesses', async (req, res) => {
       [date, limit]
     );
 
+    // 增速榜加一道体量门槛：小体量应用的百分比是噪声（几个请求就能 +500%）
+    // 取当日榜首的 1% 作为下限，跟着数据规模自动缩放
+    const MIN_TREND_TOKENS = Math.max(50e9, (Number(stat.max_tokens) || 0) * 0.01);
     const [trending] = await pool.query(
       `SELECT app_slug, title, url, tokens, growth_pct AS growthPct, rank_no
        FROM ai_harness_stats
-       WHERE snapshot_date = ? AND board = 'trending'
+       WHERE snapshot_date = ? AND board = 'trending' AND tokens >= ?
        ORDER BY growth_pct DESC LIMIT ?`,
-      [date, 6]
+      [date, MIN_TREND_TOKENS, 6]
     );
 
     const decorate = (r) => ({
       slug: r.app_slug,
       title: r.title,
       url: r.url,
-      mine: MINE.has(r.app_slug),
+      mine: MINE.has(r.app_slug) || MINE_TITLES.has(String(r.title).toLowerCase()),
       rank: Number(r.rank_no) || 0,
       tokens: Number(r.tokens) || 0,
       ...(r.requests != null ? { requests: Number(r.requests) || 0 } : {}),

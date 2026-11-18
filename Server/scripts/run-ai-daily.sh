@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # 博客「AI 项目榜」每日任务（在工作站运行）
 # 流程：本机采集 GitHub + 本地模型生成中文 → 传到服务器 → 服务器算日增并写库
+#       再采一次 OpenRouter /apps 的 harness 用量榜（替换了原来的模型目录采集）
 # 由 systemd user timer（ai-daily.timer，每天 08:00）触发，也可手工执行。
 set -euo pipefail
 
@@ -27,12 +28,12 @@ scp -q "$LOCAL_JSON" "${REMOTE_HOST}:${REMOTE_JSON}"
 log "服务器导入并排榜"
 ssh "$REMOTE_HOST" "cd '${REMOTE_DIR}' && node scripts/import-ai-daily.js '${REMOTE_JSON}' && rm -f '${REMOTE_JSON}'"
 
-log "采集模型目录（OpenRouter 公开 API）"
-MODELS_JSON="/tmp/ai-models-${DATE}.json"
-REMOTE_MODELS="/tmp/ai-models-${DATE}.json"
-node Server/scripts/collect-models.mjs --out "$MODELS_JSON"
-scp -q "$MODELS_JSON" "${REMOTE_HOST}:${REMOTE_MODELS}"
-ssh "$REMOTE_HOST" "cd '${REMOTE_DIR}' && node scripts/import-models.js '${REMOTE_MODELS}' && rm -f '${REMOTE_MODELS}'"
-rm -f "$MODELS_JSON"
+log "采集 harness 用量榜（OpenRouter /apps）"
+HARNESS_JSON="/tmp/ai-harnesses-${DATE}.json"
+REMOTE_HARNESS="/tmp/ai-harnesses-${DATE}.json"
+node Server/scripts/collect-harnesses.mjs --out "$HARNESS_JSON"
+scp -q "$HARNESS_JSON" "${REMOTE_HOST}:${REMOTE_HARNESS}"
+ssh "$REMOTE_HOST" "cd '${REMOTE_DIR}' && node scripts/import-harnesses.js '${REMOTE_HARNESS}' && rm -f '${REMOTE_HARNESS}'"
+rm -f "$HARNESS_JSON"
 
 log "完成"
