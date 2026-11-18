@@ -97,7 +97,7 @@ import CompanyCta from './CompanyCta.vue'
 const lines = [
   {
     name: '定制交付 · AI 应用与系统',
-    lead: '给已经在跑的业务加 AI 能力，也做带后台的业务系统。知识库检索和模型接入做得最多。',
+    lead: '给已经在跑的业务加 AI 能力，也做带后台的业务系统。知识库检索和模型接入是主要做的两类。',
     fit: '已有系统，或需求清楚的业务问题',
     from: '3 万元起',
     period: '按阶段',

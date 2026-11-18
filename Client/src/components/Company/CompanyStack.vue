@@ -58,13 +58,13 @@
         <CompanySecHead title="这套东西能带来什么" index="03" latin="WHAT IT BUYS" />
         <ul class="co-proof">
           <li><span class="co-proof-k">交付速度</span><span class="co-proof-v">依赖本地模型与自建 CI，不用等第三方额度，改动当天能上线。</span></li>
-          <li><span class="co-proof-k">数据边界</span><span class="co-proof-v">模型与检索都在自己机器上，敏感数据不出内网。</span></li>
+          <li><span class="co-proof-k">数据边界</span><span class="co-proof-v">检索与本地推理跑在自己机器上。需要接外部模型时，哪一段数据出网、出到哪家，会提前写清。</span></li>
           <li><span class="co-proof-k">成本</span><span class="co-proof-v">固定硬件成本，没有按次计费的推理账单。</span></li>
         </ul>
       </section>
       <CompanyCta
         title="数据要留在自己机器上的，可以聊"
-        note="这套基础设施是自建的，能按你的合规要求把数据关在内网。"
+        note="这套基础设施是自建的，能按你的合规要求把数据放在你指定的机器上。"
         hint="说清数据规模和使用场景，我给方案。"
       />
     </div>

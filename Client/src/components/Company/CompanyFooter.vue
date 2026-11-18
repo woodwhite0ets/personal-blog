@@ -17,6 +17,12 @@
         </span>
         <p>给已经在跑的业务加 AI 能力，一个人从头做到上线后的巡检。</p>
         <span class="co-foot-copy">© {{ year }} 木白 woodwhite</span>
+        <!-- 备案号：境内托管的形式义务，与博客同域同主体；改备案后两处要一起改 -->
+        <p class="co-foot-beian">
+          <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026059663号-1</a>
+          <span aria-hidden="true">·</span>
+          <a href="https://beian.mps.gov.cn/#/query/webSearch?code=33038202005059" target="_blank" rel="noopener noreferrer">浙公网安备33038202005059号</a>
+        </p>
       </div>
       <nav class="co-foot-col" aria-label="服务">
         <p class="co-foot-k">服务</p>
@@ -31,6 +37,7 @@
         <router-link to="/stack">能力</router-link>
         <router-link to="/contact">联系</router-link>
         <router-link to="/blog">博客</router-link>
+        <router-link to="/privacy">隐私政策</router-link>
       </nav>
       <nav class="co-foot-col" aria-label="联系">
         <p class="co-foot-k">联系</p>

@@ -88,6 +88,11 @@ const routes = [
     component: () => import('../components/Company/CompanyContact.vue'),
   },
   {
+    path: '/privacy',
+    name: 'CompanyPrivacy',
+    component: () => import('../components/Company/CompanyPrivacy.vue'),
+  },
+  {
     path: '/login',
     name: 'LoginPage',
     component: () => import('../components/Login/Login.vue'),

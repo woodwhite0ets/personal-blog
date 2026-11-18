@@ -15,6 +15,6 @@ export const systemStatus = {
   lights: [
     { label: '接单中', state: 'on' },
     { label: '可开票', state: 'on' },
-    { label: '数据不出内网', state: 'on' },
+    { label: '数据可留内网', state: 'on' },
   ],
 }

@@ -330,6 +330,30 @@ async function runMigrations(conn) {
     `);
   }
 
+  // ai_harness_stats：OpenRouter /apps 榜的 harness（客户端/agent）用量快照，每日覆盖
+  // 与 ai_model_catalog 的区别：那个记「有哪些模型、多少钱」，这个记「谁在用、用了多少」
+  if (!existing.includes('ai_harness_stats')) {
+    console.log('[db] migration: creating ai_harness_stats table');
+    await conn.query(`
+      CREATE TABLE \`ai_harness_stats\` (
+        \`id\`            INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+        \`snapshot_date\` DATE          NOT NULL,
+        \`board\`         VARCHAR(16)   NOT NULL DEFAULT 'popular',
+        \`rank_no\`       INT UNSIGNED  NOT NULL DEFAULT 0,
+        \`app_slug\`      VARCHAR(120)  NOT NULL,
+        \`title\`         VARCHAR(160)  NOT NULL DEFAULT '',
+        \`url\`           VARCHAR(255)  DEFAULT '',
+        \`tokens\`        BIGINT UNSIGNED NOT NULL DEFAULT 0,
+        \`requests\`      BIGINT UNSIGNED NOT NULL DEFAULT 0,
+        \`growth_pct\`    DECIMAL(8,2)  DEFAULT NULL,
+        \`created_at\`    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (\`id\`),
+        UNIQUE KEY \`uk_date_board_app\` (\`snapshot_date\`, \`board\`, \`app_slug\`),
+        KEY \`idx_date_board_tokens\` (\`snapshot_date\`, \`board\`, \`tokens\`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  }
+
   // ai_tools：AI 工具库台账（长期索引）
   // 与 ai_daily_items 的区别：榜单是「每天覆盖的快照」，工具库是「一条工具一行」的长期台账，
   // 采集只更新指标，人工字段（note_zh / status / weight / category）不被自动流程覆盖。

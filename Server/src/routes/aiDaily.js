@@ -519,6 +519,74 @@ router.get('/geek', async (req, res) => {
     res.status(500).json({ message: 'internal server error' });
   }
 });
+// ====== GET /api/ai-daily/harnesses — harness 用量榜（OpenRouter /apps 快照）======
+// 榜上是「谁在通过 OpenRouter 调模型」，按累计 token 量排；
+// trending 是 OpenRouter 自己的近期增速榜，growthPct 直接来自页面。
+const HARNESS_LIMIT = 12;
+// 本站自己在用的几个 harness：命中就打标，让榜单和作者发生关系
+const MINE = new Set(['pi', 'omp', 'deepseek-harness', 'codex', 'claude-code']);
+
+router.get('/harnesses', async (req, res) => {
+  try {
+    const [[latest]] = await pool.query('SELECT MAX(snapshot_date) AS d FROM ai_harness_stats');
+    if (!latest || !latest.d) {
+      return res.json({ date: null, top: [], trending: [], message: 'harness 榜还没有数据（等采集任务跑一次）' });
+    }
+    const date = latest.d instanceof Date ? latest.d.toISOString().slice(0, 10) : String(latest.d).slice(0, 10);
+    const parsed = parseInt(req.query.limit, 10);
+    const limit = Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, 40) : HARNESS_LIMIT;
+
+    const [[stat]] = await pool.query(
+      `SELECT COUNT(*) AS total, MAX(tokens) AS max_tokens, SUM(requests) AS total_requests
+       FROM ai_harness_stats WHERE snapshot_date = ? AND board = 'popular'`,
+      [date]
+    );
+
+    const [top] = await pool.query(
+      `SELECT app_slug, title, url, tokens, requests, rank_no
+       FROM ai_harness_stats
+       WHERE snapshot_date = ? AND board = 'popular'
+       ORDER BY tokens DESC LIMIT ?`,
+      [date, limit]
+    );
+
+    const [trending] = await pool.query(
+      `SELECT app_slug, title, url, tokens, growth_pct AS growthPct, rank_no
+       FROM ai_harness_stats
+       WHERE snapshot_date = ? AND board = 'trending'
+       ORDER BY growth_pct DESC LIMIT ?`,
+      [date, 6]
+    );
+
+    const decorate = (r) => ({
+      slug: r.app_slug,
+      title: r.title,
+      url: r.url,
+      mine: MINE.has(r.app_slug),
+      rank: Number(r.rank_no) || 0,
+      tokens: Number(r.tokens) || 0,
+      ...(r.requests != null ? { requests: Number(r.requests) || 0 } : {}),
+      ...(r.growthPct != null ? { growthPct: Number(r.growthPct) } : {}),
+    });
+
+    res.json({
+      date,
+      source: 'OpenRouter /apps',
+      stats: {
+        total: Number(stat.total) || 0,
+        maxTokens: Number(stat.max_tokens) || 0,
+        totalRequests: Number(stat.total_requests) || 0,
+      },
+      top: top.map(decorate),
+      trending: trending.map(decorate),
+      mine: top.map(decorate).filter((r) => r.mine),
+    });
+  } catch (err) {
+    console.error('ai-daily harnesses error:', err);
+    res.status(500).json({ message: 'internal server error' });
+  }
+});
+
 // ====== GET /api/ai-daily/models — 模型目录（OpenRouter 快照）======
 const MODEL_LIMIT = 10;
 

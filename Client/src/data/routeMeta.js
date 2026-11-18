@@ -26,13 +26,18 @@ export const ROUTE_META = {
   },
   '/stack': {
     title: '能力与基础设施 — 木白 woodwhite',
-    description: '自托管的工作站：本地推理、pgvector 检索、自建 Git 与 CI、systemd 巡检，零入站端口，数据不出内网。',
+    description: '自托管的工作站：本地推理、pgvector 检索、自建 Git 与 CI、systemd 巡检，零入站端口，数据可留在你指定的机器上。',
     canonical: `${SITE.company}/stack`,
   },
   '/contact': {
     title: '联系 — 木白 woodwhite',
     description: '按项目或按月合作，签合同、可开票、按阶段验收。邮箱 1903784785@qq.com，微信 Woodwhite-0827。',
     canonical: `${SITE.company}/contact`,
+  },
+  '/privacy': {
+    title: '隐私政策 — 木白 woodwhite',
+    description: '本站收集什么、存在哪、用多久，以及你可以怎样要求查询、更正或删除。',
+    canonical: `${SITE.company}/privacy`,
   },
   '/business': {
     title: '业务 — 木白 woodwhite',

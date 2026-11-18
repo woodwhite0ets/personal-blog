@@ -24,8 +24,8 @@
             <dd>{{ geek.poolSize || '—' }}</dd>
           </div>
           <div class="ad-stat">
-            <dt>模型目录</dt>
-            <dd>{{ models.stats.total ? formatNumber(models.stats.total) : '—' }}</dd>
+            <dt>harness 在榜</dt>
+            <dd>{{ harness.stats.total ? formatNumber(harness.stats.total) : '—' }}</dd>
           </div>
         </dl>
 
@@ -248,51 +248,50 @@
         </template>
       </section>
 
-      <!-- ==================== 模型 ==================== -->
+      <!-- ==================== harness 用量（OpenRouter /apps 榜） ==================== -->
       <section v-else class="ad-view-body">
-        <div v-if="modelsLoading" class="ad-state"><p class="ad-state-body" role="status">模型目录加载中…</p></div>
-        <div v-else-if="modelsError" class="ad-state">
-          <p class="ad-state-title">模型目录没有加载出来</p>
-          <button class="ad-retry" type="button" @click="loadModels(true)">重新加载</button>
+        <div v-if="harnessLoading" class="ad-state"><p class="ad-state-body" role="status">harness 榜加载中…</p></div>
+        <div v-else-if="harnessError" class="ad-state">
+          <p class="ad-state-title">harness 榜没有加载出来</p>
+          <button class="ad-retry" type="button" @click="loadHarness(true)">重新加载</button>
         </div>
         <template v-else>
           <p class="ad-note">
-            数据来自 OpenRouter 公开模型目录（快照 {{ models.date || '—' }}）：共 {{ formatNumber(models.stats.total) }} 个模型，
-            {{ formatNumber(models.stats.freeCount) }} 个可免费调用，最长上下文 {{ formatContext(models.stats.maxContext) }} tokens。
+            数据来自 OpenRouter /apps 公开榜（快照 {{ harness.date || '—' }}）：共 {{ formatNumber(harness.stats.total) }} 个 harness 在榜，
+            累计 {{ formatNumber(harness.stats.totalRequests) }} 次调用。榜上算的是「谁在通过 OpenRouter 调模型」，不是模型本身。
           </p>
 
-          <div class="ad-columns">
-            <div class="ad-col">
-              <h2 class="ad-h2">最便宜的付费模型<em>$/百万输出 tokens</em></h2>
-              <ul class="ad-bars">
-                <li v-for="m in models.groups.cheap" :key="'c-' + m.model_id" class="ad-bar-row">
-                  <span class="ad-bar-name">{{ m.name }}</span>
-                  <span class="ad-bar-track"><span class="ad-bar-fill" :style="{ width: ratio(m.price_completion_per_m, priceMax) }"></span></span>
-                  <span class="ad-bar-value">${{ m.price_completion_per_m ?? '—' }}</span>
-                </li>
-              </ul>
-            </div>
-            <div class="ad-col">
-              <h2 class="ad-h2">超长上下文<em>按 tokens</em></h2>
-              <ul class="ad-bars">
-                <li v-for="m in models.groups.longest" :key="'l-' + m.model_id" class="ad-bar-row">
-                  <span class="ad-bar-name">{{ m.name }}</span>
-                  <span class="ad-bar-track"><span class="ad-bar-fill" :style="{ width: ratio(m.context_length, contextMax) }"></span></span>
-                  <span class="ad-bar-value">{{ formatContext(m.context_length) }}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <h2 class="ad-h2">最近上架<em>按发布时间</em></h2>
+          <h2 class="ad-h2">按累计 token 量<em>top {{ harness.top.length }}</em></h2>
           <ul class="ad-bars">
-            <li v-for="m in models.groups.fresh" :key="'f-' + m.model_id" class="ad-bar-row fresh">
-              <span class="ad-bar-name">{{ m.name }}</span>
-              <span class="ad-bar-value">{{ m.released_on }}</span>
-              <span class="ad-bar-value">{{ formatContext(m.context_length) }}</span>
-              <span class="ad-bar-value">${{ m.price_completion_per_m ?? '—' }}</span>
+            <li v-for="h in harness.top" :key="'h-' + h.slug" class="ad-bar-row">
+              <a
+                class="ad-bar-name ad-harness-name"
+                :href="h.url || '#'"
+                target="_blank"
+                rel="noopener noreferrer"
+              >{{ h.title }}<span v-if="h.mine" class="ad-harness-mine">本站在用</span></a>
+              <span class="ad-bar-track"><span class="ad-bar-fill" :style="{ width: ratio(h.tokens, harness.stats.maxTokens) }"></span></span>
+              <span class="ad-bar-value">{{ formatTokens(h.tokens) }}</span>
             </li>
           </ul>
+
+          <h2 class="ad-h2">增速最快<em>OpenRouter 近期</em></h2>
+          <ul class="ad-bars">
+            <li v-for="h in harness.trending" :key="'t-' + h.slug" class="ad-bar-row single">
+              <a
+                class="ad-bar-name ad-harness-name"
+                :href="h.url || '#'"
+                target="_blank"
+                rel="noopener noreferrer"
+              >{{ h.title }}<span v-if="h.mine" class="ad-harness-mine">本站在用</span></a>
+              <span class="ad-bar-value">+{{ h.growthPct }}%</span>
+            </li>
+          </ul>
+
+          <p class="ad-note ad-note-fine">
+            统计口径：OpenRouter 只统计经它路由的调用，直连官方 API 的量不在内；榜单按累计量排，新上线的 harness 会偏低。
+            本站自己用的是 pi / omp / DeepSeek Harness / Codex / Claude Code，命中会在后面标「本站在用」。
+          </p>
         </template>
       </section>
     </main>
@@ -312,7 +311,7 @@ const tabs = [
   { key: 'today', label: '今日' },
   { key: 'trends', label: '趋势' },
   { key: 'discover', label: '发现' },
-  { key: 'models', label: '模型' },
+  { key: 'models', label: 'harness' },
 ]
 
 const route = useRoute()
@@ -346,11 +345,11 @@ const discoverLoading = ref(false)
 const discoverError = ref(false)
 let discoverLoaded = false
 
-// 模型
-const models = ref({ date: null, stats: {}, groups: { cheap: [], longest: [], fresh: [] } })
-const modelsLoading = ref(false)
-const modelsError = ref(false)
-let modelsLoaded = false
+// harness 用量（OpenRouter /apps 榜）
+const harness = ref({ date: null, stats: { total: 0, maxTokens: 0, totalRequests: 0 }, top: [], trending: [] })
+const harnessLoading = ref(false)
+const harnessError = ref(false)
+let harnessLoaded = false
 
 const updatedAtText = computed(() => {
   if (!updatedAt.value) return ''
@@ -366,8 +365,7 @@ const overview = computed(() => ({
 
 const dailyMax = computed(() => Math.max(1, ...(insights.value.daily || []).map((d) => d.gain)))
 const languagesMax = computed(() => Math.max(1, ...(insights.value.languages || []).map((l) => l.count)))
-const priceMax = computed(() => Math.max(1, ...(models.value.groups.cheap || []).map((m) => Number(m.price_completion_per_m) || 0)))
-const contextMax = computed(() => Math.max(1, ...(models.value.groups.longest || []).map((m) => Number(m.context_length) || 0)))
+const harnessMax = computed(() => Math.max(1, Number(harness.value.stats.maxTokens) || 1))
 
 function ratio(value, max) {
   const pct = Math.max(2, Math.round(((Number(value) || 0) / (max || 1)) * 100))
@@ -376,6 +374,15 @@ function ratio(value, max) {
 
 function formatNumber(n) {
   return Number(n || 0).toLocaleString('en-US')
+}
+
+function formatTokens(n) {
+  const v = Number(n) || 0
+  if (v >= 1e12) return `${(v / 1e12).toFixed(2)}T`
+  if (v >= 1e9) return `${(v / 1e9).toFixed(1)}B`
+  if (v >= 1e6) return `${(v / 1e6).toFixed(1)}M`
+  if (v >= 1e3) return `${Math.round(v / 1e3)}K`
+  return String(v)
 }
 
 function formatContext(n) {
@@ -488,25 +495,26 @@ async function loadDiscover(force = false) {
   }
 }
 
-async function loadModels(force = false) {
-  if (modelsLoaded && !force) return
-  modelsLoading.value = true
-  modelsError.value = false
+async function loadHarness(force = false) {
+  if (harnessLoaded && !force) return
+  harnessLoading.value = true
+  harnessError.value = false
   try {
-    const res = await fetch('/api/ai-daily/models?limit=8')
+    const res = await fetch('/api/ai-daily/harnesses?limit=12')
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
-    models.value = {
+    harness.value = {
       date: data.date || null,
-      stats: data.stats || {},
-      groups: data.groups || { cheap: [], longest: [], fresh: [] },
+      stats: data.stats || { total: 0, maxTokens: 0, totalRequests: 0 },
+      top: data.top || [],
+      trending: data.trending || [],
     }
-    modelsLoaded = true
+    harnessLoaded = true
   } catch (err) {
-    console.error('加载模型目录失败:', err)
-    modelsError.value = true
+    console.error('加载 harness 榜失败:', err)
+    harnessError.value = true
   } finally {
-    modelsLoading.value = false
+    harnessLoading.value = false
   }
 }
 
@@ -522,7 +530,7 @@ async function switchView(next) {
   syncQuery()
   if (next === 'trends') await loadTrends()
   if (next === 'discover') await loadDiscover()
-  if (next === 'models') await loadModels()
+  if (next === 'models') await loadHarness()
 }
 
 onMounted(async () => {
@@ -530,7 +538,7 @@ onMounted(async () => {
   // 概览里的「近 7 日新进」和「极客池」需要这两份数据，后台悄悄取一次
   loadTrends()
   loadDiscover()
-  loadModels()
+  loadHarness()
 })
 </script>
 
@@ -654,13 +662,22 @@ onMounted(async () => {
   font-size: 0.8125rem;
 }
 .ad-bar-row.single { grid-template-columns: minmax(120px, 1.1fr) auto; }
-.ad-bar-row.fresh { grid-template-columns: minmax(160px, 1.4fr) 92px 56px 72px; }
-.ad-bar-row.fresh .ad-bar-value:last-child { text-align: right; }
 .ad-bar-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* 去掉「填充轨道」观感：只留一条细柱，读作条形图而不是进度条 */
 .ad-bar-track { height: 2px; border-radius: 0; background: none; overflow: visible; border-left: 1px solid var(--border-strong); }
 .ad-bar-fill { display: block; height: 100%; background: var(--text-faint); }
 .ad-bar-value { font-size: 0.75rem; color: var(--text-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* harness 榜：名字可点（去官方站点），本站在用的打一个标 */
+.ad-harness-name { display: inline-flex; align-items: baseline; gap: 8px; color: var(--text-secondary); text-decoration: none; min-width: 0; }
+.ad-harness-name:hover { color: var(--text-bright); }
+.ad-harness-name:hover .ad-harness-mine { border-color: var(--accent); }
+.ad-harness-mine {
+  flex: none; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: .04em;
+  color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 3px; padding: 0 4px;
+}
+.ad-note-fine { margin-top: 22px; color: var(--text-faint); }
 
 /* 标签 */
 .ad-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }

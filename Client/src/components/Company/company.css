@@ -771,6 +771,8 @@
 
 /* 步骤：大号码在左，内容在右，共用一条竖线 */
 .mkt-steps {
+  position: relative;
+  overflow: hidden;
   counter-reset: step;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -779,6 +781,20 @@
   list-style: none;
   border-top: 1px solid var(--t-line-2);
   border-left: 1px solid var(--t-line-2);
+}
+/* 顶边兼作流程导通线；长页跟随视口，活页屏跟随 .is-live 重播。 */
+.mkt-steps::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--t-signal);
+  transform: scaleX(1);
+  transform-origin: left center;
+  pointer-events: none;
 }
 .mkt-steps > li {
   position: relative;
@@ -800,6 +816,20 @@
   letter-spacing: -0.04em;
   color: var(--t-indigo-tint);
   font-variant-numeric: tabular-nums;
+}
+/* 每一步在导通后亮一个节点，节点只叠在边线上，不参与排版。 */
+.mkt-steps > li::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: -4px;
+  left: 17px;
+  width: 7px;
+  height: 7px;
+  background: var(--t-signal);
+  border: 1px solid var(--t-bg);
+  transform: scale(1);
+  pointer-events: none;
 }
 .mkt-steps > li > span {
   font-family: var(--font-mono);
@@ -853,6 +883,8 @@
 .mkt-table tbody tr:hover td { background: rgba(12, 14, 16, 0.025); }
 .mkt-table td:first-child { color: var(--t-ink); font-weight: 560; }
 .mkt-price {
+  position: relative;
+  overflow: clip;
   font-family: var(--font-mono);
   font-size: 0.9375rem;
   font-weight: 700;
@@ -860,6 +892,18 @@
   color: var(--t-ink);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
+}
+/* 票据读数扫光：只扫价格格，不给整张表加泛光。 */
+.mkt-price::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0 auto 0 -42%;
+  width: 36%;
+  background: linear-gradient(90deg, transparent, rgba(11, 143, 132, 0.24), transparent);
+  opacity: 0;
+  transform: translateX(0);
+  pointer-events: none;
 }
 .mkt-price-sub {
   display: block;
@@ -892,6 +936,7 @@
   .co-faq-item[open]::details-content { block-size: auto; }
 }
 .co-faq-item summary {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -905,20 +950,36 @@
 }
 .co-faq-item summary::-webkit-details-marker { display: none; }
 .co-faq-item summary::before {
-  content: "+";
+  content: "";
   flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 18px;
   height: 18px;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1;
   color: var(--t-ink);
+  background:
+    linear-gradient(currentColor, currentColor) center / 10px 1px no-repeat;
   border: 1px solid var(--t-line-2);
+  transition: background-color 180ms var(--ease-out), border-color 180ms var(--ease-out);
 }
-.co-faq-item[open] summary::before { content: "−"; background: var(--t-signal); border-color: var(--t-signal); }
+/* 加号的竖笔单独收起，内容切换时不会从 “+” 硬跳成 “−”。 */
+.co-faq-item summary::after {
+  content: "";
+  position: absolute;
+  left: 24.5px;
+  top: 50%;
+  width: 1px;
+  height: 10px;
+  margin-top: -5px;
+  background: var(--t-ink);
+  transform: scaleY(1);
+  transform-origin: center;
+  transition: transform 220ms var(--ease-snap);
+  pointer-events: none;
+}
+.co-faq-item[open] summary::before { background-color: var(--t-signal); border-color: var(--t-signal); }
+.co-faq-item[open] summary::after { transform: scaleY(0); }
 .co-faq-item summary:focus-visible { outline: 2px solid var(--t-signal); outline-offset: -3px; }
 .co-faq-item p {
   margin: 0;
@@ -1416,6 +1477,25 @@
   text-transform: uppercase;
   color: var(--t-faint);
 }
+.co-foot-beian {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin: 6px 0 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--t-faint);
+}
+.co-foot-beian a {
+  color: var(--t-faint);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
+}
+.co-foot-beian a:hover,
+.co-foot-beian a:focus-visible { color: var(--t-ink); border-bottom-color: var(--t-line-2); }
 .co-foot-col { display: flex; flex-direction: column; gap: 2px; }
 .co-foot-k {
   margin: 0 0 8px;
@@ -1572,6 +1652,81 @@
     clip-path 460ms var(--ease-out);
 }
 
+/* 公司页专属的三段微动效：价格扫描、流程导通、FAQ 符号变形。 */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes coPriceScan {
+    0% { opacity: 0; transform: translateX(0); }
+    18% { opacity: 1; }
+    74% { opacity: 0.72; }
+    100% { opacity: 0; transform: translateX(395%); }
+  }
+  @keyframes coFlowCircuit {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  /* 长页兜底在接管动效时播放；支持 view timeline 时改为真正随入场播放。 */
+  .co-page.co-anim .mkt-price::after {
+    animation: coPriceScan 620ms var(--ease-out) 180ms both;
+  }
+  .co-page.co-anim .mkt-steps::after {
+    animation: coFlowCircuit 760ms var(--ease-out) 120ms both;
+  }
+  .co-page.co-anim .mkt-steps > li::after {
+    opacity: 0;
+    transform: scale(0);
+  }
+  .co-page.co-anim .mkt-steps > li.is-in::after {
+    opacity: 1;
+    transform: scale(1);
+    transition:
+      opacity 180ms var(--ease-out) calc(170ms + var(--ci, 0) * 70ms),
+      transform 360ms var(--ease-snap) calc(170ms + var(--ci, 0) * 70ms);
+  }
+  .mkt-steps > li:nth-child(1) { --ci: 0; }
+  .mkt-steps > li:nth-child(2) { --ci: 1; }
+  .mkt-steps > li:nth-child(3) { --ci: 2; }
+  .mkt-steps > li:nth-child(4) { --ci: 3; }
+
+  /* 活页屏每次恢复 .is-live 都重新触发。 */
+  html.is-deck .dk-screen .mkt-price::after { animation: none; }
+  html.is-deck .dk-screen.is-live .mkt-price::after {
+    animation: coPriceScan 620ms var(--ease-out) 260ms both;
+  }
+  html.is-deck .dk-screen .mkt-steps::after {
+    animation: none;
+    transform: scaleX(0);
+  }
+  html.is-deck .dk-screen.is-live .mkt-steps::after {
+    transform: scaleX(1);
+    transition: transform 760ms var(--ease-out) 140ms;
+  }
+  html.is-deck .dk-screen .mkt-steps > li::after {
+    opacity: 0;
+    transform: scale(0);
+  }
+  html.is-deck .dk-screen.is-live .mkt-steps > li::after {
+    opacity: 1;
+    transform: scale(1);
+    transition:
+      opacity 180ms var(--ease-out) calc(220ms + var(--ci, 0) * 70ms),
+      transform 360ms var(--ease-snap) calc(220ms + var(--ci, 0) * 70ms);
+  }
+
+  @supports (animation-timeline: view()) {
+    .co-page.co-anim:not(:has(.co-deck)) .mkt-price::after {
+      animation: coPriceScan 1ms var(--ease-out) both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 75%;
+    }
+    .co-page.co-anim:not(:has(.co-deck)) .mkt-steps::after {
+      animation: coFlowCircuit 1ms linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 70%;
+    }
+  }
+}
+
 /* 减少动态效果：位移与擦出全取消，只保留透明度；交错延迟也归零 */
 @media (prefers-reduced-motion: reduce) {
   .co-page.co-anim .co-reveal,
@@ -1590,7 +1745,11 @@
   .co-link-arrow::after { translate: none; transition: none; }
   .co-foot-col a::after { transition: none; }
   .co-btn:active { scale: none; }
-  .co-faq-item summary::before { transition: none; }
+  .co-faq-item summary::before,
+  .co-faq-item summary::after { transition: none; }
+  .mkt-price::after { display: none; }
+  .mkt-steps::after { transform: scaleX(1); animation: none; }
+  .mkt-steps > li::after { opacity: 1; transform: scale(1); transition: none; }
   .co-page.co-anim .co-h2.co-reveal .co-h2-idx { opacity: 1; transform: translateY(-100%); transition: none; }
   .co-h2-ruler { transform: scaleX(1); transition: none; }
   .co-meter-bar i { transform: scaleX(var(--v, 1)); transition: none; }
@@ -1677,6 +1836,23 @@
   .co-lib--3, .co-lib--4 { grid-template-columns: minmax(0, 1fr); }
   .co-gauge { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .co-gauge-v { font-size: 1.75rem; }
+  .mkt-steps::after {
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    height: 100%;
+    transform: scaleY(1);
+    transform-origin: top center;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes coFlowCircuitNarrow {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(1); }
+    }
+    .co-page.co-anim .mkt-steps::after { animation-name: coFlowCircuitNarrow; }
+    html.is-deck .dk-screen .mkt-steps::after { transform: scaleY(0); }
+    html.is-deck .dk-screen.is-live .mkt-steps::after { transform: scaleY(1); }
+  }
   .co-form-row { grid-template-columns: minmax(0, 1fr); }
   .co-foot-cols { grid-template-columns: minmax(0, 1fr); }
   .co-h2 { gap: 10px; font-size: 1.375rem; }
@@ -1930,6 +2106,8 @@ html.is-deck .co-deck-hint { display: flex; }
    首页没有口号大字：一进来就是这台「机器」的铭牌 ——
    左侧是身份与字段，右侧是读数与检验章，下面是验收刻印和三个交付物。
    ============================================================ */
+/* 屏 0 内容量比其它屏高，整体轻抬，避免铭牌视觉重心沉到视口下沿。 */
+html.is-deck .co-plate .dk-in { translate: 0 -16px; }
 .co-plate .co-hud { margin-bottom: 22px; }
 /* 一屏一段之后，卡片要撑住一整屏：两行等高，不再一行高一行矮 */
 .dk-screen .co-cards { grid-auto-rows: 1fr; }
@@ -2900,10 +3078,17 @@ html.is-deck .co-deck-index a.is-on::before {
 }
 .co-plate-case:hover b::after,
 .co-plate-all:hover span::after { transform: scaleX(1); }
-.co-plate-case:hover,
-.co-plate-all:hover { padding-left: 18px; }
-.co-plate-case,
-.co-plate-all { transition: padding-left 260ms var(--ease-out), background-color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out), translate var(--dur-hover) var(--ease-out); }
+/* 首屏项目条目：进场与悬浮使用同一条高特异性规则。
+   否则 .is-live 的进场 transition 会覆盖 hover 的 translate，卡片会瞬间跳起。 */
+html.is-deck .dk-screen.is-live .co-plate-case,
+html.is-deck .dk-screen.is-live .co-plate-all {
+  transition:
+    opacity 460ms var(--ease-out) calc(70ms + var(--ci, 0) * 46ms),
+    transform 640ms var(--ease-spring) calc(70ms + var(--ci, 0) * 46ms),
+    background-color 240ms var(--ease-out),
+    border-color 240ms var(--ease-out),
+    translate 360ms var(--ease-spring);
+}
 
 /* 筛选芯片：底与边一起过渡，选中那一块不再硬切 */
 .co-lib-chip,
