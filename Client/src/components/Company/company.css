@@ -2108,7 +2108,7 @@ html.is-deck .co-deck-hint { display: flex; }
    ============================================================ */
 /* 屏 0 内容量比其它屏高，整体轻抬，避免铭牌视觉重心沉到视口下沿。 */
 html.is-deck .co-plate .dk-in { translate: 0 -16px; }
-.co-plate .co-hud { margin-bottom: 22px; }
+.co-plate .co-hud { margin-bottom: 16px; }
 /* 一屏一段之后，卡片要撑住一整屏：两行等高，不再一行高一行矮 */
 .dk-screen .co-cards { grid-auto-rows: 1fr; }
 .dk-screen .co-svc-in { height: 100%; }
@@ -2139,7 +2139,7 @@ html.is-deck .co-plate .dk-in { translate: 0 -16px; }
     "actions actions";
   background: var(--t-panel-2);
   border: 1px solid var(--t-line-2);
-  padding: 34px 40px 30px;
+  padding: 26px 40px 24px;
   column-gap: 44px;
 }
 /* 左上 / 右下角标（全站结构约定） */
@@ -2622,7 +2622,7 @@ html.is-deck .co-plate .dk-in { translate: 0 -16px; }
    铭牌交付物条的底色全部撤掉，只在悬浮时出现描边与浮起。 */
 .dk-screen .co-lib-thumb { border: 0; }
 .co-lib-result { border-top: 0; padding-top: 2px; }
-.co-svc-cta .co-svc-in { background-image: none; }
+.co-svc-cta .co-svc-in { background-image: none; background-color: var(--t-panel); }
 .co-plate-case,
 .co-plate-all { background: transparent; }
 
@@ -3418,3 +3418,179 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
 /* 业务总览两张卡并排时，「在校价」那一行会把右侧卡的行拉高、两卡错位；
    给值留出固定高度，两卡的 适合/起步/周期/交付 就对齐了 */
 .co-page--business .co-biz-meta dd { min-height: 2.7em; }
+
+/* ============================================================
+   02 屏 · 做过的几个（2026-11-13 补密度）
+   ------------------------------------------------------------
+   原来只放三个项目、卡片很高，一屏空出 240px。现在五个全铺、
+   卡片压紧（缩略图变窄条），每张补技术栈与状态；底部一条时间轴
+   把「一直跑到今天」画出来。
+   ============================================================ */
+.co-lib-lead { margin: 0; font-size: 0.8125rem; color: var(--t-muted); }
+.co-lib--tight { grid-auto-rows: auto; }
+.co-lib--tight .co-lib-card { padding: 8px 9px; gap: 5px; }
+.co-lib--tight .co-lib-thumb { display: block; block-size: 58px; overflow: clip; border: 1px solid var(--t-line); background: var(--t-bg); }
+.co-lib--tight .co-lib-thumb .case-fig { inline-size: 100%; block-size: 100%; }
+.co-lib--tight .co-lib-name { font-size: 0.9375rem; line-height: 1.3; }
+.co-lib--tight .co-lib-sub { display: none; }
+.co-lib--tight .co-lib-card--more .co-lib-sub { display: block; font-size: 0.75rem; color: var(--t-muted); }
+.co-lib--tight .co-lib-result {
+  border-top: 0; padding-top: 0; margin-top: 0;
+  font-size: 0.75rem; line-height: 1.45; color: var(--t-muted);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.co-lib-foot { display: flex; align-items: center; gap: 8px; margin-top: auto; }
+.co-lib-stack { display: flex; gap: 4px; min-width: 0; overflow: hidden; }
+.co-lib-stack i {
+  font-style: normal; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.02em;
+  color: var(--t-faint); border: 1px solid var(--t-line); padding: 0 4px; white-space: nowrap;
+}
+.co-lib-status {
+  margin-left: auto; flex: none; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.04em;
+  color: var(--t-muted); border: 1px solid var(--t-line-2); padding: 0 5px;
+}
+.co-lib-status.is-live { color: var(--t-signal-ink); border-color: rgba(11, 143, 132, 0.4); }
+.co-lib-card--more { justify-content: flex-start; background: var(--t-bg-deep); }
+.co-lib-card--more .co-lib-name { font-size: 1rem; }
+.co-lib-card--more .co-lib-body { gap: 2px; }
+.co-lib-card--more .co-lib-go {
+  margin-top: 10px; font-family: var(--font-mono); font-size: 0.6875rem;
+  letter-spacing: 0.06em; color: var(--t-signal-ink);
+}
+
+/* 时间轴：一条线 + 五个节点，最后接「现在」 */
+.co-track {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0; margin: 30px 0 0; padding: 0; list-style: none;
+  border-top: 1px solid var(--t-line-2);
+}
+.co-track li { position: relative; padding: 12px 12px 0 0; }
+.co-track-dot {
+  position: absolute; top: -3px; left: 0;
+  inline-size: 7px; block-size: 7px;
+  background: var(--t-ink);
+  clip-path: circle(50%);
+  box-shadow: 0 0 0 3px var(--t-bg);
+}
+.co-track-date { display: block; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em; color: var(--t-faint); }
+.co-track-name { display: block; margin-top: 2px; font-size: 0.75rem; color: var(--t-ink-2); }
+/* 轴末端指向「现在」：这条线不是历史陈列，是还没结束 */
+.co-track::after {
+  content: "现在";
+  position: absolute; right: 0; top: -18px;
+  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; color: var(--t-signal-ink);
+}
+.co-track { position: relative; }
+
+/* 01 屏：工期小标 + 第 6 格改成「不接的四类」 */
+.co-svc-dur {
+  margin-left: 8px; font-style: normal; font-family: var(--font-mono);
+  font-size: 0.625rem; letter-spacing: 0.04em; color: var(--t-faint); font-weight: 400;
+}
+.co-svc-no { list-style: none; margin: 6px 0 10px; padding: 0; display: grid; gap: 4px; }
+.co-svc-no li { position: relative; padding-left: 12px; font-size: 0.8125rem; line-height: 1.5; color: var(--t-muted); }
+.co-svc-no li::before { content: "×"; position: absolute; left: 0; color: var(--t-danger); font-family: var(--font-mono); }
+
+/* 03 屏：每步的产物 + 开工前清单 */
+.co-flow-out {
+  display: block; margin-top: auto; padding-top: 10px;
+  font-style: normal; font-family: var(--font-mono); font-size: 0.6875rem;
+  letter-spacing: 0.03em; color: var(--t-signal-ink);
+}
+.co-prep {
+  display: flex; align-items: center; gap: 16px; margin-top: 18px;
+  padding-top: 12px; border-top: 1px solid var(--t-line-strong); flex-wrap: wrap;
+}
+.co-prep-k { margin: 0; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.1em; color: var(--t-faint); }
+.co-prep-list { display: flex; gap: 6px; margin: 0; padding: 0; list-style: none; flex-wrap: wrap; }
+.co-prep-list li {
+  font-size: 0.75rem; color: var(--t-ink-2);
+  border: 1px solid var(--t-line-2); padding: 1px 8px;
+}
+.co-prep-time { margin: 0 0 0 auto; font-size: 0.6875rem; color: var(--t-muted); }
+
+/* 04 屏：不包含项压成一行，别把表格挤走 */
+.co-excl {
+  margin: 10px 0 0; font-size: 0.75rem; color: var(--t-muted);
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+}
+.co-excl-k {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.1em;
+  color: var(--t-danger); border: 1px solid rgba(184, 69, 47, 0.32); padding: 0 5px;
+}
+
+/* 01 屏：每类活挂一个真做过的项目，别让卡片中间空着 */
+.co-svc-case {
+  display: inline-flex; align-items: baseline; gap: 7px; margin-top: auto;
+  font-size: 0.75rem; color: var(--t-ink-2); text-decoration: none;
+  border-bottom: 1px solid var(--t-line); padding-bottom: 2px; align-self: flex-start;
+}
+.co-svc-case i {
+  font-style: normal; font-family: var(--font-mono); font-size: 0.625rem;
+  letter-spacing: 0.08em; color: var(--t-faint);
+}
+.co-svc-case:hover { color: var(--t-signal-ink); border-bottom-color: var(--t-signal); }
+
+
+/* 时间轴上仍在跑的项目用实心青绿点，已交付的用墨点 */
+.co-track-dot.is-live { background: var(--t-signal); }
+
+
+/* ============================================================
+   00 屏 · 运行心跳
+   ------------------------------------------------------------
+   一条会动的波形带：不承载文案，只说明这台机器还开着。
+   波形用 data-uri 平铺（一条 240×64 的贴片），靠 background-position
+   匀速左移就是"扫过去"的效果；prefers-reduced-motion 下静止。
+   ============================================================ */
+.co-pulse {
+  position: absolute;
+  inset: var(--co-navh) 0 auto 0;
+  z-index: 1;
+  block-size: 84px;
+  margin: 0;
+  pointer-events: none;
+  border-top: 1px solid var(--t-line);
+  border-bottom: 1px solid var(--t-line);
+  overflow: clip;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='84'%3E%3Cpath d='M0 54H108l8-16 6 24 7-10H320' fill='none' stroke='%230b8f84' stroke-opacity='.3' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 320px 84px;
+  background-position: 0 0;
+  animation: coPulseMove 22s linear infinite;
+}
+@keyframes coPulseMove { to { background-position: -320px 0; } }
+@media (prefers-reduced-motion: reduce) { .co-pulse { animation: none; } }
+
+.co-pulse-live {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.14em;
+  color: var(--t-signal-ink);
+}
+.co-pulse-live i {
+  inline-size: 5px; block-size: 5px; background: var(--t-signal);
+  clip-path: circle(50%);
+  animation: coPulseBlink 2.4s steps(1, end) infinite;
+}
+@keyframes coPulseBlink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.25; } }
+
+
+/* 首屏把心跳条当成顶部状态带：内容整体下移一条带的高度，避免重叠 */
+.co-plate { justify-content: flex-start; padding-top: calc(var(--co-navh) + 96px); padding-bottom: 26px; }
+
+/* 带内的字与正文同一套栅格，别贴到屏幕边上 */
+.co-pulse-in {
+  position: relative;
+  block-size: 100%;
+  max-width: min(1330px, 100%);
+  margin: 0 auto;
+  padding: 10px clamp(28px, 3.2vw, 48px) 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.co-pulse-meta {
+  font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.1em;
+  color: var(--t-faint);
+}
