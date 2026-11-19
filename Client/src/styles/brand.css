@@ -169,3 +169,6 @@ body:has(.co-page)::before { background: none; }
 @media (max-width: 520px) {
   .brand-back { display: none; }
 }
+
+/* 统计标签也收方：整站不再有 999px 胶囊 */
+.ad-pill { border-radius: var(--radius-sm); }

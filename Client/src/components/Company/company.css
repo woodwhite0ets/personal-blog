@@ -633,7 +633,7 @@
   color: var(--t-ink);
   text-decoration: none;
   border-bottom: 1px solid var(--t-signal);
-  padding-bottom: 2px;
+  padding-bottom: 4px;
 }
 .co-lib-tools { display: flex; align-items: center; gap: 6px; }
 .co-lib-toggle,
@@ -1200,7 +1200,7 @@
   color: var(--t-ink);
   text-decoration: none;
   border-bottom: 1px solid var(--t-line-2);
-  padding-bottom: 1px;
+  padding-bottom: 4px;
 }
 .co-link-list a:hover { border-bottom-color: var(--t-signal); }
 
@@ -3428,7 +3428,7 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
    ============================================================ */
 .co-lib-lead { margin: 0; font-size: 0.8125rem; color: var(--t-muted); }
 .co-lib--tight { grid-auto-rows: auto; }
-.co-lib--tight .co-lib-card { padding: 8px 9px; gap: 5px; }
+.co-lib--tight .co-lib-card { padding: 12px 11px 10px; gap: 6px; }
 .co-lib--tight .co-lib-thumb { display: block; block-size: 58px; overflow: clip; border: 1px solid var(--t-line); background: var(--t-bg); }
 .co-lib--tight .co-lib-thumb .case-fig { inline-size: 100%; block-size: 100%; }
 .co-lib--tight .co-lib-name { font-size: 0.9375rem; line-height: 1.3; }
@@ -3468,9 +3468,9 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
 .co-track-dot {
   position: absolute; top: -3px; left: 0;
   inline-size: 7px; block-size: 7px;
-  background: var(--t-ink);
-  clip-path: circle(50%);
-  box-shadow: 0 0 0 3px var(--t-bg);
+  /* 用径向渐变画点：clip-path/border-radius 在带 box-shadow 时不稳，这个一定是圆 */
+  background: radial-gradient(circle at 50% 50%, var(--t-ink) 0 3.4px, transparent 3.5px);
+  box-shadow: 0 0 0 2.5px var(--t-bg);
 }
 .co-track-date { display: block; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em; color: var(--t-faint); }
 .co-track-name { display: block; margin-top: 2px; font-size: 0.75rem; color: var(--t-ink-2); }
@@ -3533,7 +3533,7 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
 
 
 /* 时间轴上仍在跑的项目用实心青绿点，已交付的用墨点 */
-.co-track-dot.is-live { background: var(--t-signal); }
+.co-track-dot.is-live { background: radial-gradient(circle at 50% 50%, var(--t-signal) 0 3.4px, transparent 3.5px); }
 
 
 /* ============================================================
@@ -3594,3 +3594,24 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
   font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.1em;
   color: var(--t-faint);
 }
+
+/* ============================================================
+   间距：线和字不要贴在一起
+   ------------------------------------------------------------
+   全站的线都是 1px，原先有几处线直接压在字上（小标签的方框、
+   HUD 下的横线、铭牌字段、FAQ 题）。这里统一把「线与字之间」
+   至少留 5px，不改字号也不动栅格。
+   ============================================================ */
+.co-lib-kind { padding: 4px 8px 3px; }
+.co-lib-status { padding: 4px 7px 3px; }
+.co-excl-k { padding: 3px 7px 2px; }
+.co-lib-stack i { padding: 4px 7px 3px; }
+.co-svc-dur { padding-block: 1px; }
+
+.co-hud { padding-bottom: 14px; }
+.co-plate-fields > div { padding-block: 15px; }
+.co-plate-std li { padding-block: 15px; }
+
+.co-svc-case,
+.co-lib-more,
+.co-sideline-go { padding-bottom: 3px; }
