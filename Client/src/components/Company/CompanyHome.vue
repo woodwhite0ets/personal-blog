@@ -18,7 +18,7 @@
         <div class="dk-in">
           <div class="co-hud">
             <span class="co-hud-l">
-              <span class="co-badge-dot" aria-hidden="true"></span>厦门翔安 · 可开票 · 一天内回信
+              <span class="co-badge-dot" aria-hidden="true"></span>厦门翔安 · 一人公司 · 可开票 · 一天内回信
             </span>
             <span class="co-hud-r">
               <b>木白 / WDW</b>
@@ -26,14 +26,39 @@
             </span>
           </div>
 
-          <div class="co-plate-panel">
-            <div class="co-plate-head">
-              <p class="co-plate-k">PLATE · 铭牌</p>
-              <h1 id="plate-name" class="co-plate-name">木白智能</h1>
-              <p class="co-plate-sub">木白（厦门）智能软件科技有限公司 · 软件开发与 AI 应用开发 · 可开票</p>
+          <div class="co-cover">
+            <!-- 左：一句话说清做什么 -->
+            <div class="co-cover-main">
+              <h1 id="plate-name" class="co-cover-title">给已经在跑的业务<br>加 AI 能力</h1>
+              <p class="co-cover-lead">
+                知识库检索 · 模型接入 · 本地推理 · 带后台的业务系统。<br>
+                从需求做到上线后的巡检，交付时给一个能打开的地址。
+              </p>
+              <div class="co-cover-actions">
+                <router-link class="co-btn co-btn-solid" to="/contact#brief">发需求单</router-link>
+                <router-link class="co-link-arrow" to="/#pricing">看价格与交期</router-link>
+              </div>
+              <dl class="co-cover-nums">
+                <div v-for="(c, i) in coverNums" :key="c.k">
+                  <dt>{{ c.k }}</dt>
+                  <dd>{{ c.v }}</dd>
+                </div>
+              </dl>
+
+              <p class="co-cover-did">
+                <span>做过</span>
+                <router-link v-for="p in projects.slice(0, 3)" :key="p.slug" :to="`/work/${p.slug}`">{{ p.name }}</router-link>
+                <router-link class="co-cover-did-all" to="/work">全部 {{ projects.length }} 个 →</router-link>
+              </p>
             </div>
 
-            <div class="co-plate-led">
+            <!-- 右：铭牌卡 + 三项标准 -->
+            <aside class="co-cover-plate" aria-label="系统状态">
+              <div class="co-plate-head">
+                <p class="co-plate-k">PLATE · 铭牌</p>
+                <p class="co-plate-name">木白智能</p>
+                <p class="co-plate-sub">木白（厦门）智能软件科技有限公司</p>
+              </div>
               <ul class="co-plate-lights">
                 <li v-for="l in systemStatus.lights" :key="l.label">
                   <i class="co-plate-dot" :class="`is-${l.state}`" aria-hidden="true"></i>{{ l.label }}
@@ -45,50 +70,23 @@
                   <dd><b>{{ shown[i] }}</b><i>{{ m.unit }}</i><span>{{ m.note }}</span></dd>
                 </div>
               </dl>
-            </div>
-
-            <dl class="co-plate-fields">
-              <div>
-                <dt>做什么</dt>
-                <dd>知识库检索 · 模型接入 · 本地推理 · 带后台的业务系统</dd>
-              </div>
-              <div>
-                <dt>怎么做</dt>
-                <dd>先跑通最短的一条链路，再按阶段往上加</dd>
-              </div>
-              <div>
-                <dt>交付物</dt>
-                <dd>代码 · 部署脚本 · 运行手册</dd>
-              </div>
-            </dl>
-
-            <ul id="standard" class="co-plate-std">
-              <li v-for="s in standards" :key="s.k">
-                <span class="co-plate-std-k">{{ s.k }}</span>
-                <span class="co-plate-std-v">{{ s.v }}</span>
-                <span class="co-plate-std-n">{{ s.n }}</span>
-              </li>
-            </ul>
-
-            <div class="co-plate-strip">
-              <router-link v-for="p in plateCases" :key="p.slug" :to="`/work/${p.slug}`" class="co-plate-case">
-                <span class="co-plate-case-fig"><CaseFigure :slug="p.slug" size="md" /></span>
-                <span class="co-plate-case-t">
-                  <b>{{ p.name }}</b>
-                  <i>{{ p.result }}</i>
-                </span>
-              </router-link>
-              <router-link to="/work" class="co-plate-all">
-                <span>全部 {{ caseCount }} 个项目</span>
-                <i>按类型筛 · 每条写了问题与结果</i>
-              </router-link>
-            </div>
-
-            <div class="co-plate-actions">
-              <router-link class="co-btn co-btn-solid" to="/contact#brief">发需求单</router-link>
-              <router-link class="co-link-arrow" to="/#pricing">看价格与交期</router-link>
-            </div>
+              <p class="co-plate-last">
+                <span>最近交付</span>
+                <router-link :to="`/work/${latest.slug}`">{{ latest.name }}</router-link>
+                <i>{{ latest.period }}</i>
+              </p>
+            </aside>
           </div>
+
+          <ul id="standard" class="co-cover-std">
+            <li v-for="s in standards" :key="s.k">
+              <span class="co-cover-std-k">{{ s.k }}</span>
+              <span class="co-cover-std-v">{{ s.v }}</span>
+              <span class="co-cover-std-n">{{ s.n }}</span>
+            </li>
+          </ul>
+
+
         </div>
       </section>
 
@@ -364,6 +362,15 @@ const timeline = computed(() =>
     }))
 )
 
+
+// 铭牌卡底部挂一条最近交付，让卡片和实际干过的活连上
+const latest = projects[0]
+
+const coverNums = [
+  { k: '项目', v: projects.length + ' 个' },
+  { k: '连续运行', v: '95 天' },
+  { k: '在线数据', v: '10 万+ 条' },
+]
 
 const homeFilter = ref('全部')
 const homeChips = computed(() => {

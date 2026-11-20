@@ -3547,15 +3547,15 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
   position: absolute;
   inset: var(--co-navh) 0 auto 0;
   z-index: 1;
-  block-size: 84px;
+  block-size: 62px;
   margin: 0;
   pointer-events: none;
   border-top: 1px solid var(--t-line);
   border-bottom: 1px solid var(--t-line);
   overflow: clip;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='84'%3E%3Cpath d='M0 54H108l8-16 6 24 7-10H320' fill='none' stroke='%230b8f84' stroke-opacity='.3' stroke-width='1'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='62'%3E%3Cpath d='M0 40H108l7-12 5 18 6-8H320' fill='none' stroke='%230b8f84' stroke-opacity='.3' stroke-width='1'/%3E%3C/svg%3E");
   background-repeat: repeat-x;
-  background-size: 320px 84px;
+  background-size: 320px 62px;
   background-position: 0 0;
   animation: coPulseMove 22s linear infinite;
 }
@@ -3576,7 +3576,7 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
 
 
 /* 首屏把心跳条当成顶部状态带：内容整体下移一条带的高度，避免重叠 */
-.co-plate { justify-content: flex-start; padding-top: calc(var(--co-navh) + 96px); padding-bottom: 26px; }
+.co-plate { justify-content: center; padding-top: calc(var(--co-navh) + 56px); padding-bottom: 26px; }
 
 /* 带内的字与正文同一套栅格，别贴到屏幕边上 */
 .co-pulse-in {
@@ -3615,3 +3615,164 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
 .co-svc-case,
 .co-lib-more,
 .co-sideline-go { padding-bottom: 3px; }
+
+/* ============================================================
+   00 屏 · 封面（2026-11-13 重做）
+   ------------------------------------------------------------
+   原来是整页一张字段表：进来先看「做什么/怎么做/交付物」，
+   像在看别人的档案。现在改成封面结构：
+     左＝主张与行动（一进来知道我是谁、能解决什么）
+     右＝铭牌卡（这台机器现在的状态，缩成一张卡）
+     底＝三项交付标准（一条横带）
+   铭牌不删，它只是从「整页」退成「一张卡」，识别性还在。
+   ============================================================ */
+.co-cover {
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+  padding-top: 4px;
+}
+
+.co-cover-k {
+  margin: 0 0 18px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--t-faint);
+}
+
+.co-cover-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+  line-height: 1.14;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--t-ink);
+  text-wrap: balance;
+}
+
+.co-cover-lead {
+  margin: 20px 0 0;
+  max-width: 34em;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--t-ink-2);
+  text-wrap: pretty;
+}
+
+.co-cover-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 26px;
+}
+
+.co-cover-nums {
+  display: flex;
+  gap: clamp(20px, 3vw, 44px);
+  margin: 34px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--t-line);
+}
+.co-cover-nums div { display: flex; flex-direction: column; gap: 3px; }
+.co-cover-nums dt {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--t-faint);
+}
+.co-cover-nums dd {
+  margin: 0; font-family: var(--font-mono); font-size: 1.25rem; font-weight: 500;
+  color: var(--t-ink); font-variant-numeric: tabular-nums;
+}
+
+/* 右侧铭牌卡 */
+.co-cover-side { display: flex; flex-direction: column; }
+.co-cover-plate {
+  padding: 22px 24px 20px;
+  border: 1px solid var(--t-line-2);
+  background: var(--t-panel);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.co-cover-plate .co-plate-name { font-size: 1.5rem; }
+.co-cover-plate .co-plate-sub { font-size: 0.75rem; }
+.co-cover-plate .co-plate-read { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+.co-cover-plate .co-plate-read > div { display: flex; flex-direction: column; gap: 2px; }
+.co-cover-plate .co-plate-read dt {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--t-faint);
+}
+.co-cover-plate .co-plate-read dd { margin: 0; display: flex; align-items: baseline; gap: 3px; }
+.co-cover-plate .co-plate-read b {
+  font-family: var(--font-mono); font-size: 1.5rem; font-weight: 500; line-height: 1;
+  color: var(--t-ink); font-variant-numeric: tabular-nums;
+}
+.co-cover-plate .co-plate-read i { font-style: normal; font-size: 0.75rem; color: var(--t-muted); }
+.co-cover-plate .co-plate-read span {
+  flex-basis: 100%; font-size: 0.6875rem; color: var(--t-faint); margin-top: 1px;
+}
+
+/* 底部：三项标准横带 */
+.co-cover-std {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--t-line-2);
+}
+.co-cover-std li {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 16px 28px 0 0;
+  border-top: 1px solid var(--t-line-2);
+  border-right: 1px solid var(--t-line);
+}
+.co-cover-std li:last-child { border-right: 0; }
+.co-cover-std-k {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--t-signal-ink);
+}
+.co-cover-std-v { font-size: 1.0625rem; font-weight: 600; color: var(--t-ink); }
+.co-cover-std-n { font-size: 0.75rem; line-height: 1.6; color: var(--t-muted); }
+
+@media (max-width: 900px) {
+  .co-cover { grid-template-columns: 1fr; gap: 24px; }
+  .co-cover-title { font-size: 1.9rem; }
+  .co-cover-nums { margin-top: 22px; }
+  .co-cover-std { grid-template-columns: 1fr; }
+  .co-cover-std li { border-right: 0; border-bottom: 1px solid var(--t-line); padding: 12px 0; }
+  .co-cover-std li:last-child { border-bottom: 0; }
+}
+
+/* 铭牌卡底部：最近交付一行，把卡片和真实项目连上，同时补平右栏高度 */
+.co-plate-last {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  margin: auto 0 0; padding-top: 14px; border-top: 1px solid var(--t-line);
+  font-size: 0.75rem; color: var(--t-muted);
+}
+.co-plate-last span {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--t-faint);
+}
+.co-plate-last a { color: var(--t-ink); text-decoration: none; border-bottom: 1px solid var(--t-line-2); padding-bottom: 3px; }
+.co-plate-last a:hover { border-color: var(--t-signal); color: var(--t-signal-ink); }
+.co-plate-last i { font-style: normal; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--t-faint); }
+
+/* 封面左下：把「做过什么」按名字列出来，比只有数字更像证据 */
+.co-cover-did {
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  margin: 16px 0 0; font-size: 0.75rem; color: var(--t-muted);
+}
+.co-cover-did span {
+  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--t-faint);
+}
+.co-cover-did a { color: var(--t-ink-2); text-decoration: none; border-bottom: 1px solid var(--t-line); padding-bottom: 3px; }
+.co-cover-did a:hover { color: var(--t-signal-ink); border-color: var(--t-signal); }
+.co-cover-did-all { color: var(--t-signal-ink); }
