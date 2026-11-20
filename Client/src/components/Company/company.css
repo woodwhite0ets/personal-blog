@@ -3536,64 +3536,6 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
 .co-track-dot.is-live { background: radial-gradient(circle at 50% 50%, var(--t-signal) 0 3.4px, transparent 3.5px); }
 
 
-/* ============================================================
-   00 屏 · 运行心跳
-   ------------------------------------------------------------
-   一条会动的波形带：不承载文案，只说明这台机器还开着。
-   波形用 data-uri 平铺（一条 240×64 的贴片），靠 background-position
-   匀速左移就是"扫过去"的效果；prefers-reduced-motion 下静止。
-   ============================================================ */
-.co-pulse {
-  position: absolute;
-  inset: var(--co-navh) 0 auto 0;
-  z-index: 1;
-  block-size: 62px;
-  margin: 0;
-  pointer-events: none;
-  border-top: 1px solid var(--t-line);
-  border-bottom: 1px solid var(--t-line);
-  overflow: clip;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='62'%3E%3Cpath d='M0 40H108l7-12 5 18 6-8H320' fill='none' stroke='%230b8f84' stroke-opacity='.3' stroke-width='1'/%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-size: 320px 62px;
-  background-position: 0 0;
-  animation: coPulseMove 22s linear infinite;
-}
-@keyframes coPulseMove { to { background-position: -320px 0; } }
-@media (prefers-reduced-motion: reduce) { .co-pulse { animation: none; } }
-
-.co-pulse-live {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.14em;
-  color: var(--t-signal-ink);
-}
-.co-pulse-live i {
-  inline-size: 5px; block-size: 5px; background: var(--t-signal);
-  clip-path: circle(50%);
-  animation: coPulseBlink 2.4s steps(1, end) infinite;
-}
-@keyframes coPulseBlink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.25; } }
-
-
-/* 首屏把心跳条当成顶部状态带：内容整体下移一条带的高度，避免重叠 */
-.co-plate { justify-content: center; padding-top: calc(var(--co-navh) + 56px); padding-bottom: 26px; }
-
-/* 带内的字与正文同一套栅格，别贴到屏幕边上 */
-.co-pulse-in {
-  position: relative;
-  block-size: 100%;
-  max-width: min(1330px, 100%);
-  margin: 0 auto;
-  padding: 10px clamp(28px, 3.2vw, 48px) 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
-.co-pulse-meta {
-  font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.1em;
-  color: var(--t-faint);
-}
 
 /* ============================================================
    间距：线和字不要贴在一起
@@ -3777,39 +3719,4 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
 .co-cover-did a:hover { color: var(--t-signal-ink); border-color: var(--t-signal); }
 .co-cover-did-all { color: var(--t-signal-ink); }
 
-/* ============================================================
-   首页改成平铺（2026-11-13）
-   ------------------------------------------------------------
-   原来是一屏一段、按屏吸附：每段固定 100vh，短的内容就得靠留白撑，
-   读起来像翻 PPT。现在取消满屏与吸附，按内容自然高度往下铺，
-   右侧索引仍然跟着滚（它认的是 [data-screen]，不依赖屏高）。
-   ============================================================ */
-html.is-deck { scroll-snap-type: none; }
-html.is-deck body { overscroll-behavior-y: auto; }
 
-.dk-screen,
-html.is-deck .dk-screen {
-  min-height: 0;
-  justify-content: flex-start;
-  padding-top: calc(var(--co-navh) + 44px);
-  padding-bottom: clamp(48px, 6vh, 84px);
-  scroll-snap-align: none;
-  scroll-snap-stop: normal;
-  scroll-margin-top: var(--co-navh);
-}
-
-/* 首屏不需要再为心跳带留位置 */
-.co-plate { padding-top: calc(var(--co-navh) + 52px); padding-bottom: clamp(56px, 7vh, 96px); }
-
-/* 页脚回到普通文档末尾，不再占满一屏 */
-html.is-deck .co-foot {
-  min-height: 0;
-  display: block;
-  scroll-snap-align: none;
-  scroll-snap-stop: normal;
-}
-
-/* 平铺之后每段之间给一条线，别让背景的接缝自己说话 */
-.dk-screen + .dk-screen { border-top: 1px solid var(--t-line-2); }
-/* 图纸底在连续滚动里会显出接缝，压淡一档 */
-.dk-screen .dk-bg { opacity: 0.7; }
