@@ -15,7 +15,9 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
 const chrome = spawn('chromium', [
   '--headless=new', '--no-sandbox', '--disable-gpu', '--hide-scrollbars',
-  '--remote-debugging-port=9333', '--force-prefers-reduced-motion',
+  '--remote-debugging-port=9333',
+  // 默认按「减少动态效果」渲染，截图稳定；要看真实动效就 SHOT_MOTION=1
+  ...(process.env.SHOT_MOTION ? [] : ['--force-prefers-reduced-motion']),
   `--window-size=${W},${H}`, 'about:blank',
 ], { stdio: 'ignore' })
 

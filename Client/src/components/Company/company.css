@@ -3776,3 +3776,40 @@ html.is-deck .co-foot.is-armed .dk-bg .dk-art { background-image: var(--art); }
 .co-cover-did a { color: var(--t-ink-2); text-decoration: none; border-bottom: 1px solid var(--t-line); padding-bottom: 3px; }
 .co-cover-did a:hover { color: var(--t-signal-ink); border-color: var(--t-signal); }
 .co-cover-did-all { color: var(--t-signal-ink); }
+
+/* ============================================================
+   首页改成平铺（2026-11-13）
+   ------------------------------------------------------------
+   原来是一屏一段、按屏吸附：每段固定 100vh，短的内容就得靠留白撑，
+   读起来像翻 PPT。现在取消满屏与吸附，按内容自然高度往下铺，
+   右侧索引仍然跟着滚（它认的是 [data-screen]，不依赖屏高）。
+   ============================================================ */
+html.is-deck { scroll-snap-type: none; }
+html.is-deck body { overscroll-behavior-y: auto; }
+
+.dk-screen,
+html.is-deck .dk-screen {
+  min-height: 0;
+  justify-content: flex-start;
+  padding-top: calc(var(--co-navh) + 44px);
+  padding-bottom: clamp(48px, 6vh, 84px);
+  scroll-snap-align: none;
+  scroll-snap-stop: normal;
+  scroll-margin-top: var(--co-navh);
+}
+
+/* 首屏不需要再为心跳带留位置 */
+.co-plate { padding-top: calc(var(--co-navh) + 52px); padding-bottom: clamp(56px, 7vh, 96px); }
+
+/* 页脚回到普通文档末尾，不再占满一屏 */
+html.is-deck .co-foot {
+  min-height: 0;
+  display: block;
+  scroll-snap-align: none;
+  scroll-snap-stop: normal;
+}
+
+/* 平铺之后每段之间给一条线，别让背景的接缝自己说话 */
+.dk-screen + .dk-screen { border-top: 1px solid var(--t-line-2); }
+/* 图纸底在连续滚动里会显出接缝，压淡一档 */
+.dk-screen .dk-bg { opacity: 0.7; }

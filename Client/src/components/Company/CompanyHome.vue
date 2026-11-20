@@ -6,14 +6,6 @@
            谁做的、做什么、怎么做、交了算什么、现在什么状态，全是字段。 -->
       <section id="plate" class="dk-screen co-plate" data-screen data-no="00" data-label="铭牌">
         <div class="dk-bg" aria-hidden="true"><DeckFigure name="plate" /></div>
-        <!-- 机器在跑：一条缓慢左移的心电波形带。
-             不写文案、不做导航，只让首屏上方有"活的"东西。 -->
-        <div class="co-pulse" aria-hidden="true">
-          <div class="co-pulse-in">
-            <span class="co-pulse-live"><i></i>LIVE</span>
-            <span class="co-pulse-meta">自建推理 · 出站隧道 · 每日 03:00 自检</span>
-          </div>
-        </div>
 
         <div class="dk-in">
           <div class="co-hud">
